@@ -9,17 +9,15 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
-@Entity
 @Data
-@Table(name="Test_board")
-public class Test {
+@Entity
+@Table(name = "Room")
+public class Room {
 	//minju
 	@Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="test_seq", initialValue=1, allocationSize=1)
-	private int _id;
+	@SequenceGenerator(name="seq",sequenceName="Room_seq", initialValue=1, allocationSize=1)
+	private int sequence; // 참조 시퀀스
+	private String content; // 채팅 내용 
 	
-	private String title;
-	private String content;
-
 }

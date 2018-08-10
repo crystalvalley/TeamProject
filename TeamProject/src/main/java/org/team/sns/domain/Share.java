@@ -9,17 +9,16 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
-@Entity
 @Data
-@Table(name="Test_board")
-public class Test {
+@Entity
+@Table(name = "Share")
+public class Share {
 	//minju
 	@Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="test_seq", initialValue=1, allocationSize=1)
-	private int _id;
-	
-	private String title;
-	private String content;
+	@SequenceGenerator(name="seq",sequenceName="Share_seq", initialValue=1, allocationSize=1)
+	private int sequence; //참조 시퀀스
+	private String shareid; // 공유한 아이디
+	private String sharedcontent; // 공유대상
 
 }

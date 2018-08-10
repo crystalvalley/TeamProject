@@ -9,17 +9,14 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
-@Entity
 @Data
-@Table(name="Test_board")
-public class Test {
+@Entity
+@Table(name = "RoomMember")
+public class RoomMember {
 	//minju
-	@Id
+	@Id //pk
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="test_seq", initialValue=1, allocationSize=1)
-	private int _id;
-	
-	private String title;
-	private String content;
-
+	@SequenceGenerator(name="seq",sequenceName="RoomMember_seq", initialValue=1, allocationSize=1)
+	private int RoomMember_seq;
+	private String userid;
 }
