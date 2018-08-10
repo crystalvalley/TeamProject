@@ -1,5 +1,7 @@
 package org.team.sns.domain;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,8 +10,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.sun.jmx.snmp.Timestamp;
 
 import lombok.Data;
 

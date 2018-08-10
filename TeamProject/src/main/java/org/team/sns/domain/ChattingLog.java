@@ -15,8 +15,7 @@ import lombok.Data;
 public class ChattingLog {
 	@Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="ChattingLog_seq", initialValue=1, allocationSize=1)
-	
+	@SequenceGenerator(name="seq",sequenceName="ChattingLog_seq", initialValue=1, allocationSize=1)	
 	private int ChattingLog_seq;
 	private String userid;
 	private String url;
