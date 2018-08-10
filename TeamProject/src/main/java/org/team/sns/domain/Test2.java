@@ -11,12 +11,12 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name="Test_board")
-public class Test {
+@Table(name="Test2_board")
+public class Test2 {
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="test_seq", initialValue=1, allocationSize=1)
+	@SequenceGenerator(name="seq",sequenceName="test2_seq", initialValue=1, allocationSize=1)
 	private int _id;
 	
 	private String title;
