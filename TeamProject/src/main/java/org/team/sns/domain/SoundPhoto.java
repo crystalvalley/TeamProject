@@ -15,15 +15,18 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name="Test_board")
-public class Test {
-	
+@Table(name="SoundPhoto")
+public class SoundPhoto {
+
 	@Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="test_seq", initialValue=1, allocationSize=1)
-	private int _id;
-	
-	private String title;
-	private String content;
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
+	@SequenceGenerator(name="seq",sequenceName="SoundPhoto_seq", initialValue=1, allocationSize=1)
+
+
+	private String url;
+	private String type;
+	private int sequence;
+
+
 
 }

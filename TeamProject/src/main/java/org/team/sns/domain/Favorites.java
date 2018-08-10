@@ -7,6 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.sun.jmx.snmp.Timestamp;
+
 import lombok.Data;
 
 /*만든사람 : 김민정
@@ -15,15 +19,18 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name="Test_board")
-public class Test {
-	
+@Table(name="Favorites")
+
+public class Favorites {
 	@Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="test_seq", initialValue=1, allocationSize=1)
-	private int _id;
-	
-	private String title;
-	private String content;
+	@SequenceGenerator(name="seq",sequenceName="Favorites_seq", initialValue=1, allocationSize=1)
 
+	private int Favorites_seq;
+	private String userid;
+	private int boardsequence;
+	@UpdateTimestamp
+	private Timestamp uploaddate;
+	
+	
 }

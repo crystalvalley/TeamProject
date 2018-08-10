@@ -15,15 +15,15 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name="Test_board")
-public class Test {
+@Table(name="EmotionExpression")
+public class EmotionExpression {
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="test_seq", initialValue=1, allocationSize=1)
-	private int _id;
-	
-	private String title;
-	private String content;
+	@SequenceGenerator(name="seq",sequenceName="EmotionExpression_seq", initialValue=1, allocationSize=1)
 
+	private int EmotionExpression_seq;
+	private String userid;
+	private String emotiontype;
+	
 }
