@@ -19,6 +19,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 /**
  * 
  * @author ParkHyeokjoon
@@ -26,6 +27,7 @@ import lombok.EqualsAndHashCode;
  * @version 18.08.10
  * 
  */
+
 @Data
 @Entity
 @Table(name = "Cards")

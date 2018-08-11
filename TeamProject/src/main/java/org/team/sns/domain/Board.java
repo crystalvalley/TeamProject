@@ -56,15 +56,19 @@ public class Board {
 	// 업데이트 시 시간으로 자동 설정
 	@UpdateTimestamp
 	private Timestamp updateDay; // 업로드 날짜
+	
 	// default는 전체공개
 	@ColumnDefault("'all'")
 	private String setAuthority; // 권한설정
+	
 	// default는 false
 	@ColumnDefault("false")
 	private boolean upload; // 업로드
+	
 	// default 0
 	@ColumnDefault("0")
 	private int hitCount; // 조회수
+	
 	// 다대일 양방향 연관관계
 	@ManyToOne(cascade = CascadeType.ALL)
 	// wrtier_id라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)

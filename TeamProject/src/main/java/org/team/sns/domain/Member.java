@@ -52,14 +52,18 @@ public class Member {
 	private Timestamp signupDate;
 	@ColumnDefault("0")
 	private int point;
-	
+
 	//일대다 양방향 연관관계
 	//OneToMany는 기본적으로 fetchType이 lazy이므로 따로 설정하지 않음
 	@OneToMany(mappedBy="writer")
 	private List<Board> boards;
 
+
 	@OneToMany(mappedBy="recipient")
 	private List<Card> received;
+	
+	@OneToMany(mappedBy="sender")
+	private List<Card> sended;
 	
 	
 }
