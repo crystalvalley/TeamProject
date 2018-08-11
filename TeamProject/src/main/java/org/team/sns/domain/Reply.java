@@ -12,28 +12,37 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
+/**
+ * 
+ * @author MinJeongKim
+ * @since 18.08.10
+ * @version 18.08.11
+ *
+ */
+
+//[ 댓글 테이블 ]
+// 댓글 테이블 컬럼부분 수정 부탁드립니다.
 
 @Data
 @Entity
-@Table(name = "Reply")
+@Table(name = "Replys")
 public class Reply {
-	//minju
 	@Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="Reply_seq", initialValue=1, allocationSize=1)	private String sequence; //참조 시퀀스
-	private int Reply_seq;
+	@SequenceGenerator(name="seq",sequenceName="Replys_seq", initialValue=1, allocationSize=1)	private String sequence; //참조 시퀀스
+	
 	@CreationTimestamp
-	private Timestamp day; // 작성날짜
+	private Timestamp day; 
 	
-	private String userid; // 작성자
+	private String userid; 
 	
-	private String sharedcontent; // 공유 내용
+	private String sharedcontent; 
 	
-	private String sound; // 소리 url
+	private String sound; 
 	
-	private String parent; // 부모여부?
+	private String parent; 
 	
-	private String depth; // 깊이
+	private String depth; 
 	
-	private String order; // 
+	private String order;
 }

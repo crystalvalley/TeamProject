@@ -8,15 +8,23 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
+/**
+ * 
+ * @author MinJeongKim
+ * @since 18.08.11
+ * @version 18.08.11
+ *
+ */
+
+//[ RoomMember 테이블 ]
 
 @Data
 @Entity
-@Table(name = "RoomMember")
+@Table(name = "RoomMembers")
 public class RoomMember {
-	//minju
-	@Id //pk
+	@Id 
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="RoomMember_seq", initialValue=1, allocationSize=1)
-	private int RoomMember_seq;
+	@SequenceGenerator(name="seq",sequenceName="RoomMembers_seq", initialValue=1, allocationSize=1)
+
 	private String userid;
 }
