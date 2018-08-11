@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -65,5 +64,13 @@ public class Member {
 	@OneToMany(mappedBy="sender")
 	private List<Card> sended;
 	
+	@OneToMany(mappedBy="Networker")
+	private List<Networking> Networked;
+	
+	@OneToMany(mappedBy="Favoriter")
+	private List<Favorites> Favorited;
+	
+	@OneToMany(mappedBy="Sharer")
+	private List<Share> Shared;
 	
 }
