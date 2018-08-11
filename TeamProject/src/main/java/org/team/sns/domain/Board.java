@@ -76,10 +76,12 @@ public class Board {
 	private int hitCount; // 조회수
 	
 	// 다대일 양방향 연관관계
-	@ManyToOne(cascade = CascadeType.ALL)
-	
+	@ManyToOne(cascade = CascadeType.ALL)	
 	// writer_id라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)
 	@JoinColumn(name = "writer_id", referencedColumnName = "user_id")
 	private Member writer; // 작성자
+	
+	@OneToMany(mappedBy="owner")
+	private List<Photo> photos;
 
 }

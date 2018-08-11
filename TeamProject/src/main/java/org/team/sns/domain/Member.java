@@ -62,13 +62,23 @@ public class Member {
 	@OneToMany(mappedBy="sender")
 	private List<Card> sended;
 	
-	@OneToMany(mappedBy="Networker")
-	private List<Networking> Networked;
-	
-	@OneToMany(mappedBy="Favoriter")
+	@OneToMany(mappedBy="adder")
 	private List<Favorites> Favorited;
 	
-	@OneToMany(mappedBy="Sharer")
-	private List<Share> Shared;
+
+	@OneToMany(mappedBy="member")
+	private List<Networking> myNetwork;
+	
+	@OneToMany(mappedBy="target")
+	private List<Networking> Networked;
+	
+	@OneToMany(mappedBy="sharer")
+	private List<Share> shared;
+		
+	@OneToMany(mappedBy="member")
+	private List<RoomMember> onRoom;
+	
+	@OneToMany(mappedBy="groupMaster")
+	private List<Group> groups;
 	
 }

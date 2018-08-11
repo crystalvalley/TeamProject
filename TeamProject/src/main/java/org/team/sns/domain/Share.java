@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import lombok.Data;
 /**
  * 
@@ -19,29 +21,32 @@ import lombok.Data;
  * @version 18.08.11
  *
  */
+import lombok.EqualsAndHashCode;
 
 /**
  * 
  * @author ChaMinju
- * @since 18.08.11
- * @version 
+ * @since 18.08.10
+ * @version 18.08.11
  * 
  */
 
 @Data
 @Entity
 @Table(name = "Shares")
+@EqualsAndHashCode(of = "_id")
 public class Share {
 	
 	@Id
 	@Column(name="Share_id")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@SequenceGenerator(name="seq",sequenceName="Share_seq", initialValue=1, allocationSize=1)
-	private int Share_seq; //참조 시퀀스
-	private String shareid; // 공유한 아이디
+	private int _id; //참조 시퀀스
+	
+	@ColumnDefault("'all'")
 	private String sharedcontent; // 공유대상
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "shareid", referencedColumnName = "shareid")
-	private Member Sharer;
+	@JoinColumn(name = "sharer", referencedColumnName = "user_id")
+	private Member sharer; //공유한 사람
 }

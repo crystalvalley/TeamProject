@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 /**
  * 
  * @author ChaMinju
@@ -22,6 +23,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name="SoundPhoto")
+@EqualsAndHashCode(of = "_id")
 public class Sound {
 	@Id
 	@Column(name="Sound_id")
