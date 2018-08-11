@@ -25,6 +25,8 @@ import lombok.Data;
  * 
  */
 
+//[ 즐겨찾기 테이블 ]
+
 @Entity
 @Data
 @Table(name="Favorites")

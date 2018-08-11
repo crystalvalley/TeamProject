@@ -26,6 +26,7 @@ import lombok.EqualsAndHashCode;
  * @version 18.08.10
  * 
  */
+// [ 회원 테이블 ]
 
 @Entity
 @Data
@@ -33,10 +34,7 @@ import lombok.EqualsAndHashCode;
 //_id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "_id")
 public class Member {
-	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="Members_seq", initialValue=1, allocationSize=1)
 	@Column(name="user_id")
 	private String _id;
 	

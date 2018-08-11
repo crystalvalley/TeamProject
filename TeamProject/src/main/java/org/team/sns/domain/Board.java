@@ -31,9 +31,11 @@ import lombok.EqualsAndHashCode;
  *
  */
 
+//[ 게시판 테이블 ]
+
 @Data
 @Entity
-@Table(name = "boards")
+@Table(name = "Boards")
 // _id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "_id")
 public class Board {
@@ -44,17 +46,19 @@ public class Board {
 	// hibernate가 자동으로 값을 생성함, sequence를 통해서 생성하게 만들고 생성자는 seq로 함
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
 	// sequence생성
-	@SequenceGenerator(name = "seq", sequenceName = "Board_seq", initialValue = 1, allocationSize = 1)
+	@SequenceGenerator(name = "seq", sequenceName = "Boards_seq", initialValue = 1, allocationSize = 1)
+
 	private int _id;
 
 	@NotNull
 	private String content; // 글의 내용
-
 	private String sound; // 글의 사운드 url
 	private String image; // 글의 이미지 url
+	
 	// 생성시 시간으로 자동 설정
 	@CreationTimestamp
 	private Timestamp writeDay; // 작성날짜
+	
 	// 업데이트 시 시간으로 자동 설정
 	@UpdateTimestamp
 	private Timestamp updateDay; // 업로드 날짜
@@ -73,14 +77,9 @@ public class Board {
 	
 	// 다대일 양방향 연관관계
 	@ManyToOne(cascade = CascadeType.ALL)
-	// wrtier_id라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)
+	
+	// writer_id라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)
 	@JoinColumn(name = "writer_id", referencedColumnName = "user_id")
 	private Member writer; // 작성자
-	
-	
-	@OneToMany(mappedBy="Photoer")
-	private List<Share> Photoed;
-	
-	@OneToMany(mappedBy="Sounder")
-	private List<Share> Sounded;
+
 }

@@ -12,6 +12,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
+/**
+ * 
+ * @author MinJeongKim
+ * @since 18.08.10
+ * @version 18.08.11
+ *
+ */
 
 /**
  * 
@@ -23,7 +30,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Share")
+@Table(name = "Shares")
 public class Share {
 	
 	@Id

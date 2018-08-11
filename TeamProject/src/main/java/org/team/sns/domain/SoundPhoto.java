@@ -11,20 +11,23 @@ import lombok.Data;
 /**
  * 
  * @author MinJeongKim
- * @since 18.08.11
+ * @since 18.08.10
  * @version 18.08.11
  *
  */
 
-//[ RoomMember 테이블 ]
+//[ 음성사진 테이블 ]
 
-@Data
 @Entity
-@Table(name = "RoomMembers")
-public class RoomMember {
-	@Id 
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="RoomMembers_seq", initialValue=1, allocationSize=1)
+@Data
+@Table(name="SoundPhotos")
+public class SoundPhoto {
 
-	private String userid;
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
+	@SequenceGenerator(name="seq",sequenceName="SoundPhotos_seq", initialValue=1, allocationSize=1)
+
+	private String url;
+	private String type;
+
 }
