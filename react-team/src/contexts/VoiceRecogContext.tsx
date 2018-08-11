@@ -1,5 +1,10 @@
 import * as  React from 'react';
 
+/**
+ * @author : ParkHyeokjoon
+ * @since : 18.08.11
+ * @version : 18.08.11
+ */
 
 interface IMainStore {
     // 입력된 명령
