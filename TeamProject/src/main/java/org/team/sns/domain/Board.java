@@ -1,6 +1,7 @@
 package org.team.sns.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -74,4 +76,11 @@ public class Board {
 	// wrtier_id라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)
 	@JoinColumn(name = "writer_id", referencedColumnName = "user_id")
 	private Member writer; // 작성자
+	
+	
+	@OneToMany(mappedBy="Photoer")
+	private List<Share> Photoed;
+	
+	@OneToMany(mappedBy="Sounder")
+	private List<Share> Sounded;
 }

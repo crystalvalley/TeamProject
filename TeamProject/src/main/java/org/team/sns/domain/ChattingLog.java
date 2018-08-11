@@ -13,6 +13,9 @@ import lombok.Data;
 @Data
 @Table(name="ChattingLog")
 public class ChattingLog {
+@Table(name="Test_board")
+public class Test {
+	//minju
 	@Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@SequenceGenerator(name="seq",sequenceName="ChattingLog_seq", initialValue=1, allocationSize=1)	
@@ -22,4 +25,5 @@ public class ChattingLog {
 	private String otherId;
 	
 	
+}
 }

@@ -11,15 +11,14 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Room")
-public class Room {
-	//minju
+@Table(name = "Group")
+public class Group {
+//minju
 	@Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="Room_seq", initialValue=1, allocationSize=1)
-	private int sequence; // 참조 시퀀스
-	private int Room_seq; // 참조 시퀀스
-	//private Stashed changes;
-	private String content; // 채팅 내용 
-	
+	@SequenceGenerator(name="seq",sequenceName="Group_seq", initialValue=1, allocationSize=1)
+	private String Group_seq; //참조 시퀀스 
+	private String groupname; // 그룹이름 
+	private String groupmasterid; //그룹장
+	private String category; // 카테고리 
 }

@@ -59,4 +59,5 @@ public class Card {
 	// recipient_id 라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)
 	@JoinColumn(name = "recipient_id", referencedColumnName = "user_id")
 	private Member recipient; // 수신인
+
 }
