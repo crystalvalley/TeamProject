@@ -6,7 +6,7 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     leftContainer: {
         backgroundColor: "green",
         flexBasis: "15%",
-        height: "100%",
+        backgroundSize:"100%",
         display: "flex",
         flexDirection: "column"
     },

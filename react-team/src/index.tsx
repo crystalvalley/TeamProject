@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { MainProvider } from './contexts/VoiceRecogContext';
+import App from './App';
 
 /**
  * @author : ParkHyeokjoon
@@ -12,7 +12,7 @@ import { MainProvider } from './contexts/VoiceRecogContext';
 
 ReactDOM.render(
   <MainProvider>
-    <App />
+    <App/>
   </MainProvider>,
   document.getElementById('root') as HTMLElement
 );
