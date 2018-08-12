@@ -3,13 +3,11 @@ package org.team.sns.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -18,6 +16,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * 
@@ -30,14 +29,17 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-@Table(name="Members")
+@Table(name = "Members")
 //_id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "_id")
+@ToString(exclude = {
+		"boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom","groups" 
+})
 public class Member {
 	@Id
-	@Column(name="user_id")
+	@Column(name = "user_id")
 	private String _id;
-	
+
 	@NotNull
 	private String password;
 	@NotNull
@@ -50,35 +52,33 @@ public class Member {
 	@ColumnDefault("0")
 	private int point;
 
-	//일대다 양방향 연관관계
-	//OneToMany는 기본적으로 fetchType이 lazy이므로 따로 설정하지 않음
-	@OneToMany(mappedBy="writer")
+	// 일대다 양방향 연관관계
+	// OneToMany는 기본적으로 fetchType이 lazy이므로 따로 설정하지 않음
+	@OneToMany(mappedBy = "writer",cascade=CascadeType.ALL)
 	private List<Board> boards;
 
-
-	@OneToMany(mappedBy="recipient")
+	@OneToMany(mappedBy = "recipient")
 	private List<Card> received;
-	
-	@OneToMany(mappedBy="sender")
-	private List<Card> sended;
-	
-	@OneToMany(mappedBy="adder")
-	private List<Favorites> Favorited;
-	
 
-	@OneToMany(mappedBy="member")
+	@OneToMany(mappedBy = "sender")
+	private List<Card> sended;
+
+	@OneToMany(mappedBy = "adder")
+	private List<Favorites> favorited;
+
+	@OneToMany(mappedBy = "member")
 	private List<Networking> myNetwork;
-	
-	@OneToMany(mappedBy="target")
-	private List<Networking> Networked;
-	
-	@OneToMany(mappedBy="sharer")
+
+	@OneToMany(mappedBy = "target")
+	private List<Networking> networked;
+
+	@OneToMany(mappedBy = "sharer")
 	private List<Share> shared;
-		
-	@OneToMany(mappedBy="member")
+
+	@OneToMany(mappedBy = "member")
 	private List<RoomMember> onRoom;
-	
-	@OneToMany(mappedBy="groupMaster")
+
+	@OneToMany(mappedBy = "groupMaster")
 	private List<Group> groups;
-	
+
 }

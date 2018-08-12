@@ -3,7 +3,6 @@ package org.team.sns.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +21,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * 
@@ -38,6 +38,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "Boards")
 // _id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "_id")
+@ToString(exclude= {"photos","writer"})
 public class Board {
 	// primary key
 	@Id
@@ -47,9 +48,10 @@ public class Board {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
 	// sequence생성
 	@SequenceGenerator(name = "seq", sequenceName = "Boards_seq", initialValue = 1, allocationSize = 1)
-
 	private int _id;
 
+	@NotNull
+	private String title; //글의 제목
 	@NotNull
 	private String content; // 글의 내용
 	private String sound; // 글의 사운드 url
@@ -76,9 +78,9 @@ public class Board {
 	private int hitCount; // 조회수
 	
 	// 다대일 양방향 연관관계
-	@ManyToOne(cascade = CascadeType.ALL)	
+	@ManyToOne	
 	// writer_id라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)
-	@JoinColumn(name = "writer_id", referencedColumnName = "user_id")
+	@JoinColumn(name = "writer_id", referencedColumnName = "user_id",updatable=false,nullable=false)
 	private Member writer; // 작성자
 	
 	@OneToMany(mappedBy="owner")

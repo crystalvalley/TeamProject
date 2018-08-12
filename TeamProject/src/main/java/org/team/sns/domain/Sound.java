@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
  */
 @Entity
 @Data
-@Table(name="SoundPhoto")
+@Table(name="Sound")
 @EqualsAndHashCode(of = "_id")
 public class Sound {
 	@Id
@@ -30,7 +30,6 @@ public class Sound {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@SequenceGenerator(name="seq",sequenceName="SoundPhoto_seq", initialValue=1, allocationSize=1)
 	private int _id;
-	private String board_id;
 	private String url;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -40,7 +39,7 @@ public class Sound {
 	 * 리플 푸쉬 받고 양방향 넣을깨요
 	 * */
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "board_id", referencedColumnName = "board_id")
+	@JoinColumn(name = "reply_id", referencedColumnName = "Reply_id")
 	private Reply Soundr;
 	
 }
