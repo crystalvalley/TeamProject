@@ -53,4 +53,6 @@ public class Reply {
 	private String depth; 
 	
 	private String orderPosition;
+	
+	private String board_id;
 }

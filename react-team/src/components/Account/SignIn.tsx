@@ -8,10 +8,13 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     formBox: {
         position: "absolute",
         width: "420px",
-        left: "50%",
-        marginLeft: "-210px",
+        height:"460px",
+        margin:"auto",
+        top:0,
+        left:0,
+        bottom:0,
+        right:0,
         zIndex: 99,
-        marginTop: "5%",
         background: "transparent",
         borderRadius: ".25em .25em .4em .4em",
         textAlign: "center",
@@ -62,8 +65,8 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         right:0,
         width: 0,
         height: 0,
-        borderTop: "500px solid #3F51B5",
-        borderLeft: "500px solid transparent"
+        borderTop: "50vh solid #3F51B5",
+        borderLeft: "50vw solid transparent"
     },
     rightTopInner: {
         position:"absolute",
@@ -72,8 +75,8 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         width: 0,
         height: 0,
         opacity:0.5,
-        borderTop: "750px solid #3F51B5",
-        borderLeft: "750px solid transparent"
+        borderTop: "75vh solid #3F51B5",
+        borderLeft: "55vw solid transparent"
     },
     leftBottom: {
         position:"absolute",
@@ -81,8 +84,8 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         bottom:0,
         width: 0,
         height: 0,
-        borderBottom: "500px solid #3F51B5",
-        borderRight: "500px solid transparent"
+        borderBottom: "50vh solid #3F51B5",
+        borderRight: "50vw solid transparent"
     },
     leftBottomInner: {
         position:"absolute",
@@ -91,8 +94,8 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         width: 0,
         height: 0,
         opacity:0.5,
-        borderBottom: "750px solid #3F51B5",
-        borderRight: "750px solid transparent"
+        borderBottom: "75vh solid #3F51B5",
+        borderRight: "55vw solid transparent"
     }
 })
 
@@ -112,6 +115,7 @@ interface IProps {
         rightTopInner:string;
     }
 }
+
 
 class SignIn extends React.Component<IProps> {
     public render() {
@@ -133,15 +137,19 @@ class SignIn extends React.Component<IProps> {
                         </Typography>
                     </div>
                     <form
+                        action="http://localhost:8081/login"
+                        method="get"
                         className={classes.form}
                     >
                         <TextField
+                            name="userid"
                             className={classes.textField}
                             fullWidth={true}
                             label="Username"
                         />
                         <br />
                         <TextField
+                            name="password"
                             className={classes.textField}
                             fullWidth={true}
                             type="Password"
@@ -149,6 +157,7 @@ class SignIn extends React.Component<IProps> {
                         />
                         <br />
                         <Button
+                            type="submit"
                             classes={{
                                 root: classes.btnRoot,
                             }}

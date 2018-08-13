@@ -49,7 +49,8 @@ public class Board {
 	// sequence생성
 	@SequenceGenerator(name = "seq", sequenceName = "Boards_seq", initialValue = 1, allocationSize = 1)
 	private int _id;
-
+	
+	
 	@NotNull
 	private String title; //글의 제목
 	@NotNull

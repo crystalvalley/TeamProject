@@ -8,5 +8,5 @@ package org.team.sns.persistence;
  *
  */
 public interface MemberRepositoryCustom {
-	
+	public String getNickname(String _id);
 }
