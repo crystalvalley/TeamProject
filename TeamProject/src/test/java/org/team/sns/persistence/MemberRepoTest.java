@@ -1,16 +1,10 @@
 package org.team.sns.persistence;
 
-import java.util.List;
-
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.team.sns.domain.Board;
-import org.team.sns.persistence.BoardRepository;
-import org.team.sns.persistence.MemberRepository;
 /**
  * 
  * @author ParkHyeokjoon
@@ -59,11 +53,11 @@ public class MemberRepoTest {
 		System.out.println(member.getBoards()+"??");
 	}
 	*/
-	
+	/*
 	@Test
 	public void testDeleteMember() {
 		List<Board> test = boardRepo.getBoardsByUserId("testid1");
 		System.out.println("잘되냐");
 		System.out.println(test);
-	}
+	}*/
 }

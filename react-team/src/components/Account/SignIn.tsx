@@ -56,8 +56,6 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         borderRadius: "2px",
         boxShadow: "0 1px 4px rgba(0, 0, 0, .6)",
         backgroundColor: "#03a9f4",
-        color: "#ecf0f1",
-        transition: "background-color .3s"
     },
     rightTop: {
         position:"absolute",
@@ -96,7 +94,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         opacity:0.5,
         borderBottom: "75vh solid #3F51B5",
         borderRight: "55vw solid transparent"
-    }
+    },
 })
 
 interface IProps {
@@ -158,9 +156,6 @@ class SignIn extends React.Component<IProps> {
                         <br />
                         <Button
                             type="submit"
-                            classes={{
-                                root: classes.btnRoot,
-                            }}
                             variant="contained"
                         >
                             Subscribe
