@@ -3,6 +3,7 @@ import { Theme, StyleRulesCallback, withStyles, AppBar, Toolbar, IconButton, Typ
 import MenuIcon from '@material-ui/icons/Menu';
 import classNames from 'classnames';
 import SideMenu from './LeftContainer/SideMenu';
+// import MainContainer from './MainContainer/MainContainer';
 
 
 const drawerWidth = 240;
@@ -10,7 +11,7 @@ const drawerWidth = 240;
 const styles: StyleRulesCallback = (theme: Theme) => ({
   root: {
     flexGrow: 1,
-    height: 430,
+    height: "100%",
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',
@@ -111,7 +112,6 @@ class AppMain extends React.Component<IProps, IState> {
         />
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Typography noWrap={true}>내용</Typography>
         </main>
       </div>
     );
