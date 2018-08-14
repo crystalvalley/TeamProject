@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  * 
  * @author MinJeongKim
  * @since 18.08.10
- * @version 18.08.11
+ * @version 18.08.14
  *
  */
 
