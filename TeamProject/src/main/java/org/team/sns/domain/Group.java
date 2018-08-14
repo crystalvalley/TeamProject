@@ -1,11 +1,14 @@
 package org.team.sns.domain;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -37,4 +40,9 @@ public class Group {
 
 	@NotNull
 	private String category; // 카테고리
+	
+	@OneToMany(mappedBy = "Groupmember")
+	private List<GroupMember> groupmembers;
+	
+	
 }

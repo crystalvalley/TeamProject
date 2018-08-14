@@ -32,7 +32,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @Table(name="Favorites")
-@EqualsAndHashCode(of = "_id")
+@EqualsAndHashCode(of = "id")
 public class Favorites {
 	@Id
 	@Column(name = "Favorites_id")
