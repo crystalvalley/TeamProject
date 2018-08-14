@@ -15,15 +15,15 @@ export const mainTheme = createMuiTheme({
         },
         primary: {
             light: '#fffff7',
-            main: '#fff9c4',
-            dark: '#cbc693',
-            contrastText: '#ffffff',
+            main: '#ffff99',
+            dark: '#ffffff',
+            contrastText: '#0000ff',
         },
     },
     overrides:{
         MuiTypography:{
             title :{
-                color:"red"
+                color:"#343434"
             },
             button:{
                 color:"blue"

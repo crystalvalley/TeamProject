@@ -32,8 +32,8 @@ interface IState {
     password: string;
     passwordCheck: string;
     username: string;
-    emailFirst:string;
-    emailSecond:string;
+    emailFirst: string;
+    emailSecond: string;
     passwordValid: boolean;
     idValid: boolean;
 }
@@ -47,9 +47,9 @@ class SignUp extends React.Component<IProps, IState> {
             passwordCheck: "",
             passwordValid: false,
             idValid: false,
-            username:"",
-            emailFirst:"",
-            emailSecond:""
+            username: "",
+            emailFirst: "",
+            emailSecond: ""
         }
         this.onChange = this.onChange.bind(this);
     }
@@ -83,8 +83,8 @@ class SignUp extends React.Component<IProps, IState> {
     }
     public render() {
         const { classes } = this.props;
-        const { 
-            idValid, passwordValid, user_id, passwordCheck, password, username ,emailFirst,emailSecond
+        const {
+            idValid, passwordValid, user_id, passwordCheck, password, username, emailFirst, emailSecond
         } = this.state
         return (
             <div className={classes.backGround}>
@@ -109,7 +109,7 @@ class SignUp extends React.Component<IProps, IState> {
                     <form
                         className={classes.form}
                         action="http://localhost:8081/signup"
-                        method="get"
+                        method="post"
                     >
                         <TextField
                             onChange={this.onChange}
@@ -164,9 +164,11 @@ class SignUp extends React.Component<IProps, IState> {
                             className={classes.textField}
                             name="username"
                             label={
-                                username.length > 2 && username.length < 15 ?
-                                    "이름은 3글자 이상 14글자 이하여야 합니다." :
-                                    "username"
+                                username === "" ?
+                                    "username" :
+                                    username.length > 2 && username.length < 15 ?
+                                        "username" :
+                                        "이름은 3글자 이상 14글자 이하여야 합니다."
                             }
                         />
                         <br />
@@ -176,14 +178,14 @@ class SignUp extends React.Component<IProps, IState> {
                             name="emailFirst"
                             label="email"
                         />
-                        <span style={{color:"black"}}>@</span>
+                        <span style={{ color: "black" }}>@</span>
                         <TextField
                             onChange={this.onChange}
                             className={classes.textField}
                             name="emailSecond"
                             label="address"
                         />
-                        <input type="hidden" name="email" value={emailFirst+"@"+emailSecond}/>
+                        <input type="hidden" name="email" value={emailFirst + "@" + emailSecond} />
                         <br />
                         <Button
                             disabled={!this.submitValidation()}
@@ -205,14 +207,14 @@ class SignUp extends React.Component<IProps, IState> {
             </div>
         );
     }
-    private submitValidation():boolean{
-        const { 
+    private submitValidation(): boolean {
+        const {
             idValid, passwordValid, username
         } = this.state
         // email validation 추가필요
-        if(username.length > 2 && username.length < 15 ){
+        if (username.length > 2 && username.length < 15) {
             return idValid && passwordValid;
-        }else{
+        } else {
             return false;
         }
     }
@@ -223,8 +225,8 @@ class SignUp extends React.Component<IProps, IState> {
             password: name === "password" ? e.currentTarget.value : this.state.password,
             passwordCheck: name === "passwordCheck" ? e.currentTarget.value : this.state.passwordCheck,
             username: name === "username" ? e.currentTarget.value : this.state.username,
-            emailFirst:name==="emailFirst"? e.currentTarget.value : this.state.emailFirst,
-            emailSecond:name==="emailSecond"? e.currentTarget.value : this.state.emailSecond,
+            emailFirst: name === "emailFirst" ? e.currentTarget.value : this.state.emailFirst,
+            emailSecond: name === "emailSecond" ? e.currentTarget.value : this.state.emailSecond,
         })
     }
 }

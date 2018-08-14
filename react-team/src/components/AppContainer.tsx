@@ -1,134 +1,212 @@
 import * as React from 'react';
-import { StyleRulesCallback, Theme, withStyles, AppBar, Toolbar, TextField, InputAdornment, List, Divider, Drawer, Typography, ListItem, IconButton, } from '@material-ui/core';
-import Search from '@material-ui/icons/Search';
+import { Theme, StyleRulesCallback, withStyles, AppBar, Toolbar, IconButton, Typography, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import classNames from 'classnames';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import StarIcon from '@material-ui/icons/Star';
+import SendIcon from '@material-ui/icons/Send';
+import MailIcon from '@material-ui/icons/Mail';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ReportIcon from '@material-ui/icons/Report';
 
-import Done from '@material-ui/icons/Done';
-
-/**
- * @author : ParkHyeokjoon
- * @since : 18.08.11
- * @version : 18.08.11
- */
 
 const drawerWidth = 240;
+
 const styles: StyleRulesCallback = (theme: Theme) => ({
-  appMain: {
-    marginLeft: drawerWidth,
-    display: "flex",
-    height: "100%",
+  root: {
+    flexGrow: 1,
+    height: 430,
+    zIndex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    display: 'flex',
   },
-  Division1: {
-    flexBasis: "85%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column"
-  },
-  Division2: {
-    flexBasis: "90%",
-    display: "flex"
-  },
-  topSpacing: theme.mixins.toolbar,
   appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth + "px"
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
-  drawer: {
-    width: drawerWidth + "px"
+  menuButton: {
+    marginLeft: 12,
+    marginRight: 36,
   },
-  subBar: {
-    width: "100vw",
-    border: "1px solid black",
-    margin: "5vh"
-  }
-})
+  hide: {
+    display: 'none',
+  },
+  drawerPaper: {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing.unit * 7,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing.unit * 9,
+    },
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+  },
+});
 
 interface IProps {
   classes: {
-    appMain: string;
-    Division1: string;
-    Division2: string;
-    topSpacing: string;
-    appBar: string;
-    drawer: string;
-    subBar: string;
+    root: string,
+    appBar: string,
+    appBarShift: string,
+    hide: string,
+    menuButton: string,
+    drawerPaper: string,
+    drawerPaperClose: string,
+    toolbar: string,
+    content: string
   }
+  theme: Theme
 }
 
-class AppMain extends React.Component<IProps> {
+interface IState {
+  open: boolean;
+}
+
+class AppMain extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    this.state = {
+      open: false,
+    };
+    this.handleDrawerClose = this.handleDrawerClose.bind(this);
+    this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
   }
+
+
   public render() {
-    const { classes } = this.props;
+    const { classes, theme } = this.props;
+
     return (
-      <div>
+      <div className={classes.root}>
         <AppBar
           position="absolute"
-          className={classes.appBar}
+          className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
         >
-          <Toolbar>
+          <Toolbar disableGutters={!this.state.open}>
+            <IconButton              
+              aria-label="Open drawer"
+              onClick={this.handleDrawerOpen}
+              className={classNames(classes.menuButton, this.state.open && classes.hide)}
+            >
+              <MenuIcon />
+            </IconButton>
             <Typography variant="title" noWrap={true}>
-              Permanent drawer
+              SNS MAIN
             </Typography>
-            <div style={{ width: "60vw" }} />
-            <TextField
-              label="search keyword"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Search />
-                  </InputAdornment>
-                ),
-              }}
-            />
           </Toolbar>
         </AppBar>
         <Drawer
-
-          classes={{
-            paper: classes.drawer
-          }}
           variant="permanent"
-          anchor="left"
+          classes={{
+            paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+          }}
+          open={this.state.open}
         >
-          <div className={classes.topSpacing} />
+          <div className={classes.toolbar}>
+            <IconButton onClick={this.handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </div>
           <Divider />
           <List>
             <ListItem button={true}>
-              <Typography variant="button">Item1</Typography>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Inbox" />
             </ListItem>
             <ListItem button={true}>
-              <Typography variant="button">Item2</Typography>
+              <ListItemIcon>
+                <StarIcon />
+              </ListItemIcon>
+              <ListItemText primary="Starred" />
             </ListItem>
             <ListItem button={true}>
-              <Typography variant="button">Item3</Typography>
+              <ListItemIcon>
+                <SendIcon />
+              </ListItemIcon>
+              <ListItemText primary="Send mail" />
+            </ListItem>
+            <ListItem button={true}>
+              <ListItemIcon>
+                <DraftsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Drafts" />
             </ListItem>
           </List>
           <Divider />
-          <List>Test Menu Item 2</List>
+          <List>
+            <ListItem button={true}>
+              <ListItemIcon>
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText primary="All mail" />
+            </ListItem>
+            <ListItem button={true}>
+              <ListItemIcon>
+                <DeleteIcon />
+              </ListItemIcon>
+              <ListItemText primary="Trash" />
+            </ListItem>
+            <ListItem button={true}>
+              <ListItemIcon>
+                <ReportIcon />
+              </ListItemIcon>
+              <ListItemText primary="Spam" />
+            </ListItem>
+          </List>
         </Drawer>
-        <div className={classes.topSpacing} />
-        <div className={classes.appMain}>
-          <Toolbar
-            className={classes.subBar}
-          >
-            <IconButton>
-              <Done />
-            </IconButton>
-            <IconButton>
-              <Done />
-            </IconButton>
-            <IconButton>
-              <Done />
-            </IconButton>
-            <IconButton>
-              <Done />
-            </IconButton>
-          </Toolbar>
-        </div>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Typography noWrap={true}>내용</Typography>
+        </main>
       </div>
     );
   }
+  private handleDrawerOpen() {
+    this.setState({ open: true });
+  };
+
+  private handleDrawerClose() {
+    this.setState({ open: false });
+  };
 }
 
-export default withStyles(styles)(AppMain);
+export default withStyles(styles, { withTheme: true })(AppMain);
