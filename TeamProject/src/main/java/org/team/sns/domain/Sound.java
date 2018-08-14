@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
  * 
  * @author ChaMinju
  * @since 18.08.11
- * @version 
+ * @version 18.08.14
  * 
  */
 @Entity
@@ -29,17 +29,20 @@ public class Sound {
 	@Column(name="Sound_id")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@SequenceGenerator(name="seq",sequenceName="SoundPhoto_seq", initialValue=1, allocationSize=1)
-	private int _id;
+	private int id;
 	private String url;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "board_id", referencedColumnName = "board_id")
+	@JoinColumn(name = "BoardSound", referencedColumnName = "board_id")
 	private Board Sounder;
 	/*
 	 * 리플 푸쉬 받고 양방향 넣을깨요
 	 * */
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "reply_id", referencedColumnName = "Reply_id")
+	@JoinColumn(name = "replySound", referencedColumnName = "Reply_id")
 	private Reply Soundr;
 	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "CardSound", referencedColumnName = "sender_id")
+	private Card Sounded;
 }
