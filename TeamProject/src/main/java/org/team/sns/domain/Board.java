@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -84,7 +85,7 @@ public class Board {
 	@JoinColumn(name = "writer_id", referencedColumnName = "user_id",updatable=false,nullable=false)
 	private Member writer; // 작성자
 	
-	@OneToMany(mappedBy="owner")
+	@OneToOne(mappedBy="owner")
 	private List<Photo> photos;
 
 }

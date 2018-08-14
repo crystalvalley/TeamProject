@@ -10,11 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,33 +19,29 @@ import lombok.EqualsAndHashCode;
 /**
  * 
  * @author ChaMinju
- * @since 18.08.10
+ * @since 18.08.14
  * @version 18.08.14
  * 
  */
 
-//[ 즐겨찾기 테이블 ]
-
 @Entity
 @Data
-@Table(name="Favorites")
-@EqualsAndHashCode(of = "_id")
-public class Favorites {
+@Table(name = "GroupMember")
+
+@EqualsAndHashCode(of = "id")
+public class GroupMember {
+
 	@Id
-	@Column(name = "Favorites_id")
+	@Column(name="GroupMember_id")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="Favorites_seq", initialValue=1, allocationSize=1)
+	@SequenceGenerator(name="seq",sequenceName="GroupMember_seq", initialValue=1, allocationSize=1)
 	private int id;
 	
-	@UpdateTimestamp
-	private Timestamp uploaddate;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "GroupMember", referencedColumnName = "user_id")
+	private Member member;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "adder_id", referencedColumnName = "user_id")
-	private Member adder;
-	
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="added_board", referencedColumnName="board_id")
-	private Board board;
-	
+	@JoinColumn(name = "GroupMembers", referencedColumnName = "groupName")
+	private Group Groupmember;
 }
