@@ -82,6 +82,6 @@ public class Member {
 	private List<Group> groups;
 	
 	@OneToMany(mappedBy="targetMember")
-	private Share share;
+	private List<Share> share;
 
 }

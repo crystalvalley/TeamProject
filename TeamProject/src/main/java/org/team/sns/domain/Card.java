@@ -50,10 +50,9 @@ public class Card {
 	
 	@NotNull
 	private String content; // 내용
-	private String sound; // 사운드 url
 	
-	@OneToMany(mappedBy="owners")
-	private Photo photo; // 이미지 url
+	@OneToMany(mappedBy="ownerCard")
+	private List<Photo> photo; // 이미지 url
 	
 	// 다대일 양방향 연관관계
 	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)	
@@ -67,7 +66,7 @@ public class Card {
 	@JoinColumn(name = "recipient_id", referencedColumnName = "user_id")
 	private Member recipient; // 수신인
 
-	@OneToOne(mappedBy="SoundCard")
-	private List<Sound> Sounds;
+	@OneToOne(mappedBy="soundCard")
+	private Sound sound;
 
 }

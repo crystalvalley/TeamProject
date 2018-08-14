@@ -85,13 +85,16 @@ public class Board {
 	@JoinColumn(name = "writer_id", referencedColumnName = "user_id",updatable=false,nullable=false)
 	private Member writer; // 작성자
 
-	@OneToMany(mappedBy="owner")
+	@OneToMany(mappedBy="ownerBoard")
 	private List<Photo> photos;
 
-	@OneToOne(mappedBy="SoundBoard")
-	private List<Sound> sounds;
+	@OneToOne(mappedBy="soundBoard")
+	private Sound sounds;
 	
 	@OneToMany(mappedBy="board")
 	private List<Reply> replys;
+	
+	@OneToMany(mappedBy="shared")
+	private List<Share> share;
 
 }

@@ -37,12 +37,12 @@ public class Photo {
 	@NotNull
 	private String url;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "owner", referencedColumnName = "board_id")
-	private Board owner;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ownerBoard", referencedColumnName = "board_id")
+	private Board ownerBoard;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "owners", referencedColumnName = "Card_id")
-	private Card owners;
+	@JoinColumn(name = "ownerCard", referencedColumnName = "Card_id")
+	private Card ownerCard;
 	
 }

@@ -39,7 +39,7 @@ public class EmotionExpression {
 	private int id;	
 	
 	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
-	@JoinColumn(name="expresser",referencedColumnName="board_id")
+	@JoinColumn(name="expresser",referencedColumnName="user_id")
 	private Member writer;
 	
 	private String emotiontype;
