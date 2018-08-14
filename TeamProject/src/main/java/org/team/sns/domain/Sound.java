@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @Table(name="Sound")
-@EqualsAndHashCode(of = "_id")
+@EqualsAndHashCode(of = "id")
 public class Sound {
 	@Id
 	@Column(name="Sound_id")
@@ -32,17 +32,15 @@ public class Sound {
 	private int id;
 	private String url;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "BoardSound", referencedColumnName = "board_id")
-	private Board Sounder;
-	/*
-	 * 리플 푸쉬 받고 양방향 넣을깨요
-	 * */
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "replySound", referencedColumnName = "Reply_id")
-	private Reply Soundr;
+	private Board soundBoard;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "replySound", referencedColumnName = "Reply_id")
+	private Reply soundReply;
+	
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "CardSound", referencedColumnName = "sender_id")
-	private Card Sounded;
+	private Card soundCard;
 }

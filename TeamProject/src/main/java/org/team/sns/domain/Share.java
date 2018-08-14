@@ -44,7 +44,7 @@ public class Share {
 	private int id; //참조 시퀀스
 	
 	@ColumnDefault("'all'")
-	private String sharedMember; // 공유대상
+	private String type;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "shared", referencedColumnName = "board_id")
@@ -56,6 +56,7 @@ public class Share {
 	private Member sharer;  // 공유한사람 
 	
 	@ManyToOne(cascade = CascadeType.ALL)
+	//단일타겟으로 공유한 경우
 	@JoinColumn(name = "targetMember", referencedColumnName = "user_id")
 	private Member targetMember; // 공유 받은사람
 	

@@ -28,7 +28,7 @@ import lombok.ToString;
  * 
  * @author ParkHyeokjoon
  * @since 18.08.10
- * @version 18.08.10
+ * @version 18.08.14
  *
  */
 
@@ -84,8 +84,14 @@ public class Board {
 	// writer_id라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)
 	@JoinColumn(name = "writer_id", referencedColumnName = "user_id",updatable=false,nullable=false)
 	private Member writer; // 작성자
-	
-	@OneToOne(mappedBy="owner")
+
+	@OneToMany(mappedBy="owner")
 	private List<Photo> photos;
+
+	@OneToOne(mappedBy="SoundBoard")
+	private List<Sound> sounds;
+	
+	@OneToMany(mappedBy="board")
+	private List<Reply> replys;
 
 }

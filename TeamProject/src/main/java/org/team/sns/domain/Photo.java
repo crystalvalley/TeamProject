@@ -41,7 +41,7 @@ public class Photo {
 	@JoinColumn(name = "owner", referencedColumnName = "board_id")
 	private Board owner;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "owners", referencedColumnName = "Card_id")
 	private Card owners;
 	

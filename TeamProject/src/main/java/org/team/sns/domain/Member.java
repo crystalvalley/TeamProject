@@ -80,5 +80,8 @@ public class Member {
 
 	@OneToMany(mappedBy = "groupMaster")
 	private List<Group> groups;
+	
+	@OneToMany(mappedBy="targetMember")
+	private Share share;
 
 }
