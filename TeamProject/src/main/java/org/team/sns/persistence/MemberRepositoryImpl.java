@@ -29,9 +29,9 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport implements M
 		// from members
 		JPQLQuery<Member> query = from(member);
 		// select nickname from members
-		query.select(member.nickname);
+		query.select(member);
 		// select nickname from members where user_id = #{_id}
-		query.where(member._id.eq(_id));
+		query.where(member.id.eq(_id));
 		// 쿼리 실행
 		List<Member> result = query.fetch();		
 		return (String)result.toArray()[0];

@@ -22,7 +22,7 @@ import lombok.ToString;
  * 
  * @author ParkHyeokjoon
  * @since 18.08.10
- * @version 18.08.10
+ * @version 18.08.14
  * 
  */
 // [ 회원 테이블 ]
@@ -31,24 +31,24 @@ import lombok.ToString;
 @Data
 @Table(name = "Members")
 //_id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
-@EqualsAndHashCode(of = "_id")
+@EqualsAndHashCode(of = "id")
 @ToString(exclude = {
 		"boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom","groups" 
 })
 public class Member {
 	@Id
 	@Column(name = "user_id")
-	private String _id;
-
+	private String id;
+	@NotNull
+	private String email;	
 	@NotNull
 	private String password;
 	@NotNull
-	private String userName;
-	@NotNull
-	private String nickname;
-	private int phone;
+	private String username;	
+	
 	@CreationTimestamp
 	private Timestamp signupDate;
+	
 	@ColumnDefault("0")
 	private int point;
 

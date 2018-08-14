@@ -15,6 +15,6 @@ import org.team.sns.domain.Member;
  *
  */
 public interface MemberRepository extends CrudRepository<Member, String>,MemberRepositoryCustom{
-	@Query(value="select m.boards from Member m where m._id = :id")
+	@Query(value="select m.boards from Member m where m.id = :id")
 	public List<Board> findBoards(@Param("id")String _id);
 }

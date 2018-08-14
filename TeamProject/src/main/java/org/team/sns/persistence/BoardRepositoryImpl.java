@@ -38,7 +38,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		// 조건 : 작성자 id와 같음
 		// 원소 하나 짜리 list안에 포함되어있냐랑 같음
 		// .get(0)를 할 경우 쿼리를 하나 더 날리기 때문에 이걸로 처리
-		boardQuery.where(board.writer._id.eq(_id));
+		boardQuery.where(board.writer.id.eq(_id));
 		// 결과 받아오기
 		List<Board> result = boardQuery.fetch();		
 		return result;

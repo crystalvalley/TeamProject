@@ -34,13 +34,13 @@ import lombok.EqualsAndHashCode;
 @Data
 @Table(name = "Cards")
 //_id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
-@EqualsAndHashCode(of = "_id")
+@EqualsAndHashCode(of = "id")
 public class Card {
 	@Id
 	@Column(name="Card_id")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@SequenceGenerator(name="seq",sequenceName="Cards_seq", initialValue=1, allocationSize=1)
-	private int _id;
+	private int id;
 	
 	@CreationTimestamp
 	private Timestamp writeday; // 보낸날짜 

@@ -6,7 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.team.sns.domain.Member;
-
+/**
+ * 
+ * @author ParkHyeokJoon
+ * @since 2018.08.14
+ * @version 2018.08.14
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class insertTest {
@@ -15,13 +21,5 @@ public class insertTest {
 	
 	@Test
 	public void test() {
-		for(int i=0;i<50;i++) {
-			Member member = new Member();
-			member.set_id("testid"+i);
-			member.setPassword("testid"+i);
-			member.setNickname("testid"+i);
-			member.setUserName("testid"+i);
-			mr.save(member);			
-		}
 	}
 }

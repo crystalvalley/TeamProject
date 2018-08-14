@@ -37,7 +37,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "Boards")
 // _id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
-@EqualsAndHashCode(of = "_id")
+@EqualsAndHashCode(of = "id")
 @ToString(exclude= {"photos","writer"})
 public class Board {
 	// primary key
@@ -48,7 +48,7 @@ public class Board {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
 	// sequence생성
 	@SequenceGenerator(name = "seq", sequenceName = "Boards_seq", initialValue = 1, allocationSize = 1)
-	private int _id;
+	private int id;
 	
 	
 	@NotNull
