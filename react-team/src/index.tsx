@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { MainProvider } from './contexts/VoiceRecogContext';
 import App from './App';
+import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
+import { mainTheme } from './constance/MainTheme';
 
 /**
  * @author : ParkHyeokjoon
@@ -11,9 +13,14 @@ import App from './App';
  */
 
 ReactDOM.render(
-  <MainProvider>
-    <App/>
-  </MainProvider>,
+
+  <MuiThemeProvider theme={mainTheme}>
+    <MainProvider>
+      <CssBaseline>
+        <App />
+      </CssBaseline>
+    </MainProvider>
+  </MuiThemeProvider>,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();
