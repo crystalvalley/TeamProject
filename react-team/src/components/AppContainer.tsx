@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { Theme, StyleRulesCallback, withStyles, AppBar, Toolbar, IconButton, Typography, } from "@material-ui/core";
-import MenuIcon from '@material-ui/icons/Menu';
-import classNames from 'classnames';
+import { Theme, StyleRulesCallback, withStyles, } from "@material-ui/core";
 import SideMenu from './LeftContainer/SideMenu';
-// import MainContainer from './MainContainer/MainContainer';
+import TopBar from './TopContainer/TopBar';
+import MainContainerRouter from './MainContainer/MainContainerRouter';
+import { drawerWidth } from '../constance/Constances';
 
 
-const drawerWidth = 240;
 
 const styles: StyleRulesCallback = (theme: Theme) => ({
   root: {
@@ -16,28 +15,6 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     overflow: 'hidden',
     position: 'relative',
     display: 'flex',
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 36,
-  },
-  hide: {
-    display: 'none',
   },
   toolbar: {
     display: 'flex',
@@ -50,20 +27,21 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
+    marginRight:drawerWidth
   },
+  paper:{
+    width:drawerWidth
+  }
 });
 
 interface IProps {
   classes: {
     root: string,
-    appBar: string,
-    appBarShift: string,
-    hide: string,
-    menuButton: string,
     drawerPaper: string,
     drawerPaperClose: string,
     toolbar: string,
-    content: string
+    content: string,
+    paper:string
   }
   theme: Theme
 }
@@ -88,31 +66,18 @@ class AppMain extends React.Component<IProps, IState> {
 
     return (
       <div className={classes.root}>
-        <AppBar
-          position="absolute"
-          className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
-        >
-          <Toolbar disableGutters={!this.state.open}>
-            <IconButton
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, this.state.open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="title" noWrap={true}>
-              SNS MAIN
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <TopBar
+          open={this.state.open}
+          handleDrawerOpen={this.handleDrawerOpen}
+        />
         <SideMenu
           handleClose={this.handleDrawerClose}
           theme={this.props.theme}
           open={this.state.open}
         />
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-        </main>
+        <MainContainerRouter 
+          open={this.state.open}
+        />
       </div>
     );
   }

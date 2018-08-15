@@ -10,9 +10,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import classNames from 'classnames';
 import Test from './Test';
+import { drawerWidth } from '../../constance/Constances';
 
 
-const drawerWidth = 240;
 const styles: StyleRulesCallback = (theme: Theme) => ({
     drawerPaper: {
         position: 'relative',
