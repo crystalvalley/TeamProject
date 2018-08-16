@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Toolbar, } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
-import IntroPage from './IntroPage';
+import IntroPage from './cardList/CardList';
 import TestPage from './TestPage';
-import { drawerWidth } from '../../constance/Constances';
 
 /**
  * @author:ParkHyeokJoon
@@ -29,7 +28,6 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing.unit * 3,
-        marginRight: drawerWidth + "px",
     },
 })
 

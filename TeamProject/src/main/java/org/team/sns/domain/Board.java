@@ -20,6 +20,8 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -39,7 +41,8 @@ import lombok.ToString;
 @Table(name = "Boards")
 // _id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
-@ToString(exclude= {"photos","writer"})
+@ToString(exclude= {"photos","replys","share","writer","sounds"})
+@JsonIgnoreProperties({"photos","replys","share","writer","sounds"})
 public class Board {
 	// primary key
 	@Id
@@ -56,8 +59,6 @@ public class Board {
 	private String title; //글의 제목
 	@NotNull
 	private String content; // 글의 내용
-	private String sound; // 글의 사운드 url
-	private String image; // 글의 이미지 url
 	
 	// 생성시 시간으로 자동 설정
 	@CreationTimestamp

@@ -33,10 +33,10 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
-    marginRight:drawerWidth
+    marginRight: drawerWidth
   },
-  paper:{
-    width:drawerWidth
+  paper: {
+    width: drawerWidth
   }
 });
 
@@ -47,7 +47,7 @@ interface IProps {
     drawerPaperClose: string,
     toolbar: string,
     content: string,
-    paper:string
+    paper: string
   }
   theme: Theme
 }
@@ -60,7 +60,7 @@ class AppMain extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      open: false,
+      open: true,
     };
     this.handleDrawerClose = this.handleDrawerClose.bind(this);
     this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
@@ -71,7 +71,9 @@ class AppMain extends React.Component<IProps, IState> {
     const { classes } = this.props;
 
     return (
-      <div className={classes.root}>
+      <div
+        className={classes.root}
+      >
         <TopBar
           open={this.state.open}
           handleDrawerOpen={this.handleDrawerOpen}
@@ -81,9 +83,26 @@ class AppMain extends React.Component<IProps, IState> {
           theme={this.props.theme}
           open={this.state.open}
         />
-        <MainContainerRouter 
+        <MainContainerRouter
           open={this.state.open}
         />
+        <div
+          style={{
+            width: "240px",
+            flexShrink: 0,
+            backgroundColor: "red"
+          }}
+        >
+          test<br />
+          test<br />
+          test<br />
+          test<br />
+          test<br />
+          test<br />
+          test<br />
+          test<br />
+          test<br />
+        </div>
       </div>
     );
   }

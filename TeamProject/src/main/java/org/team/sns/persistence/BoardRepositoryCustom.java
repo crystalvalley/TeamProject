@@ -12,5 +12,6 @@ import org.team.sns.domain.Board;
  *
  */
 public interface BoardRepositoryCustom {
-	public List<Board> getBoardsByUserId(String _id);
+	public List<Board> getBoardsByUserId(String _id);	
+	public List<Board> getBoardsByTitle(String title);
 }
