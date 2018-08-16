@@ -6,6 +6,12 @@ import MainContainerRouter from './MainContainer/MainContainerRouter';
 import { drawerWidth } from '../constance/Constances';
 
 
+/**
+ * @author:ParkHyeokJoon
+ * @since:2018.08.13
+ * @version:2018.08.16
+ * 
+ */
 
 const styles: StyleRulesCallback = (theme: Theme) => ({
   root: {

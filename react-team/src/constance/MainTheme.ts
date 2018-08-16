@@ -1,8 +1,13 @@
 import { createMuiTheme } from "@material-ui/core";
 
 
-// A theme with custom primary and secondary color.
-// It's optional.
+/**
+ * @author:ParkHyeokJoon
+ * @since:2018.08.14
+ * @version:2018.08.14
+ * 
+ */
+
 export const mainTheme = createMuiTheme({
     palette: {
         text: {

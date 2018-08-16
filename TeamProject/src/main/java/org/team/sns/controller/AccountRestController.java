@@ -42,5 +42,23 @@ public class AccountRestController {
 		result = memberrepo.getNickname("test");
 		return result;
 	}
+	
+	@GetMapping("/login")
+	public RestMsgObject test(String userid, String password) {
+		RestMsgObject msg = new RestMsgObject();
+		// 로그인 처리를 위해 userid와 password로 값을 찾아야 함
+		if(memberrepo.existsById(userid)) {
+			if(memberrepo.findById(userid).get().getPassword().equals(password)) {
+				msg.setMsg("success");
+			}else {
+				msg.setMsg("fail");
+				msg.setDescription("비밀번호가 틀렸습니다.");
+			}			
+		}else {
+			msg.setMsg("fail");
+			msg.setDescription("ID가 없습니다.");
+		}
+		return msg;
+	}
 
 }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { withStyles, TextField, Button, Typography } from '@material-ui/core';
 import { signInStyle } from './SignInStyle';
+import axios, { AxiosResponse } from 'axios';
 
 /**
  * @author : ParkHyeokJoon
@@ -20,13 +21,29 @@ interface IProps {
         headTyphoRoot: string;
         rightTop: string;
         leftBottom: string;
-        leftBottomInner:string;
-        rightTopInner:string;
+        leftBottomInner: string;
+        rightTopInner: string;
     }
 }
 
+// 상태
+// login에 필요한 정보가 들어감
+interface IState {
+    userid: string;
+    password: string;
+}
 
-class SignIn extends React.Component<IProps> {
+class SignIn extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
+        super(props);
+        this.state={
+            password:"",
+            userid:""
+        }
+        this.onChangeId = this.onChangeId.bind(this);
+        this.onChangePw = this.onChangePw.bind(this);
+        this.login = this.login.bind(this);
+    }
     public render() {
         const { classes } = this.props;
         return (
@@ -46,11 +63,10 @@ class SignIn extends React.Component<IProps> {
                         </Typography>
                     </div>
                     <form
-                        action="http://localhost:8081/login"
-                        method="get"
                         className={classes.form}
                     >
                         <TextField
+                            onChange={this.onChangeId}
                             name="userid"
                             className={classes.textField}
                             fullWidth={true}
@@ -58,6 +74,7 @@ class SignIn extends React.Component<IProps> {
                         />
                         <br />
                         <TextField
+                            onChange={this.onChangePw}
                             name="password"
                             className={classes.textField}
                             fullWidth={true}
@@ -66,7 +83,7 @@ class SignIn extends React.Component<IProps> {
                         />
                         <br />
                         <Button
-                            type="submit"
+                            onClick={this.login}
                             variant="contained"
                         >
                             Subscribe
@@ -76,11 +93,37 @@ class SignIn extends React.Component<IProps> {
                         <Typography>
                             Powered By SCI
                         </Typography>
+                        {this.state.userid}<br />
+                        {this.state.password}
                     </div>
                 </div>
             </div>
         );
     }
+    // event를 파라미터로 입력받음
+    private onChangeId(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            userid: event.currentTarget.value
+        })
+    }
+    private onChangePw(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            password: event.currentTarget.value
+        })
+    }
+    private login(){
+        axios.get("http://localhost:8081/login",{
+            params :{
+                userid : this.state.userid,
+                password : this.state.password
+            }
+        }).then((response : AxiosResponse)=>{
+            if(response.data.msg === "success"){
+                alert("Good")
+            }else{
+                alert(response.data.description)
+            }
+        })
+    }
 }
-
 export default withStyles(signInStyle)(SignIn);

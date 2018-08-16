@@ -5,7 +5,12 @@ import IntroPage from './IntroPage';
 import TestPage from './TestPage';
 import { drawerWidth } from '../../constance/Constances';
 
-
+/**
+ * @author:ParkHyeokJoon
+ * @since:2018.08.14
+ * @version:2018.08.16
+ * 
+ */
 const styles: StyleRulesCallback = (theme: Theme) => ({
     MainContainer: {
         height: "100%"
@@ -26,16 +31,6 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
         padding: theme.spacing.unit * 3,
         marginRight: drawerWidth + "px",
     },
-    "contentOpen": {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
-        padding: theme.spacing.unit * 3,
-        marginRight: drawerWidth + "px",
-        marginLeft: "240px"
-    },
-    "contentClose": {
-        marginLeft: "72px"
-    }
 })
 
 interface IProps {
@@ -56,14 +51,10 @@ class MainContainerRouter extends React.Component<IProps> {
 
     public render() {
         const { classes } = this.props
-        const name =
-            this.props.open ?
-                "contentOpen" :
-                "contentClose"
         return (
             <main
                 className={
-                    classes.content + " " + name
+                    classes.content
                 }
             >
                 <div className={classes.toolbar} />
