@@ -25,7 +25,7 @@ class Test extends React.Component<IProps>{
         return (
             <NavLink
                 className={classes.linkClass}
-                to="/test"
+                to="/test?type=box"
             >
                 <ListItem button={true}>
                     <ListItemIcon>

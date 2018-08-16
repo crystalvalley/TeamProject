@@ -3,6 +3,7 @@ import { StyleRulesCallback, Theme, withStyles, GridList, GridListTile, } from '
 import CardContent from './CardContent';
 import { ICardModel } from '../../../constance/models';
 import axios from 'axios';
+import { Location } from 'history';
 
 /**
  * @author:ParkHyeokJoon
@@ -29,6 +30,7 @@ interface IProps {
         gridList: string;
         photos: string;
     }
+    location:Location;
 }
 interface IState {
     boards: ICardModel[]
@@ -43,12 +45,33 @@ class CardList extends React.Component<IProps, IState>{
     }
 
     public componentWillMount() {
-        axios.get("http://localhost:8081/getBoard")
+        const params = new URLSearchParams(this.props.location.search);
+        axios.get("http://localhost:8081/getBoard",{
+            params: {
+                // 카드 타입 => 게시글, 카드
+                boardType: params.get("type")
+                // 
+            }
+        })
             .then((response) => {
                 this.setState({
                     boards: response.data
                 });
             })
+    }
+    public componentWillUpdate(nextProps: IProps,nextState:IState) {
+        const params = new URLSearchParams(this.props.location.search);
+        if ((this.state.boards !== this.state.boards)||(this.props.location!==nextProps.location)) {
+            axios.get("http://localhost:8081/getBoard", {
+                params: {
+                    // 카드 타입 => 게시글, 카드
+                    boardType: params.get("type")
+                    // 
+                }
+            }).then((result) => this.setState({
+                boards : result.data
+            }))
+        }
     }
 
 
