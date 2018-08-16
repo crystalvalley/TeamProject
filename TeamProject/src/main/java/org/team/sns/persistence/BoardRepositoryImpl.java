@@ -67,6 +67,41 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		// 4. result 반환
 		return result;
 	}
+
+	/**
+	 * 
+	 * @author Gil
+	 * @since 18.08.16
+	 * @version 18.08.16
+	 *검색어가 내용에 들어있는 게시물 검색
+	 */
+	@Override
+	public List<Board> getBoardByContent(String searchWord) {
+		QBoard board = QBoard.board;
+		JPQLQuery<Board> boardQuery = from(board);
+		boardQuery.select(board);
+		boardQuery.where(board.content.contains(searchWord));
+		List<Board> result = boardQuery.fetch();
+		return result;
+	}
+
+	
+	/**
+	 * 
+	 * @author Gil
+	 * @since 18.08.16
+	 * @version 18.08.16
+	 *힛트카운트 몇 번이상의 게시물만 검색
+	 */
+	@Override
+	public List<Board> getBoardByHitCount(int number) {
+		QBoard board = QBoard.board;
+		JPQLQuery<Board> boardQuery = from(board);
+		boardQuery.select(board);
+		boardQuery.where(board.hitCount.gt(number));
+		List<Board> result = boardQuery.fetch();
+		return result;
+	}
 	
 	
 }
