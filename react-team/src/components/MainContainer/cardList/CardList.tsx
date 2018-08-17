@@ -46,11 +46,21 @@ class CardList extends React.Component<IProps, IState>{
 
     public componentWillMount() {
         const params = new URLSearchParams(this.props.location.search);
-        axios.get("http://localhost:8081/getBoard",{
+        axios.post("http://localhost:8081/getBoard",{
             params: {
                 // 카드 타입 => 게시글, 카드
-                boardType: params.get("type")
-                // 
+                type: params.get("type"),
+                // 정렬
+                order : params.get("order"),
+                // 친구만 보기, 그룹만보기 등등
+                show : params.get("show"),
+                // 대상만 보기(작성자 등)
+                target : params.get("target"),
+                // 태그
+                tag : params.get("tag")
+            },
+            data :{
+                test: "test"
             }
         })
             .then((response) => {
@@ -62,11 +72,21 @@ class CardList extends React.Component<IProps, IState>{
     public componentWillUpdate(nextProps: IProps,nextState:IState) {
         const params = new URLSearchParams(this.props.location.search);
         if ((this.state.boards !== this.state.boards)||(this.props.location!==nextProps.location)) {
-            axios.get("http://localhost:8081/getBoard", {
+            axios.post("http://localhost:8081/getBoard", {
                 params: {
                     // 카드 타입 => 게시글, 카드
-                    boardType: params.get("type")
-                    // 
+                    type: params.get("type"),
+                    // 정렬
+                    order : params.get("order"),
+                    // 친구만 보기, 그룹만보기 등등
+                    show : params.get("show"),
+                    // 대상만 보기(작성자 등)
+                    target : params.get("target"),
+                    // 태그
+                    tag : params.get("tag")
+                },
+                data :{
+                    test: "test"
                 }
             }).then((result) => this.setState({
                 boards : result.data

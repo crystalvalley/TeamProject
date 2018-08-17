@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Toolbar, } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
-import CardContent from './cardList/CardList';
+import CardList from './cardList/CardList';
 
 /**
  * @author:ParkHyeokJoon
@@ -59,7 +59,7 @@ class MainContainerRouter extends React.Component<IProps> {
                     sub menu bar
                 </Toolbar>
                 <Switch>
-                    <Route path="/" component={CardContent} />
+                    <Route path="/" component={CardList} />
                 </Switch>
             </main>
         );
