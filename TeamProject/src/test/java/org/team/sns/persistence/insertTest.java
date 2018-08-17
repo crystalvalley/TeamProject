@@ -34,8 +34,13 @@ public class insertTest {
 	}
 	*/
 	
-	@Test
+	/*@Test
 	public void newQueryTest() {
 		System.out.println(br.getBoardsByTitle("5"));
+	}*/
+	
+	@Test
+	public void searchbycontentTest() {
+		System.out.println("출력결과"+br.getBoardByHitCount(5));
 	}
 }
