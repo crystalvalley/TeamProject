@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withStyles, TextField, Button, Typography } from '@material-ui/core';
-import { signInStyle } from './SignInStyle';
+import { signInStyle } from './Styles/SignInStyle';
 import axios, { AxiosResponse } from 'axios';
 
 /**

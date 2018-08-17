@@ -2,7 +2,7 @@
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
- * @version:2018.08.16
+ * @version:2018.08.17
  * 
  */
 export interface IMsgModel{
@@ -19,4 +19,9 @@ export interface ICardModel{
     writeDay:string;
     updateDaty:string;
     hitcount:number;
+}
+
+export interface IMemberModel{
+    username : string;
+    avatar : string;
 }

@@ -4,11 +4,12 @@ import CardContent from './CardContent';
 import { ICardModel } from '../../../constance/models';
 import axios from 'axios';
 import { Location } from 'history';
+import Scrollbars from 'react-custom-scrollbars';
 
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.15
- * @version:2018.08.15
+ * @version:2018.08.17
  * 
  */
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -21,6 +22,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     photos: {
         padding: "30px",
+        paddingTop:0
     }
 })
 
@@ -30,7 +32,7 @@ interface IProps {
         gridList: string;
         photos: string;
     }
-    location:Location;
+    location: Location;
 }
 interface IState {
     boards: ICardModel[]
@@ -46,20 +48,20 @@ class CardList extends React.Component<IProps, IState>{
 
     public componentWillMount() {
         const params = new URLSearchParams(this.props.location.search);
-        axios.post("http://localhost:8081/getBoard",{
+        axios.post("http://localhost:8081/getBoard", {
             params: {
                 // 카드 타입 => 게시글, 카드
                 type: params.get("type"),
                 // 정렬
-                order : params.get("order"),
+                order: params.get("order"),
                 // 친구만 보기, 그룹만보기 등등
-                show : params.get("show"),
+                show: params.get("show"),
                 // 대상만 보기(작성자 등)
-                target : params.get("target"),
+                target: params.get("target"),
                 // 태그
-                tag : params.get("tag")
+                tag: params.get("tag")
             },
-            data :{
+            data: {
                 test: "test"
             }
         })
@@ -69,27 +71,27 @@ class CardList extends React.Component<IProps, IState>{
                 });
             })
     }
-    public componentWillUpdate(nextProps: IProps,nextState:IState) {
+    public componentWillUpdate(nextProps: IProps, nextState: IState) {
         const params = new URLSearchParams(this.props.location.search);
-        if ((this.state.boards !== this.state.boards)||(this.props.location!==nextProps.location)) {
+        if ((this.state.boards !== this.state.boards) || (this.props.location !== nextProps.location)) {
             axios.post("http://localhost:8081/getBoard", {
                 params: {
                     // 카드 타입 => 게시글, 카드
                     type: params.get("type"),
                     // 정렬
-                    order : params.get("order"),
+                    order: params.get("order"),
                     // 친구만 보기, 그룹만보기 등등
-                    show : params.get("show"),
+                    show: params.get("show"),
                     // 대상만 보기(작성자 등)
-                    target : params.get("target"),
+                    target: params.get("target"),
                     // 태그
-                    tag : params.get("tag")
+                    tag: params.get("tag")
                 },
-                data :{
+                data: {
                     test: "test"
                 }
             }).then((result) => this.setState({
-                boards : result.data
+                boards: result.data
             }))
         }
     }
@@ -99,17 +101,19 @@ class CardList extends React.Component<IProps, IState>{
     public render() {
         const { classes } = this.props;
         return (
-            <div
-                className={classes.photos}
+            <Scrollbars
+                autoHide={true}
             >
-                <div>
+                <div
+                    className={classes.photos}
+                >
                     <GridList
                         cellHeight={300}
                         spacing={20}
                         className={classes.gridList}
                         cols={3}
                         style={{
-                            overflow: "auto",
+                            overflow: "visible",
                             height: "80vh"
                         }}
                     >
@@ -120,7 +124,7 @@ class CardList extends React.Component<IProps, IState>{
                                         key={index}
                                         cols={1}
                                     >
-                                        <CardContent 
+                                        <CardContent
                                             card={board}
                                         />
                                     </GridListTile>
@@ -129,7 +133,7 @@ class CardList extends React.Component<IProps, IState>{
                         }
                     </GridList>
                 </div>
-            </div>
+            </Scrollbars>
         );
     }
 }

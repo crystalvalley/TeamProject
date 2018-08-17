@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withStyles, TextField, Button, Typography } from '@material-ui/core';
 import axios from 'axios';
-import { signUpStyle } from './SignUpStyle';
+import { signUpStyle } from './Styles/SignUpStyle';
 
 /**
  * @author ParkHyeokJoon

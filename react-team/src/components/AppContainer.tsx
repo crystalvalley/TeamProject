@@ -4,12 +4,13 @@ import SideMenu from './LeftContainer/SideMenu';
 import TopBar from './TopContainer/TopBar';
 import MainContainerRouter from './MainContainer/MainContainerRouter';
 import { drawerWidth } from '../constance/Constances';
+import FriendList from './RightContainer/FriendList';
 
 
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.13
- * @version:2018.08.16
+ * @version:2018.08.17
  * 
  */
 
@@ -86,23 +87,7 @@ class AppMain extends React.Component<IProps, IState> {
         <MainContainerRouter
           open={this.state.open}
         />
-        <div
-          style={{
-            width: "240px",
-            flexShrink: 0,
-            backgroundColor: "red"
-          }}
-        >
-          test<br />
-          test<br />
-          test<br />
-          test<br />
-          test<br />
-          test<br />
-          test<br />
-          test<br />
-          test<br />
-        </div>
+        <FriendList />
       </div>
     );
   }

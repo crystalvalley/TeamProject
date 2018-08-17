@@ -1,59 +1,31 @@
 import * as React from 'react';
-import { StyleRulesCallback, Theme, withStyles, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Drawer } from '@material-ui/core';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import StarIcon from '@material-ui/icons/Star';
-import SendIcon from '@material-ui/icons/Send';
-import MailIcon from '@material-ui/icons/Mail';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ReportIcon from '@material-ui/icons/Report';
+import { Theme, withStyles, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Drawer } from '@material-ui/core';
+import Create from '@material-ui/icons/Create';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import WhatsHot from "@material-ui/icons/Whatshot";
+import News from "@material-ui/icons/Public";
 import classNames from 'classnames';
-import Test from './Test';
-import { drawerWidth } from '../../constance/Constances';
+import Personal from './Personal';
+import Scrollbars from 'react-custom-scrollbars';
+import Group from '@material-ui/icons/Group';
+import Face from "@material-ui/icons/Face";
+import { sideMenuStyle } from './Styles/SideMenuStyle';
 
 
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
- * @version:2018.08.14
+ * @version:2018.08.17
  * 
  */
-const styles: StyleRulesCallback = (theme: Theme) => ({
-    drawerPaper: {
-        position: 'relative',
-        whiteSpace: 'nowrap',
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    drawerPaperClose: {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: theme.spacing.unit * 7,
-        [theme.breakpoints.up('sm')]: {
-            width: theme.spacing.unit * 9,
-        },
-    },
-    toolbar: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-    },
-})
 
 interface IProps {
     classes: {
         drawerPaper: string,
         drawerPaperClose: string,
         toolbar: string;
+        avatar: string;
     }
     theme: Theme;
     open: boolean;
@@ -76,57 +48,58 @@ class SideMenu extends React.Component<IProps> {
                 }}
                 open={this.props.open}
             >
-                <div className={classes.toolbar}>
-                    <IconButton onClick={this.props.handleClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    <Test />
-                    <ListItem button={true}>
-                        <ListItemIcon>
-                            <StarIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Starred" />
-                    </ListItem>
-                    <ListItem button={true}>
-                        <ListItemIcon>
-                            <SendIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Send mail" />
-                    </ListItem>
-                    <ListItem button={true}>
-                        <ListItemIcon>
-                            <DraftsIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Drafts" />
-                    </ListItem>
-                </List>
-                <Divider />
-                <List>
-                    <ListItem button={true}>
-                        <ListItemIcon>
-                            <MailIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="All mail" />
-                    </ListItem>
-                    <ListItem button={true}>
-                        <ListItemIcon>
-                            <DeleteIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Trash" />
-                    </ListItem>
-                    <ListItem button={true}>
-                        <ListItemIcon>
-                            <ReportIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Spam" />
-                    </ListItem>
-                </List>
+                <Scrollbars
+                    autoHide={true}
+                >
+                    <div className={classes.toolbar}>
+                        <IconButton onClick={this.props.handleClose}>
+                            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                        </IconButton>
+                    </div>
+                    <Divider />
+                    {/* 개인메뉴 */}
+                    <Personal open={this.props.open} />
+                    <List>
+                        {/* 글쓰기 친구 그룹 */}
+                        <ListItem button={true}>
+                            <ListItemIcon>
+                                <Create />
+                            </ListItemIcon>
+                            <ListItemText primary="Create" />
+                        </ListItem>
+                        <ListItem button={true}>
+                            <ListItemIcon>
+                                <Face />
+                            </ListItemIcon>
+                            <ListItemText primary="Friends" />
+                        </ListItem>
+                        <ListItem button={true}>
+                            <ListItemIcon>
+                                <Group />
+                            </ListItemIcon>
+                            <ListItemText primary="Group" />
+                        </ListItem>
+                    </List>
+                    <Divider />
+                    <List>
+                        {/* 기타 등 */}
+                        <ListItem button={true}>
+                            <ListItemIcon>
+                                <WhatsHot />
+                            </ListItemIcon>
+                            <ListItemText primary="Hot" />
+                        </ListItem>
+                        <ListItem button={true}>
+                            <ListItemIcon>
+                                <News />
+                            </ListItemIcon>
+                            <ListItemText primary="News" />
+                        </ListItem>
+                    </List>
+                </Scrollbars>
             </Drawer>
         );
     }
 }
 
-export default withStyles(styles)(SideMenu);
+export default withStyles(sideMenuStyle)(SideMenu);

@@ -14,7 +14,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
         height: "100%"
     },
     Toolbar: {
-        border: "1px solid black"
+        border: "1px solid black",
+        marginBottom:"30px"
     },
     toolbar: {
         display: 'flex',

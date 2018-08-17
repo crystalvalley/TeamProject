@@ -6,7 +6,7 @@ import { ICardModel } from '../../../constance/models';
  * 
  * @author : ParkHyeokJoon
  * @since : 2018.8.16
- * @version : 2018.8.16
+ * @version : 2018.8.17
  */
 const style: StyleRulesCallback = (theme: Theme) => ({
     titleBar: {

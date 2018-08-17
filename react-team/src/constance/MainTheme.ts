@@ -33,7 +33,12 @@ export const mainTheme = createMuiTheme({
             button:{
                 color:"blue"
             }
-        }
+        },
+        MuiSnackbarContent:{
+            root:{
+                width:"5vw"
+            }
+        },
 
     }
 });
