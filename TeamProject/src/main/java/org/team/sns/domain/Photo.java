@@ -13,19 +13,22 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 /**
  * 
  * @author ChaMinju
  * @since 18.08.10
- * @version 18.08.14
+ * @version 18.08.20
  * 
  */
 
 @Entity
 @Data
 @Table(name = "Photos")
+@JsonIgnoreProperties({"ownerBoard","ownerCard"})
 public class Photo {
 
 	@Id

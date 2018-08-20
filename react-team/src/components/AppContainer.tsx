@@ -38,7 +38,7 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   },
   paper: {
     width: drawerWidth
-  }
+  },
 });
 
 interface IProps {
@@ -48,7 +48,7 @@ interface IProps {
     drawerPaperClose: string,
     toolbar: string,
     content: string,
-    paper: string
+    paper: string,
   }
   theme: Theme
 }

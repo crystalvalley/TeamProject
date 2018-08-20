@@ -9,7 +9,10 @@ export interface IMsgModel{
     msg : string;
 }
 
+// Board도 겸함,
+// title이 없으면 Card, 있으면 Board
 export interface ICardModel{
+    id:number;
     title:string;
     content:string;
     // url
@@ -24,4 +27,9 @@ export interface ICardModel{
 export interface IMemberModel{
     username : string;
     avatar : string;
+}
+
+export interface IPhotoModel{
+    id:number;
+    url:string;
 }

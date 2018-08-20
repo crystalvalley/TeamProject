@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -35,6 +37,7 @@ import lombok.ToString;
 @ToString(exclude = {
 		"boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom","groups" 
 })
+@JsonIgnoreProperties({"boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom","groups"})
 public class Member {
 	@Id
 	@Column(name = "user_id")
@@ -48,6 +51,8 @@ public class Member {
 	
 	@CreationTimestamp
 	private Timestamp signupDate;
+	
+	private String profileImg;
 	
 	@ColumnDefault("0")
 	private int point;

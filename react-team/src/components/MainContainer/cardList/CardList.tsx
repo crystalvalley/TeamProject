@@ -9,7 +9,7 @@ import Scrollbars from 'react-custom-scrollbars';
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.15
- * @version:2018.08.17
+ * @version:2018.08.20
  * 
  */
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -103,6 +103,9 @@ class CardList extends React.Component<IProps, IState>{
         return (
             <Scrollbars
                 autoHide={true}
+                style={{
+                    flexGrow:1
+                }}
             >
                 <div
                     className={classes.photos}
@@ -114,7 +117,6 @@ class CardList extends React.Component<IProps, IState>{
                         cols={3}
                         style={{
                             overflow: "visible",
-                            height: "80vh"
                         }}
                     >
                         {

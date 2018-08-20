@@ -2,11 +2,12 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, GridListTileBar, IconButton } from '@material-ui/core';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { ICardModel } from '../../../constance/models';
+import { NavLink } from 'react-router-dom';
 /**
  * 
  * @author : ParkHyeokJoon
  * @since : 2018.8.16
- * @version : 2018.8.17
+ * @version : 2018.8.20
  */
 const style: StyleRulesCallback = (theme: Theme) => ({
     titleBar: {
@@ -19,34 +20,36 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
 })
 
-interface IProps{
-    classes:{
-        icon:string;
-        titleBar:string;
+interface IProps {
+    classes: {
+        icon: string;
+        titleBar: string;
     }
-    card:ICardModel;
+    card: ICardModel;
 }
 
 class CardContent extends React.Component<IProps> {
-    constructor(props:IProps){
+    constructor(props: IProps) {
         super(props);
     }
     public render() {
-        const {classes,card} = this.props;
+        const { classes, card } = this.props;
         return (
             <React.Fragment>
-                <img src="https://material-ui.com/static/images/grid-list/breakfast.jpg" />
-                <GridListTileBar
-                    title={card.title}
-                    titlePosition="top"
-                    actionIcon={
-                        <IconButton className={classes.icon}>
-                            <StarBorderIcon />
-                        </IconButton>
-                    }
-                    actionPosition="left"
-                    className={classes.titleBar}
-                />
+                <NavLink to={"/view?type=Board&num="+this.props.card.id}>
+                    <img src="https://material-ui.com/static/images/grid-list/breakfast.jpg" />
+                    <GridListTileBar
+                        title={card.title}
+                        titlePosition="top"
+                        actionIcon={
+                            <IconButton className={classes.icon}>
+                                <StarBorderIcon />
+                            </IconButton>
+                        }
+                        actionPosition="left"
+                        className={classes.titleBar}
+                    />
+                </NavLink>
             </React.Fragment>
         );
     }
