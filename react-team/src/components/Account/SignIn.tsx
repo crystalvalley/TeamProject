@@ -2,6 +2,7 @@ import * as React from 'react';
 import { withStyles, TextField, Button, Typography } from '@material-ui/core';
 import { signInStyle } from './Styles/SignInStyle';
 import axios, { AxiosResponse } from 'axios';
+import { ILoginStore, withLoginContext } from '../../contexts/LoginContext';
 
 /**
  * @author : ParkHyeokJoon
@@ -33,8 +34,8 @@ interface IState {
     password: string;
 }
 
-class SignIn extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
+class SignIn extends React.Component<IProps & ILoginStore, IState> {
+    constructor(props: IProps & ILoginStore) {
         super(props);
         this.state={
             password:"",
@@ -44,6 +45,14 @@ class SignIn extends React.Component<IProps, IState> {
         this.onChangePw = this.onChangePw.bind(this);
         this.login = this.login.bind(this);
     }
+
+    public componentWillReceiveProps(){
+        if(this.props.loginedId!==""){            
+            // 이미 로그인이 되있다면
+            location.replace("/")
+        }
+    }
+
     public render() {
         const { classes } = this.props;
         return (
@@ -94,7 +103,8 @@ class SignIn extends React.Component<IProps, IState> {
                             Powered By SCI
                         </Typography>
                         {this.state.userid}<br />
-                        {this.state.password}
+                        {this.state.password}<br/>
+                        {this.props.loginedId}
                     </div>
                 </div>
             </div>
@@ -120,10 +130,11 @@ class SignIn extends React.Component<IProps, IState> {
         }).then((response : AxiosResponse)=>{
             if(response.data.msg === "success"){
                 alert("Good")
+                this.props.loginFunc(this.state.userid);
             }else{
                 alert(response.data.description)
             }
         })
     }
 }
-export default withStyles(signInStyle)(SignIn);
+export default withLoginContext(withStyles(signInStyle)(SignIn));

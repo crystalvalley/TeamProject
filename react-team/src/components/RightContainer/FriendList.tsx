@@ -3,6 +3,7 @@ import { StyleRulesCallback, Theme, withStyles, ExpansionPanel, ExpansionPanelDe
 import Friend from './Friend';
 import FriendMenu from './FriendMenu';
 import ExpandIcon from '@material-ui/icons/ExpandLess';
+import { IVoiceStore, withVoice } from '../../contexts/VoiceRecogContext';
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.17
@@ -45,17 +46,27 @@ interface IProps {
 interface IState {
     anchorEL?: HTMLElement;
     menuOpen: boolean;
+    expanding : boolean;
 }
 
-class FriendList extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
+class FriendList extends React.Component<IProps&IVoiceStore, IState> {
+    constructor(props: IProps&IVoiceStore) {
         super(props);
         this.state = {
-            menuOpen: false
+            menuOpen: false,
+            expanding:false
         }
         this.setEl = this.setEl.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.voiceRecognition = this.voiceRecognition.bind(this);
+        this.clickExpanded = this.clickExpanded.bind(this);
     }
+    public componentWillReceiveProps(nextProps : IProps & IVoiceStore){
+        if(nextProps.inputValue!==this.props.inputValue){
+            this.voiceRecognition(nextProps.inputValue);
+        }
+    }
+
     public render() {
         const { classes } = this.props
         return (
@@ -75,6 +86,8 @@ class FriendList extends React.Component<IProps, IState> {
                 >
                     <ExpansionPanel
                         className={classes.panel}
+                        expanded={this.state.expanding}
+                        onClick={this.clickExpanded}
                     >
                         <ExpansionPanelSummary
                             expandIcon={<ExpandIcon />}
@@ -126,6 +139,26 @@ class FriendList extends React.Component<IProps, IState> {
             menuOpen: false
         })
     }
+
+    private clickExpanded(){
+        const next = this.state.expanding
+        this.setState({
+            expanding : !next
+        })
+    }
+
+    private voiceRecognition(command : string){
+        const trimedCommand = command.replace(/\s/gi, "");
+        if(trimedCommand==="친구목록열어"){
+            this.setState({
+                expanding:true
+            })
+        }else if(trimedCommand==="친구목록닫아"){
+            this.setState({
+                expanding :false
+            })
+        }
+    }
 }
 
-export default withStyles(style)(FriendList);
+export default withVoice(withStyles(style)(FriendList));

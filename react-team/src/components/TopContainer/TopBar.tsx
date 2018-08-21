@@ -5,6 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import classNames from 'classnames';
 import { drawerWidth } from '../../constance/Constances';
 import SearchField from './SearchField';
+import { IVoiceStore, withVoice } from '../../contexts/VoiceRecogContext';
 
 /**
  * @author:ParkHyeokJoon
@@ -52,8 +53,8 @@ interface IState {
   searchKeyword: string;
 }
 
-class TopBar extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+class TopBar extends React.Component<IProps&IVoiceStore, IState> {
+  constructor(props: IProps&IVoiceStore) {
     super(props);
     this.state = {
       searchKeyword: ""
@@ -82,6 +83,9 @@ class TopBar extends React.Component<IProps, IState> {
           <span>
             {this.state.searchKeyword}
           </span>
+          <div>
+            {this.props.inputValue}
+          </div>
           <SearchField
             onChange={this.onChange}
           />
@@ -96,4 +100,4 @@ class TopBar extends React.Component<IProps, IState> {
   }
 }
 
-export default withStyles(styles)(TopBar);
+export default withVoice(withStyles(styles)(TopBar));

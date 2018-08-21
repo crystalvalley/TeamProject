@@ -39,6 +39,7 @@ interface IState {
 }
 
 class SignUp extends React.Component<IProps, IState> {
+    private formRef: React.RefObject<HTMLFormElement>
     constructor(props: IProps) {
         super(props);
         this.state = {
@@ -52,26 +53,29 @@ class SignUp extends React.Component<IProps, IState> {
             emailSecond: ""
         }
         this.onChange = this.onChange.bind(this);
+        this.submit = this.submit.bind(this);
     }
     public componentDidUpdate(presProps: IProps, prevState: IState) {
         const { user_id, idValid, password, passwordValid, passwordCheck } = this.state
-        if (user_id.length > 6 && user_id.length < 16) {
-            axios.get("http://localhost:8081/idCheck", {
-                params: {
-                    _id: this.state.user_id
-                }
-            }).then((response) => {
-                if (response.data.msg === "success") {
-                    if (idValid === true) { return }
-                    this.setState({ idValid: true })
-                } else {
-                    if (idValid === false) { return }
-                    this.setState({ idValid: false })
-                }
-            })
-        } else {
-            if (idValid === false) { return }
-            this.setState({ idValid: false })
+        if(prevState.user_id !== user_id){
+            if (user_id.length > 5 && user_id.length < 16) {
+                axios.get("http://localhost:8081/idCheck", {
+                    params: {
+                        _id: this.state.user_id
+                    }
+                }).then((response) => {
+                    if (response.data.msg === "success") {
+                        if (idValid === true) { return }
+                        this.setState({ idValid: true })
+                    } else {
+                        if (idValid === false) { return }
+                        this.setState({ idValid: false })
+                    }
+                })
+            } else {
+                if (idValid === false) { return }
+                this.setState({ idValid: false })
+            }
         }
         if (password === passwordCheck && password.length > 7 && password.length < 21) {
             if (passwordValid === true) { return }
@@ -102,11 +106,12 @@ class SignUp extends React.Component<IProps, IState> {
                                 root: classes.headTyphoRoot
                             }}
                         >
-                            <h1>SNS SIGNUP</h1>
+                            SNS SIGNUP
                         </Typography>
                     </div>
                     {/* form */}
                     <form
+                        ref={this.formRef}
                         className={classes.form}
                         action="http://localhost:8081/signup"
                         method="post"
@@ -189,10 +194,11 @@ class SignUp extends React.Component<IProps, IState> {
                         <br />
                         <Button
                             disabled={!this.submitValidation()}
-                            type="submit"
+                            type="button"
                             classes={{
                                 root: classes.btnRoot,
                             }}
+                            onClick={this.submit}
                         >
                             Subscribe
                         </Button>
@@ -218,6 +224,20 @@ class SignUp extends React.Component<IProps, IState> {
             return false;
         }
     }
+
+    private submit() {
+        const data = new FormData();
+        data.append("id",this.state.user_id);
+        data.append("password",this.state.password);
+        data.append("username",this.state.username);
+        data.append("email",this.state.emailFirst+"@"+this.state.emailSecond);
+        axios.post("http://localhost:8081/signup", data)
+            .then((response) => {
+                location.href = "/signin";
+            }
+        )
+    }
+
     private onChange(e: React.ChangeEvent<HTMLInputElement>) {
         const name: string = e.currentTarget.name;
         this.setState({

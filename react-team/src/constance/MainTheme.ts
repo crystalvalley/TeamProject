@@ -11,8 +11,8 @@ import { createMuiTheme } from "@material-ui/core";
 export const mainTheme = createMuiTheme({
     palette: {
         text: {
-            primary: "#000000",
-            secondary:"white"
+            primary: "#606060",
+            secondary:"#909090"
         },
         // 배경
         background: {
@@ -23,13 +23,13 @@ export const mainTheme = createMuiTheme({
             light: '#9900ff',
             main: '#9900ff',
             dark: '#9900ff',
-            contrastText: '#000000',
+            contrastText: '#303030',
         },
     },
     overrides:{
         MuiTypography:{
             title :{
-                color:"#000000"
+                color:"#ffffff"
             },
             button:{
                 color:"blue"
