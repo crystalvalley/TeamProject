@@ -4,7 +4,15 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.team.sns.domain.Board;
+import org.team.sns.domain.Favorites;
+import org.team.sns.domain.Networking;
 import org.team.sns.domain.QBoard;
+import org.team.sns.domain.QFavorites;
+import org.team.sns.domain.QNetworking;
+import org.team.sns.domain.QReply;
+import org.team.sns.domain.QShare;
+import org.team.sns.domain.Reply;
+import org.team.sns.domain.Share;
 
 import com.querydsl.jpa.JPQLQuery;
 
@@ -102,6 +110,160 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		List<Board> result = boardQuery.fetch();
 		return result;
 	}
+	/**
+	 * 
+	 * @author minju
+	 * @since 18.08.17
+	 * @version 18.08.17 댓글내용으로 검색을 해서 메소드 getReplyByContent에서 리플 리스트를 불러온다 그 리스트에서
+	 *          하나씩(여러개 있을수도 있어서) 검색해 게시글을 불러와서 반환한다. 같이 체크00
+	 */
+	@Override
+	public List<Board> getBoardByReply(String searchWord) {
+		QBoard board = QBoard.board;
+		JPQLQuery<Board> boardQuery = from(board);
+		boardQuery.select(board);
+
+		List<Reply> resultReply = getReplyByContent(searchWord);
+		List<Board> resultBoard = null;
+
+		for (Reply re : resultReply) {
+			// 생각다시해야함 ?
+			resultBoard.add(re.getBoard());
+		}
+		return resultBoard;
+	}
+
+	/**
+	 * @author minju
+	 * @since 18.08.17
+	 * @version 18.08.17 검색 워드를 받아 댓글 리스트를 불러와서 반환한다. 같이 체크00
+	 */
+	@Override
+	public List<Reply> getReplyByContent(String content) {
+		QReply reply = QReply.reply;
+		JPQLQuery<Reply> replyQuery = from(reply);
+		replyQuery.select(reply);
+		replyQuery.where(reply.content.contains(content));
+
+		List<Reply> result = replyQuery.fetch();
+		return result;
+	}
+
+	/**
+	 * @author minju
+	 * @since 18.08.17
+	 * @version 18.08.17 유저 아이디로 네트워킹 리스트를 받아온다(이웃)
+	 */
+	@Override
+	public List<Networking> getMembersByUserId(String _id) {
+		QNetworking networking = QNetworking.networking;
+		JPQLQuery<Networking> networkingQuery = from(networking);
+		networkingQuery.select(networking);
+		networkingQuery.where(networking.member.id.eq(_id));
+
+		List<Networking> result = networkingQuery.fetch();
+		return result;
+	}
+
+	/**
+	 * @author minju
+	 * @since 18.08.17
+	 * @version 18.08.17 getMemberByUserId에서 가져온 이웃 리스트를 가지고 타입별로 보더 리스트를 가져올수 있다.
+	 */
+	@Override
+	public List<Board> getUserTypeByBoard(String _id, String type) {
+		QBoard board = QBoard.board;
+		JPQLQuery<Board> boardQuery = from(board);
+		boardQuery.select(board);
+
+		List<Networking> resultNet = getMembersByUserId(_id);
+		List<Board> resultBoard = null;
+
+		// 네이워킹 리스트로 반복문을 돌린다.
+		for (Networking ne : resultNet) {
+			if (ne.getType().equals(type)) {
+				List<Board> list = ne.getTarget().getBoards();
+				// 그 네트워킹이 가지고 있는 보드 리스트를 가지고 와서 보드 리스트를 추가해준다.
+				for (Board b : list) {
+					resultBoard.add(b);
+				}
+			}
+		}
+		return resultBoard;
+	}
+
+	/**
+	 * @author minju
+	 * @since 18.08.17
+	 * @version 18.08.17 유저 아이디를 받아서 아이디가 가지고 있는 즐겨찾기 리스트를 가져온다.
+	 */
+	@Override
+	public List<Favorites> getUserByFavorites(String id) {
+		QFavorites favorites = QFavorites.favorites;
+		JPQLQuery<Favorites> favoritesQuery = from(favorites);
+
+		favoritesQuery.select(favorites);
+		favoritesQuery.where(favorites.adder.id.eq(id));
+		List<Favorites> result = favoritesQuery.fetch();
+		return result;
+	}
+
+	/**
+	 * @author minju
+	 * @since 18.08.17
+	 * @version 18.08.17 유저아이디를 받아서 그 아이디가 가지고 있는 즐겨찾기리스트를 보드 리스트로 가져온다.
+	 */
+	@Override
+	public List<Board> getFavoritesByBoard(String _id) {
+		QBoard board = QBoard.board;
+		JPQLQuery<Board> boardQuery = from(board);
+
+		boardQuery.select(board);
+		List<Favorites> resultFavorites = getUserByFavorites(_id);
+		List<Board> resultBoard = null;
+
+		// 이따 다시 생각하기
+		for (Favorites fa : resultFavorites) {
+			if (fa.getAdder().getId().equals(_id)) {
+				resultBoard.add(fa.getBoard());
+			}
+		}
+		return resultBoard;
+	}
+
+	/**
+	 * @author minju
+	 * @since 18.08.17
+	 * @version 18.08.17
+	 * 
+	 *          공유 리스트를 가져와서 그안에 보드 리스트를 가져와서 뿌려준다. 수정필요 유저 아이디 필요
+	 */
+	@Override
+	public List<Board> getShareByMember(String type) {
+		QShare share = QShare.share;
+		JPQLQuery<Share> shareQuery = from(share);
+		shareQuery.select(share);
+
+		List<Share> result = shareQuery.fetch();
+		List<Board> result2 = null;
+
+		for (Share sh : result) {
+			if (sh.getType().equals(type)) {
+				result2.add(sh.getShared());
+			}
+		}
+		return result2;
+	}
+
+	// JPA 로 써도 된다.
+	@Override
+	public List<Board> getUserAllBoard(String _id) {
+		
+		
+		
+		return null;
+	}
+	
 	
 	
 }
