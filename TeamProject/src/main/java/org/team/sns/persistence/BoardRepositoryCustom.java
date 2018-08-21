@@ -3,6 +3,9 @@ package org.team.sns.persistence;
 import java.util.List;
 
 import org.team.sns.domain.Board;
+import org.team.sns.domain.Favorites;
+import org.team.sns.domain.Networking;
+import org.team.sns.domain.Reply;
 
 /**
  * 
@@ -22,4 +25,30 @@ public interface BoardRepositoryCustom {
 	//public List<Board> getBoardAuthority(String type);
 	
 	public List<Board> getBoardByHitCount(int number); 
+	
+
+	// 리플객체들로 게시글 검색
+	public List<Board> getBoardByReply(String searchWord);
+
+	// 리플 내용으로 리스트를 받아온다
+	public List<Reply> getReplyByContent(String content);
+
+	// userid로 그 유저가 가지고 있는 이웃을 받아온다.
+	public List<Networking> getMembersByUserId(String _id);
+
+	// 유저가 가지고 있는 이웃을 받아와 그 이웃의 타입별로 뿌려준다.
+	public List<Board> getUserTypeByBoard(String _id, String type);
+
+	// 유저가 가지고 있는 즐겨찾기 목록을 가져온다.
+	public List<Favorites> getUserByFavorites(String _id);
+
+	// 유저 아이디로 즐겨찾기 목록에 있는 보드를 받아온다.
+	public List<Board> getFavoritesByBoard(String _id);
+
+	// 이건 수정필요
+	public List<Board> getShareByMember(String type);
+	
+	//메인을 만들어 보쟝
+	public List<Board> getUserAllBoard(String _id);
+	
 }
