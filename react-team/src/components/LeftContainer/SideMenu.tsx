@@ -13,6 +13,7 @@ import Face from "@material-ui/icons/Face";
 import { sideMenuStyle } from './Styles/SideMenuStyle';
 
 
+
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
@@ -68,10 +69,14 @@ class SideMenu extends React.Component<IProps> {
                             <ListItemText primary="Create" />
                         </ListItem>
                         <ListItem button={true}>
+                        
                             <ListItemIcon>
                                 <Face />
                             </ListItemIcon>
                             <ListItemText primary="Friends" />
+
+                        
+
                         </ListItem>
                         <ListItem button={true}>
                             <ListItemIcon>
