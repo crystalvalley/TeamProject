@@ -25,7 +25,7 @@ export interface ICardModel{
 }
 
 export interface IMemberModel{
-    username : string;
+    id : string;
     avatar : string;
 }
 

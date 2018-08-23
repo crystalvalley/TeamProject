@@ -10,6 +10,13 @@ import org.team.sns.domain.Member;
 import org.team.sns.domain.SecurityUser;
 import org.team.sns.persistence.MemberRepository;
 
+/**
+ * 
+ * @author ParkHyeokJoon
+ * @since 2018.08.23
+ * @version 2018.08.23
+ *
+ */
 @Service
 public class SecurityUserServiceImpl implements SecurityUserService {
 

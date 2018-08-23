@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { GridList, GridListTile, ListSubheader, GridListTileBar, StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
-import tileData from './tiltData';
+import tileData from './tileData';
 
 
 const styles: StyleRulesCallback = (theme: Theme) => ({

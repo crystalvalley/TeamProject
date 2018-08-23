@@ -23,7 +23,7 @@ import org.team.sns.vo.Params;
  *
  */
 
-@RestController(value="/boards/")
+@RestController
 @CrossOrigin(origins = "*")
 public class BoardRestController {
 	@Autowired
@@ -31,13 +31,13 @@ public class BoardRestController {
 	@Autowired
 	MemberRepository mr;
 
-	@PostMapping("/getBoard")
+	@PostMapping("/boards/getBoard")
 	public List<Board> test(Params params,  Datas datas) {
+		System.out.println("???");
 		System.out.println(params);
 		System.out.println(datas);
-		return br.getBoardsByUserId("administrator");
-	}
-	
+		return br.getBoardsByUserId("testid");
+	}	
 	@GetMapping("/view")
 	public Map<String,Object> sendBoard(String type, int num) {
 		System.out.println(type);
@@ -50,11 +50,12 @@ public class BoardRestController {
 		return result;
 	}
 	
-	@PostMapping("/writeBoard")
-	public void writeBoard(Board board) {
+	@PostMapping("/boards/writeBoard")
+	public void writeBoard(Board board,String writerId) {
 		System.out.println(board);
-		board.setWriter(mr.findById("administrator").get());
-		br.save(board);		
+		System.out.println(writerId);
+		board.setWriter(mr.findById(writerId).get());
+		br.save(board);
 	}
 
 }

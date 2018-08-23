@@ -11,6 +11,7 @@ import Scrollbars from 'react-custom-scrollbars';
 import Group from '@material-ui/icons/Group';
 import Face from "@material-ui/icons/Face";
 import { sideMenuStyle } from './Styles/SideMenuStyle';
+import { NavLink } from 'react-router-dom';
 
 
 
@@ -27,6 +28,7 @@ interface IProps {
         drawerPaperClose: string,
         toolbar: string;
         avatar: string;
+        navlink:string;
     }
     theme: Theme;
     open: boolean;
@@ -62,20 +64,22 @@ class SideMenu extends React.Component<IProps> {
                     <Personal open={this.props.open} />
                     <List>
                         {/* 글쓰기 친구 그룹 */}
+                        <NavLink to="/editor" className={classes.navlink}>
+                            <ListItem button={true}>
+                                <ListItemIcon>
+                                    <Create />
+                                </ListItemIcon>
+                                <ListItemText primary="Create" />
+                            </ListItem>
+                        </NavLink>
                         <ListItem button={true}>
-                            <ListItemIcon>
-                                <Create />
-                            </ListItemIcon>
-                            <ListItemText primary="Create" />
-                        </ListItem>
-                        <ListItem button={true}>
-                        
+
                             <ListItemIcon>
                                 <Face />
                             </ListItemIcon>
                             <ListItemText primary="Friends" />
 
-                        
+
 
                         </ListItem>
                         <ListItem button={true}>

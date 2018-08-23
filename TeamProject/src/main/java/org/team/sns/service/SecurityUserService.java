@@ -5,6 +5,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.team.sns.domain.Member;
 import org.team.sns.domain.SecurityUser;
 
+/**
+ * 
+ * @author ParkHyeokJoon
+ * @since 2018.08.23
+ * @version 2018.08.23
+ *
+ */
 public interface SecurityUserService extends UserDetailsService {
 	public SecurityUser readUser(String username);
 

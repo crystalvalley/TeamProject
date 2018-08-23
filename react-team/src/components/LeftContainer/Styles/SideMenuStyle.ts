@@ -35,4 +35,7 @@ export const sideMenuStyle: StyleRulesCallback = (theme: Theme) => ({
         padding: '0 8px',
         ...theme.mixins.toolbar,
     },
+    navlink:{
+        textDecoration:"none"
+    }
 })

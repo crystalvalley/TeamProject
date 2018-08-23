@@ -81,7 +81,7 @@ class TopBar extends React.Component<IProps&IVoiceStore, IState> {
             VOICEBOOK
           </Typography>
           <span>
-            {this.props.open?"true":"false"}
+            {this.props.inputValue}
           </span>
           <SearchField
             onChange={this.onChange}

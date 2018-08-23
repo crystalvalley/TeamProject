@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
+// import registerServiceWorker from './registerServiceWorker';
 import { VoiceProvider } from './contexts/VoiceRecogContext';
 import App from './App';
 import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
@@ -26,4 +26,4 @@ ReactDOM.render(
   </MuiThemeProvider>,
   document.getElementById('root') as HTMLElement
 );
-registerServiceWorker();
+// registerServiceWorker();

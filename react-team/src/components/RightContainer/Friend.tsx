@@ -45,7 +45,7 @@ class Friend extends React.Component<IProps>{
                     <Typography
                         className={classes.textFont}
                     >
-                        {member.username}
+                        {member.id}
                     </Typography>
                 </ListItemText>
             </ListItem>

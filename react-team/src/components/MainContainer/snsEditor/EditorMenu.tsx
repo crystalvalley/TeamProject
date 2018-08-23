@@ -7,7 +7,7 @@ import axios from 'axios';
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.20
- * @version : 2018.08.20
+ * @version : 2018.08.23
  */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -20,6 +20,7 @@ interface IProps {
     }
     title: string;
     editorState: EditorState;
+    writer:string;
 }
 
 class EditorMenu extends React.Component<IProps> {
@@ -46,7 +47,8 @@ class EditorMenu extends React.Component<IProps> {
             )
         );
         data.append("title", this.props.title);
-        axios.post("http://localhost:8081/writeBoard", data)
+        data.append("writerId",this.props.writer)
+        axios.post("http://localhost:8081/boards/writeBoard", data)
             .then((response) => {
                 // alert(response.data);
                 location.href = "/";

@@ -87,10 +87,10 @@ class FriendList extends React.Component<IProps&IVoiceStore, IState> {
                     <ExpansionPanel
                         className={classes.panel}
                         expanded={this.state.expanding}
-                        onClick={this.clickExpanded}
                     >
                         <ExpansionPanelSummary
                             expandIcon={<ExpandIcon />}
+                            onClick={this.clickExpanded}
                         >
                             Online Friend
                         </ExpansionPanelSummary>
@@ -104,7 +104,7 @@ class FriendList extends React.Component<IProps&IVoiceStore, IState> {
                                     setEL={this.setEl}
                                     member={{
                                         avatar: "http://img.etoday.co.kr/pto_db/2018/08/20180809164454_1238623_600_750.jpg",
-                                        username: "한 예슬"
+                                        id: "한 예슬"
                                     }}
                                     key={1}
                                 />
@@ -112,7 +112,7 @@ class FriendList extends React.Component<IProps&IVoiceStore, IState> {
                                     setEL={this.setEl}
                                     member={{
                                         avatar: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/180524_%EA%B9%80%ED%8F%AC%EA%B3%B5%ED%95%AD_%ED%8A%B8%EC%99%80%EC%9D%B4%EC%8A%A4_%EC%82%AC%EB%82%98.jpg/220px-180524_%EA%B9%80%ED%8F%AC%EA%B3%B5%ED%95%AD_%ED%8A%B8%EC%99%80%EC%9D%B4%EC%8A%A4_%EC%82%AC%EB%82%98.jpg",
-                                        username: "사나"
+                                        id: "사나"
                                     }}
                                     key={2}
                                 />
