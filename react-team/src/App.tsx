@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch, } from 'react-router-dom';
 import SignIn from './components/Account/SignIn';
 import SignUp from './components/Account/SignUp';
 import AppContainer from './components/AppContainer';
+
 /**
  * @author ParkHyeokJoon
  * @since 2018.08.12
@@ -19,6 +20,7 @@ export default class App extends React.Component {
                     <Route path="/signup" component={SignUp} />
                     {/* 그 외 */}
                     <Route path="/" component={AppContainer} />
+                    
                 </Switch>
             </BrowserRouter>
         );
