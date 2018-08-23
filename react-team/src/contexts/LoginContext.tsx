@@ -4,7 +4,7 @@ import axios from 'axios';
 /**
  * @author : ParkHyeokjoon
  * @since : 18.08.20
- * @version : 18.08.20
+ * @version : 18.08.23
  */
 
 export interface ILoginStore {
@@ -60,7 +60,7 @@ export function withLoginContext<P extends ILoginStore>(Component : React.Compon
             <loginContext.Consumer>
                 {
                     value=>
-                        <Component {...value}/>
+                        <Component {...value} {...props}/>
                 }
             </loginContext.Consumer>
         );

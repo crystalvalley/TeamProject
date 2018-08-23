@@ -3,7 +3,7 @@ import * as  React from 'react';
 /**
  * @author : ParkHyeokjoon
  * @since : 18.08.11
- * @version : 18.08.11
+ * @version : 18.08.23
  */
 
 export interface IVoiceStore {
@@ -49,9 +49,9 @@ class VoiceProvider extends React.Component<{}, IVoiceStore> {
 
         this.recognition.onresult = event => {
             const text = event.results[0][0].transcript;
-            this.setState({ 
-                inputValue : text
-             });
+            this.setState({
+                inputValue: text
+            });
         };
 
         this.recognition.onspeechend = () => {
@@ -59,9 +59,9 @@ class VoiceProvider extends React.Component<{}, IVoiceStore> {
         };
 
         this.recognition.onnomatch = event => {
-            this.setState({ 
+            this.setState({
                 inputValue: "Sorry, can't hear"
-             });
+            });
         };
 
         this.recognition.onstart = () => {
@@ -93,16 +93,16 @@ class VoiceProvider extends React.Component<{}, IVoiceStore> {
             </voiceContext.Provider>
         );
     }
-    private start(){
+    private start() {
         this.recognition.start();
     }
-    private end(){
+    private end() {
         this.recognition.stop();
         this.recognition.start();
     }
-    private handleClose(){
+    private handleClose() {
         this.setState({
-            show:false
+            show: false
         })
     }
 }
@@ -114,9 +114,7 @@ export function withVoice<P extends IVoiceStore>(Component: React.ComponentType<
             <voiceContext.Consumer>
                 {
                     value =>
-                        <Component 
-                            {...value} {...props}
-                        />
+                        <Component {...value} {...props} />
                 }
             </voiceContext.Consumer>
         );
