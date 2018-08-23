@@ -114,7 +114,9 @@ export function withVoice<P extends IVoiceStore>(Component: React.ComponentType<
             <voiceContext.Consumer>
                 {
                     value =>
-                        <Component {...value} />
+                        <Component 
+                            {...value} {...props}
+                        />
                 }
             </voiceContext.Consumer>
         );

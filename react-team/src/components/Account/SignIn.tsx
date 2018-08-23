@@ -73,6 +73,7 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                     </div>
                     <form
                         className={classes.form}
+                        method="post"
                     >
                         <TextField
                             onChange={this.onChangeId}
@@ -92,10 +93,17 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                         />
                         <br />
                         <Button
-                            onClick={this.login}
+                            type="submit"
                             variant="contained"
                         >
                             Subscribe
+                        </Button>
+                        <Button
+                            type="button"
+                            onClick={this.login}
+                            variant="contained"
+                        >
+                            AJAX
                         </Button>
                     </form>
                     <div className={classes.footer}>
@@ -122,7 +130,7 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
         })
     }
     private login(){
-        axios.get("http://localhost:8081/login",{
+        axios.post("/signin",{
             params :{
                 userid : this.state.userid,
                 password : this.state.password

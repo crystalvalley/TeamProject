@@ -4,14 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.team.sns.domain.Member;
 import org.team.sns.persistence.MemberRepository;
+import org.team.sns.service.SecurityUserService;
+import org.team.sns.service.SecurityUserServiceImpl;
 import org.team.sns.vo.RestMsgObject;
 
 /**
@@ -26,30 +26,7 @@ public class AccountRestController {
 	@Autowired
 	MemberRepository memberrepo;
 	@Autowired
-	AuthenticationManager authenticationManager;
-	
-
-	@PostMapping("/login")
-	public RestMsgObject test(String userid, String password, HttpServletRequest request) {
-		HttpSession sess = request.getSession();
-		
-		RestMsgObject msg = new RestMsgObject();
-		// 로그인 처리를 위해 userid와 password로 값을 찾아야 함
-		if (memberrepo.existsById(userid)) {
-			if (memberrepo.findById(userid).get().getPassword().equals(password)) {
-				sess.setAttribute("userid", userid);
-				msg.setMsg("success");
-			} else {
-				msg.setMsg("fail");
-				msg.setDescription("비밀번호가 틀렸습니다.");
-			}
-		} else {
-			msg.setMsg("fail");
-			msg.setDescription("ID가 없습니다.");
-		}
-		return msg;
-	}
-	
+	SecurityUserServiceImpl secUserService;
 	@GetMapping("/idCheck")
 	public RestMsgObject idCheck(String _id) {
 		RestMsgObject rmo = new RestMsgObject();
@@ -76,35 +53,27 @@ public class AccountRestController {
 
 	@PostMapping("/signup")
 	public void signUp(Member member) {
-		String pw = member.getPassword();
-		// 비밀번호를 암호화 하기 위해
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		// 인코딩해서 저장
-		member.setPassword(encoder.encode(pw));
-		// 이미 유효성처리가 끝난 상태이므로 바로 저장
-		memberrepo.save(member);
+		secUserService.createUser(member);
 	}
-
 
 	@PostMapping("/loginCheck")
 	public RestMsgObject loginCheck(HttpServletRequest request) {
-		HttpSession sess = request.getSession(false);
-		System.out.println("일단 여긴 들어오냐");
-		// 로그인이 되있다면 userid반환
 		RestMsgObject msg = new RestMsgObject();
-		if (sess.getAttribute("userid") != null) {
-			System.out.println(sess.getAttribute("userid").toString());
-			System.out.println(sess.getAttribute("userid").toString());
-			System.out.println(sess.getAttribute("userid").toString());
-			System.out.println(sess.getAttribute("userid").toString());
-			System.out.println(sess.getAttribute("userid").toString());
-			System.out.println(sess.getAttribute("userid").toString());
-			System.out.println(sess.getAttribute("userid").toString());
-			System.out.println(sess.getAttribute("userid").toString());
-			msg.setMsg(sess.getAttribute("userid").toString());
-		} else
-			msg.setMsg("fail");
+		msg.setMsg("fail");
 		return msg;
 	}
 
+	/*
+	@PostMapping("/signin")
+	public AuthToken signin(String userid, String password,HttpSession sess) {
+		System.out.println("input value-------------------");
+		System.out.println(memberrepo.findById(userid).get());
+		System.out.println(userid);
+		System.out.println(password);
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userid, password);
+				SecurityContextHolder.getContext().setAuthentication(auth); 
+		sess.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+		return new AuthToken(userid,"USER",sess.getId());
+
+	}*/
 }

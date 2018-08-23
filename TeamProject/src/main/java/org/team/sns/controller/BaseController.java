@@ -15,6 +15,16 @@ public class BaseController {
 
 	@GetMapping("/")
 	public String goHome() {
+		System.out.println("??");
+		return "index";
+	}
+	@GetMapping("/signup")
+	public String signup() {
+		return "index";
+	}
+	@GetMapping("/signin")
+	public String signin() {
+		System.out.println("??");
 		return "index";
 	}
 }

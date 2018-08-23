@@ -48,7 +48,7 @@ class CardList extends React.Component<IProps, IState>{
 
     public componentWillMount() {
         const params = new URLSearchParams(this.props.location.search);
-        axios.post("http://localhost:8081/getBoard", {
+        axios.post("http://localhost:8081/boards/getBoard", {
             params: {
                 // 카드 타입 => 게시글, 카드
                 type: params.get("type"),
@@ -74,7 +74,7 @@ class CardList extends React.Component<IProps, IState>{
     public componentWillUpdate(nextProps: IProps, nextState: IState) {
         const params = new URLSearchParams(this.props.location.search);
         if ((this.state.boards !== this.state.boards) || (this.props.location !== nextProps.location)) {
-            axios.post("http://localhost:8081/getBoard", {
+            axios.post("http://localhost:8081/boards/getBoard", {
                 params: {
                     // 카드 타입 => 게시글, 카드
                     type: params.get("type"),

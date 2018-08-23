@@ -23,7 +23,7 @@ import org.team.sns.vo.Params;
  *
  */
 
-@RestController
+@RestController(value="/boards/")
 @CrossOrigin(origins = "*")
 public class BoardRestController {
 	@Autowired

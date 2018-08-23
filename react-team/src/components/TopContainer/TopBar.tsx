@@ -5,7 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import classNames from 'classnames';
 import { drawerWidth } from '../../constance/Constances';
 import SearchField from './SearchField';
-import { IVoiceStore, withVoice } from '../../contexts/VoiceRecogContext';
+import { withVoice, IVoiceStore } from '../../contexts/VoiceRecogContext';
 
 /**
  * @author:ParkHyeokJoon
@@ -81,11 +81,8 @@ class TopBar extends React.Component<IProps&IVoiceStore, IState> {
             VOICEBOOK
           </Typography>
           <span>
-            {this.state.searchKeyword}
+            {this.props.open?"true":"false"}
           </span>
-          <div>
-            {this.props.inputValue}
-          </div>
           <SearchField
             onChange={this.onChange}
           />
