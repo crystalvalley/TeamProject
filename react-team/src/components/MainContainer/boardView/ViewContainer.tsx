@@ -105,7 +105,7 @@ class ViewContainer extends React.Component<IProps, IState>{
 
     public componentWillMount() {
         const params = new URLSearchParams(this.props.location.search);
-        axios.get("http://localhost:8081/view", {
+        axios.get("http://localhost:8081/boards/view", {
             params: {
                 // 카드 타입 => 게시글, 카드
                 type: params.get("type"),

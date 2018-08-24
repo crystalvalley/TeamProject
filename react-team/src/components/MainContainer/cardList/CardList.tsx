@@ -1,142 +1,110 @@
 import * as React from 'react';
-import { StyleRulesCallback, Theme, withStyles, GridList, GridListTile, } from '@material-ui/core';
-import CardContent from './CardContent';
-import { ICardModel } from '../../../constance/models';
-import axios from 'axios';
-import { Location } from 'history';
-import Scrollbars from 'react-custom-scrollbars';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 
-/**
- * @author:ParkHyeokJoon
- * @since:2018.08.15
- * @version:2018.08.20
- * 
- */
-const style: StyleRulesCallback = (theme: Theme) => ({
-    test: {
-        backgroundColor: "white"
-    },
-    gridList: {
-        // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-        transform: 'translateZ(0)',
-    },
-    photos: {
-        padding: "30px",
-        paddingTop:0
-    }
-})
-
-interface IProps {
-    classes: {
-        test: string;
-        gridList: string;
-        photos: string;
-    }
-    location: Location;
-}
-interface IState {
-    boards: ICardModel[]
+interface Item {
+    id: string;
+    content: string;
 }
 
-class CardList extends React.Component<IProps, IState>{
-    constructor(props: IProps) {
+const getItems = (count: number): Item[] => {
+    return Array
+        .from({ length: count }, (v, k) => k)
+        .map(k => ({
+            id: `item-${k}`,
+            content: `item ${k}`
+        }));
+};
+
+const reorder = (list: any[], startIndex: number, endIndex: number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+};
+
+const getItemStyle = (draggableStyle: any, isDragging: any) => ({
+    userSelect: 'none',
+    background: isDragging ? 'lightgreen' : 'grey',
+    ...draggableStyle
+});
+
+const getListStyle = (isDraggingOver: any) => ({
+    background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    width: 250
+});
+
+interface IAppState {
+    items: Item[];
+}
+
+export default class CardList extends React.Component<{}, IAppState> {
+    constructor(props: {}) {
         super(props);
+
         this.state = {
-            boards: []
+            items: getItems(10)
+        };
+        this.onDragEnd = this.onDragEnd.bind(this);
+    }
+
+    public onDragEnd(result: DropResult) {
+        if (!result.destination) {
+            return;
         }
-    }
 
-    public componentWillMount() {
-        const params = new URLSearchParams(this.props.location.search);
-        axios.post("http://localhost:8081/boards/getBoard", {
-            params: {
-                // 카드 타입 => 게시글, 카드
-                type: params.get("type"),
-                // 정렬
-                order: params.get("order"),
-                // 친구만 보기, 그룹만보기 등등
-                show: params.get("show"),
-                // 대상만 보기(작성자 등)
-                target: params.get("target"),
-                // 태그
-                tag: params.get("tag")
-            },
-            data: {
-                test: "test"
-            }
-        })
-            .then((response) => {
-                this.setState({
-                    boards: response.data
-                });
-            })
-    }
-    public componentWillUpdate(nextProps: IProps, nextState: IState) {
-        const params = new URLSearchParams(this.props.location.search);
-        if ((this.state.boards !== this.state.boards) || (this.props.location !== nextProps.location)) {
-            axios.post("http://localhost:8081/boards/getBoard", {
-                params: {
-                    // 카드 타입 => 게시글, 카드
-                    type: params.get("type"),
-                    // 정렬
-                    order: params.get("order"),
-                    // 친구만 보기, 그룹만보기 등등
-                    show: params.get("show"),
-                    // 대상만 보기(작성자 등)
-                    target: params.get("target"),
-                    // 태그
-                    tag: params.get("tag")
-                },
-                data: {
-                    test: "test"
-                }
-            }).then((result) => this.setState({
-                boards: result.data
-            }))
-        }
-    }
+        const items = reorder(
+            this.state.items,
+            result.source.index,
+            result.destination.index
+        );
 
-
+        this.setState({ items });
+    }
 
     public render() {
-        const { classes } = this.props;
         return (
-            <Scrollbars
-                autoHide={true}
-                style={{
-                    flexGrow:1
-                }}
+            <DragDropContext
+                onDragEnd={this.onDragEnd}
             >
-                <div
-                    className={classes.photos}
+                <Droppable
+                    direction="horizontal"
+                    droppableId="droppable"
                 >
-                    <GridList
-                        cellHeight={300}
-                        spacing={20}
-                        className={classes.gridList}
-                        cols={3}
-                        style={{
-                            overflow: "visible",
-                        }}
-                    >
-                        {
-                            this.state.boards.map((board, index) => {
-                                return (
-                                    <GridListTile
-                                        key={index}
-                                        cols={1}
-                                    >
-                                        <CardContent
-                                            card={board}
-                                        />
-                                    </GridListTile>
-                                );
-                            })
-                        }
-                    </GridList>
-                </div>
-            </Scrollbars>
+                    {(provided, snapshot) => (
+                        <div
+                            ref={provided.innerRef}
+                            style={getListStyle(snapshot.isDraggingOver)}
+                        >
+                            {this.state.items.map((item, index) => (
+                                <Draggable                                
+                                    index={index}
+                                    key={item.id}
+                                    draggableId={item.id}
+                                >
+                                    {// tslint:disable-next-line:no-shadowed-variable
+                                        (provided2, snapshot) => (
+                                            <div>
+                                                <div
+                                                    ref={provided2.innerRef}
+                                                    style={getItemStyle(
+                                                        provided2.draggableProps.style,
+                                                        snapshot.isDragging
+                                                    )}
+                                                    {...provided2.dragHandleProps}
+                                                >
+                                                    {item.content}
+                                                </div>
+                                                {provided.placeholder}
+                                            </div>
+                                        )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
         );
     }
 }
-export default withStyles(style)(CardList)

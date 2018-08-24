@@ -1,16 +1,14 @@
 import * as React from 'react';
-import { StyleRulesCallback, Theme, withStyles, Toolbar, IconButton, AppBar, Typography } from '@material-ui/core';
+import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider } from '@material-ui/core';
 
-import MenuIcon from '@material-ui/icons/Menu';
 import classNames from 'classnames';
-import { drawerWidth } from '../../constance/Constances';
 import SearchField from './SearchField';
 import { withVoice, IVoiceStore } from '../../contexts/VoiceRecogContext';
 
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
- * @version:2018.08.14
+ * @version:2018.08.24
  * 
  */
 const styles: StyleRulesCallback = (theme: Theme) => ({
@@ -19,14 +17,6 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
     }),
   },
   menuButton: {
@@ -44,17 +34,16 @@ interface IProps {
     appBarShift: string;
     menuButton: string;
     hide: string;
+    secondaryToolbar: string;
   }
-  open: boolean
-  handleDrawerOpen(): void;
 }
 
 interface IState {
   searchKeyword: string;
 }
 
-class TopBar extends React.Component<IProps&IVoiceStore, IState> {
-  constructor(props: IProps&IVoiceStore) {
+class TopBar extends React.Component<IProps & IVoiceStore, IState> {
+  constructor(props: IProps & IVoiceStore) {
     super(props);
     this.state = {
       searchKeyword: ""
@@ -67,25 +56,21 @@ class TopBar extends React.Component<IProps&IVoiceStore, IState> {
     return (
       <AppBar
         position="absolute"
-        className={classNames(classes.appBar, this.props.open && classes.appBarShift)}
+        className={classNames(classes.appBar)}
       >
-        <Toolbar disableGutters={!this.props.open}>
-          <IconButton
-            aria-label="Open drawer"
-            onClick={this.props.handleDrawerOpen}
-            className={classNames(classes.menuButton, this.props.open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="title" noWrap={true}>
-            VOICEBOOK
-          </Typography>
+        <Toolbar>
           <span>
             {this.props.inputValue}
           </span>
           <SearchField
             onChange={this.onChange}
           />
+        </Toolbar>
+        <Divider />
+        <Toolbar
+          variant="dense"
+        >
+          test
         </Toolbar>
       </AppBar>
     );

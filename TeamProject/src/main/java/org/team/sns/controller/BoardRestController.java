@@ -38,7 +38,7 @@ public class BoardRestController {
 		System.out.println(datas);
 		return br.getBoardsByUserId("testid");
 	}	
-	@GetMapping("/view")
+	@GetMapping("/boards/view")
 	public Map<String,Object> sendBoard(String type, int num) {
 		System.out.println(type);
 		System.out.println(num);
