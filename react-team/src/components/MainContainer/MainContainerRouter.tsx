@@ -4,7 +4,6 @@ import { Switch, Route } from 'react-router-dom';
 import CardListContainer from './cardList/CardListContainer';
 import ViewContainer from './boardView/ViewContainer';
 import SnsEditorContainer from './snsEditor/SnsEditorContainer';
-import LeftFriend from './FriendList/LeftFriend';
 
 /**
  * @author:ParkHyeokJoon
@@ -62,7 +61,6 @@ class MainContainerRouter extends React.Component<IProps> {
                 <div className={classes.toolbar} />
                 <div className={classes.toolbar} />
                 <Switch>     
-                    <Route path="/Friend" component={LeftFriend}/>
                     <Route path="/Editor" component={SnsEditorContainer} />
                     <Route path="/view" component={ViewContainer} />
                     <Route path="/" component={CardListContainer} />

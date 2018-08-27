@@ -1,117 +1,94 @@
 import * as React from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
+import { ICardContainerModel, ICardModel } from '../../../constance/models';
+import { testData } from './testData';
 import CardList from './CardList';
+import { withStyles, StyleRulesCallback, Theme } from '@material-ui/core';
 
-interface Item {
-    id: string;
-    content: string;
+const style: StyleRulesCallback = (theme: Theme) => ({
+    container: {
+        display: "flex",
+        border:"1px solid black",
+        flexDirection:"row"
+    }
+})
+
+interface IProps {
+    classes: {
+        container: string;
+    }
 }
-// fake data generator
-const getItems = (count: number): Item[] =>
-    Array.from({ length: count }, (v, k) => k).map(k => ({
-        id: `item-${k}`,
-        content: `item ${k}`,
-    }));
 
-// a little function to help us with reordering the result
-const reorder = (list: any[], startIndex: number, endIndex: number) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
 
-    return result;
-};
-
-const grid = 8;
-
-const getItemStyle = (isDragging: any, draggableStyle: any) => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: 'none',
-    padding: grid * 2,
-    margin: `0 ${grid}px 0 0`,
-
-    // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'grey',
-
-    // styles we need to apply on draggables
-    ...draggableStyle,
-});
-
-const getListStyle = (isDraggingOver: any) => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    display: 'flex',
-    padding: grid,
-    overflow: 'auto',
-});
-
-interface IAppState {
-    items: Item[];
-}
-export default class CardListContainer extends React.Component<{}, IAppState> {
-    constructor(props: {}) {
+class CardListContainer extends React.Component<IProps, ICardContainerModel> {
+    constructor(props: IProps) {
         super(props);
-        this.state = {
-            items: getItems(6),
-        };
+        this.state = testData;
         this.onDragEnd = this.onDragEnd.bind(this);
     }
 
-    public onDragEnd(result: DropResult) {
-        // dropped outside the list
-        if (!result.destination) {
-            return;
-        }
-
-        const items = reorder(
-            this.state.items,
-            result.source.index,
-            result.destination.index
-        );
-
-        this.setState({
-            items,
-        });
-    }
-
-    // Normally you would want to split things out into separate components.
-    // But in this example everything is just done in one place for simplicity
     public render() {
         return (
-            <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="droppable" direction="horizontal">
-                    {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}
-                            {...provided.droppableProps}
-                        >
-                            {this.state.items.map((item, index) => (
-                                <Draggable
-                                    key={item.id}
-                                    draggableId={item.id}
-                                    index={index}
-                                >
-                                    {(provided2, snapshot2) => (
-                                        <div
-                                            ref={provided2.innerRef}
-                                            {...provided2.draggableProps}
-                                            {...provided2.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot2.isDragging,
-                                                provided2.draggableProps.style
-                                            )}
-                                        >
-                                            TITLE{item.content}
-                                            <CardList />
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
+            <DragDropContext
+                onDragEnd={this.onDragEnd}
+            >
+                <div>
+                    <Droppable
+                        droppableId={"Container"}
+                        direction="horizontal"
+                    >{
+                            (provided, snapshot) => {
+                                return (
+                                    <div
+                                        className={this.props.classes.container}
+                                        ref={provided.innerRef}
+                                    >{
+                                            this.state.order.map((id,index) => {
+                                                const cardList: ICardModel[] = this.state.lists[id];
+                                                return (
+                                                    <CardList
+                                                        index={index}
+                                                        key={id}
+                                                        id={id}
+                                                        cardList={cardList}
+                                                    />
+                                                );
+                                            })
+                                        }
+                                    </div>
+                                );
+                            }
+                        }
+                    </Droppable>
+                </div>
             </DragDropContext>
         );
     }
+    private onDragEnd(result: DropResult) {
+        const { destination, source, draggableId } = result;
+
+        // 목적지가 없다면 => 바뀐게 없다면
+        if (!destination) { return; }
+        // 드랍된 곳이 원래 있던 곳인데, 순서가 그대로 라면
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) { return; }
+        const newOrder = this.state.order;
+        // 해당 리스트의 
+        newOrder.splice(source.index, 1);
+        newOrder.splice(destination.index, 0, draggableId);
+
+        const newState: ICardContainerModel = {
+            ...this.state,
+            lists: {
+                ...this.state.lists
+            },
+            order: newOrder
+        }
+        this.setState(newState);
+        return;
+    }
 }
+
+export default withStyles(style)(CardListContainer)

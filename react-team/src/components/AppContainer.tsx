@@ -2,8 +2,6 @@ import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, } from "@material-ui/core";
 import TopBar from './TopContainer/TopBar';
 import MainContainerRouter from './MainContainer/MainContainerRouter';
-import { drawerWidth } from '../constance/Constances';
-import FriendList from './RightContainer/FriendList';
 
 
 /**
@@ -33,10 +31,6 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
-    marginRight: drawerWidth
-  },
-  paper: {
-    width: drawerWidth
   },
 });
 
@@ -71,7 +65,6 @@ class AppMain extends React.Component<IProps> {
       >
         <TopBar />
         <MainContainerRouter />
-        <FriendList />
       </div>
     );
   }
