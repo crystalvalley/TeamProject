@@ -16,9 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class BaseController {
 
 	@GetMapping("/")
-	public String goHome(Principal principal) {
+	public String index(Principal principal) {
 		System.out.println(principal.getName());
 		return "index";
+	}
+	@GetMapping("/home")
+	public String goHome(Principal principal) {
+		System.out.println(principal.getName());
+		return "redirect:/";
 	}
 	@GetMapping("/signup")
 	public String signup() {

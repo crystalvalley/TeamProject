@@ -7,6 +7,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * 
+ * @author ParkHyeokJoon
+ * @since 2018.08.23
+ * @version 2018.08.23
+ *
+ */
 public class SecurityUser implements UserDetails {
 	private String username;
 	private String password;

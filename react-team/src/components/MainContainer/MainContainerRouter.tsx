@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { StyleRulesCallback, Theme, withStyles, Toolbar, } from '@material-ui/core';
+import { StyleRulesCallback, Theme, withStyles, } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
-import CardList from './cardList/CardList';
+import CardListContainer from './cardList/CardListContainer';
 import ViewContainer from './boardView/ViewContainer';
 import SnsEditorContainer from './snsEditor/SnsEditorContainer';
-import LeftFriend from './FriendList/LeftFriend';
 
 /**
  * @author:ParkHyeokJoon
@@ -44,7 +43,6 @@ interface IProps {
         contentOpen: string;
         contentClose: string;
     }
-    open: boolean;
 }
 
 class MainContainerRouter extends React.Component<IProps> {
@@ -61,14 +59,11 @@ class MainContainerRouter extends React.Component<IProps> {
                 }
             >
                 <div className={classes.toolbar} />
-                <Toolbar className={classes.Toolbar}>
-                    sub menu bar
-                </Toolbar>
+                <div className={classes.toolbar} />
                 <Switch>     
-                    <Route path="/Friend" component={LeftFriend}/>
                     <Route path="/Editor" component={SnsEditorContainer} />
                     <Route path="/view" component={ViewContainer} />
-                    <Route path="/" component={CardList} />
+                    <Route path="/" component={CardListContainer} />
                 </Switch>
             </main>
         );

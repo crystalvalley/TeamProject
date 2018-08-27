@@ -4,6 +4,7 @@ import EditorMenu from './EditorMenu';
 import { EditorState } from 'draft-js';
 import SNSEditor from './SnsEditor';
 import Scrollbars from 'react-custom-scrollbars';
+import { ILoginStore, withLoginContext } from '../../../contexts/LoginContext';
 
 /**
  * @author : ParkHyeokJoon
@@ -24,7 +25,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
 interface IProps {
     classes: {
         editorContainer: string;
-    }
+    },
 }
 
 interface IState {
@@ -33,8 +34,8 @@ interface IState {
 }
 
 
-class SNSEditorContainer extends React.Component<IProps, IState>{
-    constructor(props: IProps) {
+class SNSEditorContainer extends React.Component<IProps&ILoginStore, IState>{
+    constructor(props: IProps&ILoginStore) {
         super(props);
         this.state = {
             editorState: EditorState.createEmpty(),
@@ -69,6 +70,7 @@ class SNSEditorContainer extends React.Component<IProps, IState>{
                     <EditorMenu
                         editorState={editorState}
                         title={this.state.title}
+                        writer={this.props.loginedId}
                     />
                     <Scrollbars>
                         <SNSEditor
@@ -102,4 +104,4 @@ class SNSEditorContainer extends React.Component<IProps, IState>{
     }
 }
 
-export default withStyles(style)(SNSEditorContainer)
+export default withLoginContext(withStyles(style)(SNSEditorContainer))

@@ -1,7 +1,6 @@
 package org.team.sns.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.team.sns.domain.Member;
 import org.team.sns.persistence.MemberRepository;
-import org.team.sns.service.SecurityUserService;
 import org.team.sns.service.SecurityUserServiceImpl;
 import org.team.sns.vo.RestMsgObject;
 
@@ -57,9 +55,13 @@ public class AccountRestController {
 	}
 
 	@PostMapping("/loginCheck")
-	public RestMsgObject loginCheck(HttpServletRequest request) {
+	public RestMsgObject loginCheck(Principal principal) {
 		RestMsgObject msg = new RestMsgObject();
-		msg.setMsg("fail");
+		if(principal!=null) {
+			msg.setMsg(principal.getName());	
+		}else {
+			msg.setMsg("Not Logined");		
+		}
 		return msg;
 	}
 

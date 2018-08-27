@@ -9,35 +9,31 @@ import axios from 'axios';
 
 export interface ILoginStore {
     loginedId: string;
-    loginFunc(id:string):void;
 }
 
 const loginContext = React.createContext<ILoginStore>({
     loginedId: "",
-    loginFunc:(id:string)=>{return}
 });
 class LoginProvider extends React.Component<{}, ILoginStore> {
     constructor(props: {}) {
         super(props);
-        this.login = this.login.bind(this);
         this.state = {
             loginedId: "",
-            loginFunc : this.login
         }
+        this.loginCheck = this.loginCheck.bind(this);
     }
 
     // 새로고침 했을 때 적용하도록
     public componentDidMount() {
-        axios.post("http://localhost:8081/loginCheck")
-            .then((response) => {
-                if (response.data.msg !== "fail") {
-                    this.setState({
-                        loginedId: response.data.msg
-                    })
-                }
-            })
+        this.loginCheck();
     }
-
+    public componentDidUpdate(nextProps:{},nextState:ILoginStore){
+        if(this.state.loginedId !== nextState.loginedId){
+            this.loginCheck();
+        }else{
+            return;
+        }
+    }
     public render() {
         return (
             <loginContext.Provider value={this.state}>
@@ -45,10 +41,24 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             </loginContext.Provider>
         );
     }
-    private login(id : string){
-        this.setState({
-            loginedId : id
-        })
+    private loginCheck(){
+        axios.post("http://localhost:8081/loginCheck")
+            .then((response) => {
+                if (response.data.msg !== "Not Logined") {
+                    this.setState({
+                        loginedId: response.data.msg
+                    })
+                }
+                /*
+                else{
+                    // 로그인 되지 않았고 loginPage라면
+                    if(window.location.href.indexOf("signin")!==-1){
+                        location.href = "/signin";
+                    }
+                }
+                */
+            })
+
     }
 }
 export { LoginProvider };

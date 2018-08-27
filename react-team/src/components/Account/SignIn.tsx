@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withStyles, TextField, Button, Typography } from '@material-ui/core';
 import { signInStyle } from './Styles/SignInStyle';
-import axios, { AxiosResponse } from 'axios';
 import { ILoginStore, withLoginContext } from '../../contexts/LoginContext';
 
 /**
@@ -43,7 +42,6 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
         }
         this.onChangeId = this.onChangeId.bind(this);
         this.onChangePw = this.onChangePw.bind(this);
-        this.login = this.login.bind(this);
     }
 
     public componentWillReceiveProps(){
@@ -98,13 +96,6 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                         >
                             Subscribe
                         </Button>
-                        <Button
-                            type="button"
-                            onClick={this.login}
-                            variant="contained"
-                        >
-                            AJAX
-                        </Button>
                     </form>
                     <div className={classes.footer}>
                         <Typography>
@@ -127,21 +118,6 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
     private onChangePw(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({
             password: event.currentTarget.value
-        })
-    }
-    private login(){
-        axios.post("/signin",{
-            params :{
-                userid : this.state.userid,
-                password : this.state.password
-            }
-        }).then((response : AxiosResponse)=>{
-            if(response.data.msg === "success"){
-                alert("Good")
-                this.props.loginFunc(this.state.userid);
-            }else{
-                alert(response.data.description)
-            }
         })
     }
 }

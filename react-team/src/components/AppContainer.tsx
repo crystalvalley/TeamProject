@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, } from "@material-ui/core";
-import SideMenu from './LeftContainer/SideMenu';
 import TopBar from './TopContainer/TopBar';
 import MainContainerRouter from './MainContainer/MainContainerRouter';
-import { drawerWidth } from '../constance/Constances';
-import FriendList from './RightContainer/FriendList';
 
 
 /**
@@ -34,10 +31,6 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
-    marginRight: drawerWidth
-  },
-  paper: {
-    width: drawerWidth
   },
 });
 
@@ -53,18 +46,13 @@ interface IProps {
   theme: Theme
 }
 
-interface IState {
-  open: boolean;
-}
 
-class AppMain extends React.Component<IProps, IState> {
+class AppMain extends React.Component<IProps> {
   constructor(props: IProps) {
     super(props);
     this.state = {
       open: true,
     };
-    this.handleDrawerClose = this.handleDrawerClose.bind(this);
-    this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
   }
 
 
@@ -75,29 +63,11 @@ class AppMain extends React.Component<IProps, IState> {
       <div
         className={classes.root}
       >
-        <TopBar
-          open={this.state.open}
-          handleDrawerOpen={this.handleDrawerOpen}
-        />
-        <SideMenu
-          handleClose={this.handleDrawerClose}
-          theme={this.props.theme}
-          open={this.state.open}
-        />
-        <MainContainerRouter
-          open={this.state.open}
-        />
-        <FriendList />
+        <TopBar />
+        <MainContainerRouter />
       </div>
     );
   }
-  private handleDrawerOpen() {
-    this.setState({ open: true });
-  };
-
-  private handleDrawerClose() {
-    this.setState({ open: false });
-  };
 }
 
 export default withStyles(styles, { withTheme: true })(AppMain);
