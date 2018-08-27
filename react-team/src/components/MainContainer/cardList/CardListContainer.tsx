@@ -4,12 +4,17 @@ import { ICardContainerModel, ICardModel } from '../../../constance/models';
 import { testData } from './testData';
 import CardList from './CardList';
 import { withStyles, StyleRulesCallback, Theme } from '@material-ui/core';
+/**
+ * @author : ParkHyeokJoon
+ * @since : 2018.08.27
+ * @Version : 2018.08.27
+ * 
+ */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
     container: {
         display: "flex",
-        border:"1px solid black",
-        flexDirection:"row"
+        height: "100%",
     }
 })
 
@@ -32,35 +37,33 @@ class CardListContainer extends React.Component<IProps, ICardContainerModel> {
             <DragDropContext
                 onDragEnd={this.onDragEnd}
             >
-                <div>
-                    <Droppable
-                        droppableId={"Container"}
-                        direction="horizontal"
-                    >{
-                            (provided, snapshot) => {
-                                return (
-                                    <div
-                                        className={this.props.classes.container}
-                                        ref={provided.innerRef}
-                                    >{
-                                            this.state.order.map((id,index) => {
-                                                const cardList: ICardModel[] = this.state.lists[id];
-                                                return (
-                                                    <CardList
-                                                        index={index}
-                                                        key={id}
-                                                        id={id}
-                                                        cardList={cardList}
-                                                    />
-                                                );
-                                            })
-                                        }
-                                    </div>
-                                );
-                            }
+                <Droppable
+                    droppableId={"Container"}
+                    direction="horizontal"
+                >{
+                        (provided, snapshot) => {
+                            return (
+                                <div
+                                    className={this.props.classes.container}
+                                    ref={provided.innerRef}
+                                >{
+                                        this.state.order.map((id, index) => {
+                                            const cardList: ICardModel[] = this.state.lists[id];
+                                            return (
+                                                <CardList
+                                                    index={index}
+                                                    key={id}
+                                                    id={id}
+                                                    cardList={cardList}
+                                                />
+                                            );
+                                        })
+                                    }
+                                </div>
+                            );
                         }
-                    </Droppable>
-                </div>
+                    }
+                </Droppable>
             </DragDropContext>
         );
     }

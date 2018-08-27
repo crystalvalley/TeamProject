@@ -12,9 +12,6 @@ import SnsEditorContainer from './snsEditor/SnsEditorContainer';
  * 
  */
 const styles: StyleRulesCallback = (theme: Theme) => ({
-    MainContainer: {
-        height: "100%"
-    },
     Toolbar: {
         border: "1px solid black",
         marginBottom: "30px"
@@ -30,8 +27,10 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing.unit * 3,
-        display:"flex",
-        flexDirection:"column"
+        display: "flex",
+        flexDirection: "column",
+        marginLeft:"5%",
+        marginRight:"5%"
     },
 })
 
@@ -60,7 +59,7 @@ class MainContainerRouter extends React.Component<IProps> {
             >
                 <div className={classes.toolbar} />
                 <div className={classes.toolbar} />
-                <Switch>     
+                <Switch>
                     <Route path="/Editor" component={SnsEditorContainer} />
                     <Route path="/view" component={ViewContainer} />
                     <Route path="/" component={CardListContainer} />
