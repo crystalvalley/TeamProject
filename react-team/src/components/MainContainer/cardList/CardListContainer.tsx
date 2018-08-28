@@ -13,6 +13,7 @@ import { withStyles, StyleRulesCallback, Theme } from '@material-ui/core';
 
 const style: StyleRulesCallback = (theme: Theme) => ({
     container: {
+        
         display: "flex",
         height: "100%",
     }
@@ -78,7 +79,7 @@ class CardListContainer extends React.Component<IProps, ICardContainerModel> {
             destination.index === source.index
         ) { return; }
         const newOrder = this.state.order;
-        // 해당 리스트의 
+        // 순서를 조절함
         newOrder.splice(source.index, 1);
         newOrder.splice(destination.index, 0, draggableId);
 
