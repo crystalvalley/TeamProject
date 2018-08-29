@@ -5,6 +5,8 @@ import { EditorState, } from 'draft-js';
 import SNSEditor from './SnsEditor';
 import { ILoginStore, withLoginContext } from "../../../../contexts/LoginContext"
 import { SNSDecorator } from './Decorator';
+import SuggestBox, { ISuggestState } from './Suggestion/SuggestBox';
+
 
 /**
  * @author : ParkHyeokJoon
@@ -28,7 +30,8 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         padding: "25px",
         backgroundColor: "white",
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
+        position: "relative"
     },
     menuPart: {
         flexBasis: "25%",
@@ -48,8 +51,10 @@ interface IProps {
 interface IState {
     editorState: EditorState;
     title: string;
-    start: number;
-    end: number;
+    suggestState: ISuggestState
+    focus: number;
+    hashSuggest: boolean;
+    sub: string;
 }
 
 
@@ -59,11 +64,20 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
         this.state = {
             editorState: EditorState.createEmpty(SNSDecorator),
             title: "",
-            start: 0,
-            end: 0,
+            sub: "",
+            suggestState: {
+                start: 0,
+                end: 0,
+                suggest: false,
+                positionX: 0,
+                positionY: 0,
+            },
+            focus: -1,
+            hashSuggest: false
         }
         this.editorChange = this.editorChange.bind(this);
         this.titleChange = this.titleChange.bind(this);
+        this.onHashTag = this.onHashTag.bind(this);
     }
 
     public render() {
@@ -89,6 +103,9 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                     <div>
                         <Button>Save</Button>
                     </div>
+                    <SuggestBox
+                        {...this.state.suggestState}
+                    />
                 </div>
                 <div
                     className={classes.menuPart}
@@ -98,36 +115,90 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                         title={this.state.title}
                         writer={this.props.loginedId}
                     />
-                    {this.state.title}<br />
-                    {this.state.start}<br />
-                    {this.state.end}<br />
                 </div>
             </React.Fragment>
         );
     }
     private editorChange(e: EditorState) {
-        const text = this.getNowBlock(e).getText();
-        // let matchArr;
-        let newstart = 0;
-        let newend = 0;
-        /*
-        matchArr = /\#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.;\-]+/g.exec(text)
-        while (matchArr !== null) {
-            newstart = matchArr.index;
-            newend = newstart + matchArr[0].length
-            matchArr = /\#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.;\-]+/g.exec(text)
-        }
-        */
-
+        const nowBlock = this.getNowBlock(e);
+        const text = nowBlock.getText();
         this.setState({
             editorState: e,
             title: text,
-            start: newstart,
-            end: newend
+            focus: e.getSelection().getFocusOffset(),
+        }, () => {
+            this.onHashTag(e)
         })
-
-
     }
+    private cursorXY(text: string,position:number) {
+        let sub;
+        try {
+            const nowNode = window.getSelection().focusNode.parentElement!;
+            sub = document.createElement("span");
+            const copyStyle = getComputedStyle(nowNode);
+            sub.style.margin = copyStyle.margin;
+            sub.style.padding = copyStyle.padding;  
+            nowNode.appendChild(sub);
+            const getofs = document.getElementById("getOffset");
+            const left = sub.offsetLeft + getofs!.offsetLeft - 15;
+            const top = sub.offsetTop + getofs!.offsetTop + 30;
+            sub.remove();
+            return [left, top];
+        } catch{
+            return;
+        }
+    }
+    private onHashTag(e: EditorState) {
+        const nowBlock = this.getNowBlock(e);
+        const text = nowBlock.getText();
+        const nowFocus = e.getSelection().getFocusOffset();
+        let matchArr;
+        let newstart = 0;
+        let newend = 0;
+        const reg = /\#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.;\-]+/g;
+        matchArr = reg.exec(text)
+        if (matchArr === null) {
+            this.setState({
+                suggestState: {
+                    end: -1,
+                    positionX: -1,
+                    positionY: -1,
+                    start: -1,
+                    suggest: false
+                }
+            })
+        }
+        while (matchArr !== null) {
+            newstart = matchArr.index;
+            newend = newstart + matchArr[0].length
+            matchArr = reg.exec(text)
+            const xy = this.cursorXY(text,nowFocus);
+            if (xy === undefined) { return; }
+            if (newstart < nowFocus && newend >= nowFocus) {
+                this.setState({
+                    suggestState: {
+                        end: newend,
+                        start: newstart,
+                        suggest: true,
+                        positionX: xy[0],
+                        positionY: xy[1]
+                    }
+                })
+                return;
+            } else {
+                const exSuggestState = this.state.suggestState;
+                this.setState({
+                    suggestState: {
+                        ...exSuggestState,
+                        end: -1,
+                        start: -1,
+                        suggest: false,
+                    }
+                })
+            }
+        }
+    }
+
     private titleChange(e: React.ChangeEvent<HTMLInputElement>) {
         this.setState({
             title: e.currentTarget.value

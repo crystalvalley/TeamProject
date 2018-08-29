@@ -43,6 +43,7 @@ class SNSEditor extends React.Component<IProps>{
         const { classes } = this.props;
         return (
             <div
+                id="getOffset"
                 className={classes.editorWrapper}
             >
                 <Scrollbars
@@ -50,8 +51,7 @@ class SNSEditor extends React.Component<IProps>{
                     className={classes.editorForm}
                     autoHide={true}
                 >
-                    <Editor
-                        
+                    <Editor                        
                         ref={(element => { this.editor = element })}
                         editorState={this.props.editorState}
                         onChange={this.props.editorChange}

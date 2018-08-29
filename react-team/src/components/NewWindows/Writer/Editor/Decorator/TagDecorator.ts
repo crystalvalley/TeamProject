@@ -11,8 +11,7 @@ const HASHTAG_REGEX: RegExp = /\#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.;\-]+/g;
 export function tagStrategy(contentBlock: ContentBlock, callback: (start: number, end: number) => void, contentState: ContentState) {
   findWithRegex(HASHTAG_REGEX, contentBlock, callback);
 }
-
-function findWithRegex(regex: RegExp, contentBlock: ContentBlock, callback: (start: number, end: number) => void) {
+export function findWithRegex(regex: RegExp, contentBlock: ContentBlock, callback: (start: number, end: number) => void) {
   const text = contentBlock.getText();
   let matchArr;
   let start = 0;
@@ -23,3 +22,17 @@ function findWithRegex(regex: RegExp, contentBlock: ContentBlock, callback: (sta
     matchArr = regex.exec(text)
   }
 }
+
+/*
+export function tagStrategy(contentBlock: ContentBlock, callback: (start: number, end: number) => void, contentState: ContentState) {  
+  contentBlock.findEntityRanges(
+    (character) => {
+      const entityKey = character.getEntity();
+      return (
+        entityKey !== null &&
+        contentState.getEntity(entityKey).getType() === 'LINK'
+      );
+    }, callback
+  )
+}
+*/
