@@ -3,8 +3,11 @@ import { StyleRulesCallback, Theme, withStyles, } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
 import CardListContainer from './cardList/CardListContainer';
 import ViewContainer from './boardView/ViewContainer';
+<<<<<<< HEAD
 import SnsEditorContainer from './snsEditor/SnsEditorContainer';
 import largeCard from './cardList/largeCard';
+=======
+>>>>>>> master
 
 /**
  * @author:ParkHyeokJoon
@@ -13,9 +16,6 @@ import largeCard from './cardList/largeCard';
  * 
  */
 const styles: StyleRulesCallback = (theme: Theme) => ({
-    MainContainer: {
-        height: "100%"
-    },
     Toolbar: {
         border: "1px solid black",
         marginBottom: "30px"
@@ -31,8 +31,10 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing.unit * 3,
-        display:"flex",
-        flexDirection:"column"
+        display: "flex",
+        flexDirection: "column",
+        marginLeft:"5%",
+        marginRight:"5%"
     },
 })
 
@@ -61,8 +63,7 @@ class MainContainerRouter extends React.Component<IProps> {
             >
                 <div className={classes.toolbar} />
                 <div className={classes.toolbar} />
-                <Switch>     
-                    <Route path="/Editor" component={SnsEditorContainer} />
+                <Switch>
                     <Route path="/view" component={ViewContainer} />
                     <Route path="/" component={CardListContainer} />
                 </Switch>

@@ -4,6 +4,7 @@ import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider } from 
 import classNames from 'classnames';
 import SearchField from './SearchField';
 import { withVoice, IVoiceStore } from '../../contexts/VoiceRecogContext';
+import BtnBox from './BtnBox';
 
 /**
  * @author:ParkHyeokJoon
@@ -19,6 +20,9 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
+  topBar: {
+    display: "flex"
+  },
   menuButton: {
     marginLeft: 12,
     marginRight: 36,
@@ -26,6 +30,11 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   hide: {
     display: 'none',
   },
+  toolBox: {
+    flexBasis: "25%",
+    flexGrow:1,
+    textAlign:"center"
+  }
 })
 
 interface IProps {
@@ -35,6 +44,8 @@ interface IProps {
     menuButton: string;
     hide: string;
     secondaryToolbar: string;
+    toolBox: string;
+    topBar: string;
   }
 }
 
@@ -58,19 +69,25 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
         position="absolute"
         className={classNames(classes.appBar)}
       >
-        <Toolbar>
-          <span>
-            {this.props.inputValue}
-          </span>
+        <Toolbar
+          className={classes.topBar}
+        >
           <SearchField
             onChange={this.onChange}
           />
+          <span
+            className={classes.toolBox}
+          >
+            <BtnBox />
+          </span>
         </Toolbar>
         <Divider />
         <Toolbar
           variant="dense"
         >
-          test
+          <span>
+            {this.props.inputValue}
+          </span>
         </Toolbar>
       </AppBar>
     );
