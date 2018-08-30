@@ -34,9 +34,6 @@ interface IProps {
         listBody:string;
     },
     index: number;
-}
-
-interface IProps {
     id: string;
     cardList: ICardModel[];
 }

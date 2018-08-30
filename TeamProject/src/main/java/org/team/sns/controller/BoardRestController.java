@@ -3,6 +3,8 @@ package org.team.sns.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.team.sns.domain.Board;
 import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.MemberRepository;
+import org.team.sns.service.BoardServiceImpl;
 import org.team.sns.vo.Datas;
 import org.team.sns.vo.Params;
 
@@ -19,7 +22,7 @@ import org.team.sns.vo.Params;
  * 
  * @author ParkHyeokJoon
  * @Since 18.08.17
- * @version 18.08.20
+ * @version 18.08.30
  *
  */
 
@@ -27,9 +30,12 @@ import org.team.sns.vo.Params;
 @CrossOrigin(origins = "*")
 public class BoardRestController {
 	@Autowired
+	BoardServiceImpl bs;
+	@Autowired
 	BoardRepository br;
 	@Autowired
 	MemberRepository mr;
+
 
 	@PostMapping("/boards/getBoard")
 	public List<Board> test(Params params,  Datas datas) {
@@ -51,11 +57,8 @@ public class BoardRestController {
 	}
 	
 	@PostMapping("/boards/writeBoard")
-	public void writeBoard(Board board,String writerId) {
-		System.out.println(board);
-		System.out.println(writerId);
-		board.setWriter(mr.findById(writerId).get());
-		br.save(board);
+	public void writeBoard(Board board) {
+		bs.saveBoard(board);
 	}
 
 }

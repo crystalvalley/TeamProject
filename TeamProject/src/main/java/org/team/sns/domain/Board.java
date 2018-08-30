@@ -30,7 +30,7 @@ import lombok.ToString;
  * 
  * @author ParkHyeokjoon
  * @since 18.08.10
- * @version 18.08.14
+ * @version 18.08.30
  *
  */
 
@@ -41,8 +41,8 @@ import lombok.ToString;
 @Table(name = "Boards")
 // _id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
-@ToString(exclude= {"photos","replys","share","writer","sounds"})
-@JsonIgnoreProperties({"photos","replys","share","writer","sounds"})
+@ToString(exclude = { "photos", "replys", "share", "writer", "sounds" })
+@JsonIgnoreProperties({ "photos", "replys", "share", "writer", "sounds" })
 public class Board {
 	// primary key
 	@Id
@@ -53,49 +53,55 @@ public class Board {
 	// sequence생성
 	@SequenceGenerator(name = "seq", sequenceName = "Boards_seq", initialValue = 1, allocationSize = 1)
 	private int id;
-	
-	
+
 	@NotNull
-	private String title; //글의 제목
+	private String title; // 글의 제목
 	@NotNull
 	private String content; // 글의 내용
-	
+
 	// 생성시 시간으로 자동 설정
 	@CreationTimestamp
 	private Timestamp writeDay; // 작성날짜
-	
+
 	// 업데이트 시 시간으로 자동 설정
 	@UpdateTimestamp
 	private Timestamp updateDay; // 업로드 날짜
-	
+
 	// default는 전체공개
 	@ColumnDefault("'all'")
 	private String setAuthority; // 권한설정
-	
+
 	// default는 false
 	@ColumnDefault("false")
 	private boolean upload; // 업로드
-	
+
 	// default 0
 	@ColumnDefault("0")
 	private int hitCount; // 조회수
-	
+
 	// 다대일 양방향 연관관계
-	@ManyToOne	
+	@ManyToOne
 	// writer_id라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)
-	@JoinColumn(name = "writer_id", referencedColumnName = "user_id",updatable=false,nullable=false)
+	@JoinColumn(name = "writer_id", referencedColumnName = "user_id", updatable = false, nullable = false)
 	private Member writer; // 작성자
 
-	@OneToMany(mappedBy="ownerBoard")
+	@OneToMany(mappedBy = "ownerBoard")
 	private List<Photo> photos;
 
-	@OneToOne(mappedBy="soundBoard")
+	@OneToOne(mappedBy = "soundBoard")
 	private Sound sounds;
-	
-	@OneToMany(mappedBy="board")
+
+	@OneToMany(mappedBy = "board")
 	private List<Reply> replys;
-	
-	@OneToMany(mappedBy="shared")
+
+	@OneToMany(mappedBy = "shared")
 	private List<Share> share;
+
+	@OneToMany
+	@JoinColumn(name = "tag")
+	private List<Tag> tags;
+
+	@OneToMany(mappedBy="mentionBoard")
+	private List<Mention> mentions;
 
 }
