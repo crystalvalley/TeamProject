@@ -3,6 +3,14 @@ import { Card, CardMedia, CardContent, Typography, CardActions, Button, withStyl
 import Icon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+/**
+ * @author:KimMinJeong
+ * @since:2018.08.28
+ * @version:2018.08.30
+ */
+
+
+
 const style: StyleRulesCallback = (theme: Theme) => ({
     card: {
         maxWidth: 500,

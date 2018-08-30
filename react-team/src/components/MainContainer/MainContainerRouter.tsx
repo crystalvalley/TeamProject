@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import CardListContainer from './cardList/CardListContainer';
 import ViewContainer from './boardView/ViewContainer';
 
+
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
@@ -58,7 +59,7 @@ class MainContainerRouter extends React.Component<IProps> {
             >
                 <div className={classes.toolbar} />
                 <div className={classes.toolbar} />
-                <Switch>
+                <Switch>                
                     <Route path="/view" component={ViewContainer} />
                     <Route path="/" component={CardListContainer} />
                 </Switch>
