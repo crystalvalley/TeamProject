@@ -59,15 +59,16 @@ public class BoardServiceImpl implements BoardService{
 	    for(String m : mentions) {
 	    	edittedMention.add(m.substring(1));
 	    }
-		br.save(board);		
-	    board.setTags(tagCheck(hashes));
+		br.save(board);
+		board.setTags(new ArrayList<Tag>());
+	    tagCheck(hashes,board);
 	    board.setMentions(mentionCheck(edittedMention,board));
 		br.save(board);		
 	    
 	}
 
 	@Override
-	public List<Tag> tagCheck(ArrayList<String> list) {
+	public List<Tag> tagCheck(ArrayList<String> list,Board board) {
 		// TODO Auto-generated method stub
 		ArrayList<Tag> result = new ArrayList<>();
 		for(String tag : list) {
@@ -75,9 +76,13 @@ public class BoardServiceImpl implements BoardService{
 			Tag checkedTag;
 			if(tr.existsById(tag)) {
 				checkedTag = tr.findById(tag).get();
+				checkedTag.addBoard(board);
+				tr.save(checkedTag);
+				result.add(checkedTag);
 			}else{
 				checkedTag = new Tag();
 				checkedTag.setTag(tag);
+				checkedTag.addBoard(board);
 				tr.save(checkedTag);
 				result.add(checkedTag);
 			}
@@ -105,6 +110,13 @@ public class BoardServiceImpl implements BoardService{
 			result.add(m);
 		}
 		return result;		
+	}
+
+	@Override
+	public List<Tag> getTagList(String tag) {
+		// TODO Auto-generated method stub
+		// return tr.findByKeyword(tag);
+		return null;
 	}
 
 }

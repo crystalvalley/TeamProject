@@ -3,8 +3,6 @@ import { StyleRulesCallback, Theme, withStyles, } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
 import CardListContainer from './cardList/CardListContainer';
 import ViewContainer from './boardView/ViewContainer';
-import SnsEditorContainer from './snsEditor/SnsEditorContainer';
-import largeCard from './cardList/largeCard';
 
 /**
  * @author:ParkHyeokJoon

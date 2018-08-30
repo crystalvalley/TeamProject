@@ -16,7 +16,8 @@ import org.team.sns.domain.Tag;
 
 public interface BoardService {
 	public void saveBoard(Board board);
-	public List<Tag> tagCheck(ArrayList<String> list);
+	public List<Tag> tagCheck(ArrayList<String> list,Board board);
 	public List<Mention> mentionCheck(ArrayList<String> list,Board board);
+	public List<Tag> getTagList(String tag); 
 
 }

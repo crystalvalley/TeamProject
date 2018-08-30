@@ -59,8 +59,13 @@ public class BoardRestController {
 	
 	@PostMapping("/boards/writeBoard")
 	public void writeBoard(Board board, Principal principal) {
-		board.setWriter(mr.findById(principal.getName()).get());
+		board.setWriter(mr.findById("testid").get());
 		bs.saveBoard(board);
+	}
+	
+	@GetMapping("/boards/checkTag")
+	public void checkTag(String tag) {
+		bs.getTagList(tag);		
 	}
 
 }
