@@ -6,6 +6,7 @@ import ViewContainer from './boardView/ViewContainer';
 import SnsEditorContainer from './snsEditor/SnsEditorContainer';
 import largeCard from './cardList/largeCard';
 
+
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
@@ -60,7 +61,7 @@ class MainContainerRouter extends React.Component<IProps> {
             >
                 <div className={classes.toolbar} />
                 <div className={classes.toolbar} />
-                <Switch>
+                <Switch>                
                     <Route path="/view" component={ViewContainer} />
                     <Route path="/" component={CardListContainer} />
                 </Switch>
