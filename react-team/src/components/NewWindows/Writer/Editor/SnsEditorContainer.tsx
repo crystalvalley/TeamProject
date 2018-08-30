@@ -108,8 +108,8 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
     private editorChange(e: EditorState) {
         const text = this.getNowBlock(e).getText();
         // let matchArr;
-        let newstart = 0;
-        let newend = 0;
+        const newstart = 0;
+        const newend = 0;
         /*
         matchArr = /\#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.;\-]+/g.exec(text)
         while (matchArr !== null) {
