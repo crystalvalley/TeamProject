@@ -6,6 +6,7 @@
  */
 
 export interface ISuggestState {
+    text:string;
     start: number;
     end: number;
     positionX: number;

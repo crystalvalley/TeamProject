@@ -81,7 +81,7 @@ public class BoardServiceImpl implements BoardService{
 				result.add(checkedTag);
 			}else{
 				checkedTag = new Tag();
-				checkedTag.setTag(tag);
+				checkedTag.setHashTag(tag);
 				checkedTag.addBoard(board);
 				tr.save(checkedTag);
 				result.add(checkedTag);
@@ -115,8 +115,7 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<Tag> getTagList(String tag) {
 		// TODO Auto-generated method stub
-		// return tr.findByKeyword(tag);
-		return null;
+		return tr.findByHashTagStartingWith(tag);
 	}
 
 }

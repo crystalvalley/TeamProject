@@ -1,5 +1,7 @@
 package org.team.sns.persistence;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.team.sns.domain.Tag;
 /**
@@ -10,7 +12,6 @@ import org.team.sns.domain.Tag;
  *
  */
 public interface TagRepository extends CrudRepository<Tag, String>{
-	// @Query("SELECT t FROM Tags t WHERE t.name LIKE ?1%")
-	// public List<Tag> findByKeyword(String keyword);
+	public List<Tag> findByHashTagStartingWith(String keyword);
 
 }

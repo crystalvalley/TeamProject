@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.team.sns.domain.Board;
+import org.team.sns.domain.Tag;
 import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.service.BoardServiceImpl;
@@ -64,8 +65,8 @@ public class BoardRestController {
 	}
 	
 	@GetMapping("/boards/checkTag")
-	public void checkTag(String tag) {
-		bs.getTagList(tag);		
+	public List<Tag> checkTag(String hashTag) {
+		return bs.getTagList(hashTag);		
 	}
 
 }

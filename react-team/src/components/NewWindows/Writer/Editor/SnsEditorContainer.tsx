@@ -74,6 +74,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                 end: 0,
                 positionX: 0,
                 positionY: 0,
+                text:""
             },
             focus: -1,
             hashSuggest: false,
@@ -163,6 +164,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
         const nowBlock = this.getNowBlock(e);
         const text = nowBlock.getText();
         const nowFocus = e.getSelection().getFocusOffset();
+        
         let newstart = 0;
         let newend = 0;
         const regArr: RegExp[] = [/\#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.;\-]+/g, /\@[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.;\-]+/g];
@@ -196,7 +198,8 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                             end: newend,
                             start: newstart,
                             positionX: xy[0],
-                            positionY: xy[1]
+                            positionY: xy[1],
+                            text:text.slice(newstart,newend)
                         }
                     })
                     return;

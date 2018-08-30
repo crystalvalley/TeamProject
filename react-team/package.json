@@ -39,5 +39,6 @@
     "@types/draft-js": "^0.10.24",
     "@types/react-beautiful-dnd": "^7.1.1",
     "typescript": "^3.0.1"
-  }
+  },
+  "proxy" : "http://localhost:8081"
 }
