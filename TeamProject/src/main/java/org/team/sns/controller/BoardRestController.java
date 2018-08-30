@@ -1,5 +1,6 @@
 package org.team.sns.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,8 @@ public class BoardRestController {
 	}
 	
 	@PostMapping("/boards/writeBoard")
-	public void writeBoard(Board board) {
+	public void writeBoard(Board board, Principal principal) {
+		board.setWriter(mr.findById(principal.getName()).get());
 		bs.saveBoard(board);
 	}
 
