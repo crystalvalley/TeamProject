@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { ICardModel } from '../../../constance/models';
 import { StyleRulesCallback, Theme, withStyles, Typography, Divider } from '@material-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
-import TestCard from './Card/smallCard/SmallCard';
 import Scrollbars from 'react-custom-scrollbars'
 /**
  * @author : ParkHyeokJoon
@@ -35,7 +33,7 @@ interface IProps {
     },
     index: number;
     id: string;
-    cardList: ICardModel[];
+    listName:string;
 }
 
 class CardList extends React.Component<IProps> {
@@ -63,7 +61,7 @@ class CardList extends React.Component<IProps> {
                                     className={classes.listName}
                                     {...provided.dragHandleProps}
                                 >
-                                    {this.props.id}
+                                    {this.props.listName}
                                 </Typography>
                                 <Scrollbars
                                     autoHide={true}
@@ -72,15 +70,7 @@ class CardList extends React.Component<IProps> {
                                         className={classes.listBody}
                                     >
                                         <Divider />
-                                        {
-                                            this.props.cardList.map((card, index) => {
-                                                return (
-                                                    <TestCard
-                                                        key={index}
-                                                    />
-                                                )
-                                            })
-                                        }
+                                        test;
                                     </div>
                                 </Scrollbars>
                             </div>

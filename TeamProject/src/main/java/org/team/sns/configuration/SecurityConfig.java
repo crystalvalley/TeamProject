@@ -16,7 +16,7 @@ import org.team.sns.service.SecurityUserServiceImpl;
  * 
  * @author ParkHyeokJoon
  * @since 2018.08.23
- * @version 2018.08.23
+ * @version 2018.08.31
  *
  */
 
@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()			
 				.antMatchers("/loginCheck").permitAll()
 				.antMatchers("/boards/**").permitAll()
+				.antMatchers("/lists/**").permitAll()
 				.antMatchers("/idCheck").permitAll()
 				.antMatchers("/static/js/*.js").permitAll()
 				.antMatchers("/signup").permitAll()

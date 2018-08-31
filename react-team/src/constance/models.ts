@@ -11,9 +11,6 @@ export interface IMsgModel{
 // 메인화면에 보여질 카드 container 모델
 export interface ICardContainerModel{
     order : string[];
-    lists : {
-        [propName : string] : ICardModel[];
-    }
 }
 
 // Board도 겸함,

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
-import CardListContainer from './cardList/CardListContainer';
-import ViewContainer from './boardView/ViewContainer';
-import UpdateUser from './boardView/UpdateUser';
+import CardListContainer from './CardList/CardListContainer';
+import ViewContainer from './BoardView/ViewContainer';
+import UpdateUser from './BoardView/UpdateUser';
 
 
 /**

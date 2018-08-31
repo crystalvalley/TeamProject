@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
-import { ICardContainerModel, ICardModel } from '../../../constance/models';
-import { testData } from './testData';
+import { ICardContainerModel } from '../../../constance/models';
 import CardList from './CardList';
 import { withStyles, StyleRulesCallback, Theme } from '@material-ui/core';
 /**
@@ -27,14 +26,15 @@ interface IProps {
 class CardListContainer extends React.Component<IProps, ICardContainerModel> {
     constructor(props: IProps) {
         super(props);
-        this.state = testData;
+        this.state = {
+            order:[]
+        }
         this.onDragEnd = this.onDragEnd.bind(this);
     }
-
     public componentWillUpdate(prevProps:IProps,pervState:ICardContainerModel){
-
+        if(this.state.order===pervState.order&&this.state.order.length!==0){return;}
+        return;
     }
-
     public render() {
         return (
             <DragDropContext
@@ -50,14 +50,13 @@ class CardListContainer extends React.Component<IProps, ICardContainerModel> {
                                     className={this.props.classes.container}
                                     ref={provided.innerRef}
                                 >{
-                                        this.state.order.map((id, index) => {
-                                            const cardList: ICardModel[] = this.state.lists[id];
+                                        this.state.order.map((name, index) => {
                                             return (
                                                 <CardList
                                                     index={index}
-                                                    key={id}
-                                                    id={id}
-                                                    cardList={cardList}
+                                                    key={index}
+                                                    id={name}
+                                                    listName={name}
                                                 />
                                             );
                                         })
@@ -87,9 +86,6 @@ class CardListContainer extends React.Component<IProps, ICardContainerModel> {
 
         const newState: ICardContainerModel = {
             ...this.state,
-            lists: {
-                ...this.state.lists
-            },
             order: newOrder
         }
         this.setState(newState);
