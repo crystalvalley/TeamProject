@@ -25,6 +25,7 @@ public class AccountRestController {
 	MemberRepository memberrepo;
 	@Autowired
 	SecurityUserServiceImpl secUserService;
+
 	@GetMapping("/idCheck")
 	public RestMsgObject idCheck(String _id) {
 		RestMsgObject rmo = new RestMsgObject();
@@ -57,25 +58,29 @@ public class AccountRestController {
 	@PostMapping("/loginCheck")
 	public RestMsgObject loginCheck(Principal principal) {
 		RestMsgObject msg = new RestMsgObject();
-		if(principal!=null) {
-			msg.setMsg(principal.getName());	
-		}else {
-			msg.setMsg("Not Logined");		
+		if (principal != null) {
+			msg.setMsg(principal.getName());
+		} else {
+			msg.setMsg("Not Logined");
 		}
 		return msg;
 	}
 
-	/*
-	@PostMapping("/signin")
-	public AuthToken signin(String userid, String password,HttpSession sess) {
-		System.out.println("input value-------------------");
-		System.out.println(memberrepo.findById(userid).get());
-		System.out.println(userid);
-		System.out.println(password);
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userid, password);
-				SecurityContextHolder.getContext().setAuthentication(auth); 
-		sess.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
-		return new AuthToken(userid,"USER",sess.getId());
+	
 
-	}*/
+	/*
+	 * @PostMapping("/signin") public AuthToken signin(String userid, String
+	 * password,HttpSession sess) {
+	 * System.out.println("input value-------------------");
+	 * System.out.println(memberrepo.findById(userid).get());
+	 * System.out.println(userid); System.out.println(password);
+	 * UsernamePasswordAuthenticationToken token = new
+	 * UsernamePasswordAuthenticationToken(userid, password);
+	 * SecurityContextHolder.getContext().setAuthentication(auth);
+	 * sess.setAttribute(HttpSessionSecurityContextRepository.
+	 * SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext()); return new
+	 * AuthToken(userid,"USER",sess.getId());
+	 * 
+	 * }
+	 */
 }

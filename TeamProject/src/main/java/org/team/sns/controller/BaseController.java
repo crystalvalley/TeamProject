@@ -17,12 +17,12 @@ public class BaseController {
 
 	@GetMapping("/")
 	public String index(Principal principal) {
-		System.out.println(principal.getName());
+		//System.out.println(principal.getName());
 		return "index";
 	}
 	@GetMapping("/home")
 	public String goHome(Principal principal) {
-		System.out.println(principal.getName());
+		//System.out.println(principal.getName());
 		return "redirect:/";
 	}
 	@GetMapping("/signup")
@@ -31,7 +31,12 @@ public class BaseController {
 	}
 	@GetMapping("/signin")
 	public String signin() {
-		System.out.println("??");
+		//System.out.println("??");
+		return "index";
+	}
+	@GetMapping("userUpdate")
+	public String userUpdate() {
+		System.out.println("수정페이지전환");
 		return "index";
 	}
 }
