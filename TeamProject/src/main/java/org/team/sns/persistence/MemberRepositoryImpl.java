@@ -12,7 +12,7 @@ import com.querydsl.jpa.JPQLQuery;
  * 
  * @author ParkHyeokjoon
  * @since 18.08.12
- * @version 18.08.12
+ * @version 18.08.31
  *
  */
 public class MemberRepositoryImpl extends QuerydslRepositorySupport implements MemberRepositoryCustom {
@@ -35,6 +35,15 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport implements M
 		// 쿼리 실행
 		List<Member> result = query.fetch();		
 		return (String)result.toArray()[0];
+	}
+
+	@Override
+	public List<String> getIdsForMention(String mention) {
+		// TODO Auto-generated method stub
+		QMember member = QMember.member;
+		JPQLQuery<String> query = from(member).select(member.id);	
+		query.where(member.id.startsWith(mention));
+		return query.fetch();
 	}
 
 

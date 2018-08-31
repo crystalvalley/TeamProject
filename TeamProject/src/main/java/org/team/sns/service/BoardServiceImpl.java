@@ -20,7 +20,7 @@ import org.team.sns.persistence.TagRepository;
  * 
  * @author ParkHyeokJoon
  * @since 2018.08.30
- * @version 2018.08.30
+ * @version 2018.08.31
  *
  */
 
@@ -82,6 +82,7 @@ public class BoardServiceImpl implements BoardService{
 			}else{
 				checkedTag = new Tag();
 				checkedTag.setHashTag(tag);
+				checkedTag.setTaggedBoards(new ArrayList<Board>());
 				checkedTag.addBoard(board);
 				tr.save(checkedTag);
 				result.add(checkedTag);
@@ -116,6 +117,12 @@ public class BoardServiceImpl implements BoardService{
 	public List<Tag> getTagList(String tag) {
 		// TODO Auto-generated method stub
 		return tr.findByHashTagStartingWith(tag);
+	}
+
+	@Override
+	public List<String> getMentionList(String mention) {
+		// TODO Auto-generated method stub
+		return mr.getIdsForMention(mention);
 	}
 
 }

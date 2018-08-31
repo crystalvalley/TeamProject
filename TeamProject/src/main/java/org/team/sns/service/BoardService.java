@@ -10,7 +10,7 @@ import org.team.sns.domain.Tag;
 /**
  * @author ParkHyeokJoon
  * @since 2018.08.30
- * @version 2018.08.30
+ * @version 2018.08.31
  *
  */
 
@@ -19,5 +19,6 @@ public interface BoardService {
 	public List<Tag> tagCheck(ArrayList<String> list,Board board);
 	public List<Mention> mentionCheck(ArrayList<String> list,Board board);
 	public List<Tag> getTagList(String tag); 
+	public List<String> getMentionList(String mention);
 
 }

@@ -1,5 +1,7 @@
 package org.team.sns.persistence;
 
+import java.util.List;
+
 /**
  * 
  * @author ParkHyeokjoon
@@ -9,4 +11,5 @@ package org.team.sns.persistence;
  */
 public interface MemberRepositoryCustom {
 	public String getNickname(String _id);
+	public List<String> getIdsForMention(String mention);
 }

@@ -1,6 +1,7 @@
 package org.team.sns.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ import org.team.sns.vo.Params;
  * 
  * @author ParkHyeokJoon
  * @Since 18.08.17
- * @version 18.08.30
+ * @version 18.08.31
  *
  */
 
@@ -68,5 +69,9 @@ public class BoardRestController {
 	public List<Tag> checkTag(String hashTag) {
 		return bs.getTagList(hashTag);		
 	}
-
+	@GetMapping("/boards/checkMention")
+	public List<String> checkMention(String mention) {
+		System.out.println(mention);
+		return bs.getMentionList(mention);		
+	}
 }

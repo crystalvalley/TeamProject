@@ -6,7 +6,7 @@ import axios from 'axios';
 /**
  * @author: ParkHyeokJoon
  * @since : 2018.08.28
- * @version : 2018.08.30
+ * @version : 2018.08.31
  */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -22,10 +22,7 @@ interface IProps {
 }
 
 interface IState {
-    tagList: ITagModel[]
-}
-interface ITagModel{
-    hashTag:string;
+    tagList: string[]
 }
 
 class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
@@ -36,15 +33,19 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
         }
     }
     public componentWillReceiveProps(prevProps: IProps & ISuggestState) {
-        if (this.props.text === prevProps.text || prevProps.text.length > 4) { return }
+        if (this.props.text === prevProps.text || prevProps.text.length > 4|| !prevProps.open) { return }
         // 3글자 이하까지는 db에서 서치
-        axios.get("/boards/checkTag", {
+        axios.get("http://localhost:8081/boards/checkTag", {
             params: {
                 hashTag: prevProps.text.slice(1)
             }
         }).then((result) => {
+            const tagArray: string[] = [];
+            result.data.map((item: { hashTag: string }) => {
+                tagArray.push(item.hashTag);
+            })
             this.setState({
-                tagList: result.data
+                tagList: tagArray
             })
         })
     }
@@ -54,7 +55,7 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
         const listOpen = tagList !== undefined ? tagList.length : 0;
         const filteredList = keyword.length > 3 && listOpen !== 0 ?
             this.state.tagList.filter((item) => {
-                return item.hashTag.indexOf(keyword) === 0
+                return item.indexOf(keyword) === 0
             })
             : this.state.tagList
         return (
