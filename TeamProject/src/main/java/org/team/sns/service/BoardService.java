@@ -6,6 +6,8 @@ import java.util.List;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Mention;
 import org.team.sns.domain.Tag;
+import org.team.sns.vo.Datas;
+import org.team.sns.vo.BoardSearchCondition;
 
 /**
  * @author ParkHyeokJoon
@@ -20,5 +22,5 @@ public interface BoardService {
 	public List<Mention> mentionCheck(ArrayList<String> list,Board board);
 	public List<Tag> getTagList(String tag); 
 	public List<String> getMentionList(String mention);
-
+	public List<Board> getBoard(BoardSearchCondition params);
 }

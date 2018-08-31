@@ -15,6 +15,7 @@ import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.persistence.MentionRepository;
 import org.team.sns.persistence.TagRepository;
+import org.team.sns.vo.BoardSearchCondition;
 
 /**
  * 
@@ -123,6 +124,12 @@ public class BoardServiceImpl implements BoardService{
 	public List<String> getMentionList(String mention) {
 		// TODO Auto-generated method stub
 		return mr.getIdsForMention(mention);
+	}
+
+	@Override
+	public List<Board> getBoard(BoardSearchCondition params) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

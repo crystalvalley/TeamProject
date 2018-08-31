@@ -5,7 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.team.sns.domain.Board;
+import org.team.sns.domain.Member;
+import org.team.sns.service.MemberServiceImpl;
 /**
  * 
  * @author ParkHyeokJoon
@@ -20,6 +21,10 @@ public class insertTest {
 	MemberRepository mr;
 	@Autowired
 	BoardRepository br;
+	@Autowired
+	CustomListRepository clr;
+	@Autowired
+	MemberServiceImpl ms;
 	/*
 	 *  board에 적당히 값 넣어두는  test
 	@Test
@@ -41,6 +46,12 @@ public class insertTest {
 	
 	@Test
 	public void searchbycontentTest() {
-		System.out.println("출력결과"+br.getBoardByHitCount(5));
+		Member member = new Member();
+		member.setId("testid");
+		member.setPassword("12345678");
+		member.setUsername("testman");
+		member.setEmail("testid@test.com");
+		ms.signin(member);
+		
 	}
 }

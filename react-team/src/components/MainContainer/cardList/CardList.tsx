@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ICardModel } from '../../../constance/models';
 import { StyleRulesCallback, Theme, withStyles, Typography, Divider } from '@material-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
-import TestCard from './Test';
+import TestCard from './Card/smallCard/SmallCard';
 import Scrollbars from 'react-custom-scrollbars'
 /**
  * @author : ParkHyeokJoon
@@ -21,8 +21,8 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         paddingLeft: "1em",
         fontSize: "1.5em"
     },
-    cardListWrapper:{
-        flexGrow:1, 
+    cardListWrapper: {
+        flexGrow: 1,
         margin: "0.25%",
     }
 })
@@ -31,7 +31,7 @@ interface IProps {
     classes: {
         cardListWrapper: string;
         listName: string;
-        listBody:string;
+        listBody: string;
     },
     index: number;
     id: string;
@@ -55,13 +55,13 @@ class CardList extends React.Component<IProps> {
                     (provided, snapshot) => {
                         return (
                             <div
-                            className={classes.cardListWrapper}
+                                className={classes.cardListWrapper}
                                 ref={provided.innerRef}
-                                {...provided.dragHandleProps}
                                 {...provided.draggableProps}
                             >
                                 <Typography
                                     className={classes.listName}
+                                    {...provided.dragHandleProps}
                                 >
                                     {this.props.id}
                                 </Typography>

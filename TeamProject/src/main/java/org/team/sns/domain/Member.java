@@ -96,6 +96,6 @@ public class Member {
 	private List<CustomList> customList;
 	
 	@OneToMany(mappedBy = "mentioned")
-	private List<Mention> mentionList;
+	private List<Mention> mentionList; 
 
 }

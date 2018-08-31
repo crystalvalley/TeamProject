@@ -15,30 +15,25 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
-/**
- * 
- * @author ParkHyeokJoon
- * @since 2018.08.31
- * @version 2018.08.31
- *
- */
+
 @Data
 @Entity
-@Table(name = "CustomLists")
-public class CustomList {
+@Table(name = "Strategies")
+public class Strategy {
 	@Id
-	@Column(name="customlist_id")
+	@Column(name="str_id")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="CustomList_seq",initialValue=1,allocationSize=1)
+	@SequenceGenerator(name="seq",sequenceName="strategy_seq",initialValue=1,allocationSize=1)
 	private int id;
 	
-	@NotNull
-	private String listName;
-	
 	@ManyToOne
-	@JoinColumn(name="owner_id",referencedColumnName="user_id",updatable=false,nullable=false)
-	private Member owner;
-		
-	@OneToMany(mappedBy="ownedCl")
-	private List<ProductStrategy> conditions;
+	@JoinColumn(name="owned",referencedColumnName="pstr_id")
+	private ProductStrategy owned;
+	
+	@NotNull
+	private String type;
+	
+	@OneToMany(mappedBy="owned")
+	private List<StrTarget> targets;
+
 }

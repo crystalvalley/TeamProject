@@ -9,21 +9,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.team.sns.domain.Member;
 import org.team.sns.persistence.MemberRepository;
+import org.team.sns.service.MemberService;
 import org.team.sns.service.SecurityUserServiceImpl;
 import org.team.sns.vo.RestMsgObject;
 
 /**
  * @author ParkHyeokJoon
  * @since 2018.08.14
- * @version 2018.08.21
+ * @version 2018.08.31
  *
  */
 @RestController
 @CrossOrigin(origins = "*")
 public class AccountRestController {
 	@Autowired
-	MemberRepository memberrepo;
+	private MemberRepository memberrepo;
 	@Autowired
+	private MemberService ms;
+	private @Autowired
 	SecurityUserServiceImpl secUserService;
 
 	@GetMapping("/idCheck")

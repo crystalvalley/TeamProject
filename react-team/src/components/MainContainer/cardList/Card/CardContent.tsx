@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, GridListTileBar, IconButton } from '@material-ui/core';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import { ICardModel } from '../../../constance/models';
 import { NavLink } from 'react-router-dom';
+import { ICardModel } from '../../../../constance/models';
 /**
  * 
  * @author : ParkHyeokJoon

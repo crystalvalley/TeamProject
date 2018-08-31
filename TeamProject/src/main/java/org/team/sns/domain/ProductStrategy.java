@@ -24,21 +24,21 @@ import lombok.Data;
  */
 @Data
 @Entity
-@Table(name = "CustomLists")
-public class CustomList {
+@Table(name = "ProductStrategies")
+public class ProductStrategy {
 	@Id
-	@Column(name="customlist_id")
+	@Column(name="pstr_id")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="CustomList_seq",initialValue=1,allocationSize=1)
+	@SequenceGenerator(name="seq",sequenceName="pstr_seq",initialValue=1,allocationSize=1)
 	private int id;
 	
-	@NotNull
-	private String listName;
+	@OneToMany(mappedBy="owned")
+	private List<Strategy> strategies;
+	
+
 	
 	@ManyToOne
-	@JoinColumn(name="owner_id",referencedColumnName="user_id",updatable=false,nullable=false)
-	private Member owner;
-		
-	@OneToMany(mappedBy="ownedCl")
-	private List<ProductStrategy> conditions;
+	@JoinColumn(name="owned_cl",referencedColumnName="customlist_id")
+	private CustomList ownedCl;	
+
 }

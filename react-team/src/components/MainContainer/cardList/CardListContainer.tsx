@@ -7,13 +7,12 @@ import { withStyles, StyleRulesCallback, Theme } from '@material-ui/core';
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.27
- * @Version : 2018.08.27
+ * @version : 2018.08.31
  * 
  */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
-    container: {
-        
+    container: {        
         display: "flex",
         height: "100%",
     }
@@ -25,12 +24,15 @@ interface IProps {
     }
 }
 
-
 class CardListContainer extends React.Component<IProps, ICardContainerModel> {
     constructor(props: IProps) {
         super(props);
         this.state = testData;
         this.onDragEnd = this.onDragEnd.bind(this);
+    }
+
+    public componentWillUpdate(prevProps:IProps,pervState:ICardContainerModel){
+
     }
 
     public render() {

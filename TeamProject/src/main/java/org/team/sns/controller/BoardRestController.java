@@ -19,7 +19,7 @@ import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.service.BoardServiceImpl;
 import org.team.sns.vo.Datas;
-import org.team.sns.vo.Params;
+import org.team.sns.vo.BoardSearchCondition;
 
 /**
  * 
@@ -41,11 +41,8 @@ public class BoardRestController {
 
 
 	@PostMapping("/boards/getBoard")
-	public List<Board> test(Params params,  Datas datas) {
-		System.out.println("???");
-		System.out.println(params);
-		System.out.println(datas);
-		return br.getBoardsByUserId("testid");
+	public List<Board> test(BoardSearchCondition params,  Datas datas) {		
+		return bs.getBoard(params);
 	}	
 	@GetMapping("/boards/view")
 	public Map<String,Object> sendBoard(String type, int num) {

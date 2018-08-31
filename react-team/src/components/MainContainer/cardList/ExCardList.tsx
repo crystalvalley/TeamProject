@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, GridList, GridListTile, } from '@material-ui/core';
-import CardContent from './CardContent';
+import CardContent from './Card/CardContent';
 import { ICardModel } from '../../../constance/models';
 import axios from 'axios';
 import { Location } from 'history';

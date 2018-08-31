@@ -12,7 +12,7 @@ import lombok.Data;
  */
 
 @Data
-public class Params {
+public class BoardSearchCondition {
 	// Card or Board
 	private String type;
 	// 정렬순서 날짜순 등등
