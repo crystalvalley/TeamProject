@@ -5,13 +5,14 @@ import java.util.List;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Favorites;
 import org.team.sns.domain.Networking;
+import org.team.sns.domain.ProductStrategy;
 import org.team.sns.domain.Reply;
 
 /**
  * 
  * @author ParkHyeokjoon
  * @since 18.08.12
- * @version 18.08.12
+ * @version 18.08.31
  *
  */
 public interface BoardRepositoryCustom {
@@ -50,5 +51,8 @@ public interface BoardRepositoryCustom {
 	
 	//메인을 만들어 보쟝
 	public List<Board> getUserAllBoard(String _id);
+	
+	// 식별방법에 따라 찾기
+	public List<Board> getBoardByCondition(List<ProductStrategy> pstr);
 	
 }

@@ -19,9 +19,9 @@ public class ListServiceImpl implements ListService{
 	CustomListRepository clr;
 
 	@Override
-	public List<String> getListNames() {
+	public List<String> getListNames(String userid) {
 		// TODO Auto-generated method stub
-		return null;
+		return clr.getListNames(userid);
 	}
 
 }

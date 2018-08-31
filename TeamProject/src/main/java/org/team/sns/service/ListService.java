@@ -10,6 +10,6 @@ import java.util.List;
  *
  */
 public interface ListService {
-	public List<String> getListNames();
+	public List<String> getListNames(String userid);
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.team.sns.service.ListServiceImpl;
 
@@ -16,7 +17,8 @@ import org.team.sns.service.ListServiceImpl;
  *
  */
 
-@RestController(value="/lists")
+@RestController
+@RequestMapping(value="/lists")
 public class ListControlController {
 	@Autowired
 	ListServiceImpl ls;
@@ -24,7 +26,7 @@ public class ListControlController {
 	
 	@GetMapping("/getListNames")
 	public List<String> getListNames(Principal principal){
-		return ls.getListNames();		
+		return ls.getListNames(principal.getName());		
 	}
 
 }

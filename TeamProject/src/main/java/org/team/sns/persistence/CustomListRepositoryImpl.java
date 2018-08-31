@@ -8,11 +8,8 @@ import org.team.sns.domain.QCustomList;
 
 import com.querydsl.jpa.JPQLQuery;
 
-public class CustomRepositoryImpl extends QuerydslRepositorySupport implements CustomListRepositoryCustom{
-	
-	
-	
-	public CustomRepositoryImpl() {
+public class CustomListRepositoryImpl extends QuerydslRepositorySupport implements CustomListRepositoryCustom{
+	public CustomListRepositoryImpl() {
 		super(CustomList.class);
 		// TODO Auto-generated constructor stub
 	}
@@ -22,7 +19,8 @@ public class CustomRepositoryImpl extends QuerydslRepositorySupport implements C
 		// TODO Auto-generated method stub
 		QCustomList qcList = QCustomList.customList;
 		JPQLQuery<String> query = from(qcList).select(qcList.listName);
-		return null;
+		query.where(qcList.owner.id.eq(userid));
+		return query.fetch();
 	}
 
 }

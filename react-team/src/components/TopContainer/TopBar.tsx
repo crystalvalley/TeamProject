@@ -86,9 +86,10 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
           >
             <BtnBox />
             <IconButton
-
               onClick={this.submit}
-            ><AccountCircle /></IconButton>
+            >
+              <AccountCircle />
+            </IconButton>
           </span>
         </Toolbar>
         <Divider />

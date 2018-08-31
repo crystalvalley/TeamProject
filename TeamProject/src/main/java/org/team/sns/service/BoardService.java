@@ -23,4 +23,5 @@ public interface BoardService {
 	public List<Tag> getTagList(String tag); 
 	public List<String> getMentionList(String mention);
 	public List<Board> getBoard(BoardSearchCondition params);
+	public List<Board> getBoardByListName(String listName,String username);
 }

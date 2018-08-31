@@ -2,10 +2,12 @@ package org.team.sns.persistence;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Favorites;
 import org.team.sns.domain.Networking;
+import org.team.sns.domain.ProductStrategy;
 import org.team.sns.domain.QBoard;
 import org.team.sns.domain.QFavorites;
 import org.team.sns.domain.QNetworking;
@@ -13,7 +15,9 @@ import org.team.sns.domain.QReply;
 import org.team.sns.domain.QShare;
 import org.team.sns.domain.Reply;
 import org.team.sns.domain.Share;
+import org.team.sns.persistence.utils.Utility;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 
 import lombok.extern.java.Log;
@@ -27,7 +31,9 @@ import lombok.extern.java.Log;
  */
 @Log
 public class BoardRepositoryImpl extends QuerydslRepositorySupport implements BoardRepositoryCustom{
-
+	@Autowired
+	Utility util;
+	
 	public BoardRepositoryImpl() {
 		super(Board.class);
 		// TODO Auto-generated constructor stub
@@ -263,7 +269,18 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		
 		return null;
 	}
-	
-	
-	
+
+	@Override
+	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList) {
+		// TODO Auto-generated method stub
+		QBoard board = QBoard.board;
+		JPQLQuery<Board> query = from(board);
+		query.select(board);
+		BooleanBuilder whereCondition = new BooleanBuilder();
+		for(ProductStrategy pstr : pstrList) {
+			whereCondition.or(util.checkType(pstr.getStrategies()));
+		}
+		query.where(whereCondition).orderBy(board.id.desc());
+		return query.fetch();
+	}
 }
