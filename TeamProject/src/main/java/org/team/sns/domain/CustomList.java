@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
+import lombok.ToString;
 /**
  * 
  * @author ParkHyeokJoon
@@ -27,6 +28,7 @@ import lombok.Data;
 @Entity
 @Table(name = "CustomLists")
 @IdClass(CustomListPK.class)
+@ToString(exclude = {"owner","conditions"})
 public class CustomList {
 	@Id
 	@NotNull

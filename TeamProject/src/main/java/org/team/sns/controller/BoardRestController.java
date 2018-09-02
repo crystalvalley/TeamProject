@@ -46,14 +46,12 @@ public class BoardRestController {
 	public List<Board> test(BoardSearchCondition params,  Datas datas) {		
 		return bs.getBoard(params);
 	}	
-	@PostMapping("/getByListName")
+	@GetMapping("/getByListName")
 	public List<Board> getByListName(String listName,Principal principal) {		
 		return bs.getBoardByListName(listName,principal.getName());
 	}	
-	@GetMapping("/boards/view")
+	@GetMapping("/view")
 	public Map<String,Object> sendBoard(String type, int num) {
-		System.out.println(type);
-		System.out.println(num);
 		HashMap<String,Object> result = new HashMap<>();
 		Board board = br.findById(num).get();
 		result.put("content", board);
@@ -62,17 +60,17 @@ public class BoardRestController {
 		return result;
 	}
 	
-	@PostMapping("/boards/writeBoard")
+	@PostMapping("/writeBoard")
 	public void writeBoard(Board board, Principal principal) {
 		board.setWriter(mr.findById(principal.getName()).get());
 		bs.saveBoard(board);
 	}
 	
-	@GetMapping("/boards/checkTag")
+	@GetMapping("/checkTag")
 	public List<Tag> checkTag(String hashTag) {
 		return bs.getTagList(hashTag);		
 	}
-	@GetMapping("/boards/checkMention")
+	@GetMapping("/checkMention")
 	public List<String> checkMention(String mention) {
 		System.out.println(mention);
 		return bs.getMentionList(mention);		

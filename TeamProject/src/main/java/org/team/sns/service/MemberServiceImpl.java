@@ -49,17 +49,11 @@ public class MemberServiceImpl implements MemberService{
 		initList.setOwner(member);
 		initList.setListName("Base");
 		clr.save(initList);		
-		System.out.println(7);
 		initPstr.setOwnedCl(initList);
-		System.out.println(8);
 		pstr.save(initPstr);
-		System.out.println(9);
 		initStr.setType("base");
-		System.out.println(10);
 		initStr.setOwned(initPstr);	
-		System.out.println(11);	
 		str.save(initStr);
-		System.out.println(12);
 		return initList;		
 	}
 

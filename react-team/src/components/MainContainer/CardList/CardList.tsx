@@ -2,6 +2,9 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Typography, Divider } from '@material-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
 import Scrollbars from 'react-custom-scrollbars'
+import { ICardModel } from '../../../constance/models';
+import axios from 'axios';
+import SmallCard from './Card/smallCard/SmallCard';
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.27
@@ -36,9 +39,41 @@ interface IProps {
     listName:string;
 }
 
-class CardList extends React.Component<IProps> {
+interface IState{
+    cards : ICardModel[]
+}
+
+class CardList extends React.Component<IProps,IState> {
     constructor(props: IProps) {
         super(props);
+        this.state={
+            cards : []
+        }
+    }
+
+    public componentDidMount() {
+        axios.get("http://localhost:8081/boards/getByListName",{
+            params :{
+                listName : this.props.listName
+            }
+        }).then((result)=>{
+            this.setState({
+                cards : result.data
+            })
+        })
+    }
+
+    public componentWillReceiveProps(prevProps : IProps){
+        if(this.props.listName === prevProps.listName){return;}
+        axios.get("http://localhost:8081/boards/getByListName",{
+            params :{
+                listName : prevProps.listName
+            }
+        }).then((result)=>{
+            this.setState({
+                cards : result.data
+            })
+        })
     }
 
 
@@ -70,7 +105,16 @@ class CardList extends React.Component<IProps> {
                                         className={classes.listBody}
                                     >
                                         <Divider />
-                                        test;
+                                        {
+                                            this.state.cards.map((card,index)=>{
+                                                return(
+                                                    <SmallCard
+                                                        card={card}
+                                                        key={index}
+                                                    />
+                                                );
+                                            })
+                                        }
                                     </div>
                                 </Scrollbars>
                             </div>

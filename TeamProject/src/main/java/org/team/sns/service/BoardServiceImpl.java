@@ -144,6 +144,8 @@ public class BoardServiceImpl implements BoardService{
 		CustomListPK clpk = new CustomListPK();
 		clpk.setListName(listName);
 		clpk.setOwner(username);
+		System.out.println(clpk);
+		System.out.println(clr.findById(clpk).get());
 		List<ProductStrategy> conditions = clr.findById(clpk).get().getConditions();
 		List<Board> result = br.getBoardByCondition(conditions);
 		return result;

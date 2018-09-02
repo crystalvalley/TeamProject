@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography } from '@material-ui/core';
-import { Editor, EditorState } from 'draft-js';
+import { Editor, EditorState, convertFromRaw } from 'draft-js';
+import { ICardModel } from '../../../../../constance/models';
+import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 
 const style: StyleRulesCallback = (theme: Theme) => ({
     card: {
@@ -26,6 +28,7 @@ interface IProps {
         avatar: string;
         cardHead: string;
     }
+    card:ICardModel
 }
 
 interface IState{
@@ -37,12 +40,20 @@ class SmallCard extends React.Component<IProps,IState>{
     constructor(props: IProps) {
         super(props);
         this.state={
-            editorState : EditorState.createEmpty()
+            editorState : EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)),SNSDecorator)
         }
         this.editorChange=this.editorChange.bind;
     }
+
+    public componentDidUpdate(nextProps: IProps) {
+        const getContent = EditorState.createWithContent(
+            convertFromRaw(JSON.parse(nextProps.card.content))
+        )
+        this.editorChange(getContent);
+    }
+
     public render() {
-        const { classes } = this.props;
+        const { classes, card } = this.props;
         return (
             <Card className={classes.card}>
                 <div
@@ -53,11 +64,12 @@ class SmallCard extends React.Component<IProps,IState>{
                         src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&h=350"
                     />
                     <Typography>
-                        ID 적을 곳
+                        {card.title}
                     </Typography>
                 </div>
                 <CardContent>
                     <Editor
+                        readOnly={true}
                         editorState={this.state.editorState}
                         onChange={this.editorChange}
                     />
