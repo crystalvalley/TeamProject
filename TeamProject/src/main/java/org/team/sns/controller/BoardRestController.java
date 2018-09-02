@@ -1,12 +1,9 @@
 package org.team.sns.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,8 +16,8 @@ import org.team.sns.domain.Tag;
 import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.service.BoardServiceImpl;
-import org.team.sns.vo.Datas;
 import org.team.sns.vo.BoardSearchCondition;
+import org.team.sns.vo.Datas;
 
 /**
  * 
@@ -48,7 +45,8 @@ public class BoardRestController {
 	}	
 	@GetMapping("/getByListName")
 	public List<Board> getByListName(String listName,Principal principal) {		
-		return bs.getBoardByListName(listName,principal.getName());
+		// return bs.getBoardByListName(listName,principal.getName());
+		return bs.getBoardByListName(listName,"testid");
 	}	
 	@GetMapping("/view")
 	public Map<String,Object> sendBoard(String type, int num) {
@@ -62,7 +60,8 @@ public class BoardRestController {
 	
 	@PostMapping("/writeBoard")
 	public void writeBoard(Board board, Principal principal) {
-		board.setWriter(mr.findById(principal.getName()).get());
+		// board.setWriter(mr.findById(principal.getName()).get());
+		board.setWriter(mr.findById("testid").get());
 		bs.saveBoard(board);
 	}
 	

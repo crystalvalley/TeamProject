@@ -1,13 +1,12 @@
 package org.team.sns.persistence;
 
-import java.util.ArrayList;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.team.sns.domain.CustomList;
+import org.team.sns.domain.Member;
 import org.team.sns.domain.ProductStrategy;
 import org.team.sns.domain.StrTarget;
 import org.team.sns.domain.Strategy;
@@ -57,6 +56,13 @@ public class insertTest {
 	
 	@Test
 	public void searchbycontentTest() {
+		Member member = new Member();
+		member.setId("testid");
+		member.setPassword("12345678");
+		member.setUsername("testman");
+		member.setEmail("hamkegaja2@gmail.com");
+		ms.signin(member);
+		
 		CustomList test = new CustomList();
 		ProductStrategy testp = new ProductStrategy();
 		Strategy tests = new Strategy();

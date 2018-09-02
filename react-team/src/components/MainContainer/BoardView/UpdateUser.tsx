@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Toolbar, TextField, Button } from '@material-ui/core';
 import { ICardModel, IPhotoModel } from '../../../constance/models';
+import axios from 'axios';
 
 /**
  * @author:chaMinju
  * @since:2018.08.21
- * @version:2018.08.21
- * 
+ * @version:2018.09.02
+ */
+/**
+ * @author : ParkHyeokJoon
+ * @version : 2018.09.02
+ *  - 이미지 업로드 기능 추가
  */
 
 
@@ -137,6 +142,7 @@ interface IState {
 }
 
 class UpdateUser extends React.Component<IProps, IState>{
+    private upload: HTMLInputElement | null;
     constructor(props: IProps) {
         super(props);
         this.state = {
@@ -162,7 +168,7 @@ class UpdateUser extends React.Component<IProps, IState>{
             <div className={classes.viewContainer}>
                 <Toolbar className={classes.containers}>
                     <div>
-                    <h4>modify</h4>
+                        <h4>modify</h4>
                     </div>
                 </Toolbar>
 
@@ -171,16 +177,19 @@ class UpdateUser extends React.Component<IProps, IState>{
                     <img className={classes.imageSize} src="https://pbs.twimg.com/profile_images/1014241239300861952/AR1Up0pf_400x400.jpg" />
                     <br />
                     <TextField margin="normal"
-                      label="AR1Up0pf_400x400.jpg" /><br /><br />
+                        label="AR1Up0pf_400x400.jpg" /><br /><br />
                     <input
                         accept="image/*"
                         className={classes.input}
                         id="contained-button-file"
                         type="file"
+                        multiple={false}
+                        ref={(ref) => this.upload = ref}
+                        onChange={this.onChangeFile}
                     />
                     <label htmlFor="contained-button-file">
                         <Button variant="contained" component="span" className={classes.button}
-                        color="default"
+                            color="default"
                         >
                             Upload
                         </Button>
@@ -215,21 +224,31 @@ class UpdateUser extends React.Component<IProps, IState>{
                         }}
                     />
                 </div>
-                <div className={classes.buttons}
-                >
-
+                <div className={classes.buttons}>
                     <Button variant="outlined" color="primary" className={classes.button}>
                         뒤로가기
-      </Button>
+                    </Button>
                 </div>
                 <div className={classes.buttons1}>
                     <Button variant="outlined" color="primary" className={classes.button}>
                         정보수정
-      </Button>
-
+                      </Button>
                 </div>
             </div>
         )
+    }
+    private onChangeFile(e: React.ChangeEvent<HTMLInputElement>) {
+        e.stopPropagation();
+        e.preventDefault();
+        if(e.target.files===null){return}
+        const file = e.target.files[0];
+        const data = new FormData();
+        data.append("upload", file);
+        axios.post("http://localhost:8081/account/uploadProfile", data)
+            .then((res) => {
+                alert(res.data)
+            });
+
     }
 }
 export default withStyles(style)(UpdateUser);

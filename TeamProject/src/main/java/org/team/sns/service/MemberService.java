@@ -5,4 +5,5 @@ import org.team.sns.domain.Member;
 public interface MemberService {
 	public void signin(Member member);
 	public void newCustomList();
+	public void setProfileImg(String path,Member member);
 }

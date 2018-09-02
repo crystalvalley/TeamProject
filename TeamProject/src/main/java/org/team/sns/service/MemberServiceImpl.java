@@ -57,4 +57,11 @@ public class MemberServiceImpl implements MemberService{
 		return initList;		
 	}
 
+	@Override
+	public void setProfileImg(String path,Member member) {
+		// TODO Auto-generated method stub
+		member.setProfileImg(path);
+		mr.save(member);
+	}
+
 }

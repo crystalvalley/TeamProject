@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.team.sns.domain.Member;
 import org.team.sns.persistence.MemberRepository;
-import org.team.sns.service.MemberServiceImpl;
+import org.team.sns.service.DropboxService;
 import org.team.sns.service.SecurityUserServiceImpl;
 import org.team.sns.vo.RestMsgObject;
 
@@ -21,16 +24,19 @@ import org.team.sns.vo.RestMsgObject;
  */
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/account")
 public class AccountRestController {
 	@Autowired
-	private MemberRepository memberrepo;
+	private MemberRepository mr;
 	@Autowired
-	 private SecurityUserServiceImpl secUserService;
+	private SecurityUserServiceImpl secUserService;
+	@Autowired
+	private DropboxService ds;
 
 	@GetMapping("/idCheck")
 	public RestMsgObject idCheck(String _id) {
 		RestMsgObject rmo = new RestMsgObject();
-		if (memberrepo.existsById(_id)) {
+		if (mr.existsById(_id)) {
 			rmo.setMsg("fail");
 			return rmo;
 		} else {
@@ -41,13 +47,13 @@ public class AccountRestController {
 
 	@GetMapping("/delete")
 	public void delete() {
-		memberrepo.deleteById("PHJ");
+		mr.deleteById("PHJ");
 	}
 
 	@GetMapping("/search")
 	public String search() {
 		String result = "";
-		result = memberrepo.getNickname("test");
+		result = mr.getNickname("test");
 		return result;
 	}
 
@@ -67,21 +73,9 @@ public class AccountRestController {
 		return msg;
 	}
 
-	
-
-	/*
-	 * @PostMapping("/signin") public AuthToken signin(String userid, String
-	 * password,HttpSession sess) {
-	 * System.out.println("input value-------------------");
-	 * System.out.println(memberrepo.findById(userid).get());
-	 * System.out.println(userid); System.out.println(password);
-	 * UsernamePasswordAuthenticationToken token = new
-	 * UsernamePasswordAuthenticationToken(userid, password);
-	 * SecurityContextHolder.getContext().setAuthentication(auth);
-	 * sess.setAttribute(HttpSessionSecurityContextRepository.
-	 * SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext()); return new
-	 * AuthToken(userid,"USER",sess.getId());
-	 * 
-	 * }
-	 */
+	@PostMapping("/uploadProfile")
+	public String uploadProfile(@RequestParam("upload") MultipartFile upload) throws Exception {
+		System.out.println("test");
+		return ds.fileUpload(upload);
+	}
 }
