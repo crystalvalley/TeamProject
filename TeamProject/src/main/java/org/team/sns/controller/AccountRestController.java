@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.team.sns.domain.Member;
 import org.team.sns.persistence.MemberRepository;
-import org.team.sns.service.MemberService;
+import org.team.sns.service.MemberServiceImpl;
 import org.team.sns.service.SecurityUserServiceImpl;
 import org.team.sns.vo.RestMsgObject;
 
@@ -25,9 +25,7 @@ public class AccountRestController {
 	@Autowired
 	private MemberRepository memberrepo;
 	@Autowired
-	private MemberService ms;
-	private @Autowired
-	SecurityUserServiceImpl secUserService;
+	 private SecurityUserServiceImpl secUserService;
 
 	@GetMapping("/idCheck")
 	public RestMsgObject idCheck(String _id) {

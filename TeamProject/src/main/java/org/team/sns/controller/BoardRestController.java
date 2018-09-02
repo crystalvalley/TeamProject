@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Tag;
@@ -31,6 +32,7 @@ import org.team.sns.vo.BoardSearchCondition;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping(value="/boards")
 public class BoardRestController {
 	@Autowired
 	BoardServiceImpl bs;
@@ -40,14 +42,16 @@ public class BoardRestController {
 	MemberRepository mr;
 
 
-	@PostMapping("/boards/getBoard")
+	@PostMapping("/getBoard")
 	public List<Board> test(BoardSearchCondition params,  Datas datas) {		
 		return bs.getBoard(params);
 	}	
-	@GetMapping("/boards/view")
+	@GetMapping("/getByListName")
+	public List<Board> getByListName(String listName,Principal principal) {		
+		return bs.getBoardByListName(listName,principal.getName());
+	}	
+	@GetMapping("/view")
 	public Map<String,Object> sendBoard(String type, int num) {
-		System.out.println(type);
-		System.out.println(num);
 		HashMap<String,Object> result = new HashMap<>();
 		Board board = br.findById(num).get();
 		result.put("content", board);
@@ -56,17 +60,17 @@ public class BoardRestController {
 		return result;
 	}
 	
-	@PostMapping("/boards/writeBoard")
+	@PostMapping("/writeBoard")
 	public void writeBoard(Board board, Principal principal) {
 		board.setWriter(mr.findById(principal.getName()).get());
 		bs.saveBoard(board);
 	}
 	
-	@GetMapping("/boards/checkTag")
+	@GetMapping("/checkTag")
 	public List<Tag> checkTag(String hashTag) {
 		return bs.getTagList(hashTag);		
 	}
-	@GetMapping("/boards/checkMention")
+	@GetMapping("/checkMention")
 	public List<String> checkMention(String mention) {
 		System.out.println(mention);
 		return bs.getMentionList(mention);		

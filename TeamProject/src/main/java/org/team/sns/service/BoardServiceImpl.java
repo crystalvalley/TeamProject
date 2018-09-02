@@ -8,10 +8,13 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.team.sns.domain.Board;
+import org.team.sns.domain.CustomListPK;
 import org.team.sns.domain.Member;
 import org.team.sns.domain.Mention;
+import org.team.sns.domain.ProductStrategy;
 import org.team.sns.domain.Tag;
 import org.team.sns.persistence.BoardRepository;
+import org.team.sns.persistence.CustomListRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.persistence.MentionRepository;
 import org.team.sns.persistence.TagRepository;
@@ -36,6 +39,8 @@ public class BoardServiceImpl implements BoardService{
 	TagRepository tr;
 	@Autowired
 	MentionRepository mtr;
+	@Autowired
+	CustomListRepository clr;
 	
 	private final static Pattern HASH_PATTERN = Pattern.compile("#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+"); 
 	private final static Pattern MENTION_PATTERN = Pattern.compile("@[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+"); 
@@ -130,6 +135,20 @@ public class BoardServiceImpl implements BoardService{
 	public List<Board> getBoard(BoardSearchCondition params) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Board> getBoardByListName(String listName,String username) {
+		// TODO Auto-generated method stub
+		// 먼저 list이름을 통해서 조건을 가져옴
+		CustomListPK clpk = new CustomListPK();
+		clpk.setListName(listName);
+		clpk.setOwner(username);
+		System.out.println(clpk);
+		System.out.println(clr.findById(clpk).get());
+		List<ProductStrategy> conditions = clr.findById(clpk).get().getConditions();
+		List<Board> result = br.getBoardByCondition(conditions);
+		return result;
 	}
 
 }

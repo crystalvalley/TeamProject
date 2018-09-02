@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider, IconButton,Button } from '@material-ui/core';
+import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider, IconButton } from '@material-ui/core';
 import axios from 'axios';
 import classNames from 'classnames';
 import SearchField from './SearchField';
@@ -86,9 +86,10 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
           >
             <BtnBox />
             <IconButton
-
               onClick={this.submit}
-            ><AccountCircle /></IconButton>
+            >
+              <AccountCircle />
+            </IconButton>
           </span>
         </Toolbar>
         <Divider />

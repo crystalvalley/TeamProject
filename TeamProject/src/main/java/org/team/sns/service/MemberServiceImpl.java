@@ -52,7 +52,7 @@ public class MemberServiceImpl implements MemberService{
 		initPstr.setOwnedCl(initList);
 		pstr.save(initPstr);
 		initStr.setType("base");
-		initStr.setOwned(initPstr);		
+		initStr.setOwned(initPstr);	
 		str.save(initStr);
 		return initList;		
 	}

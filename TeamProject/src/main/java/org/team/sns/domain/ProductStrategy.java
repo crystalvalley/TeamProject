@@ -8,11 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 /**
@@ -38,7 +38,10 @@ public class ProductStrategy {
 
 	
 	@ManyToOne
-	@JoinColumn(name="owned_cl",referencedColumnName="customlist_id")
+	@JoinColumns({
+		@JoinColumn(name="owned_clname",referencedColumnName="listname"),
+		@JoinColumn(name="owned_clowner",referencedColumnName="owner_id")
+	})
 	private CustomList ownedCl;	
 
 }

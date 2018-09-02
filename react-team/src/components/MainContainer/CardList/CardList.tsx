@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { ICardModel } from '../../../constance/models';
 import { StyleRulesCallback, Theme, withStyles, Typography, Divider } from '@material-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
-import TestCard from './Card/smallCard/SmallCard';
 import Scrollbars from 'react-custom-scrollbars'
+import { ICardModel } from '../../../constance/models';
+import axios from 'axios';
+import SmallCard from './Card/smallCard/SmallCard';
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.27
@@ -35,12 +36,44 @@ interface IProps {
     },
     index: number;
     id: string;
-    cardList: ICardModel[];
+    listName:string;
 }
 
-class CardList extends React.Component<IProps> {
+interface IState{
+    cards : ICardModel[]
+}
+
+class CardList extends React.Component<IProps,IState> {
     constructor(props: IProps) {
         super(props);
+        this.state={
+            cards : []
+        }
+    }
+
+    public componentDidMount() {
+        axios.get("http://localhost:8081/boards/getByListName",{
+            params :{
+                listName : this.props.listName
+            }
+        }).then((result)=>{
+            this.setState({
+                cards : result.data
+            })
+        })
+    }
+
+    public componentWillReceiveProps(prevProps : IProps){
+        if(this.props.listName === prevProps.listName){return;}
+        axios.get("http://localhost:8081/boards/getByListName",{
+            params :{
+                listName : prevProps.listName
+            }
+        }).then((result)=>{
+            this.setState({
+                cards : result.data
+            })
+        })
     }
 
 
@@ -63,7 +96,7 @@ class CardList extends React.Component<IProps> {
                                     className={classes.listName}
                                     {...provided.dragHandleProps}
                                 >
-                                    {this.props.id}
+                                    {this.props.listName}
                                 </Typography>
                                 <Scrollbars
                                     autoHide={true}
@@ -73,12 +106,13 @@ class CardList extends React.Component<IProps> {
                                     >
                                         <Divider />
                                         {
-                                            this.props.cardList.map((card, index) => {
-                                                return (
-                                                    <TestCard
+                                            this.state.cards.map((card,index)=>{
+                                                return(
+                                                    <SmallCard
+                                                        card={card}
                                                         key={index}
                                                     />
-                                                )
+                                                );
                                             })
                                         }
                                     </div>

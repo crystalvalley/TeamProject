@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
-import { ICardContainerModel, ICardModel } from '../../../constance/models';
-import { testData } from './testData';
 import CardList from './CardList';
 import { withStyles, StyleRulesCallback, Theme } from '@material-ui/core';
+import axios from 'axios';
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.27
  * @version : 2018.08.31
  * 
+ * 로그인 컨텍스트 적용해야함
  */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
-    container: {        
+    container: {
         display: "flex",
         height: "100%",
     }
@@ -23,18 +23,35 @@ interface IProps {
         container: string;
     }
 }
+interface IState {
+    order: string[]
+}
 
-class CardListContainer extends React.Component<IProps, ICardContainerModel> {
+class CardListContainer extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
-        this.state = testData;
+        this.state = {
+            order: []
+        }
         this.onDragEnd = this.onDragEnd.bind(this);
     }
-
-    public componentWillUpdate(prevProps:IProps,pervState:ICardContainerModel){
-
+    public componentDidMount() {
+        axios.get("http://localhost:8081/lists/getListNames")
+            .then((result) => {
+                this.setState({
+                    order: result.data
+                })
+            })
     }
-
+    public componentWillUpdate(prevProps: IProps, pervState: IState) {
+        if (this.state.order === pervState.order || this.state.order.length !== 0) { return; }
+        axios.get("http://localhost:8081/lists/getListNames")
+            .then((result) => {
+                this.setState({
+                    order: result.data
+                })
+            })
+    }
     public render() {
         return (
             <DragDropContext
@@ -50,14 +67,13 @@ class CardListContainer extends React.Component<IProps, ICardContainerModel> {
                                     className={this.props.classes.container}
                                     ref={provided.innerRef}
                                 >{
-                                        this.state.order.map((id, index) => {
-                                            const cardList: ICardModel[] = this.state.lists[id];
+                                        this.state.order.map((name, index) => {
                                             return (
                                                 <CardList
                                                     index={index}
-                                                    key={id}
-                                                    id={id}
-                                                    cardList={cardList}
+                                                    key={index}
+                                                    id={name}
+                                                    listName={name}
                                                 />
                                             );
                                         })
@@ -85,11 +101,8 @@ class CardListContainer extends React.Component<IProps, ICardContainerModel> {
         newOrder.splice(source.index, 1);
         newOrder.splice(destination.index, 0, draggableId);
 
-        const newState: ICardContainerModel = {
+        const newState: IState = {
             ...this.state,
-            lists: {
-                ...this.state.lists
-            },
             order: newOrder
         }
         this.setState(newState);
