@@ -127,7 +127,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                     <EditorMenu
                         editorState={editorState}
                         title={this.state.title}
-                        writer={this.props.loginedId}
+                        writer={this.props.logined.id}
                     />
                 </div>
             </React.Fragment>

@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.team.sns.domain.Member;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.vo.DropboxVO;
+import org.team.sns.vo.DropboxVO.Delete;
 
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.Metadata;
@@ -38,6 +39,9 @@ public class DropboxService {
 		System.out.println("uploadMetadata : "+uploadMetadata.toString());
 		bis.close();
 		Member member = mr.findById(username).get();
+		DropboxVO.Delete del = new Delete();
+		del.setFilePath(member.getProfileImg());
+		this.fileDelete(del);
 		member.setProfileImg(filePath);
 		mr.save(member);
 		return uploadMetadata.getPathLower();

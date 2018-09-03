@@ -4,6 +4,8 @@ import Create from '@material-ui/icons/Create';
 import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
 import ShowupFriendList from '../MainContainer/FriendList/FriendList/showupFriendList';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import { NavLink } from 'react-router-dom';
 
 
 /**
@@ -36,13 +38,13 @@ class BtnBox extends React.Component<IProps, IState>{
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
     }
-  
+
     public render() {
         const { classes } = this.props;
         const { modalOpen } = this.state;
         const writeHandler = () => this.openModal(0);
         const writeHandler2 = () => this.openModal(1);
-       
+
         return (
             <span
                 className={classes.btnBox}
@@ -56,26 +58,22 @@ class BtnBox extends React.Component<IProps, IState>{
                     open={modalOpen === 0}
                     onClose={this.closeModal}
                 />
-                
-
-
-
                 <IconButton
                     onClick={writeHandler2}
                 >
                     <FriendListIcon />
                 </IconButton>
-                
+
+                <IconButton>
+                    <NavLink to="/userUpdate">
+                        <AccountCircle />
+                    </NavLink>
+                </IconButton>
                 <ShowupFriendList
-                    open={this.state.modalOpen===1}
+                    open={this.state.modalOpen === 1}
                     openf={writeHandler2}
                     close={this.closeModal}
                 />
-             
-                
-                
-
-                
             </span>
         );
     }

@@ -1,6 +1,7 @@
 package org.team.sns.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -63,14 +64,14 @@ public class AccountRestController {
 	}
 
 	@PostMapping("/loginCheck")
-	public RestMsgObject loginCheck(Principal principal) {
-		RestMsgObject msg = new RestMsgObject();
-		if (principal != null) {
-			msg.setMsg(principal.getName());
-		} else {
-			msg.setMsg("Not Logined");
-		}
-		return msg;
+	public Member loginCheck(Principal principal) {
+		Member member;
+		if(principal!=null) {
+			member = mr.findById(principal.getName()).get();			
+		}else {
+			member = mr.findById("testid").get();
+		}		
+		return member;
 	}
 
 	@PostMapping("/uploadProfile")

@@ -1,36 +1,46 @@
 import * as  React from 'react';
 import axios from 'axios';
+import { IMemberModel } from '../constance/models';
 
 /**
  * @author : ParkHyeokjoon
  * @since : 18.08.20
- * @version : 18.08.23
+ * @version : 18.09.02
  */
 
 export interface ILoginStore {
-    loginedId: string;
+    logined: IMemberModel;
+    loginCheck():void;
 }
 
 const loginContext = React.createContext<ILoginStore>({
-    loginedId: "",
+    logined: {
+        profileImg: "",
+        id: ""
+    },
+    loginCheck:()=>{return}
 });
 class LoginProvider extends React.Component<{}, ILoginStore> {
     constructor(props: {}) {
         super(props);
-        this.state = {
-            loginedId: "",
-        }
         this.loginCheck = this.loginCheck.bind(this);
+        this.state = {
+            logined: {
+                profileImg: "",
+                id: ""
+            },
+            loginCheck:this.loginCheck
+        }
     }
 
     // 새로고침 했을 때 적용하도록
     public componentDidMount() {
         this.loginCheck();
     }
-    public componentDidUpdate(nextProps:{},nextState:ILoginStore){
-        if(this.state.loginedId !== nextState.loginedId){
+    public componentDidUpdate(nextProps: {}, nextState: ILoginStore) {
+        if (this.state.logined ===undefined) {
             this.loginCheck();
-        }else{
+        } else {
             return;
         }
     }
@@ -41,14 +51,12 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             </loginContext.Provider>
         );
     }
-    private loginCheck(){
+    private loginCheck() {
         axios.post("http://localhost:8081/account/loginCheck")
             .then((response) => {
-                if (response.data.msg !== "Not Logined") {
-                    this.setState({
-                        loginedId: response.data.msg
-                    })
-                }
+                this.setState({
+                    logined: response.data
+                })
                 /*
                 else{
                     // 로그인 되지 않았고 loginPage라면
@@ -64,13 +72,13 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
 export { LoginProvider };
 
 
-export function withLoginContext<P extends ILoginStore>(Component : React.ComponentType<P>){
-    return function userLoginContext(props: Pick<P,Exclude<keyof P, keyof ILoginStore>>){
-        return(
+export function withLoginContext<P extends ILoginStore>(Component: React.ComponentType<P>) {
+    return function userLoginContext(props: Pick<P, Exclude<keyof P, keyof ILoginStore>>) {
+        return (
             <loginContext.Consumer>
                 {
-                    value=>
-                        <Component {...value} {...props}/>
+                    value =>
+                        <Component {...value} {...props} />
                 }
             </loginContext.Consumer>
         );

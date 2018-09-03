@@ -45,7 +45,7 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
     }
 
     public componentWillReceiveProps(){
-        if(this.props.loginedId!==""){            
+        if(this.props.logined.id!==""){            
             // 이미 로그인이 되있다면
             location.replace("/")
         }
@@ -103,7 +103,7 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                         </Typography>
                         {this.state.userid}<br />
                         {this.state.password}<br/>
-                        {this.props.loginedId}
+                        {this.props.logined.id}
                     </div>
                 </div>
             </div>

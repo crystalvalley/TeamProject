@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Toolbar, TextField, Button } from '@material-ui/core';
 import { ICardModel, IPhotoModel } from '../../../constance/models';
 import axios from 'axios';
+import { withLoginContext, ILoginStore } from '../../../contexts/LoginContext';
 
 /**
  * @author:chaMinju
@@ -129,7 +130,6 @@ interface IProps {
         bootstrapFormLabel: string;
         input: string;
     }
-    location: Location;
 
 }
 
@@ -141,9 +141,9 @@ interface IState {
     }
 }
 
-class UpdateUser extends React.Component<IProps, IState>{
+class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
     private upload: HTMLInputElement | null;
-    constructor(props: IProps) {
+    constructor(props: IProps & ILoginStore) {
         super(props);
         this.state = {
             item: {
@@ -161,9 +161,10 @@ class UpdateUser extends React.Component<IProps, IState>{
                 writer: ""
             }
         }
+        this.onChangeFile = this.onChangeFile.bind(this);
     }
     public render() {
-        const { classes } = this.props;
+        const { classes, logined } = this.props;
         return (
             <div className={classes.viewContainer}>
                 <Toolbar className={classes.containers}>
@@ -171,10 +172,9 @@ class UpdateUser extends React.Component<IProps, IState>{
                         <h4>modify</h4>
                     </div>
                 </Toolbar>
-
                 <div className={classes.imageContainer}>
                     <br />
-                    <img className={classes.imageSize} src="https://pbs.twimg.com/profile_images/1014241239300861952/AR1Up0pf_400x400.jpg" />
+                    <img className={classes.imageSize} src={logined !== undefined ? "http://localhost:8081/resources" + logined.profileImg : ""} />
                     <br />
                     <TextField margin="normal"
                         label="AR1Up0pf_400x400.jpg" /><br /><br />
@@ -240,15 +240,13 @@ class UpdateUser extends React.Component<IProps, IState>{
     private onChangeFile(e: React.ChangeEvent<HTMLInputElement>) {
         e.stopPropagation();
         e.preventDefault();
-        if(e.target.files===null){return}
+        if (e.target.files === null) { return }
         const file = e.target.files[0];
         const data = new FormData();
         data.append("upload", file);
         axios.post("http://localhost:8081/account/uploadProfile", data)
-            .then((res) => {
-                alert(res.data)
-            });
+            .then((res) => this.props.loginCheck());
 
     }
 }
-export default withStyles(style)(UpdateUser);
+export default withLoginContext(withStyles(style)(UpdateUser));

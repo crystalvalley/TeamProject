@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider, IconButton } from '@material-ui/core';
-import axios from 'axios';
+import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider } from '@material-ui/core';
 import classNames from 'classnames';
 import SearchField from './SearchField';
 import { withVoice, IVoiceStore } from '../../contexts/VoiceRecogContext';
 import BtnBox from './BtnBox';
 import { IMemberModel } from '../../constance/models';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
@@ -61,7 +59,7 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
     this.state = {
       searchKeyword: "",
       userInfo: {
-        avatar: "",
+        profileImg: "",
         id: ""
       }
     }
@@ -85,11 +83,6 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
             className={classes.toolBox}
           >
             <BtnBox />
-            <IconButton
-              onClick={this.submit}
-            >
-              <AccountCircle />
-            </IconButton>
           </span>
         </Toolbar>
         <Divider />
@@ -103,14 +96,6 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
         </Toolbar>
       </AppBar>
     );
-  }
-  private submit() {
-    axios.get("http://localhost:8081/userUpdate")
-      .then((response) => {
-        location.replace("/userUpdate")
-        // 컴포넌트를 만들어서 컨테이너를 만들고 그페이지가 자식이 되서  프롭스로 넣어준다.
-      }
-      )
   }
 
 

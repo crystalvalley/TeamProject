@@ -26,7 +26,7 @@ export interface ICardModel{
 
 export interface IMemberModel{
     id : string;
-    avatar : string;
+    profileImg : string;
 }
 
 export interface IPhotoModel{
