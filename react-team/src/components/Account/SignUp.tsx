@@ -59,7 +59,7 @@ class SignUp extends React.Component<IProps, IState> {
         const { user_id, idValid, password, passwordValid, passwordCheck } = this.state
         if(prevState.user_id !== user_id){
             if (user_id.length > 5 && user_id.length < 16) {
-                axios.get("http://localhost:8081/idCheck", {
+                axios.get("http://localhost:8081/account/idCheck", {
                     params: {
                         _id: this.state.user_id
                     }
