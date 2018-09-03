@@ -44,14 +44,6 @@ class SmallCard extends React.Component<IProps,IState>{
         }
         this.editorChange=this.editorChange.bind;
     }
-
-    public componentDidUpdate(nextProps: IProps) {
-        const getContent = EditorState.createWithContent(
-            convertFromRaw(JSON.parse(nextProps.card.content))
-        )
-        this.editorChange(getContent);
-    }
-
     public render() {
         const { classes, card } = this.props;
         return (

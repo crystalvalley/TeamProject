@@ -42,7 +42,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         );
     }
     private loginCheck(){
-        axios.post("http://localhost:8081/loginCheck")
+        axios.post("http://localhost:8081/account/loginCheck")
             .then((response) => {
                 if (response.data.msg !== "Not Logined") {
                     this.setState({

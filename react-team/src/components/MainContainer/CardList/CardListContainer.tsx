@@ -8,7 +8,6 @@ import axios from 'axios';
  * @since : 2018.08.27
  * @version : 2018.08.31
  * 
- * 로그인 컨텍스트 적용해야함
  */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -43,8 +42,9 @@ class CardListContainer extends React.Component<IProps, IState> {
                 })
             })
     }
-    public componentWillUpdate(prevProps: IProps, pervState: IState) {
-        if (this.state.order === pervState.order || this.state.order.length !== 0) { return; }
+
+    public componentDidUpdate() {
+        if (this.state.order.length !== 0) { return; }
         axios.get("http://localhost:8081/lists/getListNames")
             .then((result) => {
                 this.setState({

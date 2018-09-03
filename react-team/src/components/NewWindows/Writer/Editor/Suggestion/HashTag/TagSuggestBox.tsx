@@ -66,7 +66,7 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                     top: this.props.positionY,
                     left: this.props.positionX
                 }}
-                hidden={(!this.props.open)}
+                hidden={(!this.props.open)&&!(filteredList.length>0)}
             >
                 <ul
                     style={{
@@ -88,7 +88,7 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                                         {tag}
                                     </li>
                                 );
-                            }) : <div>시발</div>
+                            }) : ""
                     }
                 </ul>
             </div>

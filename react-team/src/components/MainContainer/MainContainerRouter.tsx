@@ -30,8 +30,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
         padding: theme.spacing.unit * 3,
         display: "flex",
         flexDirection: "column",
-        marginLeft:"5%",
-        marginRight:"5%"
+        marginLeft: "5%",
+        marginRight: "5%"
     },
 })
 
@@ -60,8 +60,8 @@ class MainContainerRouter extends React.Component<IProps> {
             >
                 <div className={classes.toolbar} />
                 <div className={classes.toolbar} />
-                <Switch>                
-                   <Route path="/userUpdate" component={UpdateUser} />
+                <Switch>
+                    <Route path="/userUpdate" component={UpdateUser} />
                     <Route path="/view" component={ViewContainer} />
                     <Route path="/" component={CardListContainer} />
                 </Switch>

@@ -13,7 +13,7 @@ import DecoMention from "./DecoratorComponent/DecoMention";
 export const SNSDecorator = new CompositeDecorator([
     {
         strategy: tagStrategy,
-        component: DecoTag
+        component: DecoTag,
     },
     {
         strategy : mentionStrategy,

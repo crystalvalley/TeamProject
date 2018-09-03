@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.team.sns.domain.Member;
+import org.team.sns.persistence.MemberRepository;
 import org.team.sns.vo.DropboxVO;
 
 import com.dropbox.core.v2.DbxClientV2;
@@ -26,13 +28,18 @@ import com.dropbox.core.v2.files.Metadata;
 public class DropboxService {
 	@Autowired
 	DbxClientV2 dbxClientV2;
+	@Autowired
+	MemberRepository mr;
 	
-	public String fileUpload(MultipartFile file) throws Exception{
-		String FilePath = rename(file);
+	public String fileUpload(MultipartFile file,String username) throws Exception{
+		String filePath = rename(file);
 		ByteArrayInputStream bis = new ByteArrayInputStream(file.getBytes());
-		Metadata uploadMetadata = dbxClientV2.files().uploadBuilder(FilePath).uploadAndFinish(bis);
+		Metadata uploadMetadata = dbxClientV2.files().uploadBuilder(filePath).uploadAndFinish(bis);
 		System.out.println("uploadMetadata : "+uploadMetadata.toString());
 		bis.close();
+		Member member = mr.findById(username).get();
+		member.setProfileImg(filePath);
+		mr.save(member);
 		return uploadMetadata.getPathLower();
 	}
 	
