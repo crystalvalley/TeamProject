@@ -2,6 +2,7 @@ package org.team.sns.persistence;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Favorites;
 import org.team.sns.domain.Networking;
@@ -53,6 +54,6 @@ public interface BoardRepositoryCustom {
 	public List<Board> getUserAllBoard(String _id);
 	
 	// 식별방법에 따라 찾기
-	public List<Board> getBoardByCondition(List<ProductStrategy> pstr);
+	public List<Board> getBoardByCondition(List<ProductStrategy> pstr,int page);
 	
 }

@@ -24,4 +24,6 @@ public interface BoardService {
 	public List<String> getMentionList(String mention);
 	public List<Board> getBoard(BoardSearchCondition params);
 	public List<Board> getBoardByListName(String listName,String username);
+	public List<Integer> getEmotions(int boardId,String memberid);
+	public void addEmotion(int boardId,int type,String memberid);
 }

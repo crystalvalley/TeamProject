@@ -74,4 +74,13 @@ public class BoardRestController {
 		System.out.println(mention);
 		return bs.getMentionList(mention);		
 	}
+	@GetMapping("/getEmotion")
+	public List<Integer> getEmotion(int boardId,Principal principal){
+		return bs.getEmotions(boardId,"testid");
+	}
+	@GetMapping("/addEmotion")
+	public String setEmotion(int emotionType, int boardId,Principal principal){
+		bs.addEmotion(boardId,emotionType,"testid");
+		return "success";
+	}
 }

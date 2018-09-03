@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
 import CardListContainer from './CardList/CardListContainer';
-import ViewContainer from './BoardView/ViewContainer';
 import UpdateUser from './BoardView/UpdateUser';
 
 
@@ -62,7 +61,6 @@ class MainContainerRouter extends React.Component<IProps> {
                 <div className={classes.toolbar} />
                 <Switch>
                     <Route path="/userUpdate" component={UpdateUser} />
-                    <Route path="/view" component={ViewContainer} />
                     <Route path="/" component={CardListContainer} />
                 </Switch>
             </main>

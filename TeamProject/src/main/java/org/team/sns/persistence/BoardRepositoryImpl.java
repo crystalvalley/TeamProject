@@ -3,6 +3,7 @@ package org.team.sns.persistence;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Favorites;
@@ -271,7 +272,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	}
 
 	@Override
-	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList) {
+	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList,int page) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		JPQLQuery<Board> query = from(board);
@@ -281,6 +282,8 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 			whereCondition.or(util.checkType(pstr.getStrategies()));
 		}
 		query.where(whereCondition).orderBy(board.id.desc());
+		query.offset(10*(page-1));
+		query.limit(10);
 		return query.fetch();
 	}
 }

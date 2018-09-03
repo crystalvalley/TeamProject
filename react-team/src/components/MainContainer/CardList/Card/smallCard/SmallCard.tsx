@@ -3,7 +3,13 @@ import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typog
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import { ICardModel } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
-
+import EmotionBox from './EmotionBox';
+/**
+ * @author : ParkHyeokJoon
+ * @since : 2018.08.29
+ * @version : 2018.09.03
+ * 
+ */
 const style: StyleRulesCallback = (theme: Theme) => ({
     card: {
         maxWidth: 500,
@@ -15,10 +21,16 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     cardHead: {
         display: "flex",
         alignItems: "center",
-        padding:"12px"
+        padding: "12px"
     },
-    avatar:{
-        marginRight:"10px"
+    avatar: {
+        marginRight: "10px"
+    },
+    title: {
+        textAlign: "center"
+    },
+    cardBody: {
+        padding: "12px"
     }
 });
 
@@ -27,25 +39,29 @@ interface IProps {
         card: string;
         avatar: string;
         cardHead: string;
+        title: string;
+        cardBody: string;
     }
-    card:ICardModel
+    card: ICardModel
 }
 
-interface IState{
-    editorState : EditorState;
+interface IState {
+    editorState: EditorState;
 }
 
 
-class SmallCard extends React.Component<IProps,IState>{
+class SmallCard extends React.Component<IProps, IState>{
     constructor(props: IProps) {
         super(props);
-        this.state={
-            editorState : EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)),SNSDecorator)
+        this.state = {
+            editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator),
         }
-        this.editorChange=this.editorChange.bind;
+        this.editorChange = this.editorChange.bind;
     }
+
     public render() {
         const { classes, card } = this.props;
+
         return (
             <Card className={classes.card}>
                 <div
@@ -53,31 +69,42 @@ class SmallCard extends React.Component<IProps,IState>{
                 >
                     <Avatar
                         className={classes.avatar}
-                        src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&h=350"
+                        src={"http://localhost:8081/resources" + card.writer.profileImg}
                     />
                     <Typography>
-                        {card.title}
+                        {card.writer.id}
                     </Typography>
                 </div>
+                <div
+                    className={classes.cardBody}
+                >
+                    <Typography
+                        className={classes.title}
+                    >
+                        {card.title}
+                    </Typography>
+                    <CardContent>
+                        <Editor
+                            readOnly={true}
+                            editorState={this.state.editorState}
+                            onChange={this.editorChange}
+                        />
+                    </CardContent>
+                </div>
                 <CardContent>
-                    <Editor
-                        readOnly={true}
-                        editorState={this.state.editorState}
-                        onChange={this.editorChange}
+                    <EmotionBox 
+                        id={this.props.card.id}
                     />
-               </CardContent>
-                <CardContent>
-                    감정표현파트
-              </CardContent>
+                </CardContent>
                 <CardContent>
                     메뉴
                 </CardContent>
             </Card>
         );
     }
-    private editorChange(es: EditorState){
+    private editorChange(es: EditorState) {
         this.setState({
-            editorState : es
+            editorState: es
         })
     }
 }

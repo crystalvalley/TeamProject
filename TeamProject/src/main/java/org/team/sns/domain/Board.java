@@ -3,8 +3,10 @@ package org.team.sns.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,8 +44,8 @@ import lombok.ToString;
 @Table(name = "Boards")
 // _id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = { "photos", "replys", "share", "writer", "sounds" })
-@JsonIgnoreProperties({ "photos", "replys", "share", "writer", "sounds" })
+@ToString(exclude = { "photos", "replys", "share", "writer", "sounds","mentions","tags" })
+@JsonIgnoreProperties({ "photos", "replys", "share", "sounds","mentions","tags" })
 public class Board {
 	// primary key
 	@Id

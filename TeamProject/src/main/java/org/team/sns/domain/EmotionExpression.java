@@ -9,19 +9,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 
  * @author MinJeongKim
  * @since 18.08.10
- * @version 18.08.14
+ * @version 18.09.03
  *
  */
 
@@ -30,27 +30,29 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @Table(name="EmotionExpressions")
-@EqualsAndHashCode(of = "id")
+@JsonIgnoreProperties({"target_board","target_reply","expresser"})
 public class EmotionExpression {
 	@Id
-	@Column(name="EmotionExpression_id")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="EmotionExpressions_seq", initialValue=1, allocationSize=1)
-	private int id;	
+	@Column(name="emotion_id")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
+	@SequenceGenerator(name="seq",sequenceName="emotion_seq", initialValue=1, allocationSize=1)	
+	private int id;
 	
 	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="expresser",referencedColumnName="user_id")
-	private Member writer;
+	private Member expresser;
 	
-	private String emotiontype;
-	
-	@OneToOne
+	// 1~5까지 1이 좋은거
+	@NotNull
+	private int emotiontype;
+
+	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="target_board", referencedColumnName="board_id")
-	private Board target_board;
+	private Board targetBoard;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="target_reply", referencedColumnName="reply_id")
-	private Reply target_reply;
+	private Reply targetReply;
 	
 	
 }

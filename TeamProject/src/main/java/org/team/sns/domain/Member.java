@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -27,7 +28,7 @@ import lombok.ToString;
  * 
  * @author ParkHyeokjoon
  * @since 18.08.10
- * @version 18.08.30
+ * @version 18.09.02
  * 
  */
 // [ 회원 테이블 ]
@@ -38,9 +39,9 @@ import lombok.ToString;
 //_id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = { "boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom",
-		"groups", "customList" })
+		"groups", "customList","mentionList" })
 @JsonIgnoreProperties({ "boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom",
-		"groups", "customList" })
+		"groups", "customList","mentionList" })
 public class Member {
 	@Id
 	@Column(name = "user_id")

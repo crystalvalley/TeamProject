@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.team.sns.domain.Member;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.service.DropboxService;
+import org.team.sns.service.MemberServiceImpl;
 import org.team.sns.service.SecurityUserServiceImpl;
 import org.team.sns.vo.RestMsgObject;
 
@@ -29,6 +30,8 @@ import org.team.sns.vo.RestMsgObject;
 public class AccountRestController {
 	@Autowired
 	private MemberRepository mr;
+	@Autowired
+	private MemberServiceImpl ms;
 	@Autowired
 	private SecurityUserServiceImpl secUserService;
 	@Autowired
@@ -61,6 +64,7 @@ public class AccountRestController {
 	@PostMapping("/signup")
 	public void signUp(Member member) {
 		secUserService.createUser(member);
+		ms.signup(member);
 	}
 
 	@PostMapping("/loginCheck")

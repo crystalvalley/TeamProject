@@ -113,7 +113,7 @@ class SignUp extends React.Component<IProps, IState> {
                     <form
                         ref={this.formRef}
                         className={classes.form}
-                        action="http://localhost:8081/signup"
+                        action="http://localhost:8081/account/signup"
                         method="post"
                     >
                         <TextField

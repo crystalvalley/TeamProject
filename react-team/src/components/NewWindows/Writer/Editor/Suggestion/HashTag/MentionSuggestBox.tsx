@@ -73,7 +73,7 @@ class MentionSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                             filteredList.map((mention, index) => {
                                 const handler = () => {
                                     this.props.mentionChange(
-                                        this.props.start, this.props.end, "#" + mention
+                                        this.props.start, this.props.end, "@" + mention
                                     )
                                 }
                                 return (

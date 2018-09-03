@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.CustomListPK;
+import org.team.sns.domain.EmotionExpression;
 import org.team.sns.domain.Member;
 import org.team.sns.domain.Mention;
 import org.team.sns.domain.ProductStrategy;
 import org.team.sns.domain.Tag;
 import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.CustomListRepository;
+import org.team.sns.persistence.EmotionRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.persistence.MentionRepository;
 import org.team.sns.persistence.TagRepository;
@@ -29,7 +31,7 @@ import org.team.sns.vo.BoardSearchCondition;
  */
 
 @Service
-public class BoardServiceImpl implements BoardService{
+public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	BoardRepository br;
@@ -41,10 +43,12 @@ public class BoardServiceImpl implements BoardService{
 	MentionRepository mtr;
 	@Autowired
 	CustomListRepository clr;
-	
-	private final static Pattern HASH_PATTERN = Pattern.compile("#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+"); 
-	private final static Pattern MENTION_PATTERN = Pattern.compile("@[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+"); 
-	
+	@Autowired
+	EmotionRepository er;
+
+	private final static Pattern HASH_PATTERN = Pattern.compile("#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+");
+	private final static Pattern MENTION_PATTERN = Pattern.compile("@[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+");
+
 	@Override
 	public void saveBoard(Board board) {
 		// TODO Auto-generated method stub
@@ -54,38 +58,38 @@ public class BoardServiceImpl implements BoardService{
 		Matcher mentionMatch = MENTION_PATTERN.matcher(text);
 		ArrayList<String> hashes = new ArrayList<>();
 		ArrayList<String> mentions = new ArrayList<>();
-	    while (hashMatch.find()) {	    	
-	    	hashes.add(hashMatch.group());
-	    }
-	    while (mentionMatch.find()) {
-	    	mentions.add(mentionMatch.group());
-	    }
-	    // 앞의 @이를 빼줘야하므로
-	    ArrayList<String> edittedMention = new ArrayList<>();
-	    for(String m : mentions) {
-	    	edittedMention.add(m.substring(1));
-	    }
+		while (hashMatch.find()) {
+			hashes.add(hashMatch.group());
+		}
+		while (mentionMatch.find()) {
+			mentions.add(mentionMatch.group());
+		}
+		// 앞의 @이를 빼줘야하므로
+		ArrayList<String> edittedMention = new ArrayList<>();
+		for (String m : mentions) {
+			edittedMention.add(m.substring(1));
+		}
 		br.save(board);
 		board.setTags(new ArrayList<Tag>());
-	    tagCheck(hashes,board);
-	    board.setMentions(mentionCheck(edittedMention,board));
-		br.save(board);		
-	    
+		tagCheck(hashes, board);
+		board.setMentions(mentionCheck(edittedMention, board));
+		br.save(board);
+
 	}
 
 	@Override
-	public List<Tag> tagCheck(ArrayList<String> list,Board board) {
+	public List<Tag> tagCheck(ArrayList<String> list, Board board) {
 		// TODO Auto-generated method stub
 		ArrayList<Tag> result = new ArrayList<>();
-		for(String tag : list) {
+		for (String tag : list) {
 			tag = tag.substring(1);
 			Tag checkedTag;
-			if(tr.existsById(tag)) {
+			if (tr.existsById(tag)) {
 				checkedTag = tr.findById(tag).get();
 				checkedTag.addBoard(board);
 				tr.save(checkedTag);
 				result.add(checkedTag);
-			}else{
+			} else {
 				checkedTag = new Tag();
 				checkedTag.setHashTag(tag);
 				checkedTag.setTaggedBoards(new ArrayList<Board>());
@@ -93,21 +97,21 @@ public class BoardServiceImpl implements BoardService{
 				tr.save(checkedTag);
 				result.add(checkedTag);
 			}
-		}		
-		return result;		
+		}
+		return result;
 	}
 
 	@Override
-	public List<Mention> mentionCheck(ArrayList<String> list,Board board) {
+	public List<Mention> mentionCheck(ArrayList<String> list, Board board) {
 		// TODO Auto-generated method stub
 		ArrayList<Mention> result = new ArrayList<>();
 		Iterable<String> ids = list;
 		System.out.println("리스트");
 		System.out.println(list);
-		Iterable<Member> iMember =  mr.findAllById(ids);
+		Iterable<Member> iMember = mr.findAllById(ids);
 		System.out.println("iMember");
 		System.out.println(iMember);
-		for(Member member : iMember) {
+		for (Member member : iMember) {
 			System.out.println("리스트의 멤버");
 			System.out.println(member);
 			Mention m = new Mention();
@@ -116,7 +120,7 @@ public class BoardServiceImpl implements BoardService{
 			mtr.save(m);
 			result.add(m);
 		}
-		return result;		
+		return result;
 	}
 
 	@Override
@@ -138,7 +142,7 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<Board> getBoardByListName(String listName,String username) {
+	public List<Board> getBoardByListName(String listName, String username) {
 		// TODO Auto-generated method stub
 		// 먼저 list이름을 통해서 조건을 가져옴
 		CustomListPK clpk = new CustomListPK();
@@ -147,8 +151,34 @@ public class BoardServiceImpl implements BoardService{
 		System.out.println(clpk);
 		System.out.println(clr.findById(clpk).get());
 		List<ProductStrategy> conditions = clr.findById(clpk).get().getConditions();
-		List<Board> result = br.getBoardByCondition(conditions);
+		List<Board> result = br.getBoardByCondition(conditions, 1);
 		return result;
+	}
+
+	@Override
+	public List<Integer> getEmotions(int boardId, String memberid) {
+		// TODO Auto-generated method stub
+		return er.getEmotions(br.findById(boardId).get(), mr.findById(memberid).get());
+	}
+
+	@Override
+	public void addEmotion(int boardId, int type, String memberid) {
+		// TODO Auto-generated method stub
+
+		Member member = mr.findById(memberid).get();
+		Board board = br.findById(boardId).get();
+		EmotionExpression ee = er.findByExpresserAndTargetBoard(member, board);
+		System.out.println(ee);
+		if(ee==null) {
+			ee = new EmotionExpression();
+			ee.setEmotiontype(type);
+			ee.setTargetBoard(board);
+			ee.setExpresser(member);
+			er.save(ee);
+		}else {
+			ee.setEmotiontype(type);
+			er.save(ee);
+		}
 	}
 
 }

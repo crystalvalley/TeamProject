@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Toolbar, TextField, Button } from '@material-ui/core';
-import { ICardModel, IPhotoModel } from '../../../constance/models';
 import axios from 'axios';
 import { withLoginContext, ILoginStore } from '../../../contexts/LoginContext';
 
@@ -133,34 +132,10 @@ interface IProps {
 
 }
 
-interface IState {
-    item: {
-        content: ICardModel,
-        writer: string,
-        image: IPhotoModel[],
-    }
-}
-
-class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
+class UpdateUser extends React.Component<IProps & ILoginStore>{
     private upload: HTMLInputElement | null;
     constructor(props: IProps & ILoginStore) {
         super(props);
-        this.state = {
-            item: {
-                content: {
-                    content: "",
-                    hitcount: 0,
-                    id: -1,
-                    image: "",
-                    sound: "",
-                    title: "",
-                    updateDaty: "",
-                    writeDay: "",
-                },
-                image: [],
-                writer: ""
-            }
-        }
         this.onChangeFile = this.onChangeFile.bind(this);
     }
     public render() {
