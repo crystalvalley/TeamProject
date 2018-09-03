@@ -29,6 +29,7 @@ export interface ICardModel {
 export interface IMemberModel {
     id: string;
     profileImg: string;
+    name :string;
 }
 
 export interface IPhotoModel {
