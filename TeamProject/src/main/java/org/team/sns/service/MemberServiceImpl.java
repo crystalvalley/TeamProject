@@ -29,11 +29,11 @@ public class MemberServiceImpl implements MemberService{
 	private ProductStrategyRepository pstr;
 
 	@Override
-	public void signin(Member member) {
+	public void signup(Member member) {
 		// TODO Auto-generated method stub
 		// 이미 유효성 검사는 처리 됬으므로
-		mr.save(member);
 		initialSetting(member);
+		mr.save(member);
 	}
 
 	@Override
