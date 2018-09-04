@@ -2,6 +2,7 @@ package org.team.sns.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ public class Strategy {
 	@SequenceGenerator(name="seq",sequenceName="strategy_seq",initialValue=1,allocationSize=1)
 	private int id;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="owned",referencedColumnName="pstr_id")
 	private ProductStrategy owned;
 	

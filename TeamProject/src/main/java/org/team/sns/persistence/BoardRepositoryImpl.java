@@ -1,21 +1,27 @@
 package org.team.sns.persistence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Favorites;
+import org.team.sns.domain.Member;
+import org.team.sns.domain.Mention;
 import org.team.sns.domain.Networking;
 import org.team.sns.domain.ProductStrategy;
 import org.team.sns.domain.QBoard;
 import org.team.sns.domain.QFavorites;
+import org.team.sns.domain.QMember;
+import org.team.sns.domain.QMention;
 import org.team.sns.domain.QNetworking;
 import org.team.sns.domain.QReply;
 import org.team.sns.domain.QShare;
+import org.team.sns.domain.QTag;
 import org.team.sns.domain.Reply;
 import org.team.sns.domain.Share;
+import org.team.sns.domain.Tag;
 import org.team.sns.persistence.utils.Utility;
 
 import com.querydsl.core.BooleanBuilder;
@@ -27,14 +33,16 @@ import lombok.extern.java.Log;
  * 
  * @author ParkHyeokjoon
  * @since 18.08.12
- * @version 18.08.16
+ * @version 18.09.04
  *
  */
 @Log
-public class BoardRepositoryImpl extends QuerydslRepositorySupport implements BoardRepositoryCustom{
+public class BoardRepositoryImpl extends QuerydslRepositorySupport implements BoardRepositoryCustom {
 	@Autowired
 	Utility util;
-	
+	@Autowired
+	MemberRepository mr;
+
 	public BoardRepositoryImpl() {
 		super(Board.class);
 		// TODO Auto-generated constructor stub
@@ -45,7 +53,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		log.info("==========");
 		log.info("user_id : " + _id);
 		log.info("==========");
-		QBoard board = QBoard.board;		
+		QBoard board = QBoard.board;
 		// Query생성
 		JPQLQuery<Board> boardQuery = from(board);
 		// select board
@@ -55,17 +63,17 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		// .get(0)를 할 경우 쿼리를 하나 더 날리기 때문에 이걸로 처리
 		boardQuery.where(board.writer.id.eq(_id));
 		// 결과 받아오기
-		List<Board> result = boardQuery.fetch();		
+		List<Board> result = boardQuery.fetch();
 		return result;
 	}
 
 	@Override
-	public List<Board> getBoardsByTitle(String  searchTitle) {
+	public List<Board> getBoardsByTitle(String searchTitle) {
 		// TODO Auto-generated method stub
 		// 1. 찾을 대상의 QDomain을 가져옴
 		// board를 찾을 거니까 QBoard를 가져옴
 		QBoard board = QBoard.board;
-		
+
 		// 2. Query를 생성해주는 JPQLQuery 객체를 만듬
 		// Board에 대한 쿼리니까 generic은 Board
 		// from부터 설정
@@ -75,7 +83,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		boardQuery.select(board);
 		// QueryDSL에서는 where안의 조건이 참이면 반환
 		// board의 title에 파라미터(검색어) title이 포함되어 있다면
-		// select *  from boards b where b.title like %searchTitle% 
+		// select * from boards b where b.title like %searchTitle%
 		boardQuery.where(board.title.contains(searchTitle));
 		// 3. 쿼리 실행 후 result에 대입
 		List<Board> result = boardQuery.fetch();
@@ -87,8 +95,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	 * 
 	 * @author Gil
 	 * @since 18.08.16
-	 * @version 18.08.16
-	 *검색어가 내용에 들어있는 게시물 검색
+	 * @version 18.08.16 검색어가 내용에 들어있는 게시물 검색
 	 */
 	@Override
 	public List<Board> getBoardByContent(String searchWord) {
@@ -100,13 +107,11 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		return result;
 	}
 
-	
 	/**
 	 * 
 	 * @author Gil
 	 * @since 18.08.16
-	 * @version 18.08.16
-	 *힛트카운트 몇 번이상의 게시물만 검색
+	 * @version 18.08.16 힛트카운트 몇 번이상의 게시물만 검색
 	 */
 	@Override
 	public List<Board> getBoardByHitCount(int number) {
@@ -117,6 +122,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		List<Board> result = boardQuery.fetch();
 		return result;
 	}
+
 	/**
 	 * 
 	 * @author minju
@@ -265,24 +271,62 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	// JPA 로 써도 된다.
 	@Override
 	public List<Board> getUserAllBoard(String _id) {
-		
-		
-		
+
 		return null;
 	}
 
 	@Override
-	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList,int page) {
+	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList, int page) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		JPQLQuery<Board> query = from(board);
 		query.select(board);
 		BooleanBuilder whereCondition = new BooleanBuilder();
-		for(ProductStrategy pstr : pstrList) {
+		for (ProductStrategy pstr : pstrList) {
 			whereCondition.or(util.checkType(pstr.getStrategies()));
 		}
 		query.where(whereCondition).orderBy(board.id.desc());
-		query.offset(10*(page-1));
+		query.offset(10 * (page - 1));
+		query.limit(10);
+		return query.fetch();
+	}
+
+	@Override
+	public List<Board> getBoardByKeyword(String keyword) {
+		// TODO Auto-generated method stub
+		QBoard board = QBoard.board;
+		JPQLQuery<Board> query = from(board);
+		query.select(board);
+		query.where((board.title.contains(keyword)).or(board.plainText.contains(keyword)));
+		query.offset(0);
+		query.limit(10);
+		return query.fetch();
+	}
+
+	@Override
+	public List<Board> getBoardByHashTag(String keyword) {
+		// TODO Auto-generated method stub
+		QBoard board = QBoard.board;
+		QTag tag = QTag.tag;
+		JPQLQuery<Board> query = from(board);
+		JPQLQuery<Tag> subQuery = from(tag);
+		query.select(board);
+		query.where(board.tags.contains(subQuery.where(tag.hashTag.contains(keyword.replaceFirst("#", "")))));
+		query.offset(0);
+		query.limit(10);
+		return query.fetch();
+	}
+
+	@Override
+	public List<Board> getBoardByMention(String keyword) {
+		// TODO Auto-generated method stub
+		QBoard board = QBoard.board;
+		QMention mention = QMention.mention;
+		JPQLQuery<Board> query = from(board);
+		JPQLQuery<Mention> subQuery = from(mention);
+		query.select(board);
+		query.where(board.mentions.contains(subQuery.where(mention.mentioned.id.eq(keyword.replaceFirst("@", "")))));
+		query.offset(0);
 		query.limit(10);
 		return query.fetch();
 	}

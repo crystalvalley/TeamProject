@@ -37,9 +37,11 @@ public class CustomList {
 	
 	@Id
 	@ManyToOne
-	@JoinColumn(name="owner_id",referencedColumnName="user_id",updatable=false,nullable=false)
+	@JoinColumn(name="owner_id",referencedColumnName="user_id",updatable=false,nullable=false,insertable=false)
 	private Member owner;
 		
 	@OneToMany(mappedBy="ownedCl")
 	private List<ProductStrategy> conditions;
+	
+	private int customOrder;
 }

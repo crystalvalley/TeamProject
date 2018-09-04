@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.team.sns.domain.Board;
+import org.team.sns.domain.CustomListPK;
 import org.team.sns.domain.EmotionExpression;
 import org.team.sns.domain.Member;
 import org.team.sns.service.MemberServiceImpl;
@@ -59,11 +60,11 @@ public class insertTest {
 	
 	@Test
 	public void searchbycontentTest() {
-		Member member =new Member();
+		Member member = new Member();
 		member.setId("testid");
 		member.setPassword("12345678");
-		member.setEmail("hamkegaja2@gmail.com");
 		member.setUsername("testman");
+		member.setEmail("hamkgaja2@gmail.com");
 		sus.createUser(member);
 		ms.signup(member);
 		

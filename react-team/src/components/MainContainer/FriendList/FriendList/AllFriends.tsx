@@ -56,7 +56,8 @@ class Friend extends React.Component<IProps & ILoginStore, IState>{
             },
             userInfo: {
                 id: "",
-                profileImg: ""
+                profileImg: "",
+                name:"",
             }
         }
 

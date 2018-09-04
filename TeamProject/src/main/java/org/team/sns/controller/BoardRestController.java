@@ -83,4 +83,10 @@ public class BoardRestController {
 		bs.addEmotion(boardId,emotionType,"testid");
 		return "success";
 	}
+	@GetMapping("/search")
+	public List<Board> getBoardbySearch(String keyword){
+		System.out.println(keyword);
+		return bs.getBoardBySearchKeyword(keyword);
+	}
+	
 }

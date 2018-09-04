@@ -2,6 +2,7 @@ package org.team.sns.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class ProductStrategy {
 	
 
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumns({
 		@JoinColumn(name="owned_clname",referencedColumnName="listname"),
 		@JoinColumn(name="owned_clowner",referencedColumnName="owner_id")

@@ -56,4 +56,11 @@ public interface BoardRepositoryCustom {
 	// 식별방법에 따라 찾기
 	public List<Board> getBoardByCondition(List<ProductStrategy> pstr,int page);
 	
+	//제목 내용 검색
+	public List<Board> getBoardByKeyword(String keyword);
+	//HashTag 검색
+	public List<Board> getBoardByHashTag(String keyword);
+	//Mention 검색
+	public List<Board> getBoardByMention(String keyword);
+	
 }

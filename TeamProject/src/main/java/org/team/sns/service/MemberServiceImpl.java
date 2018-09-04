@@ -32,7 +32,11 @@ public class MemberServiceImpl implements MemberService{
 	public void signup(Member member) {
 		// TODO Auto-generated method stub
 		// 이미 유효성 검사는 처리 됬으므로
-		initialSetting(member);
+		setInitialBoard(member,"Base");
+		setInitialBoard(member,"Test");
+		setInitialBoard(member,"SearchField");
+		setInitialBoard(member,"Test3");
+		setInitialBoard(member,"Test4");
 		mr.save(member);
 	}
 
@@ -41,20 +45,20 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		
 	}
-	public CustomList initialSetting(Member member) {
+	public void setInitialBoard(Member member,String listName) {
 		// TODO Auto-generated method stub
+		// Base 테이블
 		CustomList initList = new CustomList();
 		ProductStrategy initPstr = new ProductStrategy();
 		Strategy initStr = new Strategy();
 		initList.setOwner(member);
-		initList.setListName("Base");
+		initList.setListName(listName);
 		clr.save(initList);		
 		initPstr.setOwnedCl(initList);
 		pstr.save(initPstr);
-		initStr.setType("base");
+		initStr.setType(listName);
 		initStr.setOwned(initPstr);	
 		str.save(initStr);
-		return initList;		
 	}
 
 	@Override

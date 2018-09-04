@@ -180,4 +180,17 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 
+	@Override
+	public List<Board> getBoardBySearchKeyword(String keyword) {
+		// TODO Auto-generated method stub
+		if(keyword.indexOf("#")==0) {
+			return br.getBoardByHashTag(keyword);
+		}else if(keyword.indexOf("@")==0) {
+			return br.getBoardByMention(keyword);
+		}else {
+			return br.getBoardByKeyword(keyword);
+			
+		}
+	}
+
 }

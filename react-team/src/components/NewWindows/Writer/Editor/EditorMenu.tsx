@@ -46,6 +46,9 @@ class EditorMenu extends React.Component<IProps> {
                 convertToRaw(this.props.editorState.getCurrentContent())
             )
         );
+        data.append("plainText",
+            this.props.editorState.getCurrentContent().getPlainText()
+        )
         data.append("title", this.props.title);
         data.append("writerId",this.props.writer)
         axios.post("http://localhost:8081/boards/writeBoard", data)
