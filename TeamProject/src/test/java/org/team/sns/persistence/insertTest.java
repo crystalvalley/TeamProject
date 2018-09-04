@@ -9,6 +9,7 @@ import org.team.sns.domain.Board;
 import org.team.sns.domain.CustomListPK;
 import org.team.sns.domain.EmotionExpression;
 import org.team.sns.domain.Member;
+import org.team.sns.domain.Networking;
 import org.team.sns.service.MemberServiceImpl;
 import org.team.sns.service.SecurityUserService;
 /**
@@ -39,6 +40,9 @@ public class insertTest {
 	StrTargetRepository sttr;
 	@Autowired
 	SecurityUserService sus;
+	
+	@Autowired
+	NetworkRepository nr;
 	/*
 	 *  board에 적당히 값 넣어두는  test
 	@Test
