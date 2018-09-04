@@ -83,4 +83,12 @@ public class AccountRestController {
 		System.out.println("test");
 		return ds.fileUpload(upload,"testid");
 	}
+	
+	@PostMapping("/UpdateUser")
+	public Member UpdateUser(String name,String pw,Principal principal) {
+		Member member = new Member();
+		System.out.println("들어온다"+name+pw);
+		return member;
+	}
+	
 }

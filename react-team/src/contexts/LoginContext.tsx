@@ -16,7 +16,8 @@ export interface ILoginStore {
 const loginContext = React.createContext<ILoginStore>({
     logined: {
         profileImg: "",
-        id: ""
+        id: "",
+        name : ""
     },
     loginCheck:()=>{return}
 });
@@ -27,7 +28,8 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         this.state = {
             logined: {
                 profileImg: "",
-                id: ""
+                id: "",
+                name : ""
             },
             loginCheck:this.loginCheck
         }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Toolbar, TextField, Button } from '@material-ui/core';
 import axios from 'axios';
 import { withLoginContext, ILoginStore } from '../../../contexts/LoginContext';
-
+import { ICardModel, IPhotoModel, IMemberModel } from '../../../constance/models';
 /**
  * @author:chaMinju
  * @since:2018.08.21
@@ -132,11 +132,51 @@ interface IProps {
 
 }
 
-class UpdateUser extends React.Component<IProps & ILoginStore>{
+interface IState {
+    item: {
+        content: ICardModel,
+        writer: string,
+        image: IPhotoModel[],
+    },
+    userInfo: IMemberModel,
+    pw: string;
+}
+
+class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
     private upload: HTMLInputElement | null;
     constructor(props: IProps & ILoginStore) {
         super(props);
+        this.state = {
+            item: {
+                content: {
+                    id: 0,
+                    writer: {
+                        id: "",
+                        profileImg: "",
+                        name: ""
+                    },
+                    title: "",
+                    content: "",
+                    // url
+                    sound: "",
+                    // image
+                    image: "",
+                    writeDay: "",
+                    updateDaty: "",
+                    hitcount: 0,
+                },
+                writer: "",
+                image: [],
+            },
+            userInfo: {
+                id: "",
+                profileImg: "",
+                name: ""
+            },
+            pw: "",
+        }
         this.onChangeFile = this.onChangeFile.bind(this);
+        this.submit = this.submit.bind(this);
     }
     public render() {
         const { classes, logined } = this.props;
@@ -176,9 +216,14 @@ class UpdateUser extends React.Component<IProps & ILoginStore>{
 
 
                     <h2>개인정보 수정</h2><br />
-                    <TextField label="닉네임" /><br /><br />
-                    <TextField label="이름" /><br /><br />
-                    <TextField type="password" label="비밀번호" /><br /><br />
+                    <TextField label={this.props.logined.id} name="id">{
+                        this.props.logined.id
+                    }</TextField><br /><br />
+                    <TextField label={this.props.logined.name} name="name">{
+                        this.props.logined.name
+                    }</TextField><br /><br />
+                    {/*에이젝스로 비밀번호르 쏴서 확인한다*/}
+                    <TextField type="password" name="userpw" label="비밀번호" >{this.state.pw}</TextField><br /><br />
                     <TextField type="password" label="비밀번호 확인" />
 
                 </div>
@@ -205,7 +250,7 @@ class UpdateUser extends React.Component<IProps & ILoginStore>{
                     </Button>
                 </div>
                 <div className={classes.buttons1}>
-                    <Button variant="outlined" color="primary" className={classes.button}>
+                    <Button variant="outlined" onClick={this.submit} color="primary" className={classes.button}>
                         정보수정
                       </Button>
                 </div>
@@ -221,7 +266,18 @@ class UpdateUser extends React.Component<IProps & ILoginStore>{
         data.append("upload", file);
         axios.post("http://localhost:8081/account/uploadProfile", data)
             .then((res) => this.props.loginCheck());
+    }
 
+    private submit() {
+        alert("알얼트당");
+        {/*이부분 모르겠당 값을 가져오는거  */ }
+        const data = new FormData();
+        data.append("pw", this.state.pw);
+        data.append("username", this.state.userInfo.name);
+        axios.post("http://localhost:8081/UpdateUser", data)
+            .then((response) => {
+                alert(response.data);
+            })
     }
 }
 export default withLoginContext(withStyles(style)(UpdateUser));

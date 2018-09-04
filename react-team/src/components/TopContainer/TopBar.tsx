@@ -60,7 +60,8 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
       searchKeyword: "",
       userInfo: {
         profileImg: "",
-        id: ""
+        id: "",
+        name:""
       }
     }
     this.onChange = this.onChange.bind(this);
