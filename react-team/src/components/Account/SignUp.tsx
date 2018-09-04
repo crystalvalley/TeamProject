@@ -231,7 +231,7 @@ class SignUp extends React.Component<IProps, IState> {
         data.append("password",this.state.password);
         data.append("username",this.state.username);
         data.append("email",this.state.emailFirst+"@"+this.state.emailSecond);
-        axios.post("http://localhost:8081/signup", data)
+        axios.post("http://localhost:8081/account/signup", data)
             .then((response) => {
                 location.href = "/signin";
             }

@@ -3,8 +3,9 @@ import { Theme, StyleRulesCallback, withStyles, IconButton } from '@material-ui/
 import Create from '@material-ui/icons/Create';
 import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
-import ShowupFriendList from '../MainContainer/FriendList/FriendList/showupFriendList';
+import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Accessibility from '@material-ui/icons/Accessibility';
 import { NavLink } from 'react-router-dom';
 
 
@@ -64,11 +65,20 @@ class BtnBox extends React.Component<IProps, IState>{
                     <FriendListIcon />
                 </IconButton>
 
+          
+
                 <IconButton>
                     <NavLink to="/userUpdate">
                         <AccountCircle />
                     </NavLink>
                 </IconButton>
+
+                      <IconButton>
+                    <NavLink to="/AllFriends">
+                        <Accessibility />
+                    </NavLink>
+                </IconButton>
+
                 <ShowupFriendList
                     open={this.state.modalOpen === 1}
                     openf={writeHandler2}
