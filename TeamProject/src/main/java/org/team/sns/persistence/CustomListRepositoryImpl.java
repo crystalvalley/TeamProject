@@ -19,7 +19,7 @@ public class CustomListRepositoryImpl extends QuerydslRepositorySupport implemen
 		// TODO Auto-generated method stub
 		QCustomList qcList = QCustomList.customList;
 		JPQLQuery<String> query = from(qcList).select(qcList.listName);
-		query.where(qcList.owner.id.eq(userid));
+		query.where(qcList.owner.id.eq(userid)).orderBy(qcList.customOrder.asc());
 		return query.fetch();
 	}
 

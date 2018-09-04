@@ -41,8 +41,6 @@ public class insertTest {
 	@Autowired
 	SecurityUserService sus;
 	
-	@Autowired
-	NetworkRepository nr;
 	/*
 	 *  board에 적당히 값 넣어두는  test
 	@Test

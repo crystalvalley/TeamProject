@@ -43,15 +43,6 @@ class CardListContainer extends React.Component<IProps, IState> {
             })
     }
 
-    public componentDidUpdate() {
-        if (this.state.order.length !== 0) { return; }
-        axios.get("http://localhost:8081/lists/getListNames")
-            .then((result) => {
-                this.setState({
-                    order: result.data
-                })
-            })
-    }
     public render() {
         return (
             <DragDropContext
@@ -106,6 +97,11 @@ class CardListContainer extends React.Component<IProps, IState> {
             order: newOrder
         }
         this.setState(newState);
+        axios.post("http://localhost:8081/lists/setListOrder", {
+            params :{
+                names: JSON.stringify(newOrder)
+            }
+        })
         return;
     }
 }
