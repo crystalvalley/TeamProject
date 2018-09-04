@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.team.sns.domain.Board;
@@ -148,8 +150,6 @@ public class BoardServiceImpl implements BoardService {
 		CustomListPK clpk = new CustomListPK();
 		clpk.setListName(listName);
 		clpk.setOwner(username);
-		System.out.println(clpk);
-		System.out.println(clr.findById(clpk).get());
 		List<ProductStrategy> conditions = clr.findById(clpk).get().getConditions();
 		List<Board> result = br.getBoardByCondition(conditions, 1);
 		return result;
@@ -161,20 +161,19 @@ public class BoardServiceImpl implements BoardService {
 		return er.getEmotions(br.findById(boardId).get(), mr.findById(memberid).get());
 	}
 
-	@Override
-	public void addEmotion(int boardId, int type, String memberid) {
+	@Override	public void addEmotion(int boardId, int type, String memberid) {
 		// TODO Auto-generated method stub
 
 		Member member = mr.findById(memberid).get();
 		Board board = br.findById(boardId).get();
 		EmotionExpression ee = er.findByExpresserAndTargetBoard(member, board);
-		System.out.println(ee);
 		if(ee==null) {
-			ee = new EmotionExpression();
-			ee.setEmotiontype(type);
-			ee.setTargetBoard(board);
-			ee.setExpresser(member);
-			er.save(ee);
+			EmotionExpression newee = new EmotionExpression();
+			newee = new EmotionExpression();
+			newee.setEmotiontype(type);
+			newee.setTargetBoard(board);
+			newee.setExpresser(member);
+			er.save(newee);
 		}else {
 			ee.setEmotiontype(type);
 			er.save(ee);

@@ -34,8 +34,7 @@ import lombok.Data;
 public class EmotionExpression {
 	@Id
 	@Column(name="emotion_id")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq",sequenceName="emotion_seq", initialValue=1, allocationSize=1)	
+    @GeneratedValue(strategy=GenerationType.AUTO)	
 	private int id;
 	
 	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
