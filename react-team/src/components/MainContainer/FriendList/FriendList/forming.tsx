@@ -15,7 +15,7 @@ export const forming = (
           
             <ListItemText primary="userId" secondary="feelings"/>
             <Button size="small">
-             ADD                                       
+             INTO                                       
             </Button>
 
             <Button size="small">

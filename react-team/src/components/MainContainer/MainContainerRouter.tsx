@@ -3,6 +3,8 @@ import { StyleRulesCallback, Theme, withStyles, } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
 import CardListContainer from './CardList/CardListContainer';
 import UpdateUser from './BoardView/UpdateUser';
+import AllFriends from './FriendList/FriendList/AllFriends';
+
 
 
 /**
@@ -60,6 +62,7 @@ class MainContainerRouter extends React.Component<IProps> {
                 <div className={classes.toolbar} />
                 <div className={classes.toolbar} />
                 <Switch>
+                    <Route path="/AllFriends" component={AllFriends} />
                     <Route path="/userUpdate" component={UpdateUser} />
                     <Route path="/" component={CardListContainer} />
                 </Switch>
