@@ -97,10 +97,9 @@ class CardListContainer extends React.Component<IProps, IState> {
             order: newOrder
         }
         this.setState(newState);
-        axios.post("http://localhost:8081/lists/setListOrder", {
-            params :{
-                names: JSON.stringify(newOrder)
-            }
+        const axiosInstance = axios.create();
+        axiosInstance.post("http://localhost:8081/lists/setListOrder", {
+            names: newOrder
         })
         return;
     }

@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface ListService {
 	public List<String> getListNames(String userid);
-
+	public void setListOrder(List<String> list, String memberid);
 }

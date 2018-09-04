@@ -22,5 +22,4 @@ public class CustomListRepositoryImpl extends QuerydslRepositorySupport implemen
 		query.where(qcList.owner.id.eq(userid)).orderBy(qcList.customOrder.asc());
 		return query.fetch();
 	}
-
 }
