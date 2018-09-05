@@ -44,8 +44,8 @@ import lombok.ToString;
 @Table(name = "Boards")
 // _id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = { "photos", "replys", "share", "writer", "sounds","mentions","tags" })
-@JsonIgnoreProperties({ "photos", "replys", "share", "sounds","mentions","tags" })
+@ToString(exclude = { "photos", "replys", "share", "writer", "sounds","mentions","tags","favorite" })
+@JsonIgnoreProperties({ "photos", "replys", "share", "sounds","mentions","tags","favorite" })
 public class Board {
 	// primary key
 	@Id
@@ -71,7 +71,7 @@ public class Board {
 	private Timestamp updateDay; // 업로드 날짜
 	
 	private String plainText; // content는 draftjs 포맷이기 때문에 검색용으로 순수한 내용 text만 저장
-
+	
 	// default는 전체공개
 	@ColumnDefault("'all'")
 	private String setAuthority; // 권한설정
@@ -107,5 +107,8 @@ public class Board {
 
 	@OneToMany(mappedBy="mentionBoard")
 	private List<Mention> mentions;
+	
+	@OneToMany(mappedBy="board")
+	private List<Favorites> favorite;
 
 }

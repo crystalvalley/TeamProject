@@ -23,7 +23,6 @@ export interface ICardModel {
     writeDay: string;
     updateDaty: string;
     hitcount: number;
-
 }
 
 export interface IMemberModel {

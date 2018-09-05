@@ -33,12 +33,12 @@ public class ProductStrategy {
 	@SequenceGenerator(name="seq",sequenceName="pstr_seq",initialValue=1,allocationSize=1)
 	private int id;
 	
-	@OneToMany(mappedBy="owned")
+	@OneToMany(mappedBy="owned",cascade=CascadeType.ALL)
 	private List<Strategy> strategies;
 	
 
 	
-	@ManyToOne(cascade=CascadeType.REMOVE)
+	@ManyToOne
 	@JoinColumns({
 		@JoinColumn(name="owned_clname",referencedColumnName="listname"),
 		@JoinColumn(name="owned_clowner",referencedColumnName="owner_id")

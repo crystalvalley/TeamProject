@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService{
 		setInitialBoard(member,"Base");
 		setInitialBoard(member,"Test");
 		setInitialBoard(member,"SearchField");
-		setInitialBoard(member,"Test3");
+		setInitialBoard(member,"Favorites");
 		setInitialBoard(member,"Test4");
 		mr.save(member);
 	}

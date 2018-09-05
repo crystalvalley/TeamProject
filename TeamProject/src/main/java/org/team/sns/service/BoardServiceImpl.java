@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.CustomListPK;
 import org.team.sns.domain.EmotionExpression;
+import org.team.sns.domain.Favorites;
 import org.team.sns.domain.Member;
 import org.team.sns.domain.Mention;
 import org.team.sns.domain.ProductStrategy;
@@ -19,6 +20,7 @@ import org.team.sns.domain.Tag;
 import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.CustomListRepository;
 import org.team.sns.persistence.EmotionRepository;
+import org.team.sns.persistence.FavoriteRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.persistence.MentionRepository;
 import org.team.sns.persistence.TagRepository;
@@ -47,6 +49,8 @@ public class BoardServiceImpl implements BoardService {
 	CustomListRepository clr;
 	@Autowired
 	EmotionRepository er;
+	@Autowired
+	FavoriteRepository fr;
 
 	private final static Pattern HASH_PATTERN = Pattern.compile("#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+");
 	private final static Pattern MENTION_PATTERN = Pattern.compile("@[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+");
@@ -144,14 +148,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Board> getBoardByListName(String listName, String username,int page) {
+	public List<Board> getBoardByListName(String listName, String userid,int page) {
 		// TODO Auto-generated method stub
 		// 먼저 list이름을 통해서 조건을 가져옴
 		CustomListPK clpk = new CustomListPK();
 		clpk.setListName(listName);
-		clpk.setOwner(username);
+		clpk.setOwner(userid);
 		List<ProductStrategy> conditions = clr.findById(clpk).get().getConditions();
-		List<Board> result = br.getBoardByCondition(conditions, page);
+		List<Board> result = br.getBoardByCondition(conditions, page,mr.findById(userid).get());
 		return result;
 	}
 
@@ -191,6 +195,29 @@ public class BoardServiceImpl implements BoardService {
 			return br.getBoardByKeyword(keyword,page);
 			
 		}
+	}
+
+	@Override
+	public List<Integer> getFavorites(String memberid) {
+		// TODO Auto-generated method stub
+		return fr.getFavoriteIds(mr.findById(memberid).get());
+	}
+
+	@Override
+	public void setFavorites(String memberid, int id) {
+		// TODO Auto-generated method stub
+		Member member = mr.findById(memberid).get();
+		Board board = br.findById(id).get();
+		Favorites fav = fr.findByAdderAndBoard(member, board);
+		if(fav==null) {
+			fav = new Favorites();
+			fav.setAdder(member);
+			fav.setBoard(board);
+			fr.save(fav);
+		}else {
+			fr.delete(fav);
+		}
+		
 	}
 
 }

@@ -8,6 +8,7 @@ import { mainTheme } from './constance/MainTheme';
 import { LoginProvider } from './contexts/LoginContext';
 import { SearchProvider } from './contexts/SearchContext';
 import { EmotionProvider } from './contexts/EmotionContext';
+import { FavoriteProvider } from './contexts/FavoriteContext';
 
 /**
  * @author : ParkHyeokjoon
@@ -22,9 +23,11 @@ ReactDOM.render(
       <VoiceProvider>
         <SearchProvider>
           <EmotionProvider>
-            <CssBaseline>
-              <App />
-            </CssBaseline>
+            <FavoriteProvider>
+              <CssBaseline>
+                <App />
+              </CssBaseline>
+            </FavoriteProvider>
           </EmotionProvider>
         </SearchProvider>
       </VoiceProvider>

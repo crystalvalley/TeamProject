@@ -88,5 +88,13 @@ public class BoardRestController {
 		System.out.println(keyword);
 		return bs.getBoardBySearchKeyword(keyword,page);
 	}
+	@GetMapping("/getFavorites")
+	public List<Integer> getFavorites(Principal principal){
+		return bs.getFavorites("testid");
+	}
+	@GetMapping("/setFavorites")
+	public void setFavorites(Principal principal,int id){
+		bs.setFavorites("testid", id);
+	}
 	
 }

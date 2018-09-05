@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.team.sns.domain.Board;
+import org.team.sns.domain.Favorites;
 import org.team.sns.domain.Mention;
 import org.team.sns.domain.Tag;
 import org.team.sns.vo.Datas;
@@ -27,4 +28,6 @@ public interface BoardService {
 	public List<Integer> getEmotions(int boardId,String memberid);
 	public void addEmotion(int boardId,int type,String memberid);
 	public List<Board> getBoardBySearchKeyword(String keyword,int page);
+	public List<Integer> getFavorites(String memberid);
+	public void setFavorites(String memberid,int id);
 }

@@ -27,14 +27,14 @@ public class Strategy {
 	@SequenceGenerator(name="seq",sequenceName="strategy_seq",initialValue=1,allocationSize=1)
 	private int id;
 	
-	@ManyToOne(cascade=CascadeType.REMOVE)
+	@ManyToOne
 	@JoinColumn(name="owned",referencedColumnName="pstr_id")
 	private ProductStrategy owned;
 	
 	@NotNull
 	private String type;
 	
-	@OneToMany(mappedBy="owned")
+	@OneToMany(mappedBy="owned",cascade=CascadeType.ALL)
 	private List<StrTarget> targets;
 
 }

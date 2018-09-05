@@ -115,18 +115,20 @@ class CardList extends React.Component<IProps & ISearchState, IState> {
                                     >
                                         <Divider />
                                         {
-                                            this.props.listName !== "SearchField" ?
-                                                this.state.cards.map((card, index) => {
-                                                    return (
-                                                        <SmallCard
-                                                            card={card}
-                                                            key={index}
-                                                        />
-                                                    );
-                                                }) :
+                                            this.props.listName === "SearchField" ?
                                                 <SearchedList
                                                     {...this.props}
-                                                />
+                                                /> :
+                                                this.props.listName === "Favorites" ?
+                                                    <div /> :
+                                                    this.state.cards.map((card, index) => {
+                                                        return (
+                                                            <SmallCard
+                                                                card={card}
+                                                                key={index}
+                                                            />
+                                                        );
+                                                    })
                                         }
                                     </div>
                                 </Scrollbars>
@@ -144,7 +146,7 @@ class CardList extends React.Component<IProps & ISearchState, IState> {
         const pageOffset = this.state.getPage;
         // 더 이상 불러올 글이 없다면
         if (this.state.end) { return }
-        if(this.props.listName==="SearchField"){
+        if (this.props.listName === "SearchField") {
             this.props.addPage();
         }
         if ((nowScrollTop + scrollHeight) > divHeight) {

@@ -1,6 +1,5 @@
 package org.team.sns.domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +31,7 @@ public class StrTarget {
 	
 	private String target;
 	
-	@ManyToOne(cascade=CascadeType.REMOVE)
+	@ManyToOne
 	@JoinColumn(name="owned",referencedColumnName="str_id")
 	private Strategy owned;
 

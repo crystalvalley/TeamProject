@@ -1,12 +1,13 @@
-
-
 import * as React from 'react';
-import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography } from '@material-ui/core';
+import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography, IconButton } from '@material-ui/core';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import { ICardModel } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 import EmotionBox from './EmotionBox';
-import BigCard from './BigCard';
+import BigCard from '../bigCard/BigCard';
+import FavoriteIcon from "@material-ui/icons/FavoriteBorderOutlined";
+import FilledFavoriteIcon from "@material-ui/icons/Favorite";
+import { IFavoriteStore, withFavoriteContext } from '../../../../../contexts/FavoriteContext';
 
 
 /**
@@ -56,8 +57,8 @@ interface IState {
 }
 
 
-class SmallCard extends React.Component<IProps, IState>{
-    constructor(props: IProps) {
+class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
+    constructor(props: IProps & IFavoriteStore) {
         super(props);
         this.state = {
             modalOpen: -1,
@@ -72,6 +73,7 @@ class SmallCard extends React.Component<IProps, IState>{
         const { classes, card } = this.props;
         const writeHandler = () => this.openModal(0);
         const { modalOpen } = this.state;
+        const handler = ()=>this.props.setFavorite(this.props.card.id)
         return (
             <Card className={classes.card}>
                 <div
@@ -84,12 +86,21 @@ class SmallCard extends React.Component<IProps, IState>{
                     <Typography>
                         {card.writer.id}
                     </Typography>
+                    <IconButton
+                        onClick={handler}
+                    >
+                        {this.props.favorites.indexOf(this.props.card.id) === -1 ?
+                            <FavoriteIcon /> :
+                            <FilledFavoriteIcon />
+                        
+                    }
+                    </IconButton>
                     <BigCard
-                    open={modalOpen === 0}
-                    onClose={this.closeModal}
-                />
+                        open={modalOpen === 0}
+                        onClose={this.closeModal}
+                    />
                 </div>
-                
+
                 <div onClick={writeHandler}
                     className={classes.cardBody}
                 >
@@ -106,9 +117,9 @@ class SmallCard extends React.Component<IProps, IState>{
                         />
                     </CardContent>
                 </div>
-                
+
                 <CardContent>
-                    <EmotionBox 
+                    <EmotionBox
                         id={this.props.card.id}
                     />
                 </CardContent>
@@ -134,4 +145,4 @@ class SmallCard extends React.Component<IProps, IState>{
         })
     }
 }
-export default withStyles(style)(SmallCard);
+export default withFavoriteContext(withStyles(style)(SmallCard));

@@ -43,11 +43,11 @@ public class Favorites {
 	@UpdateTimestamp
 	private Timestamp uploaddate;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "adder_id", referencedColumnName = "user_id")
 	private Member adder;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="added_board", referencedColumnName="board_id")
 	private Board board;
 	

@@ -1,6 +1,5 @@
 package org.team.sns.persistence;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.team.sns.domain.Networking;
 import org.team.sns.domain.ProductStrategy;
 import org.team.sns.domain.QBoard;
 import org.team.sns.domain.QFavorites;
-import org.team.sns.domain.QMember;
 import org.team.sns.domain.QMention;
 import org.team.sns.domain.QNetworking;
 import org.team.sns.domain.QReply;
@@ -21,8 +19,9 @@ import org.team.sns.domain.QShare;
 import org.team.sns.domain.QTag;
 import org.team.sns.domain.Reply;
 import org.team.sns.domain.Share;
+import org.team.sns.domain.StrTarget;
+import org.team.sns.domain.Strategy;
 import org.team.sns.domain.Tag;
-import org.team.sns.persistence.utils.Utility;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
@@ -38,10 +37,11 @@ import lombok.extern.java.Log;
  */
 @Log
 public class BoardRepositoryImpl extends QuerydslRepositorySupport implements BoardRepositoryCustom {
-	@Autowired
-	Utility util;
+	
 	@Autowired
 	MemberRepository mr;
+	@Autowired
+	TagRepository tr;
 
 	public BoardRepositoryImpl() {
 		super(Board.class);
@@ -276,14 +276,14 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	}
 
 	@Override
-	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList, int page) {
+	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList, int page,Member member) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		JPQLQuery<Board> query = from(board);
 		query.select(board);
 		BooleanBuilder whereCondition = new BooleanBuilder();
 		for (ProductStrategy pstr : pstrList) {
-			whereCondition.or(util.checkType(pstr.getStrategies()));
+			whereCondition.or(checkType(pstr.getStrategies(),member));
 		}
 		query.where(whereCondition).orderBy(board.id.desc());
 		query.offset(10 * page);
@@ -329,5 +329,45 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		query.offset(10*page);
 		query.limit(10);
 		return query.fetch();
+	}
+	// CustomList를 위한 타입 체크
+	public BooleanBuilder checkType(List<Strategy> strList,Member member) {
+		QBoard board = QBoard.board;
+		BooleanBuilder builder = new BooleanBuilder();
+		for (Strategy str : strList) {
+			switch (str.getType()) {
+			// 즐겨찾기의 경우
+			case "Favorites": {
+				favCheck(board,builder,member);				
+				break;
+			}
+			// 태그의 경우
+			case "tag": {
+				tagCheck(board, builder, str.getTargets());
+				break;
+			}
+			// base인 경우
+			default: {
+				// 보드의 시퀀스는 1보다 크기때문에 0을 넣으면 됨
+				// 즉 다 찾는 다는 이야기
+				builder.or(board.id.gt(0));
+			}
+			}
+		}
+		return builder;
+	}
+
+	private BooleanBuilder tagCheck(QBoard board, BooleanBuilder builder, List<StrTarget> targets) {
+		for (StrTarget target : targets) {
+			builder.and(board.tags.contains(tr.findById(target.getTarget()).get()));
+		}
+		return builder;
+	}
+	private BooleanBuilder favCheck(QBoard board, BooleanBuilder builder,Member member) {
+		QFavorites fav = QFavorites.favorites;
+		JPQLQuery<Favorites> subQuery = from(fav);
+		subQuery.where(fav.adder.eq(member));
+		builder.and(board.favorite.contains(subQuery));
+		return builder;
 	}
 }

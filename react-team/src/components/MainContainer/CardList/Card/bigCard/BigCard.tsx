@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Modal } from '@material-ui/core';
-import LargeCardMain from '../LargeCardMain';
+import LargeCardMain from './LargeCardMain';
 
 
 /**
