@@ -6,6 +6,7 @@ import { ICardModel } from '../../../constance/models';
 import axios from 'axios';
 import SmallCard from './Card/smallCard/SmallCard';
 import SearchedList from './Card/SearchedList';
+import { ISearchState, withSearchContext } from '../../../contexts/SearchContext';
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.27
@@ -52,20 +53,28 @@ interface IProps {
 
 interface IState {
     cards: ICardModel[]
+    getPage: number;
+    end: boolean;
 }
 
-class CardList extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
+class CardList extends React.Component<IProps & ISearchState, IState> {
+    private scroll: Scrollbars | null;
+    private div: HTMLDivElement | null;
+    constructor(props: IProps & ISearchState) {
         super(props);
         this.state = {
-            cards: []
+            cards: [],
+            getPage: 0,
+            end: false
         }
+        this.setScrollPosition = this.setScrollPosition.bind(this);
     }
 
     public componentDidMount() {
         axios.get("http://localhost:8081/boards/getByListName", {
             params: {
-                listName: this.props.listName
+                listName: this.props.listName,
+                page: this.state.getPage
             }
         }).then((result) => {
             this.setState({
@@ -73,20 +82,6 @@ class CardList extends React.Component<IProps, IState> {
             })
         })
     }
-
-    public componentWillReceiveProps(prevProps: IProps) {
-        if (this.props.listName === prevProps.listName) { return; }
-        axios.get("http://localhost:8081/boards/getByListName", {
-            params: {
-                listName: prevProps.listName
-            }
-        }).then((result) => {
-            this.setState({
-                cards: result.data
-            })
-        })
-    }
-
 
     public render() {
         const { classes } = this.props;
@@ -111,9 +106,12 @@ class CardList extends React.Component<IProps, IState> {
                                 </Typography>
                                 <Scrollbars
                                     autoHide={true}
+                                    ref={(element) => { this.scroll = element }}
+                                    onScrollStop={this.setScrollPosition}
                                 >
                                     <div
                                         className={classes.listBody}
+                                        ref={(element) => { this.div = element }}
                                     >
                                         <Divider />
                                         {
@@ -126,7 +124,9 @@ class CardList extends React.Component<IProps, IState> {
                                                         />
                                                     );
                                                 }) :
-                                                <SearchedList/>
+                                                <SearchedList
+                                                    {...this.props}
+                                                />
                                         }
                                     </div>
                                 </Scrollbars>
@@ -137,7 +137,37 @@ class CardList extends React.Component<IProps, IState> {
             </Draggable>
         );
     }
+    private setScrollPosition() {
+        const nowScrollTop = this.scroll!.getScrollTop();
+        const scrollHeight = this.scroll!.getClientHeight()
+        const divHeight = this.div!.scrollHeight;
+        const pageOffset = this.state.getPage;
+        // 더 이상 불러올 글이 없다면
+        if (this.state.end) { return }
+        if(this.props.listName==="SearchField"){
+            this.props.addPage();
+        }
+        if ((nowScrollTop + scrollHeight) > divHeight) {
+            axios.get("http://localhost:8081/boards/getByListName", {
+                params: {
+                    listName: this.props.listName,
+                    page: pageOffset + 1
+                }
+            }).then((result) => {
+                const newCards = [...this.state.cards, ...result.data];
+                if (result.data.length === 0) {
+                    this.setState({
+                        end: true
+                    })
+                }
+                this.setState({
+                    cards: newCards,
+                    getPage: pageOffset + 1
+                })
+            })
+        }
+    }
 }
 
 
-export default withStyles(style)(CardList)
+export default withSearchContext(withStyles(style)(CardList));

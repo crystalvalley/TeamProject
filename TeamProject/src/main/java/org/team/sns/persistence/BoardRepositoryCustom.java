@@ -57,10 +57,10 @@ public interface BoardRepositoryCustom {
 	public List<Board> getBoardByCondition(List<ProductStrategy> pstr,int page);
 	
 	//제목 내용 검색
-	public List<Board> getBoardByKeyword(String keyword);
+	public List<Board> getBoardByKeyword(String keyword,int page);
 	//HashTag 검색
-	public List<Board> getBoardByHashTag(String keyword);
+	public List<Board> getBoardByHashTag(String keyword,int page);
 	//Mention 검색
-	public List<Board> getBoardByMention(String keyword);
+	public List<Board> getBoardByMention(String keyword,int page);
 	
 }

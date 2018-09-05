@@ -286,25 +286,25 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 			whereCondition.or(util.checkType(pstr.getStrategies()));
 		}
 		query.where(whereCondition).orderBy(board.id.desc());
-		query.offset(10 * (page - 1));
+		query.offset(10 * page);
 		query.limit(10);
 		return query.fetch();
 	}
 
 	@Override
-	public List<Board> getBoardByKeyword(String keyword) {
+	public List<Board> getBoardByKeyword(String keyword,int page) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		JPQLQuery<Board> query = from(board);
 		query.select(board);
 		query.where((board.title.contains(keyword)).or(board.plainText.contains(keyword)));
-		query.offset(0);
+		query.offset(10*page);
 		query.limit(10);
 		return query.fetch();
 	}
 
 	@Override
-	public List<Board> getBoardByHashTag(String keyword) {
+	public List<Board> getBoardByHashTag(String keyword,int page) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		QTag tag = QTag.tag;
@@ -312,13 +312,13 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		JPQLQuery<Tag> subQuery = from(tag);
 		query.select(board);
 		query.where(board.tags.contains(subQuery.where(tag.hashTag.contains(keyword.replaceFirst("#", "")))));
-		query.offset(0);
+		query.offset(10*page);
 		query.limit(10);
 		return query.fetch();
 	}
 
 	@Override
-	public List<Board> getBoardByMention(String keyword) {
+	public List<Board> getBoardByMention(String keyword,int page) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		QMention mention = QMention.mention;
@@ -326,7 +326,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		JPQLQuery<Mention> subQuery = from(mention);
 		query.select(board);
 		query.where(board.mentions.contains(subQuery.where(mention.mentioned.id.eq(keyword.replaceFirst("@", "")))));
-		query.offset(0);
+		query.offset(10*page);
 		query.limit(10);
 		return query.fetch();
 	}

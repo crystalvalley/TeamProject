@@ -144,14 +144,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Board> getBoardByListName(String listName, String username) {
+	public List<Board> getBoardByListName(String listName, String username,int page) {
 		// TODO Auto-generated method stub
 		// 먼저 list이름을 통해서 조건을 가져옴
 		CustomListPK clpk = new CustomListPK();
 		clpk.setListName(listName);
 		clpk.setOwner(username);
 		List<ProductStrategy> conditions = clr.findById(clpk).get().getConditions();
-		List<Board> result = br.getBoardByCondition(conditions, 1);
+		List<Board> result = br.getBoardByCondition(conditions, page);
 		return result;
 	}
 
@@ -181,14 +181,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Board> getBoardBySearchKeyword(String keyword) {
+	public List<Board> getBoardBySearchKeyword(String keyword,int page) {
 		// TODO Auto-generated method stub
 		if(keyword.indexOf("#")==0) {
-			return br.getBoardByHashTag(keyword);
+			return br.getBoardByHashTag(keyword,page);
 		}else if(keyword.indexOf("@")==0) {
-			return br.getBoardByMention(keyword);
+			return br.getBoardByMention(keyword,page);
 		}else {
-			return br.getBoardByKeyword(keyword);
+			return br.getBoardByKeyword(keyword,page);
 			
 		}
 	}

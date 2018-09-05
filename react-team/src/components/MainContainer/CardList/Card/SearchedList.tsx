@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { StyleRulesCallback, withStyles, Theme, TextField, InputAdornment } from '@material-ui/core';
 import Search from '@material-ui/icons/Search';
-import { ISearchState, withSearchContext } from '../../../../contexts/SearchContext';
-import { ICardModel } from '../../../../constance/models';
-import axios from 'axios';
 import SmallCard from './smallCard/SmallCard';
+import { ICardModel } from '../../../../constance/models';
 
 const style: StyleRulesCallback = (theme: Theme) => ({
 
@@ -14,30 +12,14 @@ interface IProps {
     classes: {
 
     }
+    searchedCard:ICardModel[];
+    keyword:string;
+    keywordChange(e:React.ChangeEvent<HTMLInputElement>):void;
 }
 
-interface IState {
-    cards: ICardModel[];
-}
-
-class SearchedList extends React.Component<IProps & ISearchState, IState>{
-    constructor(props: IProps & ISearchState) {
+class SearchedList extends React.Component<IProps>{
+    constructor(props: IProps) {
         super(props);
-        this.state = {
-            cards : []
-        }
-    }
-    public componentDidUpdate(preProps:IProps&ISearchState,preSate:IState){
-        if(this.props.keyword===preProps.keyword||this.props.keyword===""){return;}
-        axios.get("http://localhost:8081/boards/search",{
-            params:{
-                keyword : this.props.keyword
-            }
-        }).then((result)=>{
-            this.setState({
-                cards : result.data
-            })
-        })
     }
     public render() {
         return (
@@ -56,18 +38,18 @@ class SearchedList extends React.Component<IProps & ISearchState, IState>{
                     }}
                 />
                 {
-                        this.state.cards.map((card, index) => {
+                        this.props.searchedCard.map((card, index) => {
                             return (
                                 <SmallCard
                                     card={card}
                                     key={index}
                                 />
                             );
-                        })
+                        })                       
                 }
             </React.Fragment>
         );
     }
 }
 
-export default withSearchContext(withStyles(style)(SearchedList));
+export default withStyles(style)(SearchedList)

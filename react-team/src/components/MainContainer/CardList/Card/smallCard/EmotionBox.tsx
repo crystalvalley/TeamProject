@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withStyles, StyleRulesCallback, Theme, Button, } from '@material-ui/core';
-import axios from 'axios';
+import { IEmotionStore, withEmotionContext } from '../../../../../contexts/EmotionContext';
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.29
@@ -25,32 +25,29 @@ interface IProps {
     }
     id: number;
 }
-interface IState {
-    clicked: number;
-    count: number[];
-}
-class EmotionBox extends React.Component<IProps, IState>{
-    constructor(props: IProps) {
+class EmotionBox extends React.Component<IProps & IEmotionStore>{
+    constructor(props: IProps & IEmotionStore) {
         super(props);
         this.state = {
             clicked: -1,
             count: []
         }
-        this.checkEmotion = this.checkEmotion.bind(this);
-        this.emotionClick = this.emotionClick.bind(this);
     }
     public componentDidMount() {
-        this.checkEmotion();
+        this.props.emotionRequest(this.props.id);
     }
 
     public render() {
-        const { count, clicked } = this.state;
-        const { classes } = this.props;
-        const handler1 = () => this.emotionClick(1);
-        const handler2 = () => this.emotionClick(2);
-        const handler3 = () => this.emotionClick(3);
-        const handler4 = () => this.emotionClick(4);
-        const handler5 = () => this.emotionClick(5);
+        const clicked = this.props[this.props.id] !== undefined ?
+            this.props[this.props.id] : -1;
+        const { classes, emotionClick, id } = this.props;
+        const handler1 = () => emotionClick(id, 1);
+        const handler2 = () => emotionClick(id, 2);
+        const handler3 = () => emotionClick(id, 3);
+        const handler4 = () => emotionClick(id, 4);
+        const handler5 = () => emotionClick(id, 5);
+        const count = this.props[this.props.id] !== undefined ?
+            this.props[this.props.id] : [0, 0, 0, 0, 0]
         return (
             <div
                 style={{
@@ -121,35 +118,5 @@ class EmotionBox extends React.Component<IProps, IState>{
             </div>
         );
     }
-    private checkEmotion() {
-        axios.get("http://localhost:8081/boards/getEmotion", {
-            params: { boardId: this.props.id }
-        })
-            .then((result) => {
-                this.setState({
-                    clicked: result.data[0],
-                    count: result.data
-                })
-            })
-    }
-    private emotionClick(num: number) {
-        if(this.state.clicked === num){return;}
-        const exNum = this.state.count[this.state.clicked];
-        const exNum2 = this.state.count[num];
-        const array = this.state.count;
-        array[this.state.clicked] = exNum - 1;
-        array[num] = exNum2 + 1;
-        this.setState({
-            clicked: num,
-            count: array
-        })
-        axios.get("http://localhost:8081/boards/addEmotion", {
-            params: {
-                boardId: this.props.id,
-                emotionType: num
-            }
-        })
-
-    }
 }
-export default withStyles(style)(EmotionBox);
+export default withEmotionContext(withStyles(style)(EmotionBox));

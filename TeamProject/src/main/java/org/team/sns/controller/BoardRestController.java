@@ -44,9 +44,9 @@ public class BoardRestController {
 		return bs.getBoard(params);
 	}	
 	@GetMapping("/getByListName")
-	public List<Board> getByListName(String listName,Principal principal) {		
+	public List<Board> getByListName(String listName,Principal principal,int page) {		
 		// return bs.getBoardByListName(listName,principal.getName());
-		return bs.getBoardByListName(listName,"testid");
+		return bs.getBoardByListName(listName,"testid",page);
 	}	
 	@GetMapping("/view")
 	public Map<String,Object> sendBoard(String type, int num) {
@@ -84,9 +84,9 @@ public class BoardRestController {
 		return "success";
 	}
 	@GetMapping("/search")
-	public List<Board> getBoardbySearch(String keyword){
+	public List<Board> getBoardbySearch(String keyword,int page){
 		System.out.println(keyword);
-		return bs.getBoardBySearchKeyword(keyword);
+		return bs.getBoardBySearchKeyword(keyword,page);
 	}
 	
 }

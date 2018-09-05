@@ -23,8 +23,8 @@ public interface BoardService {
 	public List<Tag> getTagList(String tag); 
 	public List<String> getMentionList(String mention);
 	public List<Board> getBoard(BoardSearchCondition params);
-	public List<Board> getBoardByListName(String listName,String username);
+	public List<Board> getBoardByListName(String listName,String username,int page);
 	public List<Integer> getEmotions(int boardId,String memberid);
 	public void addEmotion(int boardId,int type,String memberid);
-	public List<Board> getBoardBySearchKeyword(String keyword);
+	public List<Board> getBoardBySearchKeyword(String keyword,int page);
 }
