@@ -1,9 +1,14 @@
+
+
 import * as React from 'react';
 import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography } from '@material-ui/core';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import { ICardModel } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 import EmotionBox from './EmotionBox';
+import BigCard from './BigCard';
+
+
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.29
@@ -47,6 +52,7 @@ interface IProps {
 
 interface IState {
     editorState: EditorState;
+    modalOpen: number;
 }
 
 
@@ -54,14 +60,18 @@ class SmallCard extends React.Component<IProps, IState>{
     constructor(props: IProps) {
         super(props);
         this.state = {
+            modalOpen: -1,
             editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator),
         }
+        this.closeModal = this.closeModal.bind(this);
         this.editorChange = this.editorChange.bind;
+        this.openModal = this.openModal.bind(this);
     }
 
     public render() {
         const { classes, card } = this.props;
-
+        const writeHandler = () => this.openModal(0);
+        const { modalOpen } = this.state;
         return (
             <Card className={classes.card}>
                 <div
@@ -74,8 +84,13 @@ class SmallCard extends React.Component<IProps, IState>{
                     <Typography>
                         {card.writer.id}
                     </Typography>
+                    <BigCard
+                    open={modalOpen === 0}
+                    onClose={this.closeModal}
+                />
                 </div>
-                <div
+                
+                <div onClick={writeHandler}
                     className={classes.cardBody}
                 >
                     <Typography
@@ -91,6 +106,7 @@ class SmallCard extends React.Component<IProps, IState>{
                         />
                     </CardContent>
                 </div>
+                
                 <CardContent>
                     <EmotionBox 
                         id={this.props.card.id}
@@ -101,6 +117,16 @@ class SmallCard extends React.Component<IProps, IState>{
                 </CardContent>
             </Card>
         );
+    }
+    private openModal(clicked: number) {
+        this.setState({
+            modalOpen: clicked
+        })
+    }
+    private closeModal() {
+        this.setState({
+            modalOpen: -1
+        })
     }
     private editorChange(es: EditorState) {
         this.setState({
