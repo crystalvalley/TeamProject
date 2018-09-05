@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { StyleRulesCallback, withStyles, Theme, TextField, InputAdornment } from '@material-ui/core';
+import {  TextField, InputAdornment } from '@material-ui/core';
 import Search from '@material-ui/icons/Search';
 import SmallCard from './smallCard/SmallCard';
 import { ICardModel } from '../../../../constance/models';
-
-const style: StyleRulesCallback = (theme: Theme) => ({
-
-})
+/**
+ * @author : ParkHyeokJoon
+ * @since : 2018.08.27
+ * @version : 2018.09.05
+ * 
+ */
 
 interface IProps {
-    classes: {
-
-    }
     searchedCard:ICardModel[];
     keyword:string;
     keywordChange(e:React.ChangeEvent<HTMLInputElement>):void;
@@ -52,4 +51,4 @@ class SearchedList extends React.Component<IProps>{
     }
 }
 
-export default withStyles(style)(SearchedList)
+export default SearchedList

@@ -8,17 +8,21 @@ import axios from 'axios';
  */
 
 export interface IEmotionStore {
-    [boardId: number]: {
-        clicked: number;
-        count: number[];
-    };
-    emotionRequest(boardId: number): void;
-    emotionClick(id: number, click: number): void;
+    emotions: {
+        [boardId: string]: {
+            clicked: number;
+            count: number[];
+        };
+
+    }
+    emotionRequest(boardId: string): void;
+    emotionClick(boardId: string, click: number): void;
 }
 
 const emotionContext = React.createContext<IEmotionStore>({
-    emotionRequest: (boardId: number) => { return },
-    emotionClick: (id: number, click: number) => { return }
+    emotions: {},
+    emotionRequest: (boardId: string) => { return },
+    emotionClick: (id: string, click: number) => { return }
 });
 class EmotionProvider extends React.Component<{}, IEmotionStore> {
     constructor(props: {}) {
@@ -26,6 +30,7 @@ class EmotionProvider extends React.Component<{}, IEmotionStore> {
         this.emotionClick = this.emotionClick.bind(this);
         this.emotionRequest = this.emotionRequest.bind(this);
         this.state = {
+            emotions: {},
             emotionRequest: this.emotionRequest,
             emotionClick: this.emotionClick
         }
@@ -37,40 +42,44 @@ class EmotionProvider extends React.Component<{}, IEmotionStore> {
             </emotionContext.Provider>
         );
     }
-    private emotionRequest(boardId: number) {
-        if (this.state[boardId]) { return; }
+    private emotionRequest(boardId: string) {
+        if (this.state.emotions[boardId]) { return; }
         axios.get("http://localhost:8081/boards/getEmotion", {
             params: {
-                boardId
+                boardId: boardId.substr(1)
             }
         })
             .then((result) => {
                 this.setState({
-                    ...this.state,
-                    [boardId]: {
-                        clicked: result.data[0],
-                        count: result.data
+                    emotions: {
+                        ...this.state.emotions,
+                        [boardId]: {
+                            clicked: result.data[0] === null ? -1 : result.data[0],
+                            count: result.data
+                        }
                     }
                 })
             })
     }
-    private emotionClick(id: number, click: number) {
-        if (this.state[id].clicked === click) { return; }
-        const exNum = this.state[id].count[this.state[id].clicked];
-        const exNum2 = this.state[id].count[click];
-        const array = this.state[id].count;
-        array[this.state[id].clicked] = exNum - 1;
+    private emotionClick(boardId: string, click: number) {
+        if (this.state.emotions[boardId].clicked === click) { return; }
+        const exNum = this.state.emotions[boardId].count[this.state.emotions[boardId].clicked];
+        const exNum2 = this.state.emotions[boardId].count[click];
+        const array = this.state.emotions[boardId].count;
+        array[this.state.emotions[boardId].clicked] = exNum - 1;
         array[click] = exNum2 + 1;
         this.setState({
-            ...this.state,
-            [id]: {
-                clicked: click,
-                count: array
+            emotions: {
+                ...this.state.emotions,
+                [boardId]: {
+                    clicked: click,
+                    count: array
+                }
             }
         })
         axios.get("http://localhost:8081/boards/addEmotion", {
             params: {
-                boardId: id,
+                boardId: boardId.substr(1),
                 emotionType: click
             }
         })

@@ -4,7 +4,7 @@ import { IEmotionStore, withEmotionContext } from '../../../../../contexts/Emoti
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.29
- * @version : 2018.09.03
+ * @version : 2018.09.05
  * 
  */
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -28,26 +28,22 @@ interface IProps {
 class EmotionBox extends React.Component<IProps & IEmotionStore>{
     constructor(props: IProps & IEmotionStore) {
         super(props);
-        this.state = {
-            clicked: -1,
-            count: []
-        }
     }
     public componentDidMount() {
-        this.props.emotionRequest(this.props.id);
+        this.props.emotionRequest("b" + this.props.id);
     }
 
     public render() {
-        const clicked = this.props[this.props.id] !== undefined ?
-            this.props[this.props.id] : -1;
+        const clicked = this.props.emotions["b" + this.props.id] !== undefined ?
+            this.props.emotions["b"+this.props.id].clicked : -1;
         const { classes, emotionClick, id } = this.props;
-        const handler1 = () => emotionClick(id, 1);
-        const handler2 = () => emotionClick(id, 2);
-        const handler3 = () => emotionClick(id, 3);
-        const handler4 = () => emotionClick(id, 4);
-        const handler5 = () => emotionClick(id, 5);
-        const count = this.props[this.props.id] !== undefined ?
-            this.props[this.props.id] : [0, 0, 0, 0, 0]
+        const handler1 = () => emotionClick("b" + id, 1);
+        const handler2 = () => emotionClick("b" + id, 2);
+        const handler3 = () => emotionClick("b" + id, 3);
+        const handler4 = () => emotionClick("b" + id, 4);
+        const handler5 = () => emotionClick("b" + id, 5);
+        const count = this.props.emotions["b" + this.props.id] !== undefined ?
+            this.props.emotions["b" + this.props.id].count : [0, 0, 0, 0, 0]
         return (
             <div
                 style={{

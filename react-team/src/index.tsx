@@ -7,11 +7,12 @@ import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 import { mainTheme } from './constance/MainTheme';
 import { LoginProvider } from './contexts/LoginContext';
 import { SearchProvider } from './contexts/SearchContext';
+import { EmotionProvider } from './contexts/EmotionContext';
 
 /**
  * @author : ParkHyeokjoon
  * @since : 18.08.11
- * @version : 18.09.04
+ * @version : 18.09.05
  */
 
 ReactDOM.render(
@@ -20,9 +21,11 @@ ReactDOM.render(
     <LoginProvider>
       <VoiceProvider>
         <SearchProvider>
-          <CssBaseline>
-            <App />
-          </CssBaseline>
+          <EmotionProvider>
+            <CssBaseline>
+              <App />
+            </CssBaseline>
+          </EmotionProvider>
         </SearchProvider>
       </VoiceProvider>
     </LoginProvider>
