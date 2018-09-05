@@ -87,6 +87,10 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         {card.writer.id}
                     </Typography>
                     <IconButton
+                        style={{
+                            right:24,
+                            position:"absolute"
+                        }}
                         onClick={handler}
                     >
                         {this.props.favorites.indexOf(this.props.card.id) === -1 ?

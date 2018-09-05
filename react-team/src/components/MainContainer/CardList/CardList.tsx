@@ -3,7 +3,6 @@ import { StyleRulesCallback, Theme, withStyles, Typography, Divider } from '@mat
 import { Draggable } from 'react-beautiful-dnd';
 import Scrollbars from 'react-custom-scrollbars'
 import { ICardModel } from '../../../constance/models';
-import axios from 'axios';
 import SmallCard from './Card/smallCard/SmallCard';
 import SearchedList from './Card/SearchedList';
 import { ISearchState, withSearchContext } from '../../../contexts/SearchContext';
@@ -50,53 +49,27 @@ interface IProps extends ISearchState, IFavoriteStore {
     index: number;
     id: string;
     listName: string;
+    cards : ICardModel[]
+    scrollEnd(listName:string):void;
+    favoriteCheck():void;
 }
 
-interface IState {
-    cards: ICardModel[]
-    getPage: number;
-    end: boolean;
-}
 
-class CardList extends React.Component<IProps, IState> {
+class CardList extends React.Component<IProps> {
     private scroll: Scrollbars | null;
     private div: HTMLDivElement | null;
     constructor(props: IProps) {
         super(props);
         this.state = {
-            cards: [],
             getPage: 0,
             end: false
         }
         this.setScrollPosition = this.setScrollPosition.bind(this);
     }
-
-    public componentDidMount() {
-        axios.get("http://localhost:8081/boards/getByListName", {
-            params: {
-                listName: this.props.listName,
-                page: this.state.getPage
-            }
-        }).then((result) => {
-            this.setState({
-                cards: result.data
-            })
-        })
-    }
-
     public componentDidUpdate(prevProps: IProps) {
         if (this.props.listName !== "Favorites") { return; }
         if (this.props.refresh()) {
-            axios.get("http://localhost:8081/boards/getByListName", {
-                params: {
-                    listName: this.props.listName,
-                    page: this.state.getPage
-                }
-            }).then((result) => {
-                this.setState({
-                    cards: result.data
-                })
-            })
+            this.props.favoriteCheck();
         }
     }
 
@@ -134,9 +107,11 @@ class CardList extends React.Component<IProps, IState> {
                                         {
                                             this.props.listName === "SearchField" ?
                                                 <SearchedList
-                                                    {...this.props}
+                                                    searchedCard={this.props.searchedCard}
+                                                    keyword={this.props.keyword}
+                                                    keywordChange={this.props.keywordChange}
                                                 /> :
-                                                this.state.cards.map((card, index) => {
+                                                this.props.cards.map((card, index) => {
                                                     return (
                                                         <SmallCard
                                                             card={card}
@@ -158,31 +133,14 @@ class CardList extends React.Component<IProps, IState> {
         const nowScrollTop = this.scroll!.getScrollTop();
         const scrollHeight = this.scroll!.getClientHeight()
         const divHeight = this.div!.scrollHeight;
-        const pageOffset = this.state.getPage;
         // 더 이상 불러올 글이 없다면
-        if (this.state.end) { return }
         if (this.props.listName === "SearchField") {
             this.props.addPage();
         }
         if ((nowScrollTop + scrollHeight) > divHeight) {
-            axios.get("http://localhost:8081/boards/getByListName", {
-                params: {
-                    listName: this.props.listName,
-                    page: pageOffset + 1
-                }
-            }).then((result) => {
-                const newCards = [...this.state.cards, ...result.data];
-                if (result.data.length === 0) {
-                    this.setState({
-                        end: true
-                    })
-                }
-                this.setState({
-                    cards: newCards,
-                    getPage: pageOffset + 1
-                })
-            })
+            this.props.scrollEnd(this.props.id);
         }
+
     }
 }
 
