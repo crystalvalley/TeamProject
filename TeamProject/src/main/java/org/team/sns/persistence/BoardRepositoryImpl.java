@@ -1,5 +1,6 @@
 package org.team.sns.persistence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -278,14 +279,28 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	@Override
 	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList, int page,Member member) {
 		// TODO Auto-generated method stub
+		// 즐겨찾기가 조건에 있다면, 등록날짜 기준
+		Boolean check = false;
 		QBoard board = QBoard.board;
+		QFavorites fav = QFavorites.favorites;
 		JPQLQuery<Board> query = from(board);
+		JPQLQuery<Favorites> subQuery = from(fav);
+		subQuery.where(fav.adder.eq(member));
+		subQuery.where(fav.board.eq(board));
 		query.select(board);
 		BooleanBuilder whereCondition = new BooleanBuilder();
 		for (ProductStrategy pstr : pstrList) {
-			whereCondition.or(checkType(pstr.getStrategies(),member));
+			ArrayList<Object> result = checkType(pstr.getStrategies(),member);
+			whereCondition.or((BooleanBuilder)result.get(0));
+			check = (boolean)result.get(1);
 		}
-		query.where(whereCondition).orderBy(board.id.desc());
+		query.where(whereCondition);
+		if(check) {
+			// 즐겨찾기 등록 순 정렬은 나중에
+			query.orderBy(board.id.desc());
+		}else {
+			query.orderBy(board.id.desc());
+		}
 		query.offset(10 * page);
 		query.limit(10);
 		return query.fetch();
@@ -331,14 +346,17 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		return query.fetch();
 	}
 	// CustomList를 위한 타입 체크
-	public BooleanBuilder checkType(List<Strategy> strList,Member member) {
+	public ArrayList<Object> checkType(List<Strategy> strList,Member member) {
+		ArrayList<Object> result = new ArrayList<>();
 		QBoard board = QBoard.board;
 		BooleanBuilder builder = new BooleanBuilder();
+		result.add(builder);
 		for (Strategy str : strList) {
 			switch (str.getType()) {
 			// 즐겨찾기의 경우
 			case "Favorites": {
-				favCheck(board,builder,member);				
+				favCheck(board,builder,member);		
+				result.add(true);
 				break;
 			}
 			// 태그의 경우
@@ -354,7 +372,10 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 			}
 			}
 		}
-		return builder;
+		if(result.size()<2) {
+			result.add(false);
+		}
+		return result;
 	}
 
 	private BooleanBuilder tagCheck(QBoard board, BooleanBuilder builder, List<StrTarget> targets) {
@@ -365,9 +386,9 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	}
 	private BooleanBuilder favCheck(QBoard board, BooleanBuilder builder,Member member) {
 		QFavorites fav = QFavorites.favorites;
-		JPQLQuery<Favorites> subQuery = from(fav);
+		JPQLQuery<Board> subQuery = from(fav).select(fav.board);
 		subQuery.where(fav.adder.eq(member));
-		builder.and(board.favorite.contains(subQuery));
+		builder.and(subQuery.contains(board));
 		return builder;
 	}
 }

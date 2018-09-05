@@ -10,21 +10,29 @@ import axios from 'axios';
 export interface IFavoriteStore {
     favorites : number[],
     setFavorite(num:number):void;
+    refresh():boolean;
+
 }
 
 const favoriteContext = React.createContext<IFavoriteStore>({
     favorites:[],    
-    setFavorite:(num:number)=>{return}
+    setFavorite:(num:number)=>{return},
+    refresh:()=>{        
+        return false    
+    }
 });
-class FavoriteProvider extends React.Component<{}, IFavoriteStore> {
+class FavoriteProvider extends React.Component<{}, IFavoriteStore&{check:boolean}> {
     constructor(props: {}) {
         super(props);
         this.setFavorite = this.setFavorite.bind(this);
+        this.refresh = this.refresh.bind(this);
         this.state = {
+            check:false,
             favorites:[],    
-            setFavorite:this.setFavorite
+            setFavorite:this.setFavorite,
+            refresh : this.refresh
         }
-        this.getFavorites = this.getFavorites.bind(this);
+        this.getFavorites = this.getFavorites.bind(this);        
     }
     public componentDidMount(){
         this.getFavorites();
@@ -53,6 +61,10 @@ class FavoriteProvider extends React.Component<{}, IFavoriteStore> {
             params:{
                 id : num
             }
+        }).then((result)=>{
+            this.setState({
+                check : true
+            })
         })
     }
 
@@ -60,10 +72,20 @@ class FavoriteProvider extends React.Component<{}, IFavoriteStore> {
         axios.get("http://localhost:8081/boards/getFavorites")
             .then((result)=>{
                 this.setState({
-                    favorites : result.data
+                    favorites : result.data,
                 })
             })
-
+    }
+    
+    private refresh(){
+        if(!this.state.check){
+            return false;
+        }else{
+            this.setState({
+                check : false
+            })
+            return true;            
+        }
     }
 }
 export { FavoriteProvider };

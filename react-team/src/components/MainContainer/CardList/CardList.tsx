@@ -7,6 +7,7 @@ import axios from 'axios';
 import SmallCard from './Card/smallCard/SmallCard';
 import SearchedList from './Card/SearchedList';
 import { ISearchState, withSearchContext } from '../../../contexts/SearchContext';
+import { IFavoriteStore, withFavoriteContext } from '../../../contexts/FavoriteContext';
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.27
@@ -39,7 +40,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     }
 })
 
-interface IProps {
+interface IProps extends ISearchState, IFavoriteStore {
     classes: {
         cardListWrapper: string;
         listName: string;
@@ -57,10 +58,10 @@ interface IState {
     end: boolean;
 }
 
-class CardList extends React.Component<IProps & ISearchState, IState> {
+class CardList extends React.Component<IProps, IState> {
     private scroll: Scrollbars | null;
     private div: HTMLDivElement | null;
-    constructor(props: IProps & ISearchState) {
+    constructor(props: IProps) {
         super(props);
         this.state = {
             cards: [],
@@ -81,6 +82,22 @@ class CardList extends React.Component<IProps & ISearchState, IState> {
                 cards: result.data
             })
         })
+    }
+
+    public componentDidUpdate(prevProps: IProps) {
+        if (this.props.listName !== "Favorites") { return; }
+        if (this.props.refresh()) {
+            axios.get("http://localhost:8081/boards/getByListName", {
+                params: {
+                    listName: this.props.listName,
+                    page: this.state.getPage
+                }
+            }).then((result) => {
+                this.setState({
+                    cards: result.data
+                })
+            })
+        }
     }
 
     public render() {
@@ -119,16 +136,14 @@ class CardList extends React.Component<IProps & ISearchState, IState> {
                                                 <SearchedList
                                                     {...this.props}
                                                 /> :
-                                                this.props.listName === "Favorites" ?
-                                                    <div /> :
-                                                    this.state.cards.map((card, index) => {
-                                                        return (
-                                                            <SmallCard
-                                                                card={card}
-                                                                key={index}
-                                                            />
-                                                        );
-                                                    })
+                                                this.state.cards.map((card, index) => {
+                                                    return (
+                                                        <SmallCard
+                                                            card={card}
+                                                            key={index}
+                                                        />
+                                                    );
+                                                })
                                         }
                                     </div>
                                 </Scrollbars>
@@ -172,4 +187,4 @@ class CardList extends React.Component<IProps & ISearchState, IState> {
 }
 
 
-export default withSearchContext(withStyles(style)(CardList));
+export default withFavoriteContext(withSearchContext(withStyles(style)(CardList)));
