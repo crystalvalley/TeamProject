@@ -13,7 +13,7 @@ import { IFavoriteStore, withFavoriteContext } from '../../../../../contexts/Fav
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.29
- * @version : 2018.09.03
+ * @version : 2018.09.06
  * 
  */
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -33,7 +33,8 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         marginRight: "10px"
     },
     title: {
-        textAlign: "center"
+        textAlign: "center",
+        fontSize: "24px"
     },
     cardBody: {
         padding: "12px"
@@ -53,16 +54,22 @@ interface IProps {
 
 interface IState {
     editorState: EditorState;
-    modalOpen: number;
+    bigger: boolean;
 }
 
 
 class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
     constructor(props: IProps & IFavoriteStore) {
         super(props);
+        let sub : EditorState;
+        try{
+            sub=EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator)
+        }catch{
+            sub=EditorState.createEmpty(SNSDecorator)
+        }
         this.state = {
-            modalOpen: -1,
-            editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator),
+            bigger: false,
+            editorState: sub
         }
         this.closeModal = this.closeModal.bind(this);
         this.editorChange = this.editorChange.bind;
@@ -72,8 +79,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
     public render() {
         const { classes, card } = this.props;
         const writeHandler = () => this.openModal(0);
-        const { modalOpen } = this.state;
-        const handler = ()=>this.props.setFavorite(this.props.card.id)
+        const handler = () => this.props.setFavorite(this.props.card.id)
         return (
             <Card className={classes.card}>
                 <div
@@ -88,28 +94,28 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     </Typography>
                     <IconButton
                         style={{
-                            right:24,
-                            position:"absolute"
+                            right: 24,
+                            position: "absolute"
                         }}
                         onClick={handler}
                     >
                         {this.props.favorites.indexOf(this.props.card.id) === -1 ?
                             <FavoriteIcon /> :
                             <FilledFavoriteIcon />
-                        
-                    }
+
+                        }
                     </IconButton>
                     <BigCard
-                        open={modalOpen === 0}
+                        open={this.state.bigger}
                         onClose={this.closeModal}
                     />
                 </div>
-
-                <div onClick={writeHandler}
+                <div
                     className={classes.cardBody}
                 >
                     <Typography
                         className={classes.title}
+                        onClick={writeHandler}
                     >
                         {card.title}
                     </Typography>
@@ -135,12 +141,12 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
     }
     private openModal(clicked: number) {
         this.setState({
-            modalOpen: clicked
+            bigger: true
         })
     }
     private closeModal() {
         this.setState({
-            modalOpen: -1
+            bigger: false
         })
     }
     private editorChange(es: EditorState) {
