@@ -39,9 +39,9 @@ import lombok.ToString;
 //_id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = { "boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom",
-		"groups", "customList","mentionList" })
+		"groups", "customList","mentionList","share" })
 @JsonIgnoreProperties({ "boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom",
-		"groups", "customList","mentionList" })
+		"groups", "customList","mentionList","share" })
 public class Member {
 	@Id
 	@Column(name = "user_id")
