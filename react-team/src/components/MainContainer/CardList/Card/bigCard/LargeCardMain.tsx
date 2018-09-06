@@ -3,7 +3,7 @@ import { withStyles, StyleRulesCallback, Theme } from "@material-ui/core/styles"
 import classnames from "classnames";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-// import CardMedia from "@material-ui/core/CardMedia"; 
+
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
@@ -17,14 +17,13 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from 'axios';
 import { EditorState, convertFromRaw, Editor } from 'draft-js';
-
-
-import { Button, TextField, GridList, GridListTile } from '@material-ui/core';
+import { Button, TextField, Paper, Table, TableRow, TableCell, TableBody } from '@material-ui/core';
 import Axios from 'axios';
 import { ICardModel, IReplyModel } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 import EmotionBox from '../smallCard/EmotionBox';
 import ReplyList from './ReplyList';
+import Scrollbars from 'react-custom-scrollbars';
 
 
 /**
@@ -133,6 +132,14 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   replyBtn: {
     padding: "10px",
   },
+  root: {
+    width: '100%',
+    // marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 700,
+  }
 });
 
 interface IProps {
@@ -155,7 +162,12 @@ interface IProps {
     replyBox: string;
     replyText: string;
     replyBtn: string;
+    root: string;
+    table: string;
   }
+  // listName: string;
+  // id: string;
+  // scrollEnd(listName:string):void;
   card: ICardModel;
 }
 
@@ -167,6 +179,8 @@ interface IState {
 }
 
 class RecipeReviewCard extends React.Component<IProps, IState> {
+  // private div: HTMLDivElement | null;
+  // private scroll: Scrollbars | null;
   constructor(props: IProps) {
     super(props)
     this.state = {
@@ -230,13 +244,18 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
           </div>
           <div className={classes.content}>
 
-            <CardContent>
-              <Editor
-                readOnly={true}
-                editorState={this.state.editorState}
-                onChange={this.editorChange}
-              />
-            </CardContent>
+            <Scrollbars
+              autoHeight={true}
+              autoHide={true}
+            >
+              <CardContent>
+                <Editor
+                  readOnly={true}
+                  editorState={this.state.editorState}
+                  onChange={this.editorChange}
+                />
+              </CardContent>
+            </Scrollbars>
           </div>
         </CardContent>
 
@@ -277,26 +296,43 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
 
 
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit={true}>
+        <Scrollbars
+              autoHeight={true}
+              autoHide={true}
+            >
           <CardContent>
-            <GridList cols={3} cellHeight={300}>
-              {
-                this.state.replys.map((reply, index) => {
-                  return (
-                    <GridListTile
-                      key={index}
-                    >
-                      <ReplyList reply={reply}
-                      />
-                    </GridListTile>
-                  );
-                })
-              }
-            </GridList>
+
+            <Paper>
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>작성자</TableCell>
+                    <TableCell >내용</TableCell>
+                    <TableCell >작성시간</TableCell>
+                  </TableRow>
+                </TableBody>
+                <TableBody>
+
+                  {
+                    this.state.replys.map((reply, index) => {
+                      return (
+                        <TableRow key={index}>
+                          <ReplyList reply={reply} />
+                        </TableRow>
+                      );
+                    })}
+
+                </TableBody>
+              </Table>
+            </Paper>
+
           </CardContent>
+          </Scrollbars>
         </Collapse>
       </Card>
     );
   }
+
   private editorChange(es: EditorState) {
     this.setState({
       editorState: es

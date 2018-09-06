@@ -16,7 +16,7 @@ import LargeCardMain from './LargeCardMain';
 const style: StyleRulesCallback = (theme: Theme) => ({
     writerContainer: {
         width: "800px",
-        height: "500px",
+        height: "1000px",
         display: "flex",
     },
     modal: {
@@ -48,7 +48,8 @@ class BigCard extends React.Component<IProps>{
                 <div
                     className={classes.writerContainer}
                 >
-                <LargeCardMain card={this.props.card}/>
+                <LargeCardMain 
+                card={this.props.card}/>
                 </div>
             </Modal>
         );

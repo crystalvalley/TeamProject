@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Typography, Divider } from '@material-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
-import Scrollbars from 'react-custom-scrollbars'
+import Scrollbars from 'react-custom-scrollbars';
 import { ICardModel } from '../../../constance/models';
 import SmallCard from './Card/smallCard/SmallCard';
 import SearchedList from './Card/SearchedList';

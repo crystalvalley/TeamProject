@@ -126,6 +126,7 @@ public class AccountRestController {
 		// System.out.println("댓글 들어옴" + replyContent);
 		Reply reply = new Reply();
 		Member member = new Member();
+		System.out.println("리플저장" + cardnum+","+ replyContent+",");
 		System.out.println("리플저장하기 들어옴"+principal.getName());
 		member = mr.findById(principal.getName()).get();
 		reply.setContent(replyContent);
@@ -136,7 +137,6 @@ public class AccountRestController {
 		reply.setBoard(board);
 		reply.setOrderPosition("0");
 		//reply.setDepth(reply);
-		
 		rr.save(reply);
 		System.out.println(reply);
 		//리플라이 저장하기
