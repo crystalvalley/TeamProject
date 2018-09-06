@@ -63,6 +63,7 @@ public class AccountRestController {
 
 	@PostMapping("/signup")
 	public void signUp(Member member) {
+		System.out.println(member);
 		secUserService.createUser(member);
 		ms.signup(member);
 	}
@@ -71,7 +72,7 @@ public class AccountRestController {
 	public Member loginCheck(Principal principal) {
 		Member member;
 		if(principal!=null) {
-			member = mr.findById(principal.getName()).get();			
+			member = mr.findById("testid").get();			
 		}else {
 			member = mr.findById("testid").get();
 		}		

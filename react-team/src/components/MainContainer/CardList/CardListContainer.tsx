@@ -182,6 +182,7 @@ class CardListContainer extends React.Component<IProps, IState> {
                 page: pageOffset + 1
             }
         }).then((result) => {
+            if(!this.state[listName]){return}
             const newCards = [...this.state[listName].cards, ...result.data];
             if (result.data.length === 0) {
                 this.setState({

@@ -58,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void saveBoard(Board board) {
 		// TODO Auto-generated method stub
-		board.setWriter(mr.findById("testid").get());
+		// board.setWriter(mr.findById("testid").get());
 		String text = board.getContent();
 		Matcher hashMatch = HASH_PATTERN.matcher(text);
 		Matcher mentionMatch = MENTION_PATTERN.matcher(text);

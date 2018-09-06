@@ -39,7 +39,7 @@ public class ListControlController {
 	
 	@GetMapping("/getListNames")
 	public List<String> getListNames(Principal principal){
-		// return ls.getListNames(principal.getName());		
+		// return ls.getListNames("testid");		
 		return ls.getListNames("testid");
 	}
 	

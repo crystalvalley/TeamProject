@@ -45,7 +45,7 @@ public class BoardRestController {
 	}	
 	@GetMapping("/getByListName")
 	public List<Board> getByListName(String listName,Principal principal,int page) {		
-		// return bs.getBoardByListName(listName,principal.getName());
+		// return bs.getBoardByListName(listName,"testid");
 		return bs.getBoardByListName(listName,"testid",page);
 	}	
 	@GetMapping("/view")
@@ -60,7 +60,7 @@ public class BoardRestController {
 	
 	@PostMapping("/writeBoard")
 	public void writeBoard(Board board, Principal principal) {
-		// board.setWriter(mr.findById(principal.getName()).get());
+		// board.setWriter(mr.findById("testid").get());
 		board.setWriter(mr.findById("testid").get());
 		bs.saveBoard(board);
 	}
@@ -86,6 +86,7 @@ public class BoardRestController {
 	@GetMapping("/search")
 	public List<Board> getBoardbySearch(String keyword,int page){
 		System.out.println(keyword);
+		if(keyword.equals("")) {return null;}
 		return bs.getBoardBySearchKeyword(keyword,page);
 	}
 	@GetMapping("/getFavorites")

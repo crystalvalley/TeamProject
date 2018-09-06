@@ -40,18 +40,34 @@ export class SearchProvider extends React.Component<{}, ISearchState>{
             keywordChange: this.keywordChange,
             addPage: this.addPage
         }
+        this.getCards = this.getCards.bind(this);
     }
     public componentDidUpdate(preProps: {}, preState: ISearchState) {
         if (this.state.keyword !== preState.keyword&&this.state.getPage!==0) {
             // keyword가 달라지면 page 초기화
             this.setState({
-                getPage: 0
+                searchedCard:[],
+                getPage: 0,
+                end:false
+            },()=>{
+                this.getCards();
             })
             return;
         }
         if ((this.state.keyword === preState.keyword && this.state.getPage === preState.getPage)
             || this.state.keyword === "") { return; }
         if (this.state.end) { return; }
+        this.getCards();
+    }
+
+    public render() {
+        return (
+            <searchContext.Provider value={this.state}>
+                {this.props.children}
+            </searchContext.Provider>
+        );
+    }
+    private getCards(){
         axios.get("http://localhost:8081/boards/search", {
             params: {
                 keyword: this.state.keyword,
@@ -71,14 +87,6 @@ export class SearchProvider extends React.Component<{}, ISearchState>{
                 getPage: page+1
             })
         })
-    }
-
-    public render() {
-        return (
-            <searchContext.Provider value={this.state}>
-                {this.props.children}
-            </searchContext.Provider>
-        );
     }
 
     private keywordChange(e: React.ChangeEvent<HTMLInputElement>) {
