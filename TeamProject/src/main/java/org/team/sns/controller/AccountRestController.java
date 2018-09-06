@@ -1,7 +1,6 @@
 package org.team.sns.controller;
 
 import java.security.Principal;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,8 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.team.sns.domain.Board;
 import org.team.sns.domain.Member;
+import org.team.sns.domain.Reply;
+import org.team.sns.persistence.BoardRepository;
+import org.team.sns.persistence.BoardRepositoryImpl;
 import org.team.sns.persistence.MemberRepository;
+import org.team.sns.persistence.ReplyRepository;
 import org.team.sns.service.DropboxService;
 import org.team.sns.service.MemberServiceImpl;
 import org.team.sns.service.SecurityUserServiceImpl;
@@ -36,6 +40,12 @@ public class AccountRestController {
 	private SecurityUserServiceImpl secUserService;
 	@Autowired
 	private DropboxService ds;
+	@Autowired
+	private BoardRepository br;
+	@Autowired
+	private BoardRepositoryImpl bs;
+	@Autowired
+	private ReplyRepository rr;
 
 	@GetMapping("/idCheck")
 	public RestMsgObject idCheck(String _id) {
@@ -91,5 +101,42 @@ public class AccountRestController {
 		System.out.println("들어온다"+name+pw);
 		return member;
 	}
-	
+
+@PostMapping("/updatauser")
+	public Member updatauser(Member member, Principal principal) {
+		System.out.println("들어온다2222" + member);
+		Member me = mr.findById(member.getId()).get();
+		System.out.println("가져온거" + me);
+		if (member.getUsername() != null) {
+			me.setUsername(member.getUsername());
+		}
+		if (member.getPassword() != null) {
+			me.setPassword(member.getPassword());
+		}
+		mr.save(me);
+		System.out.println("수정" + me);
+		return member;
+	}
+
+	@PostMapping("/saveReply")
+	public Reply saveReply(int cardnum ,String replyContent, Principal principal) {
+		// System.out.println("댓글 들어옴" + replyContent);
+		Reply reply = new Reply();
+		Member member = new Member();
+		System.out.println("리플들어옴"+principal.getName());
+		member = mr.findById(principal.getName()).get();
+		reply.setContent(replyContent);
+		reply.setWriter(member);
+		//System.out.println(cardnum);
+		Board board = br.findById(cardnum).get();
+		System.out.println(board);
+		reply.setBoard(board);
+		reply.setOrderPosition("0");
+		//reply.setDepth(reply);
+		
+		rr.save(reply);
+		System.out.println(reply);
+		//리플라이 저장하기
+		return reply;
+	}
 }
