@@ -35,3 +35,8 @@ export interface IPhotoModel {
     id: number;
     url: string;
 }
+
+export interface IConditionModel{
+    strategy : string;
+    target : string;
+}

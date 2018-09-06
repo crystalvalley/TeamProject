@@ -40,6 +40,5 @@ export const mainTheme = createMuiTheme({
                 width:"5vw"
             }
         },
-
     }
 });

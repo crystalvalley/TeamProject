@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 /**
  * 
  * @author ParkHyeokJoon
@@ -25,6 +26,7 @@ import lombok.Data;
  */
 @Data
 @Entity
+@EqualsAndHashCode(of="id")
 @Table(name = "ProductStrategies")
 public class ProductStrategy {
 	@Id

@@ -50,5 +50,20 @@ public class ListControlController {
 		map = mapper.readValue(names, new TypeReference<Map<String,ArrayList<String>>>(){});
 		ls.setListOrder(map.get("names"), "testid");
 	}
+	
+	@PostMapping("addCustomList")
+	public void addList(Principal principal,@RequestBody String body) throws JsonParseException, JsonMappingException, IOException {
+		System.out.println(body);
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,String> map = new HashMap<>();
+		map = mapper.readValue(body, new TypeReference<Map<String,Object>>(){});
+		// 먼저 이름을 분리
+		String name = (String) map.get("name");
+		// 그다음 조건을 분리
+		List<List<HashMap<String,String>>> bigCondition = 
+				mapper.readValue(map.get("lists"), new TypeReference<List<List<HashMap<String,String>>>>(){});
+		ls.addList(name, "testid", bigCondition);
+		
+	}
 
 }
