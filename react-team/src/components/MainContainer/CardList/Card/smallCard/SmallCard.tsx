@@ -37,7 +37,11 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         fontSize: "24px"
     },
     cardBody: {
-        padding: "12px"
+        padding: "12px",
+    },
+    content: {
+        overflow: "hidden",
+        maxHeight: "475px"
     }
 });
 
@@ -48,6 +52,7 @@ interface IProps {
         cardHead: string;
         title: string;
         cardBody: string;
+        content: string;
     }
     card: ICardModel
 }
@@ -55,25 +60,39 @@ interface IProps {
 interface IState {
     editorState: EditorState;
     bigger: boolean;
+    cutted: boolean;
 }
 
 
 class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
+    private ref: HTMLDivElement | null;
     constructor(props: IProps & IFavoriteStore) {
         super(props);
-        let sub : EditorState;
-        try{
-            sub=EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator)
-        }catch{
-            sub=EditorState.createEmpty(SNSDecorator)
+        let sub: EditorState;
+        try {
+            sub = EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator)
+        } catch{
+            sub = EditorState.createEmpty(SNSDecorator)
         }
         this.state = {
             bigger: false,
-            editorState: sub
+            editorState: sub,
+            cutted: false
         }
         this.closeModal = this.closeModal.bind(this);
         this.editorChange = this.editorChange.bind;
         this.openModal = this.openModal.bind(this);
+    }
+    public componentDidMount() {
+        if (this.ref!.offsetHeight > 475 && this.state.cutted === false) {
+            this.setState({
+                cutted: true
+            })
+        } else if (this.ref!.offsetHeight <= 475 && this.state.cutted === true) {
+            this.setState({
+                cutted: false
+            })
+        }
     }
 
     public render() {
@@ -90,7 +109,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         src={"http://localhost:8081/resources" + card.writer.profileImg}
                     />
                     <Typography>
-                        {card.writer.id}
+                        {card.writer.id}  {this.state.cutted ? "잘림" : "안 잘림"}
                     </Typography>
                     <IconButton
                         style={{
@@ -119,12 +138,18 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     >
                         {card.title}
                     </Typography>
-                    <CardContent>
-                        <Editor
-                            readOnly={true}
-                            editorState={this.state.editorState}
-                            onChange={this.editorChange}
-                        />
+                    <CardContent
+                        className={classes.content}
+                    >
+                        <div
+                            ref={(element) => { this.ref = element }}
+                        >
+                            <Editor
+                                readOnly={true}
+                                editorState={this.state.editorState}
+                                onChange={this.editorChange}
+                            />
+                        </div>
                     </CardContent>
                 </div>
 
@@ -151,7 +176,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
     }
     private editorChange(es: EditorState) {
         this.setState({
-            editorState: es
+            editorState: es,
         })
     }
 }
