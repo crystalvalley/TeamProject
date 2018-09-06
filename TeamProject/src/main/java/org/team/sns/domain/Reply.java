@@ -40,7 +40,7 @@ public class Reply {
 	@Column(name="Reply_id")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@SequenceGenerator(name="seq",sequenceName="Replys_seq", initialValue=1, allocationSize=1)	
-	private String id; //참조 시퀀스
+	private int id; //참조 시퀀스
 
 	@CreationTimestamp
 	private Timestamp writeDate;

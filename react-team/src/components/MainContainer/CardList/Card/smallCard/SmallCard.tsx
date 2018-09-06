@@ -125,6 +125,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         }
                     </IconButton>
                     <BigCard
+                        card={this.props.card}
                         open={this.state.bigger}
                         onClose={this.closeModal}
                     />
