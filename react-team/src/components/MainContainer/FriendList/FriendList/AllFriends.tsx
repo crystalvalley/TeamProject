@@ -40,8 +40,10 @@ class AllFriends extends React.Component<ILoginStore, IState>{
                 'Cache-Control': 'no-cache'
             }
         })
-        axiosInstance.get("http://localhost:8081/members/getMembers2").then((result) => {
-            alert("response")
+        axiosInstance.get("http://localhost:8081/members/members").then((result)=>{
+            this.setState({
+                friends : result.data
+            })
         })
     }
 
