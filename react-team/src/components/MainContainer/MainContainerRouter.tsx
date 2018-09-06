@@ -7,6 +7,7 @@ import AllFriends from './FriendList/FriendList/AllFriends';
 
 
 
+
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
@@ -62,6 +63,7 @@ class MainContainerRouter extends React.Component<IProps> {
                 <div className={classes.toolbar} />
                 <div className={classes.toolbar} />
                 <Switch>
+                   
                     <Route path="/AllFriends" component={AllFriends} />
                     <Route path="/userUpdate" component={UpdateUser} />
                     <Route path="/" component={CardListContainer} />

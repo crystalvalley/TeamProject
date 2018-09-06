@@ -5,4 +5,5 @@ import org.team.sns.domain.Networking;
 
 public interface NetworkingRepository extends CrudRepository<Networking, Integer>,NetworkingRepositoryCustom{
 
+
 }

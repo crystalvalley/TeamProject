@@ -29,8 +29,6 @@ interface IProps{
     open:boolean;
     close():void;
     openf():void;
-    
-
 }
 
 class SwipeableTemporaryDrawer extends React.Component<IProps> {
@@ -45,7 +43,6 @@ class SwipeableTemporaryDrawer extends React.Component<IProps> {
     );
 
    return (
-
       <div>       
         <SwipeableDrawer
           open={this.props.open}
@@ -63,7 +60,6 @@ class SwipeableTemporaryDrawer extends React.Component<IProps> {
         </SwipeableDrawer>
         
       </div>
-
     );
   }
 }

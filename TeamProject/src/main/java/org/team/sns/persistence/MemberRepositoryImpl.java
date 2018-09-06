@@ -46,5 +46,11 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport implements M
 		return query.fetch();
 	}
 
+	@Override
+	public List<Member> getAllUsers() {
+		
+		return null;
+	}
+
 
 }
