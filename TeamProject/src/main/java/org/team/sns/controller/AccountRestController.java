@@ -17,10 +17,13 @@ import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.BoardRepositoryImpl;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.persistence.ReplyRepository;
+import org.team.sns.persistence.ReplyRepositorympl;
 import org.team.sns.service.DropboxService;
 import org.team.sns.service.MemberServiceImpl;
 import org.team.sns.service.SecurityUserServiceImpl;
 import org.team.sns.vo.RestMsgObject;
+
+import java.util.List;
 
 /**
  * @author ParkHyeokJoon
@@ -123,7 +126,7 @@ public class AccountRestController {
 		// System.out.println("댓글 들어옴" + replyContent);
 		Reply reply = new Reply();
 		Member member = new Member();
-		System.out.println("리플들어옴"+principal.getName());
+		System.out.println("리플저장하기 들어옴"+principal.getName());
 		member = mr.findById(principal.getName()).get();
 		reply.setContent(replyContent);
 		reply.setWriter(member);
@@ -139,4 +142,22 @@ public class AccountRestController {
 		//리플라이 저장하기
 		return reply;
 	}
+	@GetMapping("/getByCardReply")
+	public List<Reply> getByCardReply(int cardnum , Principal principal) {
+		System.out.println("리플 불러오기들어온다"+cardnum);
+		// rr.findById();
+		List<Reply> result = rr.getReplysByBoardId(cardnum);
+		
+		//널 오류 뜨는듯
+		if(result == null) {
+			Reply reply = new Reply();
+			reply.setContent("댓글이 없습니다");
+			result.add(reply);
+			return result;
+		}
+		
+		System.out.println("잘불러와짐"+result.toString());
+		return result;
+	}
+	
 }
