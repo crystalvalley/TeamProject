@@ -73,4 +73,30 @@ public class ListServiceImpl implements ListService{
 		}
 	}
 
+	@Override
+	public void updateList(String name, String userid, List<List<HashMap<String, String>>> condition) {
+		// TODO Auto-generated method stub
+		CustomListPK clp = new CustomListPK();
+		clp.setListName(name);
+		clp.setOwner(userid);
+		clr.deleteById(clp);
+		CustomList newcl = new CustomList();
+		newcl.setOwner(mr.findById(userid).get());
+		newcl.setListName(name);
+		clr.save(newcl);
+		for(List<HashMap<String,String>> pcon : condition) {
+			ProductStrategy newps = new ProductStrategy();
+			newps.setOwnedCl(newcl);
+			psr.save(newps);
+			for(HashMap<String,String> con : pcon) {
+				Strategy newstr = new Strategy();
+				newstr.setOwned(newps);
+				newstr.setType(con.get("strategy"));
+				newstr.setTargets(con.get("target"));
+				str.save(newstr);
+			}
+		}
+		
+	}
+
 }

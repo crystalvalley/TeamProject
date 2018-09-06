@@ -43,7 +43,7 @@ interface IProps {
         condition: string;
         alignCenter: string;
     }
-    clickedList: string;
+    listNames: string[];
     refresh(): void;
 }
 interface IState {
@@ -81,11 +81,10 @@ class CreateListContainer extends React.Component<IProps, IState>{
                     </IconButton>
                     <TextField
                         onChange={this.nameChange}
-                        disabled={this.props.clickedList === "" ? false : true}
                         style={{
                             marginLeft: "15px"
                         }}
-                        value={this.props.clickedList === "" ? this.state.listName : this.props.clickedList}
+                        value={this.state.listName}
                         placeholder="New List Name"
                     />
                 </Typography>
@@ -222,8 +221,15 @@ class CreateListContainer extends React.Component<IProps, IState>{
         })
     }
     private submitNewList() {
-        if (this.props.clickedList === "") {
+        if (this.props.listNames.indexOf(this.state.listName)===-1) {
+            // 존재하지 않는 이름이라면 추가
             axios.post("http://localhost:8081/lists/addCustomList", {
+                name: this.state.listName,
+                lists: JSON.stringify(this.state.bigConditions)
+            })
+        }else{
+            // 존재하는 이름이면 수정
+            axios.post("http://localhost:8081/lists/updateCustomList", {
                 name: this.state.listName,
                 lists: JSON.stringify(this.state.bigConditions)
             })

@@ -14,4 +14,5 @@ public interface ListService {
 	public List<String> getListNames(String userid);
 	public void setListOrder(List<String> list, String memberid);
 	public void addList(String name,String userid,List<List<HashMap<String,String>>> condition);
+	public void updateList(String name,String userid,List<List<HashMap<String,String>>> condition);
 }

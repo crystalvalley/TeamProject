@@ -62,7 +62,7 @@ class ListController extends React.Component<IProps, IState>{
                     listNames = {this.state.listNames}
                 />
                 <CreateListContainer 
-                    clickedList=""
+                    listNames={this.state.listNames}
                     refresh = {this.refresh}
                 />
             </div>

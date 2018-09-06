@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 /**
  * @author ParkHyeokJoon
  * @since 2018.09.06
@@ -11,14 +12,15 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         flexBasis: "20%",
         padding: "6px",
         display: "flex",
+        minHeight: "200px"
     },
     box: {
         flexBasis: "10%",
         border: "1px solid black",
         margin: "5px",
-        backgroundColor:"skyblue",
-        display:"flex",
-        flexDirection:"column"
+        backgroundColor: "skyblue",
+        display: "flex",
+        flexDirection: "column"
     }
 
 })
@@ -41,6 +43,7 @@ class BoxContainer extends React.Component<IProps, IState>{
         this.state = {
             boxes: []
         }
+        this.onDragEnd = this.onDragEnd.bind(this);
     }
 
     public componentDidUpdate() {
@@ -70,6 +73,9 @@ class BoxContainer extends React.Component<IProps, IState>{
             <div
                 className={classes.container}
             >
+                <DragDropContext
+                    onDragEnd={this.onDragEnd}
+                >
                     {
                         this.state.boxes.map((subArray, index) => {
                             return (
@@ -82,11 +88,11 @@ class BoxContainer extends React.Component<IProps, IState>{
                                             return (
                                                 <div
                                                     style={{
-                                                        flexBasis:"20%",
-                                                        flexGrow:0,
-                                                        paddingLeft:"3px",
-                                                        margin:"2px",
-                                                        border:"1px solid black"
+                                                        flexBasis: "20%",
+                                                        flexGrow: 0,
+                                                        paddingLeft: "3px",
+                                                        margin: "2px",
+                                                        border: "1px solid black"
                                                     }}
                                                     key={index2}
                                                 >
@@ -99,8 +105,12 @@ class BoxContainer extends React.Component<IProps, IState>{
                             )
                         })
                     }
+                </DragDropContext>
             </div>
         );
+    }
+    private onDragEnd(result : DropResult){
+
     }
 }
 
