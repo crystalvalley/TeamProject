@@ -45,4 +45,8 @@ export interface IReplyModel{
     content: string;
     writeDate: string;
     updateDate: string;
+
+export interface IConditionModel{
+    strategy : string;
+    target : string;
 }

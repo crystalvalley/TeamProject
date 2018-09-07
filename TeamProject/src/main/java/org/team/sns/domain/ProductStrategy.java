@@ -16,6 +16,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 /**
  * 
  * @author ParkHyeokJoon
@@ -25,6 +27,8 @@ import lombok.Data;
  */
 @Data
 @Entity
+@EqualsAndHashCode(of="id")
+@ToString(exclude= {"ownedCl","strategies"})
 @Table(name = "ProductStrategies")
 public class ProductStrategy {
 	@Id
@@ -35,9 +39,7 @@ public class ProductStrategy {
 	
 	@OneToMany(mappedBy="owned",cascade=CascadeType.ALL)
 	private List<Strategy> strategies;
-	
-
-	
+		
 	@ManyToOne
 	@JoinColumns({
 		@JoinColumn(name="owned_clname",referencedColumnName="listname"),

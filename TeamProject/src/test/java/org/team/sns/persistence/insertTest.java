@@ -30,8 +30,6 @@ public class insertTest {
 	@Autowired
 	MemberServiceImpl ms;
 	@Autowired
-	StrTargetRepository sttr;
-	@Autowired
 	SecurityUserService sus;
 	@Autowired
 	BoardService bs;
