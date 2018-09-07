@@ -275,8 +275,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
           />
         </CardActions>
         <div className={classes.replyBox}>
-
-          <ReplyTextInput />
+          {/* Editor위치 */}
          
           <IconButton
             className={classnames(classes.expand, {
