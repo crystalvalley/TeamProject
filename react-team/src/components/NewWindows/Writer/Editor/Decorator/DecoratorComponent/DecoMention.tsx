@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { withSearchContext, ISearchState } from '../../../../../../contexts/SearchContext';
 
 /**
  * @author: ParkHyeokJoon
@@ -12,18 +13,22 @@ interface IProps {
 }
 
 
-export default class DecoMention extends React.Component<IProps> {
+class DecoMention extends React.Component<IProps&ISearchState> {
     public render() {
+        const handler = ()=>this.props.setKeyword(this.props.decoratedText)
         return (
-            <a
+            <div
                 style={{
                     color : 'rgba(98, 177, 254, 1.0)'
                 }}
-                href={"http://localhost:8081/boards/findByMention?mention="+this.props.decoratedText.slice(1)}
+                onClick={handler}
                 data-offset-key={this.props.offsetKey}
             >
                 {this.props.children}
-            </a>
+            </div>
         );
     }
 }
+
+
+export default withSearchContext(DecoMention);

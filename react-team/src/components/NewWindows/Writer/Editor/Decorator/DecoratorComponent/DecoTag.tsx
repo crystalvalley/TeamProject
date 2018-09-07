@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ISearchState, withSearchContext } from '../../../../../../contexts/SearchContext';
 
 /**
  * @author: ParkHyeokJoon
@@ -12,18 +13,21 @@ interface IProps {
 }
 
 
-export default class DecoTag extends React.Component<IProps> {
+class DecoTag extends React.Component<IProps&ISearchState> {
     public render() {
+        const handler = ()=> this.props.setKeyword(this.props.decoratedText);
         return (
-            <a
+            <div
                 style={{
                     color : 'rgba(95, 184, 138, 1.0)'
                 }}
-                href={"http://localhost:8081/boards/findByTag?tag="+this.props.decoratedText.slice(1)}
+                onClick={handler}
                 data-offset-key={this.props.offsetKey}
             >
                 {this.props.children}
-            </a>
+            </div>
         );
     }
 }
+
+export default withSearchContext(DecoTag);

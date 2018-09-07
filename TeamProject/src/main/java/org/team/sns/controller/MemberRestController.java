@@ -1,5 +1,6 @@
 package org.team.sns.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +15,20 @@ import org.team.sns.persistence.MemberRepository;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/members")
-public class MemberRestController{
+public class MemberRestController {
+
 	@Autowired
-	MemberRepository mr;
+	private MemberRepository mr;
 	
-	
-	@GetMapping("/getAllMembers")
-	public List<Member> getAllMembers() {
-		System.out.println("컨트롤러는 들어오나");
-		//List<Member> result = mr.getAllMembers();
-		return null; //result;
+	@GetMapping("/members")
+	public List<Member> test() {
+		List<Member> list = new ArrayList<>();
+		Iterable<Member> m = mr.findAll();
+		for(Member member : m) {
+			list.add(member);
+		}
+		return list;
 	}
+	
+	
 }
-	
-	

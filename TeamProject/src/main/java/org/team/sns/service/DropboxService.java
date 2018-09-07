@@ -40,8 +40,10 @@ public class DropboxService {
 		bis.close();
 		Member member = mr.findById(username).get();
 		DropboxVO.Delete del = new Delete();
-		del.setFilePath(member.getProfileImg());
-		this.fileDelete(del);
+		if(member.getProfileImg()!=null) {
+			del.setFilePath(member.getProfileImg());
+			this.fileDelete(del);			
+		}
 		member.setProfileImg(filePath);
 		mr.save(member);
 		return uploadMetadata.getPathLower();

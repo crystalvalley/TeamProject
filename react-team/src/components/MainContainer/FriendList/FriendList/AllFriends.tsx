@@ -2,7 +2,9 @@ import * as React from 'react';
 import { GridList, GridListTile } from '@material-ui/core';
 import { IMemberModel } from '../../../../constance/models';
 import { ILoginStore, withLoginContext } from '../../../../contexts/LoginContext';
-import Onetile from './Onetile';
+import Onetile from './OneTile';
+import axios from 'axios';
+
 
 
 /**
@@ -16,39 +18,35 @@ interface IState {
     friends: IMemberModel[],
 }
 
-class Friend extends React.Component<ILoginStore, IState>{
+class AllFriends extends React.Component<ILoginStore, IState>{
     constructor(props: ILoginStore) {
         super(props);
         this.state = {
             friends: [
+
                 {
-                    id: "1",
-                    name: "1",
-                    profileImg: "1"
-                },
-                {
-                    id: "2",
-                    name: "2",
-                    profileImg: "2"
-                },
-                {
-                    id: "3",
-                    name: "3",
-                    profileImg: "3"
-                },
-                {
-                    id: "4",
-                    name: "2",
-                    profileImg: "2"
-                },
-                {
-                    id: "5",
-                    name: "3",
-                    profileImg: "3"
+                    id: "",
+                    name: "",
+                    profileImg: ""
                 }
+
             ]
         }
     }
+
+    public componentDidMount() {
+        const axiosInstance = axios.create({
+            headers: {
+                'Cache-Control': 'no-cache'
+            }
+        })
+        axiosInstance.get("http://localhost:8081/members/members").then((result)=>{
+            this.setState({
+                friends : result.data
+            })
+        })
+    }
+
 
     public render() {
         return (
@@ -67,8 +65,7 @@ class Friend extends React.Component<ILoginStore, IState>{
                     })
                 }
             </GridList>
-
         );
     }
 }
-export default withLoginContext((Friend));
+export default withLoginContext((AllFriends));

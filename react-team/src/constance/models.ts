@@ -35,3 +35,18 @@ export interface IPhotoModel {
     id: number;
     url: string;
 }
+export interface IReplyModel{
+    id: number;
+    // 댓글 쓴사람
+    writer: IMemberModel;
+    board : ICardModel;
+    // url
+    sound :string;
+    content: string;
+    writeDate: string;
+    updateDate: string;
+
+export interface IConditionModel{
+    strategy : string;
+    target : string;
+}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Typography, Divider } from '@material-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
-import Scrollbars from 'react-custom-scrollbars'
+import Scrollbars from 'react-custom-scrollbars';
 import { ICardModel } from '../../../constance/models';
 import SmallCard from './Card/smallCard/SmallCard';
 import SearchedList from './Card/SearchedList';
@@ -88,40 +88,40 @@ class CardList extends React.Component<IProps> {
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                             >
-                                <Typography
-                                    className={classes.listName}
-                                    {...provided.dragHandleProps}
+                            <Typography
+                                className={classes.listName}
+                                {...provided.dragHandleProps}
+                            >
+                                {this.props.listName}
+                            </Typography>
+                            <Scrollbars
+                                autoHide={true}
+                                ref={(element) => { this.scroll = element }}
+                                onScrollStop={this.setScrollPosition}
+                            >
+                                <div
+                                    className={classes.listBody}
+                                    ref={(element) => { this.div = element }}
                                 >
-                                    {this.props.listName}
-                                </Typography>
-                                <Scrollbars
-                                    autoHide={true}
-                                    ref={(element) => { this.scroll = element }}
-                                    onScrollStop={this.setScrollPosition}
-                                >
-                                    <div
-                                        className={classes.listBody}
-                                        ref={(element) => { this.div = element }}
-                                    >
-                                        <Divider />
-                                        {
-                                            this.props.listName === "SearchField" ?
-                                                <SearchedList
-                                                    searchedCard={this.props.searchedCard}
-                                                    keyword={this.props.keyword}
-                                                    keywordChange={this.props.keywordChange}
-                                                /> :
-                                                this.props.cards.map((card, index) => {
-                                                    return (
-                                                        <SmallCard
-                                                            card={card}
-                                                            key={index}
-                                                        />
-                                                    );
-                                                })
-                                        }
-                                    </div>
-                                </Scrollbars>
+                                    <Divider />
+                                    {
+                                        this.props.listName === "SearchField" ?
+                                            <SearchedList
+                                                searchedCard={this.props.searchedCard}
+                                                keyword={this.props.keyword}
+                                                keywordChange={this.props.keywordChange}
+                                            /> :
+                                            this.props.cards.map((card, index) => {
+                                                return (
+                                                    <SmallCard
+                                                        card={card}
+                                                        key={index}
+                                                    />
+                                                );
+                                            })
+                                    }
+                                </div>
+                            </Scrollbars>
                             </div>
                         );
                     }

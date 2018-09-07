@@ -13,7 +13,7 @@ import { IFavoriteStore, withFavoriteContext } from '../../../../../contexts/Fav
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.29
- * @version : 2018.09.03
+ * @version : 2018.09.06
  * 
  */
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -33,10 +33,15 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         marginRight: "10px"
     },
     title: {
-        textAlign: "center"
+        textAlign: "center",
+        fontSize: "24px"
     },
     cardBody: {
-        padding: "12px"
+        padding: "12px",
+    },
+    content: {
+        overflow: "hidden",
+        maxHeight: "475px"
     }
 });
 
@@ -47,33 +52,53 @@ interface IProps {
         cardHead: string;
         title: string;
         cardBody: string;
+        content: string;
     }
     card: ICardModel
 }
 
 interface IState {
     editorState: EditorState;
-    modalOpen: number;
+    bigger: boolean;
+    cutted: boolean;
 }
 
 
 class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
+    private ref: HTMLDivElement | null;
     constructor(props: IProps & IFavoriteStore) {
         super(props);
+        let sub: EditorState;
+        try {
+            sub = EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator)
+        } catch{
+            sub = EditorState.createEmpty(SNSDecorator)
+        }
         this.state = {
-            modalOpen: -1,
-            editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator),
+            bigger: false,
+            editorState: sub,
+            cutted: false
         }
         this.closeModal = this.closeModal.bind(this);
         this.editorChange = this.editorChange.bind;
         this.openModal = this.openModal.bind(this);
     }
+    public componentDidMount() {
+        if (this.ref!.offsetHeight > 475 && this.state.cutted === false) {
+            this.setState({
+                cutted: true
+            })
+        } else if (this.ref!.offsetHeight <= 475 && this.state.cutted === true) {
+            this.setState({
+                cutted: false
+            })
+        }
+    }
 
     public render() {
         const { classes, card } = this.props;
         const writeHandler = () => this.openModal(0);
-        const { modalOpen } = this.state;
-        const handler = ()=>this.props.setFavorite(this.props.card.id)
+        const handler = () => this.props.setFavorite(this.props.card.id)
         return (
             <Card className={classes.card}>
                 <div
@@ -84,41 +109,48 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         src={"http://localhost:8081/resources" + card.writer.profileImg}
                     />
                     <Typography>
-                        {card.writer.id}
+                        {card.writer.id}  {this.state.cutted ? "잘림" : "안 잘림"}
                     </Typography>
                     <IconButton
                         style={{
-                            right:24,
-                            position:"absolute"
+                            right: 24,
+                            position: "absolute"
                         }}
                         onClick={handler}
                     >
                         {this.props.favorites.indexOf(this.props.card.id) === -1 ?
                             <FavoriteIcon /> :
                             <FilledFavoriteIcon />
-                        
-                    }
+
+                        }
                     </IconButton>
                     <BigCard
-                        open={modalOpen === 0}
+                        card={this.props.card}
+                        open={this.state.bigger}
                         onClose={this.closeModal}
                     />
                 </div>
-
-                <div onClick={writeHandler}
+                <div
                     className={classes.cardBody}
                 >
                     <Typography
                         className={classes.title}
+                        onClick={writeHandler}
                     >
                         {card.title}
                     </Typography>
-                    <CardContent>
-                        <Editor
-                            readOnly={true}
-                            editorState={this.state.editorState}
-                            onChange={this.editorChange}
-                        />
+                    <CardContent
+                        className={classes.content}
+                    >
+                        <div
+                            ref={(element) => { this.ref = element }}
+                        >
+                            <Editor
+                                readOnly={true}
+                                editorState={this.state.editorState}
+                                onChange={this.editorChange}
+                            />
+                        </div>
                     </CardContent>
                 </div>
 
@@ -135,17 +167,17 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
     }
     private openModal(clicked: number) {
         this.setState({
-            modalOpen: clicked
+            bigger: true
         })
     }
     private closeModal() {
         this.setState({
-            modalOpen: -1
+            bigger: false
         })
     }
     private editorChange(es: EditorState) {
         this.setState({
-            editorState: es
+            editorState: es,
         })
     }
 }

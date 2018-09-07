@@ -3,6 +3,7 @@ import { Theme, StyleRulesCallback, withStyles, IconButton } from '@material-ui/
 import Create from '@material-ui/icons/Create';
 import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
+import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Accessibility from '@material-ui/icons/Accessibility';
 import { NavLink } from 'react-router-dom';

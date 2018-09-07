@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {  TextField, InputAdornment } from '@material-ui/core';
+import { TextField, InputAdornment } from '@material-ui/core';
 import Search from '@material-ui/icons/Search';
 import SmallCard from './smallCard/SmallCard';
 import { ICardModel } from '../../../../constance/models';
@@ -11,9 +11,9 @@ import { ICardModel } from '../../../../constance/models';
  */
 
 interface IProps {
-    searchedCard:ICardModel[];
-    keyword:string;
-    keywordChange(e:React.ChangeEvent<HTMLInputElement>):void;
+    searchedCard: ICardModel[];
+    keyword: string;
+    keywordChange(e: React.ChangeEvent<HTMLInputElement>): void;
 }
 
 class SearchedList extends React.Component<IProps>{
@@ -37,14 +37,14 @@ class SearchedList extends React.Component<IProps>{
                     }}
                 />
                 {
-                        this.props.searchedCard.map((card, index) => {
-                            return (
-                                <SmallCard
-                                    card={card}
-                                    key={index}
-                                />
-                            );
-                        })                       
+                    this.props.searchedCard.map((card, index) => {
+                        return (
+                            <SmallCard
+                                card={card}
+                                key={index}
+                            />
+                        );
+                    })
                 }
             </React.Fragment>
         );

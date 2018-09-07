@@ -14,6 +14,7 @@ export interface ISearchState {
     getPage: number;
     end: boolean;
     keywordChange(e: React.ChangeEvent<HTMLInputElement>): void;
+    setKeyword(str: string): void;
     addPage(): void;
 }
 
@@ -23,6 +24,7 @@ const searchContext = React.createContext<ISearchState>({
     getPage: 0,
     end: false,
     keywordChange: (e: React.ChangeEvent<HTMLInputElement>) => { return },
+    setKeyword: (str: string) => { return },
     addPage: () => { return }
 
 })
@@ -32,26 +34,35 @@ export class SearchProvider extends React.Component<{}, ISearchState>{
         super(props);
         this.keywordChange = this.keywordChange.bind(this);
         this.addPage = this.addPage.bind(this);
+        this.setKeyword = this.setKeyword.bind(this);
         this.state = {
             keyword: "",
             searchedCard: [],
             getPage: 0,
             end: false,
             keywordChange: this.keywordChange,
-            addPage: this.addPage
+            addPage: this.addPage,
+            setKeyword: this.setKeyword
         }
+        this.getCards = this.getCards.bind(this);
     }
-    public componentDidUpdate(preProps: {}, preState: ISearchState) {
-        if (this.state.keyword !== preState.keyword&&this.state.getPage!==0) {
-            // keyword가 달라지면 page 초기화
-            this.setState({
-                getPage: 0
-            })
-            return;
-        }
-        if ((this.state.keyword === preState.keyword && this.state.getPage === preState.getPage)
-            || this.state.keyword === "") { return; }
-        if (this.state.end) { return; }
+
+    public render() {
+        return (
+            <searchContext.Provider value={this.state}>
+                {this.props.children}
+            </searchContext.Provider>
+        );
+    }
+    private setKeyword(str: string) {
+        this.setState({
+            searchedCard:[],
+            end: false,
+            keyword: str,
+            getPage: 0
+        },this.getCards)
+    }
+    private getCards() {
         axios.get("http://localhost:8081/boards/search", {
             params: {
                 keyword: this.state.keyword,
@@ -68,29 +79,31 @@ export class SearchProvider extends React.Component<{}, ISearchState>{
             const newCard = [...this.state.searchedCard, ...result.data];
             this.setState({
                 searchedCard: newCard,
-                getPage: page+1
+                getPage: page + 1
             })
         })
     }
 
-    public render() {
-        return (
-            <searchContext.Provider value={this.state}>
-                {this.props.children}
-            </searchContext.Provider>
-        );
+    private keywordChange(e: React.ChangeEvent<HTMLInputElement>) {
+        if(e.currentTarget.value===""){
+            this.setState({
+                keyword :""
+            })
+            return;
+        }
+        this.setState({
+            searchedCard:[],
+            end: false,
+            keyword: e.currentTarget.value,
+            getPage: 0
+        }, this.getCards)
     }
 
-    private keywordChange(e: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({
-            keyword: e.currentTarget.value
-        })
-    }
     private addPage() {
         const page = this.state.getPage
         this.setState({
             getPage: page + 1
-        })
+        }, this.getCards)
     }
 }
 

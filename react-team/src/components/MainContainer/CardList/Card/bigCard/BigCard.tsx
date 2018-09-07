@@ -1,18 +1,22 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Modal } from '@material-ui/core';
+// import LargeCardMain from '../LargeCardMain';
+import { ICardModel } from '../../../../../constance/models';
 import LargeCardMain from './LargeCardMain';
 
 
+
 /**
- * @author: ChaMinJu
- * @since : 2018.9.5
- * @version : 2018.9.5
+ * @author:MinJu Cha
+ * @since:2018.9.5
+ * @version:2018.9.5
+ * 
  */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
     writerContainer: {
-        width: "1000px",
-        height: "750px",
+        width: "800px",
+        height: "1000px",
         display: "flex",
     },
     modal: {
@@ -27,6 +31,7 @@ interface IProps {
         writerContainer: string;
         modal: string;
     },
+    card:ICardModel
     open: boolean;
     onClose(): void;
 }
@@ -43,7 +48,8 @@ class BigCard extends React.Component<IProps>{
                 <div
                     className={classes.writerContainer}
                 >
-                    <LargeCardMain />
+                <LargeCardMain 
+                card={this.props.card}/>
                 </div>
             </Modal>
         );
@@ -51,3 +57,4 @@ class BigCard extends React.Component<IProps>{
 }
 
 export default withStyles(style)(BigCard);
+

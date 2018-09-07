@@ -20,7 +20,6 @@ import org.team.sns.domain.QShare;
 import org.team.sns.domain.QTag;
 import org.team.sns.domain.Reply;
 import org.team.sns.domain.Share;
-import org.team.sns.domain.StrTarget;
 import org.team.sns.domain.Strategy;
 import org.team.sns.domain.Tag;
 
@@ -378,9 +377,10 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		return result;
 	}
 
-	private BooleanBuilder tagCheck(QBoard board, BooleanBuilder builder, List<StrTarget> targets) {
-		for (StrTarget target : targets) {
-			builder.and(board.tags.contains(tr.findById(target.getTarget()).get()));
+	private BooleanBuilder tagCheck(QBoard board, BooleanBuilder builder, String targets) {
+		String[] array = targets.split(",");
+		for (String target : array) {
+			builder.and(board.tags.contains(tr.findById(target).get()));
 		}
 		return builder;
 	}
