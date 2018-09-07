@@ -65,7 +65,7 @@ class BtnBox extends React.Component<IProps, IState>{
                     <FriendListIcon />
                 </IconButton>
 
-          
+
 
                 <IconButton>
                     <NavLink to="/userUpdate">
@@ -73,11 +73,19 @@ class BtnBox extends React.Component<IProps, IState>{
                     </NavLink>
                 </IconButton>
 
-                      <IconButton>
+                <IconButton>
                     <NavLink to="/AllFriends">
                         <Accessibility />
                     </NavLink>
                 </IconButton>
+
+
+                <IconButton>
+                    <NavLink to="/createGroup">
+                        <Accessibility />
+                    </NavLink>
+                </IconButton>
+
 
                 <ShowupFriendList
                     open={this.state.modalOpen === 1}
