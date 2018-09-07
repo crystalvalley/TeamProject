@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.team.sns.domain.Board;
+import org.team.sns.domain.CustomListPK;
 import org.team.sns.service.BoardService;
 import org.team.sns.service.MemberServiceImpl;
 import org.team.sns.service.SecurityUserService;
@@ -49,7 +50,9 @@ public class insertTest {
 
 	@Test
 	public void searchbycontentTest() {
-		List<Board> boards = bs.getBoardByListName("Base", "testid", 0);
-		System.out.println(boards.get(0));
+		CustomListPK cpk = new CustomListPK();
+		cpk.setListName("te");
+		cpk.setOwner("testid");
+		clr.deleteById(cpk);
 	}
 }

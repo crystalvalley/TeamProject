@@ -33,8 +33,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
         padding: theme.spacing.unit * 3,
         display: "flex",
         flexDirection: "column",
-        marginLeft: "5%",
-        marginRight: "5%"
+        marginLeft: "7.5%",
+        marginRight: "7.5%"
     },
 })
 

@@ -4,6 +4,10 @@ import CardList from './CardList';
 import { withStyles, StyleRulesCallback, Theme } from '@material-ui/core';
 import axios from 'axios';
 import { ICardModel } from '../../../constance/models';
+import ArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
+import ArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import { Motion, spring } from 'react-motion';
+
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.27
@@ -15,12 +19,21 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     container: {
         display: "flex",
         height: "100%",
+    },
+    arrow: {
+        position: "absolute",
+        height: "100%",
+        width: "7.5%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center"
     }
 })
 
 interface IProps {
     classes: {
         container: string;
+        arrow: string;
     }
 }
 interface IState {
@@ -32,6 +45,10 @@ interface IState {
             end: boolean;
         }
     }
+    slide: number;
+    left: boolean;
+    right: boolean;
+    starting: number;
 }
 
 class CardListContainer extends React.Component<IProps, IState> {
@@ -46,11 +63,16 @@ class CardListContainer extends React.Component<IProps, IState> {
                     end: false,
                     getPage: 0
                 }
-            }
+            },
+            slide: 0,
+            left: false,
+            right: false,
+            starting: 0
         }
         this.onDragEnd = this.onDragEnd.bind(this);
         this.scrollEnd = this.scrollEnd.bind(this);
         this.favoriteCheck = this.favoriteCheck.bind(this);
+        this.checkArrow = this.checkArrow.bind(this);
     }
     public componentDidMount() {
         axios.get("http://localhost:8081/lists/getListNames")
@@ -80,52 +102,100 @@ class CardListContainer extends React.Component<IProps, IState> {
                         })
                     })
                 })
-            })
+            }).then(() => { this.checkArrow(0) })
     }
 
     public render() {
+        const { classes } = this.props;
+        const { starting } = this.state
+
+        const handlLeft = () => { this.checkArrow(-1) }
+        const handlRight = () => { this.checkArrow(1) }
         return (
-            <DragDropContext
-                onDragEnd={this.onDragEnd}
-            >
-                <Droppable
-                    droppableId={"Container"}
-                    direction="horizontal"
-                >{
-                        (provided, snapshot) => {
-                            return (
-                                <div
-                                    className={this.props.classes.container}
-                                    ref={provided.innerRef}
-                                >{
-                                        this.state.order.map((name, index) => {
-                                            if (this.state.lists[name]) {
-                                                return (
-                                                    <CardList
-                                                        scrollEnd={this.scrollEnd}
-                                                        favoriteCheck={this.favoriteCheck}
-                                                        cards={this.state.lists[name].cards}
-                                                        index={index}
-                                                        key={index}
-                                                        id={name}
-                                                        listName={name}
-                                                    />
-                                                );
-                                            } else {
-                                                return (<div key={index} />)
-                                            }
-                                        })
-                                    }
-                                </div>
-                            );
+            <React.Fragment>
+                <div
+                    onClick={handlLeft}
+                    className={classes.arrow}
+                    style={{ left: 0, }}
+                >
+                    <Motion
+                        defaultStyle={{ op: 0 }}
+                        style={{ op: this.state.left ? spring(1) : spring(0) }}
+                    >
+                        {
+                            (configStyle) => {
+                                return (
+                                    <ArrowLeft
+                                        style={{ fontSize: "7.5vw", opacity: configStyle.op }}
+                                    />
+                                );
+                            }
                         }
-                    }
-                </Droppable>
-            </DragDropContext>
+                    </Motion>
+                </div>
+                <div
+                    onClick={handlRight}
+                    className={classes.arrow}
+                    style={{ right: 0, }}
+                >
+                    <Motion
+                        defaultStyle={{ op: 0 }}
+                        style={{ op: this.state.right ? spring(1) : spring(0) }}
+                    >
+                        {
+                            (configStyle) => {
+                                return (
+                                    <ArrowRight
+                                        style={{ fontSize: "7.5vw", opacity: configStyle.op }}
+                                    />
+                                );
+                            }
+                        }
+                    </Motion>
+                </div>
+                <DragDropContext
+                    onDragEnd={this.onDragEnd}
+                >
+                    <Droppable
+                        droppableId={"Container"}
+                        direction="horizontal"
+                    >{
+                            (provided, snapshot) => {
+                                return (
+                                    <div
+                                        className={this.props.classes.container}
+                                        ref={provided.innerRef}
+                                    >{
+                                            this.state.order.slice(starting, starting + 5).map((name, index) => {
+                                                if (this.state.lists[name]) {
+                                                    return (
+                                                        <CardList
+                                                            scrollEnd={this.scrollEnd}
+                                                            favoriteCheck={this.favoriteCheck}
+                                                            cards={this.state.lists[name].cards}
+                                                            index={index}
+                                                            key={index}
+                                                            id={name}
+                                                            listName={name}
+                                                        />
+                                                    );
+                                                } else {
+                                                    return (<div key={index} />)
+                                                }
+                                            })
+                                        }
+                                    </div>
+                                );
+                            }
+                        }
+                    </Droppable>
+                </DragDropContext>
+            </React.Fragment>
         );
     }
     private onDragEnd(result: DropResult) {
         const { destination, source, draggableId } = result;
+        const offset = this.state.starting;
 
         // 목적지가 없다면 => 바뀐게 없다면
         if (!destination) { return; }
@@ -136,9 +206,8 @@ class CardListContainer extends React.Component<IProps, IState> {
         ) { return; }
         const newOrder = this.state.order;
         // 순서를 조절함
-        newOrder.splice(source.index, 1);
-        newOrder.splice(destination.index, 0, draggableId);
-
+        newOrder.splice(offset + source.index, 1);
+        newOrder.splice(offset + destination.index, 0, draggableId);
         const newState: IState = {
             ...this.state,
             order: newOrder
@@ -182,30 +251,49 @@ class CardListContainer extends React.Component<IProps, IState> {
                 page: pageOffset + 1
             }
         }).then((result) => {
-            if(!this.state[listName]){return}
-            const newCards = [...this.state[listName].cards, ...result.data];
+            if (!this.state.lists[listName]) { return }
+            const newCards = [...this.state.lists[listName].cards, ...result.data];
             if (result.data.length === 0) {
                 this.setState({
                     lists: {
                         ...this.state.lists,
                         [listName]: {
-                            cards: this.state[listName].cards,
+                            cards: this.state.lists[listName].cards,
                             end: true,
-                            getPage: this.state[listName].getPage
+                            getPage: this.state.lists[listName].getPage
                         }
                     }
                 })
+                return;
             }
             this.setState({
                 lists: {
                     ...this.state.lists,
                     [listName]: {
                         cards: newCards,
-                        end: this.state[listName].end,
+                        end: this.state.lists[listName].end,
                         getPage: pageOffset + 1
                     }
                 }
             })
+        })
+    }
+    private checkArrow(turn: number) {
+        if (!this.state.left && turn === -1) { return }
+        if (!this.state.right && turn === 1) { return }
+        const remain = this.state.order.length % 5
+        const adder = remain === 0 ? 0 : 1;
+        const maxSlide = Math.floor(this.state.order.length / 5 + adder);
+        const slide = this.state.slide + turn;
+        const left = slide === 0 ? false : true;
+        const right = slide === maxSlide - 1 ? false : true;
+        // 오른쪽 마지막 페이지라면, 부족한 칸은 더 땡겨와야됨
+        const starting = !right ? (slide - 1) * 5 + remain : slide * 5
+        this.setState({
+            left,
+            right,
+            slide,
+            starting
         })
     }
 }

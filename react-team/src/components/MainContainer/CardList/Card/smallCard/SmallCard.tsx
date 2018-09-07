@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography, IconButton } from '@material-ui/core';
+import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import { ICardModel } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
@@ -42,6 +42,9 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     content: {
         overflow: "hidden",
         maxHeight: "475px"
+    },
+    username:{
+        color:"black"
     }
 });
 
@@ -53,6 +56,7 @@ interface IProps {
         title: string;
         cardBody: string;
         content: string;
+        username:string;
     }
     card: ICardModel
 }
@@ -61,10 +65,12 @@ interface IState {
     editorState: EditorState;
     bigger: boolean;
     cutted: boolean;
+    open:boolean;
 }
 
 
 class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
+    private anchor : HTMLSpanElement|null;
     private ref: HTMLDivElement | null;
     constructor(props: IProps & IFavoriteStore) {
         super(props);
@@ -77,11 +83,14 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
         this.state = {
             bigger: false,
             editorState: sub,
-            cutted: false
+            cutted: false,
+            open:false
         }
         this.closeModal = this.closeModal.bind(this);
-        this.editorChange = this.editorChange.bind;
+        this.editorChange = this.editorChange.bind(this);
         this.openModal = this.openModal.bind(this);
+        this.openMenu = this.openMenu.bind(this);
+        this.closeMenu=this.closeMenu.bind(this);
     }
     public componentDidMount() {
         if (this.ref!.offsetHeight > 475 && this.state.cutted === false) {
@@ -108,8 +117,13 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         className={classes.avatar}
                         src={"http://localhost:8081/resources" + card.writer.profileImg}
                     />
-                    <Typography>
-                        {card.writer.id}  {this.state.cutted ? "잘림" : "안 잘림"}
+                    <Typography
+                        variant="button"
+                        onClick={this.openMenu}
+                        className={classes.username}
+                    >
+                        <span ref={(element)=>{this.anchor=element}}/>
+                        {card.writer.id}
                     </Typography>
                     <IconButton
                         style={{
@@ -162,8 +176,30 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                 <CardContent>
                     메뉴
                 </CardContent>
+                <Menu
+                    style={{
+                        top:"60px"
+                    }}
+                    anchorEl={this.anchor}
+                    open={this.state.open}
+                    onClose={this.closeMenu}
+                >
+                    <MenuItem onClick={this.closeMenu}>친구요청</MenuItem>
+                    <MenuItem onClick={this.closeMenu}>팔로우</MenuItem>
+                    <MenuItem onClick={this.closeMenu}>차단</MenuItem>
+                </Menu>
             </Card>
         );
+    }
+    private openMenu(){
+        this.setState({
+            open:true
+        })
+    }
+    private closeMenu(){
+        this.setState({
+            open : false
+        })
     }
     private openModal(clicked: number) {
         this.setState({

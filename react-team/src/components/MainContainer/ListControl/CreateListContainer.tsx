@@ -226,13 +226,13 @@ class CreateListContainer extends React.Component<IProps, IState>{
             axios.post("http://localhost:8081/lists/addCustomList", {
                 name: this.state.listName,
                 lists: JSON.stringify(this.state.bigConditions)
-            })
+            }).then(()=>{this.props.refresh()})
         }else{
             // 존재하는 이름이면 수정
             axios.post("http://localhost:8081/lists/updateCustomList", {
                 name: this.state.listName,
                 lists: JSON.stringify(this.state.bigConditions)
-            })
+            }).then(()=>{this.props.refresh()})
         }
     }
 }

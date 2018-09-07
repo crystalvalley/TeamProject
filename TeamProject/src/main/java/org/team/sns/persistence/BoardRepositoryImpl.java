@@ -300,8 +300,8 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		}else {
 			query.orderBy(board.id.desc());
 		}
-		query.offset(10 * page);
-		query.limit(10);
+		query.offset(5 * page);
+		query.limit(5);
 		return query.fetch();
 	}
 
@@ -312,8 +312,8 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		JPQLQuery<Board> query = from(board);
 		query.select(board);
 		query.where((board.title.contains(keyword)).or(board.plainText.contains(keyword)));
-		query.offset(10*page);
-		query.limit(10);
+		query.offset(5*page);
+		query.limit(5);
 		return query.fetch();
 	}
 
@@ -326,8 +326,8 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		JPQLQuery<Tag> subQuery = from(tag);
 		query.select(board);
 		query.where(board.tags.contains(subQuery.where(tag.hashTag.contains(keyword.replaceFirst("#", "")))));
-		query.offset(10*page);
-		query.limit(10);
+		query.offset(5*page);
+		query.limit(5);
 		return query.fetch();
 	}
 
@@ -340,8 +340,8 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		JPQLQuery<Mention> subQuery = from(mention);
 		query.select(board);
 		query.where(board.mentions.contains(subQuery.where(mention.mentioned.id.eq(keyword.replaceFirst("@", "")))));
-		query.offset(10*page);
-		query.limit(10);
+		query.offset(5*page);
+		query.limit(5);
 		return query.fetch();
 	}
 	// CustomList를 위한 타입 체크

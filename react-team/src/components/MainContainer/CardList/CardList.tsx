@@ -10,7 +10,7 @@ import { IFavoriteStore, withFavoriteContext } from '../../../contexts/FavoriteC
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.27
- * @Version : 2018.08.27
+ * @Version : 2018.09.07
  * 
  */
 const style: StyleRulesCallback = (theme: Theme) => ({
