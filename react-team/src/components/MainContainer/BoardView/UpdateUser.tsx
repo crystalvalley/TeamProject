@@ -1,8 +1,10 @@
+
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Toolbar, TextField, Button } from '@material-ui/core';
 import axios from 'axios';
 import { withLoginContext, ILoginStore } from '../../../contexts/LoginContext';
 import { ICardModel, IPhotoModel, IMemberModel } from '../../../constance/models';
+
 /**
  * @author:chaMinju
  * @since:2018.08.21
@@ -32,7 +34,6 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         right: "300px",
         width: "1100px",
         height: "65px",
-
     },
     imageContainer: {
         height: "80%",
@@ -107,7 +108,6 @@ const style: StyleRulesCallback = (theme: Theme) => ({
 
 })
 
-
 interface IProps {
     classes: {
         viewContainer: string;
@@ -140,6 +140,9 @@ interface IState {
     },
     userInfo: IMemberModel,
     pw: string;
+    userid:string;
+    username:string;
+    chepw:string
 }
 
 class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
@@ -173,13 +176,31 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                 profileImg: "",
                 name: ""
             },
+            userid:"",
+            username:"",
+            chepw:"",
             pw: "",
         }
+        axios.post("http://localhost:8081/account/selectUsername")
+        .then((response) => {
+            // alert(response.data);
+            this.setState({
+                username : response.data
+            })
+         })
+
+        
         this.onChangeFile = this.onChangeFile.bind(this);
         this.submit = this.submit.bind(this);
+        this.doChangename = this.doChangename.bind(this);
+        this.doChangepw = this.doChangepw.bind(this);
+        this.doChangechepw = this.doChangechepw.bind(this);
+        
     }
     public render() {
+        
         const { classes, logined } = this.props;
+        // const doChange = (e:Event) => this.doChange(e);
         return (
             <div className={classes.viewContainer}>
                 <Toolbar className={classes.containers}>
@@ -192,7 +213,8 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                     <img className={classes.imageSize} src={logined !== undefined ? "http://localhost:8081/resources" + logined.profileImg : ""} />
                     <br />
                     <TextField margin="normal"
-                        label="AR1Up0pf_400x400.jpg" /><br /><br />
+                        disabled={false}
+                        label={logined !== undefined ? logined.profileImg : ""} /><br /><br />
                     <input
                         accept="image/*"
                         className={classes.input}
@@ -213,19 +235,12 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
 
                 <div
                     className={classes.replyContainer}>
-
-
                     <h2>개인정보 수정</h2><br />
-                    <TextField label={this.props.logined.id} name="id">{
-                        this.props.logined.id
-                    }</TextField><br /><br />
-                    <TextField label={this.props.logined.name} name="name">{
-                        this.props.logined.name
-                    }</TextField><br /><br />
+                    <TextField label={this.props.logined.id} name="id" disabled={false} /><br /><br />
+                    <TextField label={this.state.username} name="name"onChange={this.doChangename} >{this.state.username}</TextField><br /><br />
                     {/*에이젝스로 비밀번호르 쏴서 확인한다*/}
-                    <TextField type="password" name="userpw" label="비밀번호" >{this.state.pw}</TextField><br /><br />
-                    <TextField type="password" label="비밀번호 확인" />
-
+                    <TextField type="password" name="userpw" label="비밀번호" onChange={this.doChangepw} >{this.state.pw}</TextField><br /><br />
+                    <TextField type="password" label="비밀번호 확인" name="chepw"onChange={this.doChangechepw}>{this.state.chepw}</TextField>
                 </div>
                 <div className={classes.replyContainer}>
                     <TextField
@@ -250,12 +265,27 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                     </Button>
                 </div>
                 <div className={classes.buttons1}>
-                    <Button variant="outlined" onClick={this.submit} color="primary" className={classes.button}>
+                <Button variant="outlined" onClick={this.submit} color="primary" className={classes.button}>
                         정보수정
-                      </Button>
+                     </Button>
                 </div>
             </div>
         )
+    }
+    private doChangename(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            username: event.currentTarget.value
+        })
+    }
+    private doChangepw(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            pw: event.currentTarget.value
+        })
+    }
+    private doChangechepw(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            chepw: event.currentTarget.value
+        })
     }
     private onChangeFile(e: React.ChangeEvent<HTMLInputElement>) {
         e.stopPropagation();
@@ -269,14 +299,17 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
     }
 
     private submit() {
-        alert("알얼트당");
-        {/*이부분 모르겠당 값을 가져오는거  */ }
+        alert(this.state.username);
+        // alert("알얼트당");
+        {/*비밀번호는 폼으로 가져오면된다.  */ }
         const data = new FormData();
-        data.append("pw", this.state.pw);
-        data.append("username", this.state.userInfo.name);
-        axios.post("http://localhost:8081/UpdateUser", data)
+        data.append("chepw",this.state.chepw);
+        data.append("username",this.state.username);
+        data.append("id",this.props.logined.id);
+        data.append("password",this.state.pw);
+        axios.post("http://localhost:8081/account/updatauser",data )
             .then((response) => {
-                alert(response.data);
+               alert(response.data+"돌아옴");
             })
     }
 }
