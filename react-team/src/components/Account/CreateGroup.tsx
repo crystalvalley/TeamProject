@@ -42,7 +42,7 @@ class CreateGroup extends React.Component<IProps, IState> {
             groupName: "",
             groupMaster: "",
             category: "",
-            nameValid: false
+            nameValid: true
         }
         this.onChange = this.onChange.bind(this);
         this.submit = this.submit.bind(this);
@@ -205,7 +205,7 @@ class CreateGroup extends React.Component<IProps, IState> {
         axios.post("http://localhost:8081/groups/createGroup", data)
             .then((response) => {
                 
-                location.href = "/createGroup";
+                location.href = "/";
             }
             )
     }
