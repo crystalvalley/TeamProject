@@ -1,6 +1,15 @@
 import * as React from 'react';
 import { IReplyModel } from '../../../../../constance/models';
 import {  Table,  TableCell, StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
+/**
+ * 댓글 받아오기 댓글폼
+ * @author:MinJu Cha
+ * @since:2018.9.5
+ * @version:2018.9.7
+ * 
+ */
+
+
 
 const styles: StyleRulesCallback = (theme: Theme) => ({
     root: {

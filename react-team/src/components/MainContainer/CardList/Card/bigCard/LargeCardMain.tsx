@@ -17,7 +17,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from 'axios';
 import { EditorState, convertFromRaw, Editor } from 'draft-js';
-import { Button, TextField, Paper, Table, TableRow, TableCell, TableBody } from '@material-ui/core';
+import { Paper, Table, TableRow, TableCell, TableBody } from '@material-ui/core';
 import Axios from 'axios';
 import { ICardModel, IReplyModel } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
@@ -34,20 +34,19 @@ import Scrollbars from 'react-custom-scrollbars';
  */
 /**
  * 디자인 수정및 연결
+ * 댓글 받아오기
  * @author:MinJu Cha
- * @since:2018.9.5
- * @version:2018.9.5
+ * @version:2018.9.7
  * 
  */
 
 // flex로 한줄로맞추고 같은 height로 맞춤 
 const styles: StyleRulesCallback = (theme: Theme) => ({
   card: {
-    flexBasis: '100%'
-
+    flexBasis: '100%',
+    width: "90vh"
   },
   media: {
-
     height: 0,
     paddingTop: "56.25%" // 16:9 
   },
@@ -79,8 +78,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     display: "flex",
   },
   imageContainer: {
-    height: "80%",
-    width: "50%"
+    height: "40%",
+    width: "30%"
   },
   content: {
     height: "100%",
@@ -97,7 +96,7 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     fontSize: 16,
     padding: '10px 12px',
     width: 'calc(100% - 14px)',
-    height: "400px",
+    height: "80%",
     transition: theme.transitions.create(['border-color', 'box-shadow']),
     fontFamily: [
       '-apple-system',
@@ -139,6 +138,9 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   },
   table: {
     minWidth: 700,
+  },
+  tableTatil :{
+    width: '30px%',
   }
 });
 
@@ -164,6 +166,7 @@ interface IProps {
     replyBtn: string;
     root: string;
     table: string;
+    tableTatil:string;
   }
   // listName: string;
   // id: string;
@@ -197,14 +200,10 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     })
       .then((response) => {
         this.setState({
-
           replys: response.data
-
-
         })
-        alert(response.data + "리플돌아옴");
+        // alert(response.data + "리플돌아옴");
       })
-
     this.handleExpandClick = this.handleExpandClick.bind(this)
     this.editorChange = this.editorChange.bind;
     this.doChangeReply = this.doChangeReply.bind(this);
@@ -276,12 +275,9 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
           />
         </CardActions>
         <div className={classes.replyBox}>
-          <TextField className={classes.replyText}
-            onChange={this.doChangeReply}
-          >{this.state.replyContent}</TextField>
-          <Button className={classes.replyBtn}
-            onClick={this.submit}
-          >Submit</Button>
+
+          <ReplyTextInput />
+         
           <IconButton
             className={classnames(classes.expand, {
               [classes.expandOpen]: this.state.expanded
@@ -303,16 +299,13 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
           <CardContent>
 
             <Paper>
-              <Table>
+              <Table className={classes.table}>
                 <TableBody>
                   <TableRow>
                     <TableCell>작성자</TableCell>
-                    <TableCell >내용</TableCell>
-                    <TableCell >작성시간</TableCell>
+                    <TableCell>내용</TableCell>
+                    <TableCell>작성시간</TableCell>
                   </TableRow>
-                </TableBody>
-                <TableBody>
-
                   {
                     this.state.replys.map((reply, index) => {
                       return (
@@ -352,7 +345,8 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     data.append("cardnum", this.props.card.id + "");
     Axios.post("http://localhost:8081/account/saveReply", data)
       .then((response) => {
-        alert(response.data + "리플돌아옴");
+        // alert(response.data + "리플돌아옴");
+        location.href= "/LageCardMain"
       })
   }
 
