@@ -107,20 +107,30 @@ public class AccountRestController {
 
 	@PostMapping("/updatauser")
 	public Member updatauser(String chepw, Member member, Principal principal) {
-		System.out.println("들어온다2222" + member);
+		//System.out.println("들어온다2222" + member);
 		Member me = mr.findById(member.getId()).get();
-		System.out.println("가져온거" + me);
+		// System.out.println("가져온거" + me);
 		if (member.getUsername() != null) {
 			me.setUsername(member.getUsername());
+			//System.out.println("들어온다1");
+		} else if (member.getUsername() == null) {
+			me.setUsername(me.getUsername());
+			//System.out.println("들어온다2");
 		}
-		if (chepw == member.getPassword()) {
-			if (member.getPassword() != null) {
-				me.setPassword(member.getPassword());
-			}
+
+		if (member.getPassword() != null) {
+			me.setPassword(member.getPassword());
+			//System.out.println("들어온다3");
+		} else if (member.getPassword() == null) {
+			me.setPassword(me.getPassword());
+			//System.out.println("들어온다4");
 		}
+		//System.out.println("뭐가 없는거지" +me);
+		secUserService.createUser(me);
+		//System.out.println("들어온다5" + me);
 		mr.save(me);
-		System.out.println("수정" + me);
-		return member;
+		System.out.println("수정됨><" + me);
+		return me;
 	}
 
 	@PostMapping("/saveReply")
@@ -162,12 +172,12 @@ public class AccountRestController {
 		System.out.println("잘불러와짐" + result.toString());
 		return result;
 	}
-	
+
 	@PostMapping("/selectUsername")
 	public String selectUsername(Principal principal) {
 		Member member = new Member();
 		member = mr.findById(principal.getName()).get();
-		System.out.println("유저이름찾기"+member.getUsername());
+		System.out.println("유저이름찾기" + member.getUsername());
 		return member.getUsername();
 	}
 }
