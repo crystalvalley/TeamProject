@@ -6,7 +6,7 @@ import FriendListIcon from '@material-ui/icons/Grade';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Accessibility from '@material-ui/icons/Accessibility';
 import { NavLink } from 'react-router-dom';
-import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
+import ShowupFriendList from '../MainContainer/FriendList/FriendList/showupFriendList';
 
 
 /**

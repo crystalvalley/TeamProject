@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
-import { forming } from './Forming';
+import { forming } from './forming';
 // import { friendlistform } from './tileData';
 
 
