@@ -99,4 +99,17 @@ public class ListServiceImpl implements ListService{
 		
 	}
 
+	@Override
+	public void updateOrder(List<String> listNames, String userid) {
+		// TODO Auto-generated method stub
+		for(int i =0;i<listNames.size();i++) {
+			CustomListPK clp = new CustomListPK();
+			clp.setListName(listNames.get(i));
+			clp.setOwner(userid);
+			CustomList cl = clr.findById(clp).get();
+			cl.setCustomOrder(i);
+			clr.save(cl);
+		}		
+	}
+
 }

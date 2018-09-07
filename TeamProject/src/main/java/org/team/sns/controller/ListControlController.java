@@ -75,5 +75,13 @@ public class ListControlController {
 				mapper.readValue(map.get("lists"), new TypeReference<List<List<HashMap<String,String>>>>(){});
 		ls.updateList(name, "testid", bigCondition);		
 	}
+	@PostMapping("/refreshListOrder")
+	public void refreshListOrder(Principal principal,@RequestBody String listNames) throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,ArrayList<String>> map = new HashMap<>();
+		map = mapper.readValue(listNames, new TypeReference<Map<String,ArrayList<String>>>(){});
+		ls.updateOrder(map.get("listNames"), "testid");
+	}
+
 
 }

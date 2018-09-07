@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
-import BoxContainer from './BoxContainer';
+import BoxContainer from './boxControl/BoxContainer';
 import CreateListContainer from './CreateListContainer';
 import axios from 'axios';
 
@@ -46,6 +46,7 @@ class ListController extends React.Component<IProps, IState>{
             listNames: []
         }
         this.refresh = this.refresh.bind(this);
+        this.listOrderChange = this.listOrderChange.bind(this);
     }
 
     public componentDidMount() {
@@ -58,24 +59,33 @@ class ListController extends React.Component<IProps, IState>{
             <div
                 className={classes.contollerBody}
             >
-                <BoxContainer 
-                    listNames = {this.state.listNames}
-                />
-                <CreateListContainer 
+                <BoxContainer
+                    listOrderChange={this.listOrderChange}
                     listNames={this.state.listNames}
-                    refresh = {this.refresh}
+                />
+                <CreateListContainer
+                    listNames={this.state.listNames}
+                    refresh={this.refresh}
                 />
             </div>
         );
     }
-    private refresh(){
+    private refresh() {
         axios.get("http://localhost:8081/lists/getListNames")
             .then((result) => {
                 this.setState({
                     listNames: result.data
                 })
             })
-
+    }
+    private listOrderChange(listNames: string[]) {
+        this.setState({
+            listNames
+        }, () => {
+            axios.post("http://localhost:8081/lists/refreshListOrder", {
+                listNames: this.state.listNames
+            })
+        })
     }
 }
 
