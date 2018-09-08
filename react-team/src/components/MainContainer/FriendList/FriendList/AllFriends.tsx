@@ -2,7 +2,7 @@ import * as React from 'react';
 import { GridList, GridListTile } from '@material-ui/core';
 import { IMemberModel } from '../../../../constance/models';
 import { ILoginStore, withLoginContext } from '../../../../contexts/LoginContext';
-import Onetile from './OneTile';
+import Onetile from './Onetile';
 import axios from 'axios';
 
 /**

@@ -39,4 +39,10 @@ public class BaseController {
 		System.out.println("수정페이지전환");
 		return "index";
 	}
+	@GetMapping("/createGroup")
+	public String createGroup() {
+		//System.out.println("??");
+		return "index";
+	}
+	
 }

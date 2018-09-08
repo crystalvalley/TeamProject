@@ -5,9 +5,11 @@ import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
 import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Compare from '@material-ui/icons/Compare';
 import Accessibility from '@material-ui/icons/Accessibility';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
+
 
 
 /**
@@ -68,7 +70,9 @@ class BtnBox extends React.Component<IProps, IState>{
                 >
                     <FriendListIcon />
                 </IconButton>
-                
+
+
+
                 <IconButton>
                     <NavLink to="/userUpdate">
                         <AccountCircle />
@@ -81,7 +85,15 @@ class BtnBox extends React.Component<IProps, IState>{
                     </NavLink>
                 </IconButton>
 
-                <ShowupFriendList                                  
+
+                <IconButton>
+                    <NavLink to="/createGroup">
+                        <Compare />
+                    </NavLink>
+                </IconButton>
+
+
+                <ShowupFriendList
                     open={this.state.modalOpen === 1}
                     openf={writeHandler2}
                     close={this.closeModal}
