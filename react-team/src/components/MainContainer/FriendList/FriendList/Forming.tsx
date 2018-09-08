@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { ListItem, ListItemText, Avatar } from "@material-ui/core";
+import { ListItem, ListItemText, Avatar, Menu, MenuItem } from "@material-ui/core";
 import { IMemberModel } from '../../../../constance/models';
-import WriterClickMenu from '../../CardList/Card/smallCard/WriterClickMenu';
 
 /**
  * @author:Kim MinJeong
@@ -12,8 +11,7 @@ import WriterClickMenu from '../../CardList/Card/smallCard/WriterClickMenu';
 
 interface IProps {
     list: string,
-    friendInfo: IMemberModel,
-   
+    friendInfo: IMemberModel
 }
 interface IState {
     open: boolean;
@@ -22,17 +20,21 @@ interface IState {
 
 class Forming extends React.Component<IProps, IState>{
     private anchor: HTMLSpanElement | null;
-
-
-    public render() {
-        const { } = this.props;
-
+    constructor(props:IProps){
+        super(props);
+         
         this.state = {
             open: false
         };
         
         this.openMenu = this.openMenu.bind(this);
         this.closeMenu=this.closeMenu.bind(this);
+
+    }
+
+    public render() {
+        const { } = this.props;
+       
 
         return (
             <div>
@@ -46,21 +48,27 @@ class Forming extends React.Component<IProps, IState>{
                         {this.props.friendInfo.id}
                     </ListItemText>
                   
-                    <WriterClickMenu 
-                    anchor={this.anchor}
-                    open={this.state.open}
-                    closeMenu={this.closeMenu}
-                    id={this.props.friendInfo.id}
-                />
+                    <Menu
+                        style={{
+                            top: "60px"
+                        }}
+                        anchorEl={this.anchor}
+                        open={this.state.open}
+                        onClose={this.closeMenu}
+                    >
+                        <MenuItem onClick={this.closeMenu}>친구요청</MenuItem>
+                        <MenuItem onClick={this.closeMenu}>팔로우</MenuItem>
+                        <MenuItem onClick={this.closeMenu}>차단</MenuItem>
+                    </Menu>
+
                 </ListItem>         
             </div>
         )
     }
     private openMenu() {
-        this.setState({          
-            open: true
+        this.setState({
+            open : true
         })
-        alert(this.state.open)
     }
     private closeMenu() {
         this.setState({

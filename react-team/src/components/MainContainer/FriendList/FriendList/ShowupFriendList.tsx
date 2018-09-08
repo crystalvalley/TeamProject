@@ -92,9 +92,10 @@ class ShowupFriendList extends React.Component<ILoginStore & IProps, IState> {
           <div className={classes.list}>
 
             <Scrollbars
-              autoHeight={true}
+              height="100%"
               autoHide={true}
             >
+         
               <List>
                 {
                   this.state.friends.map((showfriend, index) => {
@@ -103,6 +104,7 @@ class ShowupFriendList extends React.Component<ILoginStore & IProps, IState> {
                         key={index}
                       >    
                         <Forming
+                    
                           list={this.props.classes.list}
                           friendInfo={showfriend}
                         />
@@ -111,6 +113,7 @@ class ShowupFriendList extends React.Component<ILoginStore & IProps, IState> {
                   })
                 }
                 </List>
+             
             </Scrollbars>
             </div>
             
