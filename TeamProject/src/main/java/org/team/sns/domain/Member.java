@@ -63,7 +63,7 @@ public class Member {
 
 	// 일대다 양방향 연관관계
 	// OneToMany는 기본적으로 fetchType이 lazy이므로 따로 설정하지 않음
-	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "writer")
 	private List<Board> boards;
 
 	@OneToMany(mappedBy = "recipient")
@@ -75,10 +75,10 @@ public class Member {
 	@OneToMany(mappedBy = "adder")
 	private List<Favorites> favorited;
 
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy="member")
 	private List<Networking> myNetwork;
 
-	@OneToMany(mappedBy = "target")
+	@OneToMany(mappedBy="target")
 	private List<Networking> networked;
 
 	@OneToMany(mappedBy = "sharer")

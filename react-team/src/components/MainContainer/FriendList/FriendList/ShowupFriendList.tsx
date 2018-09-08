@@ -3,18 +3,21 @@ import { withStyles, StyleRulesCallback, Theme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import Forming from './Forming';
-import { IMemberModel } from '../../../../constance/models';
-import { ILoginStore, withLoginContext } from '../../../../contexts/LoginContext';
 import { ListItem } from '@material-ui/core';
-import axios from 'axios';
 import Scrollbars from 'react-custom-scrollbars';
-  
+import { withNetworkContext, INetworkStore } from '../../../../contexts/FriendContext';
+
 
 /**
  * @author:Kim MinJeong
  * @since:2018.08.28
- * @version:2018.08.30
+ * @version:2018.09.08
  */
+/**
+ * @author:ParkHyeokJoon
+ * @version:2018.09.08
+ */
+
 
 const styles: StyleRulesCallback = (theme: Theme) => ({
   paper: {
@@ -43,87 +46,64 @@ interface IProps {
 }
 
 interface IState {
-  friends: IMemberModel[];
   cutted: boolean;
   open: boolean;
 }
 
-class ShowupFriendList extends React.Component<ILoginStore & IProps, IState> {
+class ShowupFriendList extends React.Component<INetworkStore & IProps, IState> {
 
-  constructor(props: ILoginStore & IProps) {
+  constructor(props: INetworkStore & IProps) {
     super(props);
     this.state = {
-      friends: [
-        {
-          id: "",
-          name: "",
-          profileImg: ""
-        }
-      ],
       cutted: false,
       open: false
     }
   }
 
-  public componentDidMount() {
-    const axiosInstance = axios.create({
-      headers: {
-        'Cache-Control': 'no-cache'
-      }
-    })
-    axiosInstance.get("http://localhost:8081/members/members").then((result) => {
-      this.setState({
-        friends: result.data
-      })
-    })
-  }
 
   public render() {
     const { classes } = this.props;
     return (
-    
-        <Drawer 
-          open={this.props.open}
-          onClose={this.props.close}
-          onOpen={this.props.openf}
-        > 
-        
-             
-          <div className={classes.list}>
 
-            <Scrollbars
-              height="100%"
-              autoHide={true}
-            >
-         
-              <List>
-                {
-                  this.state.friends.map((showfriend, index) => {
-                    return (
-                      <ListItem
-                        key={index}
-                      >    
-                        <Forming
-                    
-                          list={this.props.classes.list}
-                          friendInfo={showfriend}
-                        />
-                      </ListItem>
-                    );
-                  })
-                }
-                </List>
-             
-            </Scrollbars>
-            </div>
-            
-           
-           
-        </Drawer>
-     
+      <Drawer
+        open={this.props.open}
+        onClose={this.props.close}
+        onOpen={this.props.openf}
+      >
+
+
+        <div className={classes.list}>
+
+          <Scrollbars
+            style={{
+              height: "100vh"
+            }}
+            autoHide={true}
+          >
+            <List>
+              {
+                this.props.friendList.map((friend, index) => {
+                  return (
+                    <ListItem
+                      key={index}
+                    >
+                      <Forming
+                        delFriend={this.props.delFriend}
+                        list={this.props.classes.list}
+                        friendInfo={friend}
+                      />
+                    </ListItem>
+                  );
+                })
+              }
+            </List>
+          </Scrollbars>
+        </div>
+      </Drawer>
+
     );
   }
 
 }
 
-export default withLoginContext(withStyles(styles)(ShowupFriendList));
+export default withNetworkContext(withStyles(styles)(ShowupFriendList));

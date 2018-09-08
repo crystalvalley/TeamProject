@@ -9,8 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.CustomListPK;
+import org.team.sns.domain.NetworkingPK;
 import org.team.sns.service.BoardService;
 import org.team.sns.service.MemberServiceImpl;
+import org.team.sns.service.NetworkServiceImpl;
 import org.team.sns.service.SecurityUserService;
 
 @RunWith(SpringRunner.class)
@@ -34,6 +36,8 @@ public class insertTest {
 	SecurityUserService sus;
 	@Autowired
 	BoardService bs;
+	@Autowired
+	NetworkServiceImpl ns;
 
 	/*
 	 * board에 적당히 값 넣어두는 test
@@ -50,9 +54,13 @@ public class insertTest {
 
 	@Test
 	public void searchbycontentTest() {
-		CustomListPK cpk = new CustomListPK();
-		cpk.setListName("te");
-		cpk.setOwner("testid");
-		clr.deleteById(cpk);
+		ns.friendRequest("testid", "hamkegaja");
+		ns.friendRequest("testid", "asdasd");
+		ns.friendRequest("testid", "joon22");
+		ns.friendRequest("testid", "test2");
+		ns.acceptFriend("hamkegaja", "testid");
+		ns.acceptFriend("asdasd", "testid");
+		ns.acceptFriend("joon22", "testid");
+		ns.acceptFriend("test2", "testid");
 	}
 }

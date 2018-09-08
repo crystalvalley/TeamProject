@@ -26,7 +26,7 @@ public class NetworkServiceImpl implements NetworkService{
 	
 	@Override
 	public void friendRequest(String memberid, String target) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub		
 		Networking net = new Networking();
 		net.setMember(mr.findById(memberid).get());
 		net.setTarget(mr.findById(target).get());
@@ -38,7 +38,18 @@ public class NetworkServiceImpl implements NetworkService{
 	public void acceptFriend(String memberid, String target) {
 		// TODO Auto-generated method stub
 		// 먼저 자신한테 온 요청을 수정함
-		
+		NetworkingPK npk = new NetworkingPK();
+		npk.setMember(target);
+		npk.setTarget(memberid);
+		Networking net = nr.findById(npk).get();
+		net.setType("Friend");
+		nr.save(net);
+		// 그리고 자신도 친구목록에 추가
+		Networking net2 = new Networking();
+		net2.setMember(mr.findById(memberid).get());
+		net2.setTarget(mr.findById(target).get());
+		net2.setType("Friend");
+		nr.save(net2);
 	}
 
 	@Override
@@ -65,7 +76,11 @@ public class NetworkServiceImpl implements NetworkService{
 	@Override
 	public void delFriend(String memberid, String target) {
 		// TODO Auto-generated method stub
-		
+		NetworkingPK npk = new NetworkingPK();
+		npk.setMember(memberid);
+		npk.setTarget(target);
+		Networking net = nr.findById(npk).get();
+		nr.delete(net);				
 	}
 
 	@Override

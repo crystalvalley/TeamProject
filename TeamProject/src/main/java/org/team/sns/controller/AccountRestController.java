@@ -139,8 +139,8 @@ public class AccountRestController {
 		Reply reply = new Reply();
 		Member member = new Member();
 		System.out.println("리플저장" + cardnum + "," + replyContent + ",");
-		System.out.println("리플저장하기 들어옴" + principal.getName());
-		member = mr.findById(principal.getName()).get();
+		System.out.println("리플저장하기 들어옴" + "testid");
+		member = mr.findById("testid").get();
 		reply.setContent(replyContent);
 		reply.setWriter(member);
 		// System.out.println(cardnum);
@@ -176,7 +176,7 @@ public class AccountRestController {
 	@PostMapping("/selectUsername")
 	public String selectUsername(Principal principal) {
 		Member member = new Member();
-		member = mr.findById(principal.getName()).get();
+		member = mr.findById("testid").get();
 		System.out.println("유저이름찾기" + member.getUsername());
 		return member.getUsername();
 	}
