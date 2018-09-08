@@ -45,7 +45,7 @@ interface IProps {
     secondaryToolbar: string;
     toolBox: string;
     topBar: string;
-  }
+  },
 }
 
 interface IState {
@@ -83,7 +83,9 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
           <span
             className={classes.toolBox}
           >
-            <BtnBox />
+            <BtnBox 
+              friends={this.state.userInfo}
+            />
           </span>
         </Toolbar>
         <Divider />

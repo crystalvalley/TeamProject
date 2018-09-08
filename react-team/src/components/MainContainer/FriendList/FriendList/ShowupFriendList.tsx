@@ -1,67 +1,129 @@
 import * as React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import { withStyles, StyleRulesCallback, Theme } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
-import { forming } from './Forming';
-// import { friendlistform } from './tileData';
-
+import Forming from './Forming';
+import { IMemberModel } from '../../../../constance/models';
+import { ILoginStore, withLoginContext } from '../../../../contexts/LoginContext';
+import { ListItem } from '@material-ui/core';
+import axios from 'axios';
+import Scrollbars from 'react-custom-scrollbars';
+  
 
 /**
- * @author:KimMinJeong
+ * @author:Kim MinJeong
  * @since:2018.08.28
  * @version:2018.08.30
  */
 
-const styles = {
+const styles: StyleRulesCallback = (theme: Theme) => ({
+  paper: {
+    position: 'absolute',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
+  },
   list: {
-    width: 400,
+    width: 300,
   },
   fullList: {
     width: 'auto',
   },
-};
+});
 
-interface IProps{
-    classes:{
-        list:string;
-        fullList:string;
-    },
-    open:boolean;
-    close():void;
-    openf():void;
+interface IProps {
+  classes: {
+    list: string;
+    fullList: string;
+  },
+  open: boolean;
+  close(): void;
+  openf(): void;
 }
 
-class SwipeableTemporaryDrawer extends React.Component<IProps> {
+interface IState {
+  friends: IMemberModel[];
+  cutted: boolean;
+  open: boolean;
+}
+
+class ShowupFriendList extends React.Component<ILoginStore & IProps, IState> {
+
+  constructor(props: ILoginStore & IProps) {
+    super(props);
+    this.state = {
+      friends: [
+        {
+          id: "",
+          name: "",
+          profileImg: ""
+        }
+      ],
+      cutted: false,
+      open: false
+    }
+  }
+
+  public componentDidMount() {
+    const axiosInstance = axios.create({
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
+    })
+    axiosInstance.get("http://localhost:8081/members/members").then((result) => {
+      this.setState({
+        friends: result.data
+      })
+    })
+  }
 
   public render() {
     const { classes } = this.props;
-
-    const sideList = (
-      <div className={classes.list}>
-        <List>{forming}</List>      
-      </div>
-    );
-
-   return (
-      <div>       
-        <SwipeableDrawer
+    return (
+    
+        <Drawer 
           open={this.props.open}
           onClose={this.props.close}
           onOpen={this.props.openf}
-        >
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.props.close}
-            onKeyDown={this.props.close}
-          >
-            {sideList}
-          </div>
-        </SwipeableDrawer>
+        > 
         
-      </div>
+             
+          <div className={classes.list}>
+
+            <Scrollbars
+              height="100%"
+              autoHide={true}
+            >
+         
+              <List>
+                {
+                  this.state.friends.map((showfriend, index) => {
+                    return (
+                      <ListItem
+                        key={index}
+                      >    
+                        <Forming
+                    
+                          list={this.props.classes.list}
+                          friendInfo={showfriend}
+                        />
+                      </ListItem>
+                    );
+                  })
+                }
+                </List>
+             
+            </Scrollbars>
+            </div>
+            
+           
+           
+        </Drawer>
+     
     );
   }
+
 }
 
-export default withStyles(styles)(SwipeableTemporaryDrawer);
+export default withLoginContext(withStyles(styles)(ShowupFriendList));

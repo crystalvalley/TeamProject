@@ -5,12 +5,10 @@ import { ILoginStore, withLoginContext } from '../../../../contexts/LoginContext
 import Onetile from './OneTile';
 import axios from 'axios';
 
-
-
 /**
- * @author:KimMinJeong
+ * @author:Kim MinJeong
  * @since:2018.08.28
- * @version:2018.08.30
+ * @version:2018.09.06
  * 모든 사람들 목록
  */
 
@@ -47,7 +45,6 @@ class AllFriends extends React.Component<ILoginStore, IState>{
         })
     }
 
-
     public render() {
         return (
             <GridList cols={3} cellHeight={300}>
@@ -56,6 +53,7 @@ class AllFriends extends React.Component<ILoginStore, IState>{
                         return (
                             <GridListTile
                                 key={index}
+                                
                             >
                                 <Onetile
                                     friendInfo={friend}

@@ -4,14 +4,12 @@ import HomeIcon from '@material-ui/icons/Home';
 import Add from '@material-ui/icons/Add';
 import { IMemberModel } from '../../../../constance/models';
 
-
 /**
- * @author:KimMinJeong
+ * @author:Kim MinJeong
  * @since:2018.09.03
- * @version:2018.09.
- * 친구목록리스트에 해당되는 하나의 타일 
+ * @version:2018.09.06
+ * member 목록리스트에 해당되는 하나의 타일(전체화면)
  */
-
 
 const style: StyleRulesCallback = (theme: Theme) => ({
     card: {
@@ -36,8 +34,6 @@ interface IProps {
     },
     friendInfo: IMemberModel,
 }
-
-
 
 class Onetile extends React.Component<IProps> {
     public render() {
