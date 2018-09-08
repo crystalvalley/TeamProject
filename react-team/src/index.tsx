@@ -9,6 +9,7 @@ import { LoginProvider } from './contexts/LoginContext';
 import { SearchProvider } from './contexts/SearchContext';
 import { EmotionProvider } from './contexts/EmotionContext';
 import { FavoriteProvider } from './contexts/FavoriteContext';
+import FriendProvider from './contexts/FriendContext';
 
 /**
  * @author : ParkHyeokjoon
@@ -20,17 +21,19 @@ ReactDOM.render(
 
   <MuiThemeProvider theme={mainTheme}>
     <LoginProvider>
-      <VoiceProvider>
-        <SearchProvider>
-          <EmotionProvider>
-            <FavoriteProvider>
-              <CssBaseline>
-                <App />
-              </CssBaseline>
-            </FavoriteProvider>
-          </EmotionProvider>
-        </SearchProvider>
-      </VoiceProvider>
+      <FriendProvider>
+        <VoiceProvider>
+          <SearchProvider>
+            <EmotionProvider>
+              <FavoriteProvider>
+                <CssBaseline>
+                  <App />
+                </CssBaseline>
+              </FavoriteProvider>
+            </EmotionProvider>
+          </SearchProvider>
+        </VoiceProvider>
+      </FriendProvider>
     </LoginProvider>
   </MuiThemeProvider>,
   document.getElementById('root') as HTMLElement

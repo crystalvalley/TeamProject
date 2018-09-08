@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography, IconButton,} from '@material-ui/core';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import { ICardModel } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
@@ -8,6 +8,7 @@ import BigCard from '../bigCard/BigCard';
 import FavoriteIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import FilledFavoriteIcon from "@material-ui/icons/Favorite";
 import { IFavoriteStore, withFavoriteContext } from '../../../../../contexts/FavoriteContext';
+import WriterClickMenu from './WriterClickMenu';
 
 
 /**
@@ -176,18 +177,12 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                 <CardContent>
                     메뉴
                 </CardContent>
-                <Menu
-                    style={{
-                        top:"60px"
-                    }}
-                    anchorEl={this.anchor}
+                <WriterClickMenu
+                    anchor={this.anchor}
                     open={this.state.open}
-                    onClose={this.closeMenu}
-                >
-                    <MenuItem onClick={this.closeMenu}>친구요청</MenuItem>
-                    <MenuItem onClick={this.closeMenu}>팔로우</MenuItem>
-                    <MenuItem onClick={this.closeMenu}>차단</MenuItem>
-                </Menu>
+                    closeMenu={this.closeMenu}
+                    id={card.writer.id}
+                />
             </Card>
         );
     }
