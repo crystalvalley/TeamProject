@@ -13,5 +13,5 @@ import org.team.sns.domain.Member;
  */
 public interface NetworkingRepositoryCustom {
 	public List<Member> getFriend(String memberid);
-	public List<String> getFriendRequests(String memberid);
+	public List<Member> getFriendRequests(String memberid);
 }

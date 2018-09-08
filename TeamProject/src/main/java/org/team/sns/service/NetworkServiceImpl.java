@@ -44,13 +44,22 @@ public class NetworkServiceImpl implements NetworkService{
 	@Override
 	public void addFollow(String memberid, String target) {
 		// TODO Auto-generated method stub
+		Networking net = new Networking();
+		net.setMember(mr.findById(memberid).get());
+		net.setTarget(mr.findById(target).get());
+		net.setType("Follow");
+		nr.save(net);
 		
 	}
 
 	@Override
 	public void delFollow(String memberid, String target) {
 		// TODO Auto-generated method stub
-		
+		NetworkingPK npk = new NetworkingPK();
+		npk.setMember(memberid);
+		npk.setTarget(target);
+		Networking net = nr.findById(npk).get();
+		nr.delete(net);		
 	}
 
 	@Override
@@ -66,9 +75,18 @@ public class NetworkServiceImpl implements NetworkService{
 	}
 
 	@Override
-	public List<String> getFriendsRequest(String memberid) {
+	public List<Member> getFriendsRequest(String memberid) {
 		// TODO Auto-generated method stub
 		return nr.getFriendRequests(memberid);
 	}
 
+	@Override
+	public void addBlock(String memberid, String target) {
+		// TODO Auto-generated method stub
+		Networking net = new Networking();
+		net.setMember(mr.findById(memberid).get());
+		net.setTarget(mr.findById(target).get());
+		net.setType("Block");
+		nr.save(net);		
+	}
 }

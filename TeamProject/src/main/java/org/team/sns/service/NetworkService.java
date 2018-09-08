@@ -17,7 +17,8 @@ public interface NetworkService {
 	public void addFollow(String memberid,String target);
 	public void delFollow(String memberid,String target);
 	public void delFriend(String memberid,String target);
+	public void addBlock(String memberid,String target);
 	public List<Member> getFriends(String memberid);
-	public List<String> getFriendsRequest(String memberid);
+	public List<Member> getFriendsRequest(String memberid);
 
 }

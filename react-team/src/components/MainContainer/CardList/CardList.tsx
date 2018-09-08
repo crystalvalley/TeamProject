@@ -94,7 +94,7 @@ class CardList extends React.Component<IProps> {
                             >
                                 {this.props.listName}
                             </Typography>
-                            <Scrollbars
+                            <Scrollbars                                
                                 autoHide={true}
                                 ref={(element) => { this.scroll = element }}
                                 onScrollStop={this.setScrollPosition}

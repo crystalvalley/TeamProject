@@ -33,7 +33,7 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		// 이미 유효성 검사는 처리 됬으므로
 		setInitialBoard(member,"Base");
-		setInitialBoard(member,"Test");
+		setInitialBoard(member,"Follow");
 		setInitialBoard(member,"SearchField");
 		setInitialBoard(member,"Favorites");
 		setInitialBoard(member,"Test4");

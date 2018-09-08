@@ -33,10 +33,10 @@ public class NetworkingRepositoryImpl extends QuerydslRepositorySupport implemen
 	}
 
 	@Override
-	public List<String> getFriendRequests(String memberid) {
+	public List<Member> getFriendRequests(String memberid) {
 		// TODO Auto-generated method stub
 		QNetworking net = QNetworking.networking;
-		JPQLQuery<String> query = from(net).select(net.target.id);
+		JPQLQuery<Member> query = from(net).select(net.target);
 		query.where(net.type.eq("FriendRequest"));
 		query.where(net.member.id.eq(memberid));
 		return query.fetch();

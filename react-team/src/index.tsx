@@ -9,7 +9,7 @@ import { LoginProvider } from './contexts/LoginContext';
 import { SearchProvider } from './contexts/SearchContext';
 import { EmotionProvider } from './contexts/EmotionContext';
 import { FavoriteProvider } from './contexts/FavoriteContext';
-import FriendProvider from './contexts/FriendContext';
+import NetworkProvider from './contexts/FriendContext';
 
 /**
  * @author : ParkHyeokjoon
@@ -21,7 +21,7 @@ ReactDOM.render(
 
   <MuiThemeProvider theme={mainTheme}>
     <LoginProvider>
-      <FriendProvider>
+      <NetworkProvider>
         <VoiceProvider>
           <SearchProvider>
             <EmotionProvider>
@@ -33,7 +33,7 @@ ReactDOM.render(
             </EmotionProvider>
           </SearchProvider>
         </VoiceProvider>
-      </FriendProvider>
+      </NetworkProvider>
     </LoginProvider>
   </MuiThemeProvider>,
   document.getElementById('root') as HTMLElement

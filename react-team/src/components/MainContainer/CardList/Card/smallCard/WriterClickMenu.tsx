@@ -1,40 +1,77 @@
 import * as React from 'react';
-import { IFriendStore, withFriendContext } from '../../../../../contexts/FriendContext';
+import { INetworkStore, withNetworkContext } from '../../../../../contexts/FriendContext';
 import { MenuItem, Menu } from '@material-ui/core';
+import { IMemberModel } from '../../../../../constance/models';
 
-interface IProps{
-    anchor : HTMLSpanElement|null
-    open:boolean
-    id:string;
-    closeMenu():void;
+interface IProps {
+    anchor: HTMLSpanElement | null
+    open: boolean
+    id: string;
+    closeMenu(): void;
 }
 
-class WriterClickMenu extends React.Component<IProps&IFriendStore>{
-    constructor(props:IProps&IFriendStore){
+class WriterClickMenu extends React.Component<IProps & INetworkStore>{
+    constructor(props: IProps & INetworkStore) {
         super(props);
-        this.add = this.add.bind(this);
-        
+        this.addFriend = this.addFriend.bind(this);
+        this.delFriend = this.delFriend.bind(this);
+        this.addFollow = this.addFollow.bind(this);
+        this.unFollow = this.unFollow.bind(this);
+        this.checkValue = this.checkValue.bind(this);
+        this.addBlock = this.addBlock.bind(this);
     }
-    public render(){
-        return(
+    public render() {
+        return (
             <Menu
                 style={{
-                    top:"60px"
+                    top: "60px"
                 }}
                 anchorEl={this.props.anchor}
-                open={this.props.open}
+                open={this.props.id===this.props.loginedId.id?false:this.props.open}
                 onClose={this.props.closeMenu}
             >
-                <MenuItem onClick={this.add}>친구요청</MenuItem>
-                <MenuItem onClick={this.props.closeMenu}>팔로우</MenuItem>
-                <MenuItem onClick={this.props.closeMenu}>차단</MenuItem>
+                {
+                    this.checkValue(this.props.friendList) ?
+                        <MenuItem onClick={this.addFriend}>친구끊기</MenuItem> :
+                        <MenuItem onClick={this.delFriend}>친구요청</MenuItem>
+                }
+                {
+                    this.checkValue(this.props.followList) ?
+                        <MenuItem onClick={this.unFollow}>언팔로우</MenuItem> :
+                        <MenuItem onClick={this.addFollow}>팔로우</MenuItem>
+
+                }
+                <MenuItem onClick={this.addBlock}>차단</MenuItem>
             </Menu>
         );
     }
-    private add(){
+    private addFriend() {
         this.props.addFriend(this.props.id);
         this.props.closeMenu();
     }
+    private delFriend() {
+        this.props.delFriend(this.props.id);
+        this.props.closeMenu();
+    }
+    private addFollow() {
+        this.props.addFollow(this.props.id);
+        this.props.closeMenu();
+    }
+    private unFollow() {
+        this.props.delFollow(this.props.id);
+        this.props.closeMenu();
+    }
+    private addBlock() {
+        this.props.addBlock(this.props.id);
+        this.props.closeMenu();
+    }
+    private checkValue(list: IMemberModel[]): boolean {
+        let result: boolean = false;
+        for (const member of list) {
+            if (member.id === this.props.id) { result = true }
+        }
+        return result;
+    }
 }
 
-export default withFriendContext(WriterClickMenu);
+export default withNetworkContext(WriterClickMenu);
