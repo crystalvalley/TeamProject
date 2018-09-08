@@ -5,9 +5,10 @@ import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
 import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Compare from '@material-ui/icons/Compare';
 import Accessibility from '@material-ui/icons/Accessibility';
 import { NavLink } from 'react-router-dom';
-import ShowupFriendList from '../MainContainer/FriendList/FriendList/showupFriendList';
+
 
 
 /**
@@ -83,7 +84,7 @@ class BtnBox extends React.Component<IProps, IState>{
 
                 <IconButton>
                     <NavLink to="/createGroup">
-                        <Accessibility />
+                        <Compare />
                     </NavLink>
                 </IconButton>
 

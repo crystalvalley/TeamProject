@@ -2,6 +2,7 @@ import * as React from 'react';
 import { withStyles, TextField, Button, Typography } from '@material-ui/core';
 import axios from 'axios';
 import { CreateGroupStyle } from './Styles/CreateGroupStyle';
+import { ILoginStore } from '../../contexts/LoginContext';
 
 /**
  * @author JoonsungGil
@@ -33,10 +34,10 @@ interface IState {
     category: string;
     nameValid: boolean;
 }
-
-class CreateGroup extends React.Component<IProps, IState> {
+ 
+class CreateGroup extends React.Component<IProps & ILoginStore, IState> {
     private formRef: React.RefObject<HTMLFormElement>
-    constructor(props: IProps) {
+    constructor(props: IProps & ILoginStore) {
         super(props);
         this.state = {
             groupName: "",
@@ -138,6 +139,7 @@ class CreateGroup extends React.Component<IProps, IState> {
                             fullWidth={true}
                             className={classes.textField}
                             name="groupMaster"
+                            
                             label={
                                 groupMaster === "" ?
                                     "groupMaster" :
@@ -213,7 +215,7 @@ class CreateGroup extends React.Component<IProps, IState> {
     private onChange(e: React.ChangeEvent<HTMLInputElement>) {
         const name: string = e.currentTarget.name;
         this.setState({
-            groupName: name === "Group Name" ? e.currentTarget.value : this.state.groupName,
+            groupName : name === "Group Name" ? e.currentTarget.value : this.state.groupName,
             groupMaster: name === "groupMaster" ? e.currentTarget.value : this.state.groupMaster,
             category: name ==="category" ? e.currentTarget.value : this.state.category
         })

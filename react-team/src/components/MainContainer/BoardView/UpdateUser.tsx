@@ -236,8 +236,8 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                 <div
                     className={classes.replyContainer}>
                     <h2>개인정보 수정</h2><br />
-                    <TextField label={this.props.logined.id} name="id" disabled={false} /><br /><br />
-                    <TextField label={this.state.username} name="name"onChange={this.doChangename} >{this.state.username}</TextField><br /><br />
+                    <TextField label={this.props.logined.id} name="id" disabled={true} /><br /><br />
+                    <TextField label={this.state.username} placeholder="name" name="name"onChange={this.doChangename} >{this.state.username}</TextField><br /><br />
                     {/*에이젝스로 비밀번호르 쏴서 확인한다*/}
                     <TextField type="password" name="userpw" label="비밀번호" onChange={this.doChangepw} >{this.state.pw}</TextField><br /><br />
                     <TextField type="password" label="비밀번호 확인" name="chepw"onChange={this.doChangechepw}>{this.state.chepw}</TextField>
