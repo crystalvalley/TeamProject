@@ -1,41 +1,71 @@
 import * as React from 'react';
-import { ListItem, ListItemText, Avatar, Button } from "@material-ui/core";
+import { ListItem, ListItemText, Avatar } from "@material-ui/core";
+import { IMemberModel } from '../../../../constance/models';
+import WriterClickMenu from '../../CardList/Card/smallCard/WriterClickMenu';
 
 /**
- * @author:KimMinJeong
+ * @author:Kim MinJeong
  * @since:2018.08.28
  * @version:2018.08.30
- * 사용자가 팔로우하는 친구목록
+ * 사용자가 팔로우하는 친구목록(왼쪽)
  */
 
+interface IProps {
+    list: string,
+    friendInfo: IMemberModel,
+   
+}
+interface IState {
+    open: boolean;
+}
 
-export const forming = (
-    <div>
-        <ListItem>
-            <Avatar src=""/>
 
-            <ListItemText primary="" />
-            <Button size="small">
-             들어가보기                                    
-            </Button>
+class Forming extends React.Component<IProps, IState>{
+    private anchor: HTMLSpanElement | null;
 
-            <Button size="small">
-             친구끊기                          
-            </Button>
-        </ListItem>
 
-         <ListItem>
-            <Avatar src="" />
+    public render() {
+        const { } = this.props;
 
-            <ListItemText primary="" />
-            <Button size="small">
-            들어가보기                                       
-            </Button>
+        this.state = {
+            open: false
+        };
+        
+        this.openMenu = this.openMenu.bind(this);
+        this.closeMenu=this.closeMenu.bind(this);
 
-            <Button size="small">
-            친구끊기                          
-            </Button>
-        </ListItem>
-    </div>
-
-);
+        return (
+            <div>
+                <ListItem>
+                    <Avatar src={this.props.friendInfo.profileImg} />
+                    <ListItemText
+                        onClick={this.openMenu}
+                       
+                    >   
+                        <span ref={(element) => { this.anchor = element }} />
+                        {this.props.friendInfo.id}
+                    </ListItemText>
+                  
+                    <WriterClickMenu 
+                    anchor={this.anchor}
+                    open={this.state.open}
+                    closeMenu={this.closeMenu}
+                    id={this.props.friendInfo.id}
+                />
+                </ListItem>         
+            </div>
+        )
+    }
+    private openMenu() {
+        this.setState({          
+            open: true
+        })
+        alert(this.state.open)
+    }
+    private closeMenu() {
+        this.setState({
+            open: false
+        })
+    }
+}
+export default (Forming);

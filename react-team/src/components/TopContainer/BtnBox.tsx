@@ -7,6 +7,7 @@ import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFrien
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Accessibility from '@material-ui/icons/Accessibility';
 import { NavLink } from 'react-router-dom';
+import { IMemberModel } from '../../constance/models';
 
 
 /**
@@ -23,11 +24,14 @@ const style: StyleRulesCallback = (theme: Theme) => ({
 interface IProps {
     classes: {
         btnBox: string;
-    }
+    },
+    friends:IMemberModel;
+   
 }
 
 interface IState {
     modalOpen: number;
+    
 }
 
 class BtnBox extends React.Component<IProps, IState>{
@@ -77,7 +81,7 @@ class BtnBox extends React.Component<IProps, IState>{
                     </NavLink>
                 </IconButton>
 
-                <ShowupFriendList
+                <ShowupFriendList                                  
                     open={this.state.modalOpen === 1}
                     openf={writeHandler2}
                     close={this.closeModal}
