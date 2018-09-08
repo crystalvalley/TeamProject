@@ -45,8 +45,8 @@ public class BoardRestController {
 	}	
 	@GetMapping("/getByListName")
 	public List<Board> getByListName(String listName,Principal principal,int page) {		
-		// return bs.getBoardByListName(listName,"testid");
-		return bs.getBoardByListName(listName,"testid",page);
+		// return bs.getBoardByListName(listName,principal.getName());
+		return bs.getBoardByListName(listName,principal.getName(),page);
 	}	
 	@GetMapping("/view")
 	public Map<String,Object> sendBoard(String type, int num) {
@@ -60,8 +60,8 @@ public class BoardRestController {
 	
 	@PostMapping("/writeBoard")
 	public void writeBoard(Board board, Principal principal) {
-		// board.setWriter(mr.findById("testid").get());
-		board.setWriter(mr.findById("testid").get());
+		// board.setWriter(mr.findById(principal.getName()).get());
+		board.setWriter(mr.findById(principal.getName()).get());
 		bs.saveBoard(board);
 	}
 	
@@ -76,11 +76,11 @@ public class BoardRestController {
 	}
 	@GetMapping("/getEmotion")
 	public List<Integer> getEmotion(int boardId,Principal principal){
-		return bs.getEmotions(boardId,"testid");
+		return bs.getEmotions(boardId,principal.getName());
 	}
 	@GetMapping("/addEmotion")
 	public String setEmotion(int emotionType, int boardId,Principal principal){
-		bs.addEmotion(boardId,emotionType,"testid");
+		bs.addEmotion(boardId,emotionType,principal.getName());
 		return "success";
 	}
 	@GetMapping("/search")
@@ -91,11 +91,11 @@ public class BoardRestController {
 	}
 	@GetMapping("/getFavorites")
 	public List<Integer> getFavorites(Principal principal){
-		return bs.getFavorites("testid");
+		return bs.getFavorites(principal.getName());
 	}
 	@GetMapping("/setFavorites")
 	public void setFavorites(Principal principal,int id){
-		bs.setFavorites("testid", id);
+		bs.setFavorites(principal.getName(), id);
 	}
 	
 }

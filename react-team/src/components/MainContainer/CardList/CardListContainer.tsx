@@ -284,6 +284,8 @@ class CardListContainer extends React.Component<IProps, IState> {
         const remain = this.state.order.length % 5
         const adder = remain === 0 ? 0 : 1;
         const maxSlide = Math.floor(this.state.order.length / 5 + adder);
+        // 딱 5개뿐이라 어차피 1페이지밖에 출력 못한다면 초기값그대로 가면 됨
+        if(maxSlide===1){return;}
         const slide = this.state.slide + turn;
         const left = slide === 0 ? false : true;
         const right = slide === maxSlide - 1 ? false : true;

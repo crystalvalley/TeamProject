@@ -85,9 +85,9 @@ public class AccountRestController {
 	public Member loginCheck(Principal principal) {
 		Member member;
 		if (principal != null) {
-			member = mr.findById("testid").get();
+			member = mr.findById(principal.getName()).get();
 		} else {
-			member = mr.findById("testid").get();
+			return null;
 		}
 		return member;
 	}
@@ -95,7 +95,7 @@ public class AccountRestController {
 	@PostMapping("/uploadProfile")
 	public String uploadProfile(@RequestParam("upload") MultipartFile upload, Principal principal) throws Exception {
 		System.out.println("test");
-		return ds.fileUpload(upload, "testid");
+		return ds.fileUpload(upload, principal.getName());
 	}
 
 	@PostMapping("/UpdateUser")
@@ -139,8 +139,8 @@ public class AccountRestController {
 		Reply reply = new Reply();
 		Member member = new Member();
 		System.out.println("리플저장" + cardnum + "," + replyContent + ",");
-		System.out.println("리플저장하기 들어옴" + "testid");
-		member = mr.findById("testid").get();
+		System.out.println("리플저장하기 들어옴" + principal.getName());
+		member = mr.findById(principal.getName()).get();
 		reply.setContent(replyContent);
 		reply.setWriter(member);
 		// System.out.println(cardnum);
@@ -176,7 +176,7 @@ public class AccountRestController {
 	@PostMapping("/selectUsername")
 	public String selectUsername(Principal principal) {
 		Member member = new Member();
-		member = mr.findById("testid").get();
+		member = mr.findById(principal.getName()).get();
 		System.out.println("유저이름찾기" + member.getUsername());
 		return member.getUsername();
 	}

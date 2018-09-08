@@ -88,7 +88,7 @@ public class Member {
 	private List<RoomMember> onRoom;
 
 	@OneToMany(mappedBy = "groupMaster")
-	private List<Group> groups;
+	private List<Group> groups; 
 
 	@OneToMany(mappedBy = "targetMember")
 	private List<Share> share;

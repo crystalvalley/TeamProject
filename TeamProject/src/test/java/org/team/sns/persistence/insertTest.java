@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.CustomListPK;
+import org.team.sns.domain.Member;
 import org.team.sns.domain.NetworkingPK;
 import org.team.sns.service.BoardService;
 import org.team.sns.service.MemberServiceImpl;
@@ -54,13 +55,22 @@ public class insertTest {
 
 	@Test
 	public void searchbycontentTest() {
-		ns.friendRequest("testid", "hamkegaja");
-		ns.friendRequest("testid", "asdasd");
-		ns.friendRequest("testid", "joon22");
-		ns.friendRequest("testid", "test2");
-		ns.acceptFriend("hamkegaja", "testid");
-		ns.acceptFriend("asdasd", "testid");
-		ns.acceptFriend("joon22", "testid");
-		ns.acceptFriend("test2", "testid");
+		for(int i=0;i<5;i++) {
+			Member member = new Member();
+			member.setId("testid"+i);
+			member.setPassword("12345678");
+			member.setEmail("test@gmail.com");
+			member.setUsername("testman"+i);
+			sus.createUser(member);
+			ms.signup(member);			
+		}
+		ns.friendRequest("testid", "testid1");
+		ns.friendRequest("testid", "testid2");
+		ns.friendRequest("testid", "testid3");
+		ns.friendRequest("testid", "testid4");
+		ns.acceptFriend("testid1", "testid");
+		ns.acceptFriend("testid2", "testid");
+		ns.acceptFriend("testid3", "testid");
+		ns.acceptFriend("testid4", "testid");
 	}
 }
