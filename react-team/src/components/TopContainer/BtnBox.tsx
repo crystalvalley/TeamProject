@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Theme, StyleRulesCallback, withStyles, IconButton } from '@material-ui/core';
+import { Theme, StyleRulesCallback, withStyles, IconButton, Button, Icon } from '@material-ui/core';
 import Create from '@material-ui/icons/Create';
 import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
@@ -7,6 +7,7 @@ import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFrien
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Compare from '@material-ui/icons/Compare';
 import Accessibility from '@material-ui/icons/Accessibility';
+import Alarm from '@material-ui/icons/Alarm';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
 
@@ -20,20 +21,37 @@ import { IMemberModel } from '../../constance/models';
 
 
 const style: StyleRulesCallback = (theme: Theme) => ({
+    button: {
+        margin: theme.spacing.unit,
+    },
+    leftIcon: {
+        marginRight: theme.spacing.unit,
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
+    iconSmall: {
+        fontSize: 20,
+    },
 
-})
+});
+
 
 interface IProps {
     classes: {
         btnBox: string;
+        button: string;
+        leftIcon: string;
+        rightIcon: string;
+        iconSmall: string
     },
-    friends:IMemberModel;
-   
+    friends: IMemberModel;
+
 }
 
 interface IState {
     modalOpen: number;
-    
+
 }
 
 class BtnBox extends React.Component<IProps, IState>{
@@ -92,7 +110,18 @@ class BtnBox extends React.Component<IProps, IState>{
                     </NavLink>
                 </IconButton>
 
+                <IconButton>
+                    <a href="http://naver.com">
+                        <Alarm />
+                    </a>
+                </IconButton>
 
+                
+                <Button variant="contained" color="primary" className={classes.button}>
+                    send
+                <Icon className={classes.rightIcon}>send</Icon>
+                </Button>
+                
                 <ShowupFriendList
                     open={this.state.modalOpen === 1}
                     openf={writeHandler2}
