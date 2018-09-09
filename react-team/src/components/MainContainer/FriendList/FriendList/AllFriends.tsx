@@ -24,7 +24,7 @@ class AllFriends extends React.Component<ILoginStore, IState>{
 
                 {
                     id: "",
-                    name: "",
+                    username: "",
                     profileImg: ""
                 }
 

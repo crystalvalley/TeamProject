@@ -9,7 +9,7 @@ import { LoginProvider } from './contexts/LoginContext';
 import { SearchProvider } from './contexts/SearchContext';
 import { EmotionProvider } from './contexts/EmotionContext';
 import { FavoriteProvider } from './contexts/FavoriteContext';
-import NetworkProvider from './contexts/FriendContext';
+import NetworkProvider from './contexts/NetworkContext';
 
 /**
  * @author : ParkHyeokjoon

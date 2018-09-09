@@ -17,47 +17,43 @@ interface IProps {
     classes: {
         test: string;
     },
-    open: boolean,
-    tagChange(s: number, e: number, str: string): void
+    open: boolean;
+    mentionChange(s: number, e: number, str: string): void
 }
 
 interface IState {
-    tagList: string[]
+    metionList: string[];
 }
 
-class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
+class MentionSuggestBox extends React.Component<IProps & ISuggestState, IState>{
     constructor(props: IProps & ISuggestState) {
         super(props);
         this.state = {
-            tagList: []
+            metionList: []
         }
     }
     public componentWillReceiveProps(prevProps: IProps & ISuggestState) {
-        if (this.props.text === prevProps.text || prevProps.text.length > 4|| !prevProps.open) { return }
+        if (this.props.text === prevProps.text || prevProps.text.length > 4 || !prevProps.open) { return }
         // 3글자 이하까지는 db에서 서치
-        axios.get("http://localhost:8081/boards/checkTag", {
+        axios.get("http://localhost:8081/boards/checkMention", {
             params: {
-                hashTag: prevProps.text.slice(1)
+                mention: prevProps.text.slice(1)
             }
         }).then((result) => {
-            const tagArray: string[] = [];
-            result.data.map((item: { hashTag: string }) => {
-                tagArray.push(item.hashTag);
-            })
             this.setState({
-                tagList: tagArray
+                metionList: result.data
             })
         })
     }
     public render() {
-        const { tagList } = this.state;
+        const { metionList } = this.state;
         const keyword = this.props.text.slice(1);
-        const listOpen = tagList !== undefined ? tagList.length : 0;
+        const listOpen = metionList !== undefined ? metionList.length : 0;
         const filteredList = keyword.length > 3 && listOpen !== 0 ?
-            this.state.tagList.filter((item) => {
+            this.state.metionList.filter((item) => {
                 return item.indexOf(keyword) === 0
             })
-            : this.state.tagList
+            : this.state.metionList
         return (
             <div
                 style={{
@@ -66,7 +62,7 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                     top: this.props.positionY,
                     left: this.props.positionX
                 }}
-                hidden={(!this.props.open)&&!(filteredList.length>0)}
+                hidden={(!this.props.open)||filteredList.length===0}
             >
                 <ul
                     style={{
@@ -74,10 +70,10 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                     }}>
                     {
                         filteredList !== undefined ?
-                            filteredList.map((tag, index) => {
+                            filteredList.map((mention, index) => {
                                 const handler = () => {
-                                    this.props.tagChange(
-                                        this.props.start, this.props.end, "#" + tag
+                                    this.props.mentionChange(
+                                        this.props.start, this.props.end, "@" + mention
                                     )
                                 }
                                 return (
@@ -85,10 +81,10 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                                         key={index}
                                         onClick={handler}
                                     >
-                                        {tag}
+                                        {mention}
                                     </li>
                                 );
-                            }) : ""
+                            }) : <div>시발</div>
                     }
                 </ul>
             </div>
@@ -96,4 +92,4 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
     }
 }
 
-export default withStyles(style)(TagSuggestBox);
+export default withStyles(style)(MentionSuggestBox);

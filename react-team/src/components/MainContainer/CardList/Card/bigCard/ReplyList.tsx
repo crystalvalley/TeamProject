@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IReplyModel } from '../../../../../constance/models';
-import {  Table,  TableCell, StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
+import { Table, TableCell, StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
 /**
  * 댓글 받아오기 댓글폼
  * @author:MinJu Cha
@@ -36,14 +36,16 @@ class ReplyList extends React.Component<IProps>{
     public render() {
         const { classes } = this.props;
         return (
-           
-                <Table className={classes.table}>
-                    <TableCell >
-                        {this.props.reply.writer.id}
-                    </TableCell>
-                    <TableCell > {this.props.reply.content}</TableCell>
-                    <TableCell > {this.props.reply.writeDate}</TableCell>
-                </Table>
+
+            <Table className={classes.table}>
+                <TableCell >
+                    {this.props.reply.writer.id}
+                </TableCell>
+                <TableCell >
+                    {this.props.reply.content}
+                </TableCell>
+                <TableCell > {this.props.reply.writeDate}</TableCell>
+            </Table>
         );
     }
 

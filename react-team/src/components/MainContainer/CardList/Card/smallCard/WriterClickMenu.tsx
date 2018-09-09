@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { INetworkStore, withNetworkContext } from '../../../../../contexts/FriendContext';
+import { INetworkStore, withNetworkContext } from '../../../../../contexts/NetworkContext';
 import { MenuItem, Menu } from '@material-ui/core';
 import { IMemberModel } from '../../../../../constance/models';
 
@@ -7,6 +7,8 @@ interface IProps {
     anchor: HTMLSpanElement | null
     open: boolean
     id: string;
+    left:number,
+    top:number,
     closeMenu(): void;
 }
 
@@ -24,7 +26,8 @@ class WriterClickMenu extends React.Component<IProps & INetworkStore>{
         return (
             <Menu
                 style={{
-                    top: "60px"
+                    top: this.props.top+"px",
+                    left : this.props.left+"px"
                 }}
                 anchorEl={this.props.anchor}
                 open={this.props.id===this.props.loginedId.id?false:this.props.open}
@@ -32,8 +35,8 @@ class WriterClickMenu extends React.Component<IProps & INetworkStore>{
             >
                 {
                     this.checkValue(this.props.friendList) ?
-                        <MenuItem onClick={this.addFriend}>친구끊기</MenuItem> :
-                        <MenuItem onClick={this.delFriend}>친구요청</MenuItem>
+                        <MenuItem onClick={this.addFriend}>친구요청</MenuItem> :
+                        <MenuItem onClick={this.delFriend}>친구끊기</MenuItem>
                 }
                 {
                     this.checkValue(this.props.followList) ?

@@ -17,7 +17,7 @@ const loginContext = React.createContext<ILoginStore>({
     logined: {
         profileImg: "",
         id: "",
-        name : ""
+        username : ""
     },
     loginCheck:()=>{return}
 });
@@ -29,7 +29,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             logined: {
                 profileImg: "",
                 id: "",
-                name : ""
+                username : ""
             },
             loginCheck:this.loginCheck
         }

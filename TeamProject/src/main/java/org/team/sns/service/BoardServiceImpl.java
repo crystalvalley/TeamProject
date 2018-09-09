@@ -185,14 +185,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Board> getBoardBySearchKeyword(String keyword,int page) {
+	public List<Board> getBoardBySearchKeyword(String keyword,int page,String loginId) {
 		// TODO Auto-generated method stub
 		if(keyword.indexOf("#")==0) {
-			return br.getBoardByHashTag(keyword,page);
+			return br.getBoardByHashTag(keyword,page,mr.findById(loginId).get());
 		}else if(keyword.indexOf("@")==0) {
-			return br.getBoardByMention(keyword,page);
+			return br.getBoardByMention(keyword,page,mr.findById(loginId).get());
 		}else {
-			return br.getBoardByKeyword(keyword,page);
+			return br.getBoardByKeyword(keyword,page,mr.findById(loginId).get());
 			
 		}
 	}

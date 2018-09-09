@@ -32,7 +32,7 @@ import lombok.extern.java.Log;
  * 
  * @author ParkHyeokjoon
  * @since 18.08.12
- * @version 18.09.04
+ * @version 18.09.09
  *
  */
 @Log
@@ -50,9 +50,6 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 
 	@Override
 	public List<Board> getBoardsByUserId(String _id) {
-		log.info("==========");
-		log.info("user_id : " + _id);
-		log.info("==========");
 		QBoard board = QBoard.board;
 		// Query생성
 		JPQLQuery<Board> boardQuery = from(board);
@@ -276,24 +273,27 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	}
 
 	@Override
-	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList, int page,Member member) {
+	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList, int page,Member loginId) {
 		// TODO Auto-generated method stub
 		// 즐겨찾기가 조건에 있다면, 등록날짜 기준
 		Boolean check = false;
 		QBoard board = QBoard.board;
 		QFavorites fav = QFavorites.favorites;
 		JPQLQuery<Board> query = from(board);
-		JPQLQuery<Favorites> subQuery = from(fav);
-		subQuery.where(fav.adder.eq(member));
+		JPQLQuery<Favorites> subQuery = from(fav);		
+		subQuery.where(fav.adder.eq(loginId));
 		subQuery.where(fav.board.eq(board));
+		
 		query.select(board);
 		BooleanBuilder whereCondition = new BooleanBuilder();
 		for (ProductStrategy pstr : pstrList) {
-			ArrayList<Object> result = checkType(pstr.getStrategies(),member);
+			ArrayList<Object> result = checkType(pstr.getStrategies(),loginId);
 			whereCondition.or((BooleanBuilder)result.get(0));
 			check = (boolean)result.get(1);
 		}
 		query.where(whereCondition);
+		//차단 대상은 제외
+		query.where(board.writer.notIn(this.getBlockList(loginId)));
 		if(check) {
 			// 즐겨찾기 등록 순 정렬은 나중에
 			query.orderBy(board.id.desc());
@@ -306,19 +306,21 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	}
 
 	@Override
-	public List<Board> getBoardByKeyword(String keyword,int page) {
+	public List<Board> getBoardByKeyword(String keyword,int page,Member loginId) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		JPQLQuery<Board> query = from(board);
 		query.select(board);
 		query.where((board.title.contains(keyword)).or(board.plainText.contains(keyword)));
+		//차단 대상은 제외
+		query.where(board.writer.notIn(this.getBlockList(loginId)));
 		query.offset(5*page);
 		query.limit(5);
 		return query.fetch();
 	}
 
 	@Override
-	public List<Board> getBoardByHashTag(String keyword,int page) {
+	public List<Board> getBoardByHashTag(String keyword,int page,Member loginId) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		QTag tag = QTag.tag;
@@ -326,13 +328,15 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		JPQLQuery<Tag> subQuery = from(tag);
 		query.select(board);
 		query.where(board.tags.contains(subQuery.where(tag.hashTag.contains(keyword.replaceFirst("#", "")))));
+		//차단 대상은 제외
+		query.where(board.writer.notIn(this.getBlockList(loginId)));
 		query.offset(5*page);
 		query.limit(5);
 		return query.fetch();
 	}
 
 	@Override
-	public List<Board> getBoardByMention(String keyword,int page) {
+	public List<Board> getBoardByMention(String keyword,int page,Member loginId) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		QMention mention = QMention.mention;
@@ -340,10 +344,21 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		JPQLQuery<Mention> subQuery = from(mention);
 		query.select(board);
 		query.where(board.mentions.contains(subQuery.where(mention.mentioned.id.eq(keyword.replaceFirst("@", "")))));
+		//차단 대상은 제외
+		query.where(board.writer.notIn(this.getBlockList(loginId)));
 		query.offset(5*page);
 		query.limit(5);
 		return query.fetch();
 	}
+	// 차단목록
+	private JPQLQuery<Member> getBlockList(Member member){
+		QNetworking net = QNetworking.networking;
+		JPQLQuery<Member> result = from(net).select(net.target);
+		result.where(net.member.eq(member));
+		result.where(net.type.eq("Block"));
+		return result;		
+	}
+	
 	// CustomList를 위한 타입 체크
 	public ArrayList<Object> checkType(List<Strategy> strList,Member member) {
 		ArrayList<Object> result = new ArrayList<>();

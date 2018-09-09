@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import Forming from './Forming';
 import { ListItem } from '@material-ui/core';
 import Scrollbars from 'react-custom-scrollbars';
-import { withNetworkContext, INetworkStore } from '../../../../contexts/FriendContext';
+import { withNetworkContext, INetworkStore } from '../../../../contexts/NetworkContext';
 
 
 /**

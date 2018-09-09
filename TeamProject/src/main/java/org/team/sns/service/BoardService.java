@@ -27,7 +27,7 @@ public interface BoardService {
 	public List<Board> getBoardByListName(String listName,String username,int page);
 	public List<Integer> getEmotions(int boardId,String memberid);
 	public void addEmotion(int boardId,int type,String memberid);
-	public List<Board> getBoardBySearchKeyword(String keyword,int page);
+	public List<Board> getBoardBySearchKeyword(String keyword,int page,String loginedId);
 	public List<Integer> getFavorites(String memberid);
 	public void setFavorites(String memberid,int id);
 }

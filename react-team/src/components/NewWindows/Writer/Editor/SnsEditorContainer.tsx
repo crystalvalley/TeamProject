@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, TextField, Button } from '@material-ui/core';
 import EditorMenu from './EditorMenu';
-import { EditorState, Modifier, SelectionState, } from 'draft-js';
+import { EditorState, Modifier, SelectionState, convertToRaw, } from 'draft-js';
 import SNSEditor from './SnsEditor';
 import { ILoginStore, withLoginContext } from "../../../../contexts/LoginContext"
 import { SNSDecorator } from './Decorator';
-import TagSuggestBox from './Suggestion/HashTag/TagSuggestBox';
+import TagSuggestBox from './Suggestion/Components/TagSuggestBox';
 import { ISuggestState } from './EditorConstance/props';
-import MentionSuggestBox from './Suggestion/HashTag/MentionSuggestBox';
+import MentionSuggestBox from './Suggestion/Components/MentionSuggestBox';
+import axios from "axios";
 
 
 /**
@@ -74,7 +75,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                 end: 0,
                 positionX: 0,
                 positionY: 0,
-                text:""
+                text: ""
             },
             focus: -1,
             hashSuggest: false,
@@ -85,6 +86,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
         this.titleChange = this.titleChange.bind(this);
         this.typeChange = this.typeChange.bind(this);
         this.changeTag = this.changeTag.bind(this);
+        this.sendData = this.sendData.bind(this);
     }
 
     public render() {
@@ -108,7 +110,11 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                         editorChange={this.editorChange}
                     />
                     <div>
-                        <Button>Save</Button>
+                        <Button
+                            onClick={this.sendData}
+                        >
+                            Save
+                        </Button>
                     </div>
                     <TagSuggestBox
                         open={this.state.hashSuggest}
@@ -132,6 +138,27 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                 </div>
             </React.Fragment>
         );
+    }
+    private sendData() {
+        const data = new FormData();
+        data.append("content",
+            JSON.stringify(
+                convertToRaw(this.state.editorState.getCurrentContent())
+            )
+        );
+        data.append("plainText",
+            this.state.editorState.getCurrentContent().getPlainText()
+        )
+        data.append("title", this.state.title);
+        data.append("writerId",this.props.logined.id)
+        axios.post("http://localhost:8081/boards/writeBoard", data)
+            .then((response) => {
+                // alert(response.data);
+                location.href = "/";
+            })
+            .catch(() => {
+                location.href = "/";
+            })
     }
     private editorChange(e: EditorState) {
         this.setState({
@@ -164,13 +191,13 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
         const nowBlock = this.getNowBlock(e);
         const text = nowBlock.getText();
         const nowFocus = e.getSelection().getFocusOffset();
-        
+
         let newstart = 0;
         let newend = 0;
         const regArr: RegExp[] = [/\#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.;\-]+/g, /\@[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.;\-]+/g];
         const hashMatch = regArr[0].exec(text);
         const mentionMatch = regArr[1].exec(text);
-        if (hashMatch === null&&mentionMatch===null) {
+        if (hashMatch === null && mentionMatch === null) {
             this.setState({
                 suggestState: {
                     ...this.state.suggestState,
@@ -181,9 +208,9 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                 mentionSuggest: false
             })
             return;
-        } 
-        const matchArr = [hashMatch,mentionMatch];
-        for(let index=0;index<matchArr.length;index++){
+        }
+        const matchArr = [hashMatch, mentionMatch];
+        for (let index = 0; index < matchArr.length; index++) {
             while (matchArr[index] !== null) {
                 newstart = matchArr[index]!.index;
                 newend = newstart + matchArr[index]![0].length
@@ -199,7 +226,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                             start: newstart,
                             positionX: xy[0],
                             positionY: xy[1],
-                            text:text.slice(newstart,newend)
+                            text: text.slice(newstart, newend)
                         }
                     })
                     return;

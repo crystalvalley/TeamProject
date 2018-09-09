@@ -156,7 +156,7 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                     writer: {
                         id: "",
                         profileImg: "",
-                        name: ""
+                        username: ""
                     },
                     title: "",
                     content: "",
@@ -174,7 +174,7 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
             userInfo: {
                 id: "",
                 profileImg: "",
-                name: ""
+                username: ""
             },
             userid:"",
             username:"",

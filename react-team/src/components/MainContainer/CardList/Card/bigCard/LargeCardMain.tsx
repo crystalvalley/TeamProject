@@ -24,6 +24,7 @@ import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 import EmotionBox from '../smallCard/EmotionBox';
 import ReplyList from './ReplyList';
 import Scrollbars from 'react-custom-scrollbars';
+import WriterClickMenu from '../smallCard/WriterClickMenu';
 
 
 /**
@@ -38,6 +39,11 @@ import Scrollbars from 'react-custom-scrollbars';
  * @author:MinJu Cha
  * @version:2018.9.7
  * 
+ */
+/**
+ * CardHeader수정 및 Menu붙임
+ * @author : ParkHyeokJoon
+ * @version : 2018.09.09
  */
 
 // flex로 한줄로맞추고 같은 height로 맞춤 
@@ -139,7 +145,7 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   table: {
     minWidth: 700,
   },
-  tableTatil :{
+  tableTatil: {
     width: '30px%',
   }
 });
@@ -166,7 +172,7 @@ interface IProps {
     replyBtn: string;
     root: string;
     table: string;
-    tableTatil:string;
+    tableTatil: string;
   }
   // listName: string;
   // id: string;
@@ -179,18 +185,21 @@ interface IState {
   expanded: boolean;
   replyContent: string;
   replys: IReplyModel[]
+  open: boolean;
 }
 
 class RecipeReviewCard extends React.Component<IProps, IState> {
   // private div: HTMLDivElement | null;
   // private scroll: Scrollbars | null;
+  private anchor: HTMLSpanElement | null;
   constructor(props: IProps) {
     super(props)
     this.state = {
       expanded: false,
       replyContent: "",
       editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator),
-      replys: []
+      replys: [],
+      open: false
 
     }
     axios.get("http://localhost:8081/account/getByCardReply", {
@@ -208,19 +217,21 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     this.editorChange = this.editorChange.bind;
     this.doChangeReply = this.doChangeReply.bind(this);
     this.submit = this.submit.bind(this);
+    this.writerMenuOpen = this.writerMenuOpen.bind(this);
+    this.closeMenu = this.closeMenu.bind(this);
   }
 
   public handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
-
   };
 
   public render() {
     const { classes, card } = this.props;
-
+    const handler = (element: any) => { this.anchor = element }
     return (
       /* 모달 눌렀을 때 전체의 오른쪽 모습 */
       <Card className={classes.card}>
+        <span ref={handler} />
         <CardHeader
           avatar={
             <Avatar aria-label="Recipe" className={classes.avatar}>
@@ -232,9 +243,17 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
               <MoreVertIcon />
             </IconButton>
           }
-
           title={card.writer.id}
           subheader={card.writeDay}
+          onClick={this.writerMenuOpen}
+        />
+        <WriterClickMenu
+          left={60}
+          top={80}
+          anchor={this.anchor}
+          open={this.state.open}
+          closeMenu={this.closeMenu}
+          id={card.writer.id}
         />
 
         <CardContent className={classes.containers}>
@@ -275,8 +294,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
           />
         </CardActions>
         <div className={classes.replyBox}>
-          {/* Editor위치 */}
-         
+          {/* editor자리 */}
           <IconButton
             className={classnames(classes.expand, {
               [classes.expandOpen]: this.state.expanded
@@ -291,34 +309,33 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
 
 
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit={true}>
-        <Scrollbars
-              autoHeight={true}
-              autoHide={true}
-            >
-          <CardContent>
+          <Scrollbars
+            autoHeight={true}
+            autoHide={true}
+          >
+            <CardContent>
+              <Paper>
+                <Table className={classes.table}>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>작성자</TableCell>
+                      <TableCell>내용</TableCell>
+                      <TableCell>작성시간</TableCell>
+                    </TableRow>
+                    {
+                      this.state.replys.map((reply, index) => {
+                        return (
+                          <TableRow key={index}>
+                            <ReplyList reply={reply} />
+                          </TableRow>
+                        );
+                      })}
 
-            <Paper>
-              <Table className={classes.table}>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>작성자</TableCell>
-                    <TableCell>내용</TableCell>
-                    <TableCell>작성시간</TableCell>
-                  </TableRow>
-                  {
-                    this.state.replys.map((reply, index) => {
-                      return (
-                        <TableRow key={index}>
-                          <ReplyList reply={reply} />
-                        </TableRow>
-                      );
-                    })}
+                  </TableBody>
+                </Table>
+              </Paper>
 
-                </TableBody>
-              </Table>
-            </Paper>
-
-          </CardContent>
+            </CardContent>
           </Scrollbars>
         </Collapse>
       </Card>
@@ -345,8 +362,18 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     Axios.post("http://localhost:8081/account/saveReply", data)
       .then((response) => {
         // alert(response.data + "리플돌아옴");
-        location.href= "/LageCardMain"
+        location.href = "/LageCardMain"
       })
+  }
+  private closeMenu() {
+    this.setState({
+      open: false
+    })
+  }
+  private writerMenuOpen() {
+    this.setState({
+      open: true
+    })
   }
 
 }

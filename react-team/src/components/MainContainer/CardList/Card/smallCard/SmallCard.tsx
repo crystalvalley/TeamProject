@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography, IconButton,} from '@material-ui/core';
+import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography, IconButton, } from '@material-ui/core';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import { ICardModel } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
@@ -44,8 +44,8 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         overflow: "hidden",
         maxHeight: "475px"
     },
-    username:{
-        color:"black"
+    username: {
+        color: "black"
     }
 });
 
@@ -57,7 +57,7 @@ interface IProps {
         title: string;
         cardBody: string;
         content: string;
-        username:string;
+        username: string;
     }
     card: ICardModel
 }
@@ -66,12 +66,12 @@ interface IState {
     editorState: EditorState;
     bigger: boolean;
     cutted: boolean;
-    open:boolean;
+    open: boolean;
 }
 
 
 class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
-    private anchor : HTMLSpanElement|null;
+    private anchor: HTMLSpanElement | null;
     private ref: HTMLDivElement | null;
     constructor(props: IProps & IFavoriteStore) {
         super(props);
@@ -85,13 +85,13 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
             bigger: false,
             editorState: sub,
             cutted: false,
-            open:false
+            open: false
         }
         this.closeModal = this.closeModal.bind(this);
         this.editorChange = this.editorChange.bind(this);
         this.openModal = this.openModal.bind(this);
         this.openMenu = this.openMenu.bind(this);
-        this.closeMenu=this.closeMenu.bind(this);
+        this.closeMenu = this.closeMenu.bind(this);
     }
     public componentDidMount() {
         if (this.ref!.offsetHeight > 475 && this.state.cutted === false) {
@@ -123,8 +123,8 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         onClick={this.openMenu}
                         className={classes.username}
                     >
-                        <span ref={(element)=>{this.anchor=element}}/>
-                        {card.writer.id}
+                        <span ref={(element) => { this.anchor = element }} />
+                        {card.writer.username}
                     </Typography>
                     <IconButton
                         style={{
@@ -178,6 +178,8 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     메뉴
                 </CardContent>
                 <WriterClickMenu
+                    left={0}
+                    top={60}
                     anchor={this.anchor}
                     open={this.state.open}
                     closeMenu={this.closeMenu}
@@ -186,14 +188,14 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
             </Card>
         );
     }
-    private openMenu(){
+    private openMenu() {
         this.setState({
-            open:true
+            open: true
         })
     }
-    private closeMenu(){
+    private closeMenu() {
         this.setState({
-            open : false
+            open: false
         })
     }
     private openModal(clicked: number) {

@@ -76,6 +76,7 @@ class CardList extends React.Component<IProps> {
     public render() {
         const { classes } = this.props;
         return (
+            
             <Draggable
                 draggableId={this.props.id}
                 index={this.props.index}

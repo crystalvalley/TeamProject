@@ -54,13 +54,13 @@ public interface BoardRepositoryCustom {
 	public List<Board> getUserAllBoard(String _id);
 	
 	// 식별방법에 따라 찾기
-	public List<Board> getBoardByCondition(List<ProductStrategy> pstr,int page,Member member);
+	public List<Board> getBoardByCondition(List<ProductStrategy> pstr,int page,Member loginId);
 	
 	//제목 내용 검색
-	public List<Board> getBoardByKeyword(String keyword,int page);
+	public List<Board> getBoardByKeyword(String keyword,int page,Member loginId);
 	//HashTag 검색
-	public List<Board> getBoardByHashTag(String keyword,int page);
+	public List<Board> getBoardByHashTag(String keyword,int page,Member loginId);
 	//Mention 검색
-	public List<Board> getBoardByMention(String keyword,int page);
+	public List<Board> getBoardByMention(String keyword,int page,Member loginId);
 	
 }

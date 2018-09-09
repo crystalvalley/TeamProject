@@ -61,7 +61,7 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
       userInfo: {
         profileImg: "",
         id: "",
-        name:""
+        username:""
       }
     }
     this.onChange = this.onChange.bind(this);
