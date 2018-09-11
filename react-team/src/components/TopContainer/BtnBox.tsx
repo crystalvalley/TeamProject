@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, IconButton } from '@material-ui/core';
 import Create from '@material-ui/icons/Create';
+import List from "@material-ui/icons/List";
 import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
 import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
@@ -27,13 +28,13 @@ interface IProps {
     classes: {
         btnBox: string;
     },
-    friends:IMemberModel;
-   
+    friends: IMemberModel;
+
 }
 
 interface IState {
     modalOpen: number;
-    
+
 }
 
 class BtnBox extends React.Component<IProps, IState>{
@@ -89,6 +90,12 @@ class BtnBox extends React.Component<IProps, IState>{
                 <IconButton>
                     <NavLink to="/createGroup">
                         <Compare />
+                    </NavLink>
+                </IconButton>
+
+                <IconButton>
+                    <NavLink to="/listControl">
+                        <List />
                     </NavLink>
                 </IconButton>
 

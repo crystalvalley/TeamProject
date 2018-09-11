@@ -8,16 +8,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.team.sns.domain.Group;
 import org.team.sns.domain.Member;
 import org.team.sns.persistence.GroupRepository;
 import org.team.sns.persistence.MemberRepository;
-import org.team.sns.service.DropboxService;
-import org.team.sns.service.MemberServiceImpl;
-import org.team.sns.service.SecurityUserServiceImpl;
 import org.team.sns.vo.RestMsgObject;
 
 /**
