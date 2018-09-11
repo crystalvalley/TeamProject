@@ -30,6 +30,7 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+		System.out.println("소켓 들어오냐");
 		LOG.debug("handleTextMessage : {}", message.getPayload());
 
 		SignalMessage signalMessage = objectMapper.readValue(message.getPayload(), SignalMessage.class);
