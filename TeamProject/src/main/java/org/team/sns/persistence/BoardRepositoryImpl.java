@@ -1,5 +1,6 @@
 package org.team.sns.persistence;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -280,9 +281,6 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		QBoard board = QBoard.board;
 		QFavorites fav = QFavorites.favorites;
 		JPQLQuery<Board> query = from(board);
-		JPQLQuery<Favorites> subQuery = from(fav);		
-		subQuery.where(fav.adder.eq(loginId));
-		subQuery.where(fav.board.eq(board));
 		
 		query.select(board);
 		BooleanBuilder whereCondition = new BooleanBuilder();
@@ -295,8 +293,8 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		//차단 대상은 제외
 		query.where(board.writer.notIn(this.getBlockList(loginId)));
 		if(check) {
-			// 즐겨찾기 등록 순 정렬은 나중에
-			query.orderBy(board.id.desc());
+			query.join(board.favorite,fav);
+			query.orderBy(fav.uploaddate.desc());
 		}else {
 			query.orderBy(board.id.desc());
 		}

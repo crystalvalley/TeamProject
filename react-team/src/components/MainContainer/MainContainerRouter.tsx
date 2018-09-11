@@ -8,6 +8,8 @@ import ListController from './ListControl/ListController';
 import GroupPage from './BoardView/GroupPage';
 import PersonalPage from './BoardView/PersonalPage';
 
+import Test from './BoardView/Test';
+
 
 
 
@@ -69,6 +71,7 @@ class MainContainerRouter extends React.Component<IProps> {
                 <Switch>
                     <Route path="/PersonalPage" component={PersonalPage} />
                     <Route path="/GroupPage" component={GroupPage} />
+                    <Route path="/Test" component={Test} />
                     <Route path="/listControl" component={ListController} />
                     <Route path="/AllFriends" component={AllFriends} />
                     <Route path="/userUpdate" component={UpdateUser} />

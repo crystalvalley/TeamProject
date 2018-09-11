@@ -19,7 +19,8 @@
     "react-beautiful-dnd": "^9.0.1",
     "react-dropzone": "^5.1.0",
     "caret-xy": "^2.0.2",
-    "react-motion": "^0.5.2"
+    "react-motion": "^0.5.2",
+    "deepstream.io-client-js": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",
