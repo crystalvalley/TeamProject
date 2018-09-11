@@ -97,5 +97,11 @@ public class BoardRestController {
 	public void setFavorites(Principal principal,int id){
 		bs.setFavorites("testid", id);
 	}
-	
+	@GetMapping("/getById")
+	public List<Board> getById(Principal principal){
+	List<Board> list = br.getBoardsByUserId(principal.getName());
+	System.out.println("들어왔따.");
+	System.out.println(list);
+	return list;
+	}
 }
