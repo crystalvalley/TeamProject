@@ -44,5 +44,10 @@ public class BaseController {
 		//System.out.println("??");
 		return "index";
 	}
+	@GetMapping("/test")
+	public String test() {
+		//System.out.println("??");
+		return "index";
+	}
 	
 }

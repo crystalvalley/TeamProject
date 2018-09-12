@@ -8,6 +8,7 @@ import ListController from './ListControl/ListController';
 import GroupPage from './BoardView/GroupPage';
 import PersonalPage from './BoardView/PersonalPage';
 import RTCTest from './BoardView/RTCTest';
+import ChattingContainer from '../Chatting/ChattingContainer';
 
 
 
@@ -76,6 +77,7 @@ class MainContainerRouter extends React.Component<IProps> {
                     <Route path="/userUpdate" component={UpdateUser} />
                     <Route path="/" component={CardListContainer} />
                 </Switch>
+                <ChattingContainer />
             </main>
         );
     }

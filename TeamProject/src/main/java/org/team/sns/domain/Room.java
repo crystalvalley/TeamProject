@@ -41,5 +41,6 @@ public class Room {
 	
 	@OneToMany(mappedBy="room")
 	private List<RoomMember> roomMembers;
-		
+	
+	private int chatOrder;		
 }

@@ -1,6 +1,6 @@
 import * as  React from 'react';
 import axios from 'axios';
-import { IMemberModel } from '../constance/models';
+import { IMemberModel, IRommModel } from '../constance/models';
 
 /**
  * @author : ParkHyeokjoon
@@ -10,16 +10,31 @@ import { IMemberModel } from '../constance/models';
 
 export interface ILoginStore {
     logined: IMemberModel;
-    loginCheck():void;
+    rooms: IRommModel[]
+    loginCheck(): void;
 }
 
 const loginContext = React.createContext<ILoginStore>({
     logined: {
         profileImg: "",
         id: "",
-        username : ""
+        username: ""
     },
-    loginCheck:()=>{return}
+    rooms: [
+        {
+            members: [{ id: "test2", profileImg: "", username: "" }],
+            roomnum: 0
+        },
+        {
+            members: [{ id: "test3", profileImg: "", username: "" }],
+            roomnum: 0
+        },
+        {
+            members: [{ id: "test4", profileImg: "", username: "" }],
+            roomnum: 0
+        },
+    ],
+    loginCheck: () => { return }
 });
 class LoginProvider extends React.Component<{}, ILoginStore> {
     constructor(props: {}) {
@@ -29,9 +44,23 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             logined: {
                 profileImg: "",
                 id: "",
-                username : ""
+                username: ""
             },
-            loginCheck:this.loginCheck
+            rooms: [
+                {
+                    members: [{ id: "test2", profileImg: "", username: "" }],
+                    roomnum: 0
+                },
+                {
+                    members: [{ id: "test3", profileImg: "", username: "" }],
+                    roomnum: 0
+                },
+                {
+                    members: [{ id: "test4", profileImg: "", username: "" }],
+                    roomnum: 0
+                },
+            ],
+            loginCheck: this.loginCheck
         }
     }
 
@@ -40,7 +69,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         this.loginCheck();
     }
     public componentDidUpdate(nextProps: {}, nextState: ILoginStore) {
-        if (this.state.logined ===undefined) {
+        if (this.state.logined === undefined) {
             this.loginCheck();
         } else {
             return;

@@ -50,3 +50,8 @@ export interface IConditionModel{
     strategy : string;
     target : string;
 }
+
+export interface IRommModel{
+    roomnum:number;
+    members:IMemberModel[]
+}

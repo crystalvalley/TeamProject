@@ -1,7 +1,11 @@
 import * as React from 'react'
 import { TextField } from '@material-ui/core';
 
-export default class RTCTest extends React.Component {
+interface IState{
+    msg : string;
+}
+
+export default class RTCTest extends React.Component<{},IState> {
     private pc: any;
     private peer: any;
     private loggedIn: boolean;
@@ -15,6 +19,9 @@ export default class RTCTest extends React.Component {
     };
     constructor(props: {}) {
         super(props);
+        this.state={
+            msg :""
+        }
         this.loggedIn = false;
         this.logError = this.logError.bind(this);
         this.connect = this.connect.bind(this);
@@ -23,6 +30,8 @@ export default class RTCTest extends React.Component {
         this.localDescCreated = this.localDescCreated.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.disconnect = this.disconnect.bind(this);
+        this.onChage = this.onChage.bind(this);
+        this.send = this.send.bind(this);
     }
     public render() {
         // id가 test임
@@ -40,11 +49,19 @@ export default class RTCTest extends React.Component {
                 <button onClick={handler4}>offer2</button>
                 <video ref={(e) => { this.remoteView = e }} width="640" height="480" autoPlay={true} style={{ display: "inline" }} />
                 <video ref={(e) => { this.selfView = e }} width="320" height="240" autoPlay={true} style={{ display: "inline" }} />
-                <TextField/>
+                <TextField onChange={this.onChage}/>
+                <button onClick={this.send}>send</button>
                 {this.loggedIn}
-                {this.remoteView}
             </div>
         )
+    }
+    private onChage(e:React.ChangeEvent<HTMLInputElement>){
+        this.setState({
+            msg : e.currentTarget.value
+        })
+    }
+    private send(){
+        this.sock.send(JSON.stringify({type:"msg",dest:this.peer,data:{msg:this.state.msg}}));
     }
 
     private logError(error: any) {
@@ -53,7 +70,7 @@ export default class RTCTest extends React.Component {
 
     private connect(username: string) {
         alert("connected")
-        const uri = "ws://http://52.141.33.205:8081/signal"
+        const uri = "ws://localhost:8081/signal"
         this.sock = new WebSocket(uri);
 
         this.sock.onopen = (e: any) => {
@@ -102,6 +119,8 @@ export default class RTCTest extends React.Component {
                 else {
                     this.pc.addIceCandidate(new RTCIceCandidate(message.data.candidate));
                 }
+            }else if(message.type==="msg"){
+                alert(message.data.msg);
             }
         }
 
