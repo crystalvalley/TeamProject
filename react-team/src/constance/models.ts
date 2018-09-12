@@ -50,3 +50,13 @@ export interface IConditionModel{
     strategy : string;
     target : string;
 }
+
+export interface IAlarmModel{
+        alarmId: string
+        usdate: string
+        mentioned: boolean
+        reqFriendship: boolean
+        checked: boolean
+        actor_id: IMemberModel
+        receiver: IMemberModel
+}

@@ -35,7 +35,7 @@ import lombok.extern.java.Log;
  * @version 18.09.09
  *
  */
-@Log
+
 public class BoardRepositoryImpl extends QuerydslRepositorySupport implements BoardRepositoryCustom {
 	
 	@Autowired
