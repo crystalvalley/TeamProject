@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { TextField } from '@material-ui/core';
 
 export default class RTCTest extends React.Component {
     private pc: any;
@@ -24,12 +25,22 @@ export default class RTCTest extends React.Component {
         this.disconnect = this.disconnect.bind(this);
     }
     public render() {
+        // id가 test임
         const handler = () => this.connect("test");
+        const handler2 = () => this.offer("test2");
+        const handler3 = () => this.connect("test2");
+        const handler4 = () => this.offer("test");
         return (
             <div>
                 <button onClick={handler}>test</button>
+                <button onClick={this.startRTC}>RTC</button>
+                <button onClick={handler2}>offer</button>
+                <button onClick={handler3}>test2</button>
+                <button onClick={this.startRTC}>RTC2</button>
+                <button onClick={handler4}>offer2</button>
                 <video ref={(e) => { this.remoteView = e }} width="640" height="480" autoPlay={true} style={{ display: "inline" }} />
                 <video ref={(e) => { this.selfView = e }} width="320" height="240" autoPlay={true} style={{ display: "inline" }} />
+                <TextField/>
                 {this.loggedIn}
                 {this.remoteView}
             </div>
@@ -41,14 +52,13 @@ export default class RTCTest extends React.Component {
     }
 
     private connect(username: string) {
-        let { sock } = this;
         alert("connected")
-        const uri = "ws://localhost:8081/signal"
-        sock = new WebSocket(uri);
+        const uri = "ws://http://52.141.33.205:8081/signal"
+        this.sock = new WebSocket(uri);
 
-        sock.onopen = (e: any) => {
+        this.sock.onopen = (e: any) => {
             alert('open' + e);
-            sock.send(
+            this.sock.send(
                 JSON.stringify(
                     {
                         type: "login",
@@ -61,37 +71,36 @@ export default class RTCTest extends React.Component {
             this.loggedIn = true
         }
 
-        sock.onclose = (e: CloseEvent) => {
+        this.sock.onclose = (e: CloseEvent) => {
             alert('close' + e);
         }
 
-        sock.onerror = (e: Event) => {
+        this.sock.onerror = (e: Event) => {
             alert('error' + e);
         }
 
-        sock.onmessage = (e: MessageEvent) => {
-            const { pc } = this;
+        this.sock.onmessage = (e: MessageEvent) => {            
             alert('message' + e.data);
-            if (!pc) {
+            if (!this.pc) {
                 this.startRTC();
             }
 
             const message = JSON.parse(e.data);
             if (message.type === 'rtc') {
                 if (message.data.sdp) {
-                    pc.setRemoteDescription(
+                    this.pc.setRemoteDescription(
                         new RTCSessionDescription(message.data.sdp),
                         () => {
                             // if we received an offer, we need to answer
-                            if (pc.remoteDescription.type === 'offer') {
+                            if (this.pc.remoteDescription.type === 'offer') {
                                 this.peer = message.dest;
-                                pc.createAnswer(this.localDescCreated, this.logError);
+                                this.pc.createAnswer(this.localDescCreated, this.logError);
                             }
                         },
                         this.logError);
                 }
                 else {
-                    pc.addIceCandidate(new RTCIceCandidate(message.data.candidate));
+                    this.pc.addIceCandidate(new RTCIceCandidate(message.data.candidate));
                 }
             }
         }
@@ -103,7 +112,7 @@ export default class RTCTest extends React.Component {
         this.pc = new webkitRTCPeerConnection(this.configuration);
 
         // send any ice candidates to the other peer
-        this.pc.onicecandidate = function (evt: any) {
+        this.pc.onicecandidate = (evt: any) => {
             if (evt.candidate) {
                 this.sendMessage(
                     {
@@ -118,8 +127,8 @@ export default class RTCTest extends React.Component {
         };
 
         // once remote stream arrives, sho480w it in the remote video element
-        this.pc.onaddstream = function (evt: any) {
-            this.remoteView.src = URL.createObjectURL(evt.stream);
+        this.pc.onaddstream = (evt: any) => {
+            this.remoteView!.srcObject = evt.stream;
         };
 
         // get a local stream, show it in a self-view and add it to be sent
@@ -127,7 +136,7 @@ export default class RTCTest extends React.Component {
             'audio': true,
             'video': true
         }, (stream) => {
-            this.selfView!.src = URL.createObjectURL(stream);
+            this.selfView!.srcObject = stream;
             this.pc.addStream(stream);
         }, this.logError);
 

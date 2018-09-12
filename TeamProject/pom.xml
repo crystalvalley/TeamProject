@@ -6,7 +6,7 @@
 
 	<groupId>org.team.sns</groupId>
 	<artifactId>TeamProject</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>alpha</version>
 	<packaging>jar</packaging>
 
 	<name>TeamProject</name>

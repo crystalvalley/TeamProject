@@ -23,29 +23,29 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 	private ObjectMapper objectMapper = new ObjectMapper();
 
 	// Here is our Directory (MVP way)
-	// This map saves sockets by usernames
+	// 소켓을 username을 키로 저장
 	private Map<String, WebSocketSession> clients = new HashMap<String, WebSocketSession>();
-	// Thus map saves username by socket ID
+	// 소켓ID로 유저네임 저장
 	private Map<String, String> clientIds = new HashMap<String, String>();
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		System.out.println("소켓 들어오냐");
 		LOG.debug("handleTextMessage : {}", message.getPayload());
 
 		SignalMessage signalMessage = objectMapper.readValue(message.getPayload(), SignalMessage.class);
 
 		if (LOGIN_TYPE.equalsIgnoreCase(signalMessage.getType())) {
-			// It's a login message so we assume data to be a String representing the
-			// username
+			// 로그인 메시지이므로 string일 거라 예상가능
+			// 유저네임 받아오기
 			String username = (String) signalMessage.getData();
+			System.out.println(username);
 
 			WebSocketSession client = clients.get(username);
 
-			// quick check to verify that the username is not already taken and active
+			// 유저네임이 이미 있거나 없을 경우를 체크
 			if (client == null || !client.isOpen()) {
 				LOG.debug("Login {} : OK", username);
-				// saves socket and username
+				// 유저네임을 키로 세션을 저장
 				clients.put(username, session);
 				clientIds.put(session.getId(), username);
 			} else {
