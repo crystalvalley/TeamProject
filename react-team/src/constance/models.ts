@@ -2,13 +2,14 @@
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
- * @version:2018.08.17
+ * @version:2018.09.13
  * 
  */
 export interface IMsgModel {
     type: string;
+    roomId:number;
     destination: IMemberModel[];
-    sender: string;
+    sender: IMemberModel;
     data: any;
 }
 

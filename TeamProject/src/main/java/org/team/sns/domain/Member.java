@@ -15,6 +15,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -34,10 +35,16 @@ import lombok.ToString;
 //_id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = { "boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom",
-		"groups", "customList","mentionList","share" })
+		"groups", "customList", "mentionList", "share" })
 @JsonIgnoreProperties({ "boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom",
-		"groups", "customList","mentionList","share" })
+		"groups", "customList", "mentionList", "share" })
 public class Member {
+	public Member() {}
+
+	public Member(String id) {
+		this.id = id;
+	}
+
 	@Id
 	@Column(name = "user_id")
 	private String id;
@@ -70,10 +77,10 @@ public class Member {
 	@OneToMany(mappedBy = "adder")
 	private List<Favorites> favorited;
 
-	@OneToMany(mappedBy="member")
+	@OneToMany(mappedBy = "member")
 	private List<Networking> myNetwork;
 
-	@OneToMany(mappedBy="target")
+	@OneToMany(mappedBy = "target")
 	private List<Networking> networked;
 
 	@OneToMany(mappedBy = "sharer")
@@ -83,15 +90,15 @@ public class Member {
 	private List<RoomMember> onRoom;
 
 	@OneToMany(mappedBy = "groupMaster")
-	private List<Group> groups; 
+	private List<Group> groups;
 
 	@OneToMany(mappedBy = "targetMember")
 	private List<Share> share;
 
 	@OneToMany(mappedBy = "owner")
 	private List<CustomList> customList;
-	
+
 	@OneToMany(mappedBy = "mentioned")
-	private List<Mention> mentionList; 
+	private List<Mention> mentionList;
 
 }

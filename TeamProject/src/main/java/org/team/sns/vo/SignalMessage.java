@@ -10,6 +10,7 @@ import lombok.Data;
 public class SignalMessage {
     private String type;
     private List<Member> destination;
-    private String sender;
+    private Member sender;
+    private int roomId;
     private Object data;
 }

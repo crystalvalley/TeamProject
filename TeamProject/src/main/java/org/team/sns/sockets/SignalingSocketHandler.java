@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @version 2018.09.13
  *
  */
+@CrossOrigin("*")
 public class SignalingSocketHandler extends TextWebSocketHandler {
 	@Autowired
 	RoomRepository rr;
@@ -112,8 +114,9 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 
 	private void msgProcess(WebSocketSession session, SignalMessage signalMessage) throws Exception {
 		// 유저네임 받아오기
-		String username = signalMessage.getSender();
+		Member user = signalMessage.getSender();
 		List<Member> targets = signalMessage.getDestination();
+		int roomId = signalMessage.getRoomId();
 		// 대상유저들의 소켓 찾기
 		for (int i = 0; i < targets.size(); i++) {
 			WebSocketSession target = clients.get(targets.get(i).getId());
@@ -122,8 +125,9 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 			}
 			SignalMessage out = new SignalMessage();
 			out.setType("chat-response");
-			out.setSender(username);
+			out.setSender(user);
 			out.setData(signalMessage.getData());
+			out.setRoomId(roomId);
 			String result = objectMapper.writeValueAsString(out);
 			target.sendMessage(new TextMessage(result));
 
@@ -131,28 +135,26 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 	}
 
 	private void loginProcess(WebSocketSession session, SignalMessage signalMessage) throws Exception {
-		// 로그인 메시지이므로 string일 거라 예상가능
-		// 유저네임 받아오기
-		String username = (String) signalMessage.getSender();
+		Member user = signalMessage.getSender();
 		// 웹소켓 생성
-		WebSocketSession client = clients.get(username);
+		WebSocketSession client = clients.get(user);
 
 		// 유저네임이 이미 있거나 없을 경우를 체크
 		if (client == null || !client.isOpen()) {
-			LOG.debug("Login {} : OK", username);
+			LOG.debug("Login {} : OK", user);
 			// 유저네임을 키로 세션을 저장
-			clients.put(username, session);
-			clientIds.put(session.getId(), username);
+			clients.put(user.getId(), session);
+			clientIds.put(session.getId(), user.getId());
 		} else {
-			LOG.debug("Login {} : KO", username);
+			LOG.debug("Login {} : KO", user.getId());
 		}
-		List<Room> rooms = rmr.getRoomsByloginedUser(username);
+		List<Room> rooms = rmr.getRoomsByloginedUser(user.getId());
 		SignalMessage out = new SignalMessage();
 		out.setType(LOGIN_RESPONSE);
-		out.setSender(username);
+		out.setSender(user);
 		out.setData(rooms);
 		String result = objectMapper.writeValueAsString(out);
-		clients.get(username).sendMessage(new TextMessage(result));
+		clients.get(user.getId()).sendMessage(new TextMessage(result));
 	}
 
 }

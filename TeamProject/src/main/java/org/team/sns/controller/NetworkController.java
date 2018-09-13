@@ -27,28 +27,28 @@ public class NetworkController {
 	
 	@GetMapping("/requestFriend")
 	public void requestFrien(Principal principal, String target) {
-		ns.friendRequest("testid", target);
+		ns.friendRequest(principal.getName(), target);
 	}
 	
 	@GetMapping("/getNetworks")
 	public HashMap<String,List<Member>> getNetworks(Principal principal){
 		HashMap<String,List<Member>> result = new HashMap<>();
-		result.put("friendList", ns.getFriends("testid"));
-		result.put("friendRequest", ns.getFriendsRequest("testid"));
+		result.put("friendList", ns.getFriends(principal.getName()));
+		result.put("friendRequest", ns.getFriendsRequest(principal.getName()));
 		return result;
 	}
 	
 	@GetMapping("/addFollow")
 	public void addFollow(Principal principal, String target) {
-		ns.addFollow("testid", target);
+		ns.addFollow(principal.getName(), target);
 	}
 	@GetMapping("/delFollow")
 	public void delFollow(Principal principal, String target) {
-		ns.delFollow("testid", target);
+		ns.delFollow(principal.getName(), target);
 	}
 	@GetMapping("/addBlock")
 	public void addBlock(Principal principal, String target) {
-		ns.addBlock("testid", target);
+		ns.addBlock(principal.getName(), target);
 	}
 
 }

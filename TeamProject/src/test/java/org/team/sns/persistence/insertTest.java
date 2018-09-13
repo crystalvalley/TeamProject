@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.team.sns.domain.Networking;
 import org.team.sns.domain.Room;
 import org.team.sns.domain.RoomMember;
 import org.team.sns.service.BoardService;
@@ -39,7 +40,7 @@ public class insertTest {
 	RoomRepository rr;
 	@Autowired
 	RoomMemberRepository rmr;
-
+	
 	/*
 	 * board에 적당히 값 넣어두는 test
 	 * 
@@ -55,22 +56,8 @@ public class insertTest {
 
 	@Test
 	public void searchbycontentTest() {
-		Room room = new Room();
-		room.setContentUrl("");
-		room.setChatOrder(1);
-		rr.save(room);
-		RoomMember rmember = new RoomMember();
-		rmember.setMember(mr.findById("testid").get());
-		rmember.setRoom(room);
-		rmr.save(rmember);
-		RoomMember rmember2 = new RoomMember();
-		rmember2.setMember(mr.findById("testid1").get());
-		rmember2.setRoom(room);
-		rmr.save(rmember2);
-		RoomMember rmember3 = new RoomMember();
-		rmember3.setMember(mr.findById("testid2").get());
-		rmember3.setRoom(room);
-		rmr.save(rmember2);
+		ns.friendRequest("testid1", "hamkegaja");
+		ns.acceptFriend("hamkegaja", "testid1");
 		
 	}
 }

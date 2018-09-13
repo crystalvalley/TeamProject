@@ -17,12 +17,12 @@ public class BaseController {
 
 	@GetMapping("/")
 	public String index(Principal principal) {
-		//System.out.println("testid");
+		//System.out.println(principal.getName());
 		return "index";
 	}
 	@GetMapping("/home")
 	public String goHome(Principal principal) {
-		//System.out.println("testid");
+		//System.out.println(principal.getName());
 		return "redirect:/";
 	}
 	@GetMapping("/signup")

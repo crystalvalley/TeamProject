@@ -10,15 +10,16 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     listWrapper: {
         display: "flex",
+        alignItems:"flex-end"
     },
     back: {
         position: "absolute",
         width: "100vw",
         bottom: "20px",
-        height: "48px",
+        height: "60px",
         backgroundColor: "white",
-        left:0,
-        right:0,
+        left: 0,
+        right: 0,
 
     }
 })
@@ -53,13 +54,13 @@ class ChattingContainer extends React.Component<IProps & ILoginStore>{
                         className={classes.listWrapper}
                     >
                         {
-                            this.props.rooms.map((room, index) => {
+                            this.props.roomIds.map((roomId, index) => {
                                 return (
                                     <ChattingBox
                                         key={index}
-                                        loginedId={this.props.logined.id}
+                                        loginedId={this.props.logined}
                                         sendMessage={this.props.sendMessage}
-                                        {...room}
+                                        {...this.props.rooms[roomId]}
                                     />
                                 );
                             })

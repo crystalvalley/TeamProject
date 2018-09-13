@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, Typography, Grow, Paper, IconButton, TextField } from '@material-ui/core';
-import { IRoomModel, IMsgModel } from '../../constance/models';
+import { IRoomModel, IMsgModel, IMemberModel } from '../../constance/models';
 import ArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import ChatWrapper from './ChattingText/ChatWrapper';
@@ -10,7 +10,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         width: "300px",
         marginLeft: "7.5px",
         marginRight: "7.5px",
-        textAlign: "center"
+        textAlign: "center",
     },
     container: {
         display: 'flex',
@@ -18,7 +18,8 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     paper: {
         margin: theme.spacing.unit,
         boxShadow: "1px 1px 2px 2px grey",
-        width: "300px"
+        width: "300px",
+        padding:"10px"
     },
     svg: {
         width: 100,
@@ -30,7 +31,6 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         strokeWidth: 1,
     },
     chatname: {
-        bottom: 0,
         boxShadow: "1px 1px 2px 2px grey",
         borderRadius: "7.5px",
         textAlign: "right",
@@ -41,6 +41,9 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         textAlign: "center",
         width: "calc(100% - 48px)",
         paddingLeft: "16px",
+    },
+    hide: {
+        display: "none"
     }
 })
 
@@ -53,14 +56,15 @@ interface IProps {
         polygon: string;
         chatname: string;
         nameNfieldBox: string;
+        hide: string;
     },
     key: number;
-    loginedId: string;
+    loginedId: IMemberModel;
     sendMessage(msg: IMsgModel): void;
 }
 
 interface IState {
-    checked: boolean;
+    open: boolean;
     msg: string;
 }
 
@@ -68,7 +72,7 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
     constructor(props: IProps & IRoomModel) {
         super(props);
         this.state = {
-            checked: false,
+            open: false,
             msg: ""
         }
         this.onCheck = this.onCheck.bind(this);
@@ -76,26 +80,30 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
         this.onChange = this.onChange.bind(this);
     }
     public render() {
-        const { checked } = this.state;
+        const { open } = this.state;
         const { classes } = this.props;
+        const addSubName = this.state.open ? "" : " " + classes.hide
         return (
             <div
                 className={classes.chatBox}
             >
                 <div className={classes.container}>
-                    <Grow in={checked}>
-                        <Paper elevation={4} className={classes.paper}>
-                            <ChatWrapper />
+                    <Grow in={open} >
+                        <Paper elevation={4} className={classes.paper + addSubName}>
+                            <ChatWrapper
+                                chats={this.props.chat===undefined?[]:this.props.chat}
+                                loginedId={this.props.loginedId}
+                            />
                         </Paper>
                     </Grow>
                 </div>
                 {
-                    !this.state.checked ?
+                    !this.state.open ?
                         <Typography
                             className={classes.chatname}
                         >
                             <p className={classes.nameNfieldBox}>
-                                {this.props.roomId}
+                                Chatting  {this.props.roomId}
                             </p>
                             <IconButton
                                 onClick={this.onCheck}
@@ -133,9 +141,9 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
         })
     }
     private onCheck() {
-        const next = !this.state.checked
+        const next = !this.state.open
         this.setState({
-            checked: next
+            open: next
         })
     }
     private onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
@@ -148,6 +156,7 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
             const result: IMsgModel = {
                 type: "chat-msg",
                 destination: d,
+                roomId: this.props.roomId,
                 sender: this.props.loginedId,
                 data: this.state.msg
             }

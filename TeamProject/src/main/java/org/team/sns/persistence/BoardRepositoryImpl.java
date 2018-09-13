@@ -365,6 +365,14 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		result.add(builder);
 		for (Strategy str : strList) {
 			switch (str.getType()) {
+			case "Follow":{
+				followCheck(board,builder,member);
+				break;
+			}
+			case "Friend":{
+				friendCheck(board,builder,member);
+				break;
+			}
 			// 즐겨찾기의 경우
 			case "Favorites": {
 				favCheck(board,builder,member);		
@@ -388,6 +396,24 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 			result.add(false);
 		}
 		return result;
+	}
+	private BooleanBuilder followCheck(QBoard board, BooleanBuilder builder, Member member) {
+		QNetworking net = QNetworking.networking;
+		JPQLQuery<Member> subQuery = from(net).select(net.target);
+		subQuery.where(net.type.eq("Follow"));
+		subQuery.where(net.member.eq(member));
+		builder.and(board.writer.in(subQuery));
+		return builder;
+		
+	}
+	private BooleanBuilder friendCheck(QBoard board, BooleanBuilder builder, Member member) {
+		QNetworking net = QNetworking.networking;
+		JPQLQuery<Member> subQuery = from(net).select(net.target);
+		subQuery.where(net.type.eq("Friend"));
+		subQuery.where(net.member.eq(member));
+		builder.and(board.writer.in(subQuery));
+		return builder;
+		
 	}
 
 	private BooleanBuilder tagCheck(QBoard board, BooleanBuilder builder, String targets) {

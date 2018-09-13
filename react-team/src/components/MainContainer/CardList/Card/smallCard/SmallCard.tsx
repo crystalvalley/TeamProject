@@ -174,9 +174,6 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         id={this.props.card.id}
                     />
                 </CardContent>
-                <CardContent>
-                    메뉴
-                </CardContent>
                 <WriterClickMenu
                     left={0}
                     top={60}

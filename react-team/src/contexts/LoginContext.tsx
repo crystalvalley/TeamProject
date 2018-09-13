@@ -10,7 +10,10 @@ import { IMemberModel, IRoomModel, IMsgModel } from '../constance/models';
 
 export interface ILoginStore {
     logined: IMemberModel;
-    rooms: IRoomModel[]
+    rooms: {
+        [roomId: number]: IRoomModel
+    }
+    roomIds: number[];
     loginCheck(): void;
     sendMessage(msg: IMsgModel): void;
 }
@@ -22,7 +25,8 @@ const loginContext = React.createContext<ILoginStore>({
         id: "",
         username: ""
     },
-    rooms: [],
+    rooms: {},
+    roomIds: [],
     loginCheck: () => { return },
     sendMessage: (msg: IMsgModel) => { return }
 });
@@ -45,10 +49,11 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         this.state = {
             logined: {
                 profileImg: "",
-                id: "",
+                id: "testid",
                 username: ""
             },
-            rooms: [],
+            rooms: {},
+            roomIds: [],
             loginCheck: this.loginCheck,
             sendMessage: this.sendMessage
         }
@@ -83,20 +88,12 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     private loginCheck() {
         axios.post("http://localhost:8081/account/loginCheck")
             .then((response) => {
+                if (response.data.id === "FAILED LOGIN") { return; }
                 this.setState({
                     logined: response.data
                 }, () => {
-                    // if(response.data.id==="FAILED LOGIN"){return;}
-                    this.setState({
-                        logined :{
-                            id:"testid",
-                            profileImg:"",
-                            username:""
-                        }
-                    },()=>{
-                        // 로그인 처리 완료 후에 소켓을 즉시 연결
-                        this.connect();
-                    })
+                    // 로그인 처리 완료 후에 소켓을 즉시 연결
+                    this.connect();
                 })
                 /*
                 else{
@@ -115,7 +112,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 {
                     type: "msg",
                     dest: this.peer,
-                    sender: this.state.logined.id,
+                    sender: this.state.logined,
                     data: {
                         msg: ""
                     }
@@ -178,11 +175,26 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             */
             const message: IMsgModel = JSON.parse(e.data);
             if (message.type === "login-response") {
+                let roomIds: number[] = [];
+                let rooms = {};
+                for (const data of message.data) {
+                    rooms = { ...rooms, [data.roomId]: data }
+                    roomIds = [...roomIds, data.roomId]
+                }
                 this.setState({
-                    rooms: message.data
+                    rooms,
+                    roomIds
                 })
-            }else if(message.type==="chat-response"){
-                
+            } else if (message.type === "chat-response") {
+                const nextRooms = this.state.rooms;
+                const sub = nextRooms[message.roomId];
+
+                if (sub.chat === undefined) { sub.chat = [] }
+                sub.chat = [...nextRooms[message.roomId].chat, { type: "", sender: message.sender, destination: [], roomId: message.roomId, data: message.data }]
+                this.setState({
+                    rooms: nextRooms
+                })
+
             }
         }
     }
@@ -197,7 +209,8 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                     {
                         type: "rtc",
                         destination: [],
-                        sender: this.state.logined.id,
+                        roomId: -1,
+                        sender: this.state.logined,
                         data: {
                             'candidate': evt.candidate
                         }
@@ -234,7 +247,8 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 {
                     type: "rtc",
                     destination: [],
-                    sender: this.state.logined.id,
+                    roomId: -1,
+                    sender: this.state.logined,
                     data: {
                         'sdp': this.pc.localDescription
                     }
