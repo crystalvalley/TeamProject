@@ -1,16 +1,12 @@
 package org.team.sns.persistence;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.team.sns.domain.Board;
-import org.team.sns.domain.CustomListPK;
-import org.team.sns.domain.Member;
-import org.team.sns.domain.NetworkingPK;
+import org.team.sns.domain.Room;
+import org.team.sns.domain.RoomMember;
 import org.team.sns.service.BoardService;
 import org.team.sns.service.MemberServiceImpl;
 import org.team.sns.service.NetworkServiceImpl;
@@ -39,6 +35,10 @@ public class insertTest {
 	BoardService bs;
 	@Autowired
 	NetworkServiceImpl ns;
+	@Autowired
+	RoomRepository rr;
+	@Autowired
+	RoomMemberRepository rmr;
 
 	/*
 	 * board에 적당히 값 넣어두는 test
@@ -55,29 +55,18 @@ public class insertTest {
 
 	@Test
 	public void searchbycontentTest() {
-		Member member2 = new Member();
-		member2.setId("testid");
-		member2.setPassword("12345678");
-		member2.setEmail("test@gmail.com");
-		member2.setUsername("testman");
-		sus.createUser(member2);
-		ms.signup(member2);			
-		for(int i=1;i<5;i++) {
-			Member member = new Member();
-			member.setId("testid"+i);
-			member.setPassword("12345678");
-			member.setEmail("test@gmail.com");
-			member.setUsername("testman"+i);
-			sus.createUser(member);
-			ms.signup(member);			
-		}
-		ns.friendRequest("testid", "testid1");
-		ns.friendRequest("testid", "testid2");
-		ns.friendRequest("testid", "testid3");
-		ns.friendRequest("testid", "testid4");
-		ns.acceptFriend("testid1", "testid");
-		ns.acceptFriend("testid2", "testid");
-		ns.acceptFriend("testid3", "testid");
-		ns.acceptFriend("testid4", "testid");
+		Room room = new Room();
+		room.setContentUrl("");
+		room.setChatOrder(0);
+		rr.save(room);
+		RoomMember rmember = new RoomMember();
+		rmember.setMember(mr.findById("testid").get());
+		rmember.setRoom(room);
+		rmr.save(rmember);
+		RoomMember rmember2 = new RoomMember();
+		rmember2.setMember(mr.findById("testid1").get());
+		rmember2.setRoom(room);
+		rmr.save(rmember2);
+		
 	}
 }

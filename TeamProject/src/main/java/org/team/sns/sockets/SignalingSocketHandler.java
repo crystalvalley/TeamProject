@@ -1,28 +1,44 @@
 package org.team.sns.sockets;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import org.team.sns.domain.Room;
+import org.team.sns.persistence.RoomMemberRepository;
+import org.team.sns.persistence.RoomRepository;
 import org.team.sns.vo.SignalMessage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+/**
+ * 
+ * @author ParkHyeokJoon
+ * @since 2018.09.13
+ * @version 2018.09.13
+ *
+ */
 public class SignalingSocketHandler extends TextWebSocketHandler {
-
+	@Autowired
+	RoomRepository rr;
+	@Autowired
+	RoomMemberRepository rmr;
+	
 	private static final Logger LOG = LoggerFactory.getLogger(SignalingSocketHandler.class);
 
 	private static final String LOGIN_TYPE = "login";
+	private static final String LOGIN_RESPONSE = "login-response";
 	private static final String RTC_TYPE = "rtc";
 	private static final String MSG_TYPE = "msg";
 
 	// Jackson JSON converter
-	private ObjectMapper objectMapper = new ObjectMapper();
-
+	private ObjectMapper objectMapper = new ObjectMapper();	
+	
 	// Here is our Directory (MVP way)
 	// 소켓을 username을 키로 저장
 	private Map<String, WebSocketSession> clients = new HashMap<String, WebSocketSession>();
@@ -32,27 +48,13 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		LOG.debug("handleTextMessage : {}", message.getPayload());
+		System.out.println(message.getPayload());
 
 		SignalMessage signalMessage = objectMapper.readValue(message.getPayload(), SignalMessage.class);
+		System.out.println(signalMessage);
 
 		if (LOGIN_TYPE.equalsIgnoreCase(signalMessage.getType())) {
-			// 로그인 메시지이므로 string일 거라 예상가능
-			// 유저네임 받아오기
-			String username = (String) signalMessage.getData();
-			System.out.println(username);
-
-			WebSocketSession client = clients.get(username);
-
-			// 유저네임이 이미 있거나 없을 경우를 체크
-			if (client == null || !client.isOpen()) {
-				LOG.debug("Login {} : OK", username);
-				// 유저네임을 키로 세션을 저장
-				clients.put(username, session);
-				clientIds.put(session.getId(), username);
-			} else {
-				LOG.debug("Login {} : KO", username);
-			}
-
+			this.loginProcess(session,signalMessage);
 		} else if (RTC_TYPE.equalsIgnoreCase(signalMessage.getType())) {
 
 			// with the dest username, we can find the targeted socket, if any
@@ -106,7 +108,31 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 				destSocket.sendMessage(new TextMessage(stringifiedJSONmsg));
 			}
 		}
+	}
+	
+	private void loginProcess(WebSocketSession session,SignalMessage signalMessage) throws Exception {
+		// 로그인 메시지이므로 string일 거라 예상가능
+		// 유저네임 받아오기
+		String username = (String) signalMessage.getSender();
+		// 웹소켓 생성
+		WebSocketSession client = clients.get(username);
 
+		// 유저네임이 이미 있거나 없을 경우를 체크
+		if (client == null || !client.isOpen()) {
+			LOG.debug("Login {} : OK", username);
+			// 유저네임을 키로 세션을 저장
+			clients.put(username, session);
+			clientIds.put(session.getId(), username);
+		} else {
+			LOG.debug("Login {} : KO", username);
+		}
+		List<Room> rooms = rmr.getRoomsByloginedUser(username);
+		SignalMessage out = new SignalMessage();
+		out.setType(LOGIN_RESPONSE);
+		out.setSender(username);
+		out.setData(rooms);
+		String result = objectMapper.writeValueAsString(out);
+		clients.get(username).sendMessage(new TextMessage(result));
 	}
 
 }

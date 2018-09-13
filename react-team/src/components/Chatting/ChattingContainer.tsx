@@ -9,7 +9,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         bottom: "20px",
     },
     listWrapper: {
-        display: "flex"
+        display: "flex",
     },
     back: {
         position: "absolute",
@@ -19,8 +19,6 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         backgroundColor: "white",
         left:0,
         right:0,
-        borderRadius:"20px",
-        boxShadow:"2px 2px 3px 3px #303030"
 
     }
 })
@@ -43,7 +41,7 @@ class ChattingContainer extends React.Component<IProps & ILoginStore>{
                 <Snackbar
                     className={classes.chatContainer}
                     anchorOrigin={{
-                        horizontal: "center",
+                        horizontal: "left",
                         vertical: "bottom"
                     }}
                     open={true}
@@ -59,6 +57,7 @@ class ChattingContainer extends React.Component<IProps & ILoginStore>{
                                 return (
                                     <ChattingBox
                                         key={index}
+                                        {...room}
                                     />
                                 );
                             })

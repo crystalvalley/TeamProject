@@ -6,13 +6,16 @@
  * 
  */
 export interface IMsgModel {
-    msg: string;
+    type: string;
+    destination: number;
+    sender: string;
+    data: any;
 }
 
 // Board도 겸함,
 // title이 없으면 Card, 있으면 Board
 export interface ICardModel {
-    id:number;
+    id: number;
     writer: IMemberModel;
     title: string;
     content: string;
@@ -28,30 +31,35 @@ export interface ICardModel {
 export interface IMemberModel {
     id: string;
     profileImg: string;
-    username :string;
+    username: string;
 }
 
 export interface IPhotoModel {
     id: number;
     url: string;
 }
-export interface IReplyModel{
+export interface IReplyModel {
     id: number;
     // 댓글 쓴사람
     writer: IMemberModel;
-    board : ICardModel;
+    board: ICardModel;
     // url
-    sound :string;
+    sound: string;
     content: string;
     writeDate: string;
     updateDate: string;
 }
-export interface IConditionModel{
-    strategy : string;
-    target : string;
+export interface IConditionModel {
+    strategy: string;
+    target: string;
 }
 
-export interface IRommModel{
-    roomnum:number;
-    members:IMemberModel[]
+export interface IRoomModel {
+    roomId: number;
+    roomMembers: IRoomMemberModel[]
+    contentUrl: string;
+}
+
+export interface IRoomMemberModel{
+    member : IMemberModel;
 }
