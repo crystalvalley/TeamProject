@@ -3,6 +3,9 @@ package org.team.sns.persistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.team.sns.domain.Alarm;
+import org.team.sns.domain.QAlarm;
+
+import com.querydsl.jpa.JPQLQuery;
 
 /**
  * 
@@ -27,7 +30,9 @@ public class AlarmRepositoryImpl extends QuerydslRepositorySupport implements Al
 	@Override
 	public boolean setAlarms(Alarm alarm) {
 		
-		
+		QAlarm qalarm = QAlarm.alarm;
+		JPQLQuery<Alarm> alarmQuery = from(alarm);
+		alarmQuery.
 		
 		return false;
 	}

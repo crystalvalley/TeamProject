@@ -200,7 +200,6 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
     }
     public componentDidMount(){
         const data = new FormData;
-        data.append("mentioned",this.state.)
         data.append("actor_id", this.props.alarm.actor_id.id)
         axios.post("http://localhost:8081/alarms/setAlarm", data).then(response=>{
             alert("success!!")

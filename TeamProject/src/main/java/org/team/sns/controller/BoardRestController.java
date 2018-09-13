@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,8 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.team.sns.domain.Alarm;
 import org.team.sns.domain.Board;
+import org.team.sns.domain.Member;
 import org.team.sns.domain.Tag;
+import org.team.sns.persistence.AlarmRepository;
 import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.service.BoardServiceImpl;
@@ -37,6 +41,8 @@ public class BoardRestController {
 	BoardRepository br;
 	@Autowired
 	MemberRepository mr;
+	@Autowired
+	AlarmRepository ar;
 
 
 	@PostMapping("/getBoard")
@@ -63,6 +69,12 @@ public class BoardRestController {
 		// board.setWriter(mr.findById("testid").get());
 		board.setWriter(mr.findById("testid").get());
 		bs.saveBoard(board);
+		Alarm arm = new Alarm();
+		
+		Optional<Member> actor=mr.findById(principal.getName());
+		arm.setActor_id(actor.get());
+		ar.save(arm);
+		
 	}
 	
 	@GetMapping("/checkTag")
