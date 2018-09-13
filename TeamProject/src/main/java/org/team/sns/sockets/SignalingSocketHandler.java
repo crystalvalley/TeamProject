@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import org.team.sns.domain.Member;
 import org.team.sns.domain.Room;
 import org.team.sns.persistence.RoomMemberRepository;
 import org.team.sns.persistence.RoomRepository;
 import org.team.sns.vo.SignalMessage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * 
  * @author ParkHyeokJoon
@@ -28,17 +30,17 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 	RoomRepository rr;
 	@Autowired
 	RoomMemberRepository rmr;
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(SignalingSocketHandler.class);
 
 	private static final String LOGIN_TYPE = "login";
 	private static final String LOGIN_RESPONSE = "login-response";
 	private static final String RTC_TYPE = "rtc";
-	private static final String MSG_TYPE = "msg";
+	private static final String MSG_TYPE = "chat-msg";
 
 	// Jackson JSON converter
-	private ObjectMapper objectMapper = new ObjectMapper();	
-	
+	private ObjectMapper objectMapper = new ObjectMapper();
+
 	// Here is our Directory (MVP way)
 	// 소켓을 username을 키로 저장
 	private Map<String, WebSocketSession> clients = new HashMap<String, WebSocketSession>();
@@ -54,63 +56,81 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 		System.out.println(signalMessage);
 
 		if (LOGIN_TYPE.equalsIgnoreCase(signalMessage.getType())) {
-			this.loginProcess(session,signalMessage);
+			this.loginProcess(session, signalMessage);
 		} else if (RTC_TYPE.equalsIgnoreCase(signalMessage.getType())) {
 
-			// with the dest username, we can find the targeted socket, if any
-			String dest = signalMessage.getDest();
-			WebSocketSession destSocket = clients.get(dest);
-			// if the socket exists and is open, we go on
-			if (destSocket != null && destSocket.isOpen()) {
+			/*
+			 * 
+			 * // with the dest username, we can find the targeted socket, if any String
+			 * dest = signalMessage.getDest(); WebSocketSession destSocket =
+			 * clients.get(dest); // if the socket exists and is open, we go on if
+			 * (destSocket != null && destSocket.isOpen()) {
+			 * 
+			 * // We write the message to send to the dest socket (it's our propriatary
+			 * format)
+			 * 
+			 * SignalMessage out = new SignalMessage(); // still an RTC type
+			 * out.setType(RTC_TYPE); // we use the dest field to specify the actual exp.,
+			 * but it will be the next // dest. out.setDest(clientIds.get(session.getId()));
+			 * // The data stays as it is out.setData(signalMessage.getData());
+			 * 
+			 * // Convert our object back to JSON String stringifiedJSONmsg =
+			 * objectMapper.writeValueAsString(out);
+			 * 
+			 * LOG.debug("send message {}", stringifiedJSONmsg);
+			 * 
+			 * destSocket.sendMessage(new TextMessage(stringifiedJSONmsg)); }
+			 * 
+			 */
+		} else if (MSG_TYPE.equalsIgnoreCase(signalMessage.getType())) {
+			System.out.println("채팅들어옴");
+			this.msgProcess(session, signalMessage);
 
-				// We write the message to send to the dest socket (it's our propriatary format)
-
-				SignalMessage out = new SignalMessage();
-				// still an RTC type
-				out.setType(RTC_TYPE);
-				// we use the dest field to specify the actual exp., but it will be the next
-				// dest.
-				out.setDest(clientIds.get(session.getId()));
-				// The data stays as it is
-				out.setData(signalMessage.getData());
-
-				// Convert our object back to JSON
-				String stringifiedJSONmsg = objectMapper.writeValueAsString(out);
-
-				LOG.debug("send message {}", stringifiedJSONmsg);
-
-				destSocket.sendMessage(new TextMessage(stringifiedJSONmsg));
-			}
-		} else if(MSG_TYPE.equalsIgnoreCase(signalMessage.getType())) {
-
-			// with the dest username, we can find the targeted socket, if any
-			String dest = signalMessage.getDest();
-			WebSocketSession destSocket = clients.get(dest);
-			// if the socket exists and is open, we go on
-			if (destSocket != null && destSocket.isOpen()) {
-
-				// We write the message to send to the dest socket (it's our propriatary format)
-
-				SignalMessage out = new SignalMessage();
-				// still an RTC type
-				out.setType(MSG_TYPE);
-				// we use the dest field to specify the actual exp., but it will be the next
-				// dest.
-				out.setDest(clientIds.get(session.getId()));
-				// The data stays as it is
-				out.setData(signalMessage.getData());
-
-				// Convert our object back to JSON
-				String stringifiedJSONmsg = objectMapper.writeValueAsString(out);
-
-				LOG.debug("send message {}", stringifiedJSONmsg);
-
-				destSocket.sendMessage(new TextMessage(stringifiedJSONmsg));
-			}
+			/*
+			 * // with the dest username, we can find the targeted socket, if any String
+			 * dest = signalMessage.getDest(); WebSocketSession destSocket =
+			 * clients.get(dest); // if the socket exists and is open, we go on if
+			 * (destSocket != null && destSocket.isOpen()) {
+			 * 
+			 * // We write the message to send to the dest socket (it's our propriatary
+			 * format)
+			 * 
+			 * SignalMessage out = new SignalMessage(); // still an RTC type
+			 * out.setType(MSG_TYPE); // we use the dest field to specify the actual exp.,
+			 * but it will be the next // dest. out.setDest(clientIds.get(session.getId()));
+			 * // The data stays as it is out.setData(signalMessage.getData());
+			 * 
+			 * // Convert our object back to JSON String stringifiedJSONmsg =
+			 * objectMapper.writeValueAsString(out);
+			 * 
+			 * LOG.debug("send message {}", stringifiedJSONmsg);
+			 * 
+			 * destSocket.sendMessage(new TextMessage(stringifiedJSONmsg)); }
+			 */
 		}
 	}
-	
-	private void loginProcess(WebSocketSession session,SignalMessage signalMessage) throws Exception {
+
+	private void msgProcess(WebSocketSession session, SignalMessage signalMessage) throws Exception {
+		// 유저네임 받아오기
+		String username = signalMessage.getSender();
+		List<Member> targets = signalMessage.getDestination();
+		// 대상유저들의 소켓 찾기
+		for (int i = 0; i < targets.size(); i++) {
+			WebSocketSession target = clients.get(targets.get(i).getId());
+			if (target == null) {
+				continue;
+			}
+			SignalMessage out = new SignalMessage();
+			out.setType("chat-response");
+			out.setSender(username);
+			out.setData(signalMessage.getData());
+			String result = objectMapper.writeValueAsString(out);
+			target.sendMessage(new TextMessage(result));
+
+		}
+	}
+
+	private void loginProcess(WebSocketSession session, SignalMessage signalMessage) throws Exception {
 		// 로그인 메시지이므로 string일 거라 예상가능
 		// 유저네임 받아오기
 		String username = (String) signalMessage.getSender();

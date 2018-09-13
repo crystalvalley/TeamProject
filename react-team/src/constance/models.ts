@@ -7,7 +7,7 @@
  */
 export interface IMsgModel {
     type: string;
-    destination: number;
+    destination: IMemberModel[];
     sender: string;
     data: any;
 }
@@ -58,6 +58,7 @@ export interface IRoomModel {
     roomId: number;
     roomMembers: IRoomMemberModel[]
     contentUrl: string;
+    chat:IMsgModel[];
 }
 
 export interface IRoomMemberModel{

@@ -57,7 +57,7 @@ public class insertTest {
 	public void searchbycontentTest() {
 		Room room = new Room();
 		room.setContentUrl("");
-		room.setChatOrder(0);
+		room.setChatOrder(1);
 		rr.save(room);
 		RoomMember rmember = new RoomMember();
 		rmember.setMember(mr.findById("testid").get());
@@ -66,6 +66,10 @@ public class insertTest {
 		RoomMember rmember2 = new RoomMember();
 		rmember2.setMember(mr.findById("testid1").get());
 		rmember2.setRoom(room);
+		rmr.save(rmember2);
+		RoomMember rmember3 = new RoomMember();
+		rmember3.setMember(mr.findById("testid2").get());
+		rmember3.setRoom(room);
 		rmr.save(rmember2);
 		
 	}

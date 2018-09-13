@@ -87,7 +87,9 @@ public class AccountRestController {
 		if (principal != null) {
 			member = mr.findById("testid").get();
 		} else {
-			return null;
+			member = new Member();
+			member.setId("FAILED LOGIN");
+			return member;
 		}
 		return member;
 	}

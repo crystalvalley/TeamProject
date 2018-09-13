@@ -57,6 +57,8 @@ class ChattingContainer extends React.Component<IProps & ILoginStore>{
                                 return (
                                     <ChattingBox
                                         key={index}
+                                        loginedId={this.props.logined.id}
+                                        sendMessage={this.props.sendMessage}
                                         {...room}
                                     />
                                 );

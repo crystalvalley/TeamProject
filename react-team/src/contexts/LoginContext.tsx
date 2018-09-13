@@ -12,6 +12,7 @@ export interface ILoginStore {
     logined: IMemberModel;
     rooms: IRoomModel[]
     loginCheck(): void;
+    sendMessage(msg: IMsgModel): void;
 }
 
 
@@ -22,7 +23,8 @@ const loginContext = React.createContext<ILoginStore>({
         username: ""
     },
     rooms: [],
-    loginCheck: () => { return }
+    loginCheck: () => { return },
+    sendMessage: (msg: IMsgModel) => { return }
 });
 class LoginProvider extends React.Component<{}, ILoginStore> {
 
@@ -39,21 +41,22 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     constructor(props: {}) {
         super(props);
         this.loginCheck = this.loginCheck.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
         this.state = {
             logined: {
                 profileImg: "",
-                id: "testid",
+                id: "",
                 username: ""
             },
             rooms: [],
-            loginCheck: this.loginCheck
+            loginCheck: this.loginCheck,
+            sendMessage: this.sendMessage
         }
         this.logError = this.logError.bind(this);
         this.connect = this.connect.bind(this);
         this.startRTC = this.startRTC.bind(this);
         this.offer = this.offer.bind(this);
         this.localDescCreated = this.localDescCreated.bind(this);
-        this.sendMessage = this.sendMessage.bind(this);
         this.disconnect = this.disconnect.bind(this);
         this.send = this.send.bind(this);
     }
@@ -83,8 +86,17 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 this.setState({
                     logined: response.data
                 }, () => {
-                    // 로그인 처리 완료 후에 소켓을 즉시 연결
-                    this.connect();
+                    // if(response.data.id==="FAILED LOGIN"){return;}
+                    this.setState({
+                        logined :{
+                            id:"testid",
+                            profileImg:"",
+                            username:""
+                        }
+                    },()=>{
+                        // 로그인 처리 완료 후에 소켓을 즉시 연결
+                        this.connect();
+                    })
                 })
                 /*
                 else{
@@ -118,13 +130,12 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     private connect() {
         const uri = "ws://localhost:8081/signal"
         this.sock = new WebSocket(uri);
-
         this.sock.onopen = (e: any) => {
             this.sock.send(
                 JSON.stringify(
                     {
                         type: "login",
-                        sender: "testid"
+                        sender: this.state.logined.id
                     }
                 )
             );
@@ -165,20 +176,15 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 alert(message.data.msg);
             }
             */
-           const message : IMsgModel= JSON.parse(e.data);
-           if(message.type==="login-response"){
-               this.setState({
-                   rooms : message.data
-               },()=>{
-                alert(this.state.rooms[0].roomId);
-                alert(this.state.rooms[0].roomMembers[0].member.id)
-                alert(this.state.rooms[0].roomMembers[1].member.id)
-               })
-           }
-
+            const message: IMsgModel = JSON.parse(e.data);
+            if (message.type === "login-response") {
+                this.setState({
+                    rooms: message.data
+                })
+            }else if(message.type==="chat-response"){
+                
+            }
         }
-
-        // setConnected(true);
     }
 
     private startRTC() {
@@ -190,7 +196,8 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 this.sendMessage(
                     {
                         type: "rtc",
-                        dest: this.peer,
+                        destination: [],
+                        sender: this.state.logined.id,
                         data: {
                             'candidate': evt.candidate
                         }
@@ -226,7 +233,8 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             this.sendMessage(
                 {
                     type: "rtc",
-                    dest: this.peer,
+                    destination: [],
+                    sender: this.state.logined.id,
                     data: {
                         'sdp': this.pc.localDescription
                     }
@@ -235,7 +243,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         }, this.logError);
     };
 
-    private sendMessage(payload: any) {
+    private sendMessage(payload: IMsgModel) {
         this.sock.send(JSON.stringify(payload));
     }
 
