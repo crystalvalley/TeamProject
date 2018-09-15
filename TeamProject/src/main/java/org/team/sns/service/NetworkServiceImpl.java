@@ -73,6 +73,8 @@ public class NetworkServiceImpl implements NetworkService{
 		nr.delete(net);		
 	}
 
+	
+	// 3.service에서 기능생성
 	@Override
 	public void delFriend(String memberid, String target) {
 		// TODO Auto-generated method stub

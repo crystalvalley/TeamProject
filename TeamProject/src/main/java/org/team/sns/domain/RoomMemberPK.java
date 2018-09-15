@@ -14,5 +14,4 @@ import lombok.EqualsAndHashCode;
 public class RoomMemberPK implements Serializable{
 	public String member;
 	public int room;
-
 }

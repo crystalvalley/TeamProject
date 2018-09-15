@@ -31,12 +31,10 @@ interface IProps {
     friends: IMemberModel;
 
 }
-
 interface IState {
     modalOpen: number;
 
 }
-
 class BtnBox extends React.Component<IProps, IState>{
     constructor(props: IProps) {
         super(props);
@@ -71,35 +69,26 @@ class BtnBox extends React.Component<IProps, IState>{
                 >
                     <FriendListIcon />
                 </IconButton>
-
-
-
                 <IconButton>
                     <NavLink to="/userUpdate">
                         <AccountCircle />
                     </NavLink>
                 </IconButton>
-
                 <IconButton>
                     <NavLink to="/AllFriends">
                         <Accessibility />
                     </NavLink>
                 </IconButton>
-
-
                 <IconButton>
                     <NavLink to="/createGroup">
                         <Compare />
                     </NavLink>
                 </IconButton>
-
                 <IconButton>
                     <NavLink to="/listControl">
                         <List />
                     </NavLink>
                 </IconButton>
-
-
                 <ShowupFriendList
                     open={this.state.modalOpen === 1}
                     openf={writeHandler2}
