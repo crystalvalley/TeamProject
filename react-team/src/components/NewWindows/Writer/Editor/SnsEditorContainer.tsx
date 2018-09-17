@@ -60,7 +60,6 @@ interface IState {
     mentionSuggest: boolean;
     sub: string;
     sS: SelectionState;
-
     files: File[]
 }
 
@@ -159,6 +158,9 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
         )
         data.append("title", this.state.title);
         data.append("writerId", this.props.logined.id)
+        for(const file of this.state.files){
+            data.append("image",file)
+        }
         axios.post("http://localhost:8081/boards/writeBoard", data)
             .then((response) => {
                 // alert(response.data);

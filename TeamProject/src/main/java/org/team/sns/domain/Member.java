@@ -68,12 +68,6 @@ public class Member {
 	@OneToMany(mappedBy = "writer")
 	private List<Board> boards;
 
-	@OneToMany(mappedBy = "recipient")
-	private List<Card> received;
-
-	@OneToMany(mappedBy = "sender")
-	private List<Card> sended;
-
 	@OneToMany(mappedBy = "adder")
 	private List<Favorites> favorited;
 

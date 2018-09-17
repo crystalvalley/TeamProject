@@ -50,20 +50,14 @@ interface IProps {
     editorState: EditorState;
     writer: string;
     files: File[];
-    deleteImage(index:number):void;
-    onDrop(files: File[]):void;
+    deleteImage(index: number): void;
+    onDrop(files: File[]): void;
 }
 
-interface IState {
-    files: File[];
-}
 
-class EditorMenu extends React.Component<IProps, IState> {
+class EditorMenu extends React.Component<IProps> {
     constructor(props: IProps) {
         super(props);
-        this.state = {
-            files: []
-        }
     }
     public render() {
         const { classes } = this.props
