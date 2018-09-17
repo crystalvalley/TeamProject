@@ -2,17 +2,21 @@
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
- * @version:2018.08.17
+ * @version:2018.09.13
  * 
  */
 export interface IMsgModel {
-    msg: string;
+    type: string;
+    roomId:number;
+    destination: IMemberModel[];
+    sender: IMemberModel;
+    data: any;
 }
 
 // Board도 겸함,
 // title이 없으면 Card, 있으면 Board
 export interface ICardModel {
-    id:number;
+    id: number;
     writer: IMemberModel;
     title: string;
     content: string;
@@ -28,24 +32,40 @@ export interface ICardModel {
 export interface IMemberModel {
     id: string;
     profileImg: string;
-    username :string;
+    username: string;
 }
 
 export interface IPhotoModel {
     id: number;
     url: string;
 }
-export interface IReplyModel{
+export interface IReplyModel {
     id: number;
     // 댓글 쓴사람
     writer: IMemberModel;
-    board : ICardModel;
+    board: ICardModel;
     // url
-    sound :string;
+    sound: string;
     content: string;
     writeDate: string;
     updateDate: string;
 }
+<<<<<<< HEAD
+export interface IConditionModel {
+    strategy: string;
+    target: string;
+}
+
+export interface IRoomModel {
+    roomId: number;
+    roomMembers: IRoomMemberModel[]
+    contentUrl: string;
+    chat:IMsgModel[];
+}
+
+export interface IRoomMemberModel{
+    member : IMemberModel;
+=======
 export interface IConditionModel{
     strategy : string;
     target : string;
@@ -59,4 +79,5 @@ export interface IAlarmModel{
         checked: boolean
         actor_id: IMemberModel
         receiver: IMemberModel
+>>>>>>> Alarm
 }

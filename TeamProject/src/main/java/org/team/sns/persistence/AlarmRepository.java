@@ -1,5 +1,8 @@
 package org.team.sns.persistence;
 
+import java.security.Principal;
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.team.sns.domain.Alarm;
 
@@ -13,5 +16,6 @@ import org.team.sns.domain.Alarm;
  */
 
 public interface AlarmRepository extends CrudRepository<Alarm, Integer>, AlarmRepositoryCustom{
+	
 
 }

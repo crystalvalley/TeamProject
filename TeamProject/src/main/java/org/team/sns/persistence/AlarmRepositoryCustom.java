@@ -1,5 +1,8 @@
 package org.team.sns.persistence;
 
+import java.security.Principal;
+import java.util.List;
+
 import org.team.sns.domain.Alarm;
 
 /**
@@ -13,5 +16,5 @@ import org.team.sns.domain.Alarm;
 
 public interface AlarmRepositoryCustom{
 	public boolean setAlarms(Alarm alarm);
-	
+	public List<Alarm> requestAlarms(Principal principal);
 }

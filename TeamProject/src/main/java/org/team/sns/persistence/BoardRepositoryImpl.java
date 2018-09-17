@@ -277,9 +277,6 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		QBoard board = QBoard.board;
 		QFavorites fav = QFavorites.favorites;
 		JPQLQuery<Board> query = from(board);
-		JPQLQuery<Favorites> subQuery = from(fav);		
-		subQuery.where(fav.adder.eq(loginId));
-		subQuery.where(fav.board.eq(board));
 		
 		query.select(board);
 		BooleanBuilder whereCondition = new BooleanBuilder();
@@ -292,8 +289,8 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		//차단 대상은 제외
 		query.where(board.writer.notIn(this.getBlockList(loginId)));
 		if(check) {
-			// 즐겨찾기 등록 순 정렬은 나중에
-			query.orderBy(board.id.desc());
+			query.join(board.favorite,fav);
+			query.orderBy(fav.uploaddate.desc());
 		}else {
 			query.orderBy(board.id.desc());
 		}
@@ -364,6 +361,14 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		result.add(builder);
 		for (Strategy str : strList) {
 			switch (str.getType()) {
+			case "Follow":{
+				followCheck(board,builder,member);
+				break;
+			}
+			case "Friend":{
+				friendCheck(board,builder,member);
+				break;
+			}
 			// 즐겨찾기의 경우
 			case "Favorites": {
 				favCheck(board,builder,member);		
@@ -387,6 +392,24 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 			result.add(false);
 		}
 		return result;
+	}
+	private BooleanBuilder followCheck(QBoard board, BooleanBuilder builder, Member member) {
+		QNetworking net = QNetworking.networking;
+		JPQLQuery<Member> subQuery = from(net).select(net.target);
+		subQuery.where(net.type.eq("Follow"));
+		subQuery.where(net.member.eq(member));
+		builder.and(board.writer.in(subQuery));
+		return builder;
+		
+	}
+	private BooleanBuilder friendCheck(QBoard board, BooleanBuilder builder, Member member) {
+		QNetworking net = QNetworking.networking;
+		JPQLQuery<Member> subQuery = from(net).select(net.target);
+		subQuery.where(net.type.eq("Friend"));
+		subQuery.where(net.member.eq(member));
+		builder.and(board.writer.in(subQuery));
+		return builder;
+		
 	}
 
 	private BooleanBuilder tagCheck(QBoard board, BooleanBuilder builder, String targets) {

@@ -3,14 +3,9 @@ package org.team.sns.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -20,6 +15,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -30,7 +26,7 @@ import lombok.ToString;
  * @since 18.08.10
  * @version 18.09.02
  * 
- */
+ */	
 // [ 회원 테이블 ]
 
 @Entity
@@ -39,10 +35,16 @@ import lombok.ToString;
 //_id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = { "boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom",
-		"groups", "customList","mentionList","share" })
+		"groups", "customList", "mentionList", "share" })
 @JsonIgnoreProperties({ "boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom",
-		"groups", "customList","mentionList","share" })
+		"groups", "customList", "mentionList", "share" })
 public class Member {
+	public Member() {}
+
+	public Member(String id) {
+		this.id = id;
+	}
+
 	@Id
 	@Column(name = "user_id")
 	private String id;
@@ -66,19 +68,13 @@ public class Member {
 	@OneToMany(mappedBy = "writer")
 	private List<Board> boards;
 
-	@OneToMany(mappedBy = "recipient")
-	private List<Card> received;
-
-	@OneToMany(mappedBy = "sender")
-	private List<Card> sended;
-
 	@OneToMany(mappedBy = "adder")
 	private List<Favorites> favorited;
 
-	@OneToMany(mappedBy="member")
+	@OneToMany(mappedBy = "member")
 	private List<Networking> myNetwork;
 
-	@OneToMany(mappedBy="target")
+	@OneToMany(mappedBy = "target")
 	private List<Networking> networked;
 
 	@OneToMany(mappedBy = "sharer")
@@ -88,15 +84,15 @@ public class Member {
 	private List<RoomMember> onRoom;
 
 	@OneToMany(mappedBy = "groupMaster")
-	private List<Group> groups; 
+	private List<Group> groups;
 
 	@OneToMany(mappedBy = "targetMember")
 	private List<Share> share;
 
 	@OneToMany(mappedBy = "owner")
 	private List<CustomList> customList;
-	
+
 	@OneToMany(mappedBy = "mentioned")
-	private List<Mention> mentionList; 
+	private List<Mention> mentionList;
 
 }

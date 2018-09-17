@@ -14,6 +14,6 @@ import org.team.sns.domain.Board;
 
 public interface AlarmService {
 	public void savementionAlarms(Board board, Principal principal);
-	public void saveFriendRequest(Alarm alarm, Principal principal);
+	public boolean saveFriendRequest(String target, Principal principal) ;
 
 }

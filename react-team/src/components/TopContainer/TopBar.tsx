@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider } from '@material-ui/core';
 import classNames from 'classnames';
-import SearchField from './SearchField';
 import { withVoice, IVoiceStore } from '../../contexts/VoiceRecogContext';
 import BtnBox from './BtnBox';
 import { IMemberModel } from '../../constance/models';
+import pige from '../../img/end2.png';
+import axios from 'axios';
+import { NavLink } from 'react-router-dom';
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
@@ -61,7 +63,7 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
       userInfo: {
         profileImg: "",
         id: "",
-        username:""
+        username: ""
       }
     }
     this.onChange = this.onChange.bind(this);
@@ -74,33 +76,30 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
         position="absolute"
         className={classNames(classes.appBar)}
       >
+
         <Toolbar
           className={classes.topBar}
         >
-          <SearchField
-            onChange={this.onChange}
-          />
+         
+            <NavLink to="/CardListContainer">
+              <img src={pige} onClick={this.home} />
+            </NavLink>
+
           <span
             className={classes.toolBox}
           >
-            <BtnBox 
+            <BtnBox
               friends={this.state.userInfo}
             />
           </span>
         </Toolbar>
         <Divider />
-        <Toolbar
-          variant="dense"
-        >
-          <span>
-            {this.props.inputValue}
-          </span>
-
-        </Toolbar>
       </AppBar>
     );
   }
-
+  private home() {
+    axios.get("http://localhost:8081/home")
+  }
 
 
   private onChange(event: React.ChangeEvent<HTMLInputElement>) {

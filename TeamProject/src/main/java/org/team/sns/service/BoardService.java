@@ -3,6 +3,7 @@ package org.team.sns.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Favorites;
 import org.team.sns.domain.Mention;
@@ -30,4 +31,5 @@ public interface BoardService {
 	public List<Board> getBoardBySearchKeyword(String keyword,int page,String loginedId);
 	public List<Integer> getFavorites(String memberid);
 	public void setFavorites(String memberid,int id);
+	public void setBoardImage(Board board,MultipartFile[] files) throws Exception;
 }

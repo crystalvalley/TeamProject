@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.team.sns.domain.Alarm;
 import org.team.sns.domain.Member;
+import org.team.sns.persistence.AlarmRepository;
+import org.team.sns.persistence.MemberRepository;
+import org.team.sns.service.AlarmService;
 import org.team.sns.service.NetworkServiceImpl;
 
 /**
@@ -24,11 +28,19 @@ import org.team.sns.service.NetworkServiceImpl;
 public class NetworkController {
 	@Autowired
 	NetworkServiceImpl ns;
+	@Autowired
+	MemberRepository mr;
+	@Autowired
+	AlarmService as;
 	
 	@GetMapping("/requestFriend")
-	public void requestFrien(Principal principal, String target) {
-		ns.friendRequest("testid", target);
+	public void requestFriend(Principal principal, String target) {
+		System.out.println("친구추가들어옴");
+		//ns.friendRequest("testid", target);
+		as.saveFriendRequest(target, principal);
 	}
+	
+	
 	
 	@GetMapping("/getNetworks")
 	public HashMap<String,List<Member>> getNetworks(Principal principal){
@@ -49,6 +61,11 @@ public class NetworkController {
 	@GetMapping("/addBlock")
 	public void addBlock(Principal principal, String target) {
 		ns.addBlock("testid", target);
+	}
+	// 2.axios로 보낸 정보를 받아줄 Controller
+	@GetMapping("/delFriend")
+	public void delFriend(Principal principal, String target) {
+		ns.delFriend("testid", target);
 	}
 
 }

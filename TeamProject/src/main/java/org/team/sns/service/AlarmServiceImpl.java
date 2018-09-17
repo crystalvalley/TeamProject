@@ -43,8 +43,14 @@ public class AlarmServiceImpl implements AlarmService {
 	}
 
 	@Override
-	public void saveFriendRequest(Alarm alarm, Principal principal) {
-		
+	public boolean saveFriendRequest(String target, Principal principal) {
+		Alarm alarm = new Alarm();
+		Member actor = mr.findById(principal.getName()).get();
+		alarm.setActor_id(actor);
+		alarm.setReceiver_id(mr.findById(target).get());
+		alarm.setReqFriendship(true);
+		ar.save(alarm);
+		return true;
 		
 	}
 }

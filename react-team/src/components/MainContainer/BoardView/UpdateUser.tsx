@@ -3,7 +3,7 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Toolbar, TextField, Button } from '@material-ui/core';
 import axios from 'axios';
 import { withLoginContext, ILoginStore } from '../../../contexts/LoginContext';
-import { ICardModel, IPhotoModel, IMemberModel, IAlarmModel } from '../../../constance/models';
+import { ICardModel, IPhotoModel, IMemberModel} from '../../../constance/models';
 
 /**
  * @author:chaMinju
@@ -129,7 +129,7 @@ interface IProps {
         bootstrapFormLabel: string;
         input: string;
     }
-    alarm:IAlarmModel
+    
 }
 
 interface IState {
@@ -190,6 +190,8 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
             })
          })
 
+         
+
         
         this.onChangeFile = this.onChangeFile.bind(this);
         this.submit = this.submit.bind(this);
@@ -198,13 +200,7 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
         this.doChangechepw = this.doChangechepw.bind(this);
         
     }
-    public componentDidMount(){
-        const data = new FormData;
-        data.append("actor_id", this.props.alarm.actor_id.id)
-        axios.post("http://localhost:8081/alarms/setAlarm", data).then(response=>{
-            alert("success!!")
-        })
-    }
+    
     
     public render() {
         

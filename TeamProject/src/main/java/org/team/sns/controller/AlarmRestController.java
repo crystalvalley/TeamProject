@@ -1,6 +1,10 @@
 package org.team.sns.controller;
 
+import java.security.Principal;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,14 +28,16 @@ public class AlarmRestController {
 	AlarmRepository ar;
 	
 	
-	@PostMapping("/setAlarms")
-	public boolean setAlarms(Alarm alarm) {
+	@GetMapping("/requestAlarms")
+	public List<Alarm> requestAlarms(Principal principal){
 		
-		System.out.println("들어왔습니다.");
-		return true;
+		List<Alarm> list = ar.requestAlarms(principal);
+		System.out.println(list);
+		return list;
+	}
 	}
 	
 	
 	
 	
-}
+

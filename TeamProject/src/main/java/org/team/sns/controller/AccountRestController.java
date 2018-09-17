@@ -21,6 +21,7 @@ import org.team.sns.persistence.ReplyRepositorympl;
 import org.team.sns.service.DropboxService;
 import org.team.sns.service.MemberServiceImpl;
 import org.team.sns.service.SecurityUserServiceImpl;
+import org.team.sns.service.TestServiceImpl;
 import org.team.sns.vo.RestMsgObject;
 
 import java.util.List;
@@ -49,6 +50,9 @@ public class AccountRestController {
 	private BoardRepositoryImpl bs;
 	@Autowired
 	private ReplyRepository rr;
+	
+	@Autowired
+	private TestServiceImpl ts;
 
 	@GetMapping("/idCheck")
 	public RestMsgObject idCheck(String _id) {
@@ -87,7 +91,9 @@ public class AccountRestController {
 		if (principal != null) {
 			member = mr.findById("testid").get();
 		} else {
-			return null;
+			member = new Member();
+			member.setId("FAILED LOGIN");
+			return member;
 		}
 		return member;
 	}
@@ -179,5 +185,9 @@ public class AccountRestController {
 		member = mr.findById("testid").get();
 		System.out.println("유저이름찾기" + member.getUsername());
 		return member.getUsername();
+	}
+	@GetMapping("/test")
+	public void test(String id,String pw,String email, String name) {
+		ts.test(id, pw, email, name);
 	}
 }

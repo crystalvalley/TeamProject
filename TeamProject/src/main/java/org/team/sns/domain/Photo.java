@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * 
@@ -28,7 +29,8 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "Photos")
-@JsonIgnoreProperties({"ownerBoard","ownerCard"})
+@JsonIgnoreProperties({"ownerBoard"})
+@ToString(exclude= {"ownerBoard"})
 public class Photo {
 
 	@Id
@@ -43,9 +45,5 @@ public class Photo {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ownerBoard", referencedColumnName = "board_id")
 	private Board ownerBoard;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ownerCard", referencedColumnName = "Card_id")
-	private Card ownerCard;
 	
 }
