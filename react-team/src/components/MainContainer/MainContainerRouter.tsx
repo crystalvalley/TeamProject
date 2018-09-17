@@ -10,10 +10,7 @@ import PersonalPage from './BoardView/PersonalPage';
 import RTCTest from './BoardView/RTCTest';
 import ChattingContainer from '../Chatting/ChattingContainer';
 import TestCode from './TestCode';
-
-
-
-
+import Allmembers from './FriendList/FriendList/Allmembers';
 
 /**
  * @author:ParkHyeokJoon
@@ -70,10 +67,8 @@ class MainContainerRouter extends React.Component<IProps> {
                 <div className={classes.toolbar} />
                 <div className={classes.toolbar} />
                 <Switch>
-                    <Route path="/Test2" component={TestCode} />
-                    <Route path="/Test" component={RTCTest} />
                     <Route path="/PersonalPage" component={PersonalPage} />
-                    <Route path="/GroupPage" component={GroupPage} />
+                    <Route path="/GroupPage" component={GroupPage} />                                
                     <Route path="/listControl" component={ListController} />
                     <Route path="/AllFriends" component={AllFriends} />
                     <Route path="/userUpdate" component={UpdateUser} />

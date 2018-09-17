@@ -27,11 +27,13 @@ public class NetworkServiceImpl implements NetworkService{
 	@Override
 	public void friendRequest(String memberid, String target) {
 		// TODO Auto-generated method stub		
+		System.out.println("Impl까지??");
 		Networking net = new Networking();
 		net.setMember(mr.findById(memberid).get());
 		net.setTarget(mr.findById(target).get());
 		net.setType("FriendRequest");
 		nr.save(net);
+		acceptFriend(target,memberid);
 	}
 
 	@Override
@@ -59,8 +61,7 @@ public class NetworkServiceImpl implements NetworkService{
 		net.setMember(mr.findById(memberid).get());
 		net.setTarget(mr.findById(target).get());
 		net.setType("Follow");
-		nr.save(net);
-		
+		nr.save(net);		
 	}
 
 	@Override

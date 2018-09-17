@@ -79,23 +79,23 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
         );
     }
     private addFriend(memberid: string) {
-        axios.get("http://localhost:8081/networks/requestNetwork", {
+        alert(memberid + "를 친구 추가");
+        axios.get("http://localhost:8081/networks/requestFriend", {
             params: {
                 target: memberid
             }
         })
     }
     private delFriend(memberid: string) {
-        // 1. axios로 controller로 정보를 전송
-        // 친구 삭제니까 network(인맥? 친구나 팔로우 등등 관리)
+        alert(memberid + "를 친구 삭제");
         axios.get("http://localhost:8081/networks/delFriend", {
             params: {
                 target: memberid
             }
         }).then((result) => {
-            // 갱신
             this.refresh();
         })
+
     }
     private addFollow(memberid: string) {
         axios.get("http://localhost:8081/networks/addFollow", {

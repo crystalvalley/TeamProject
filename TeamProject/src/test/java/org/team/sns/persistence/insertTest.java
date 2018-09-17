@@ -56,8 +56,29 @@ public class insertTest {
 
 	@Test
 	public void searchbycontentTest() {
-		ns.friendRequest("testid1", "hamkegaja");
-		ns.acceptFriend("hamkegaja", "testid1");
-		
+		Member member2 = new Member();
+		member2.setId("testid");
+		member2.setPassword("12345678");
+		member2.setEmail("test@gmail.com");
+		member2.setUsername("testman");
+		sus.createUser(member2);
+		ms.signup(member2);			
+		for(int i=1;i<5;i++) {
+			Member member = new Member();
+			member.setId("testid"+i);
+			member.setPassword("12345678");		
+			member.setEmail("test@gmail.com");
+			member.setUsername("testman"+i);
+			sus.createUser(member);
+			ms.signup(member);			
+		}
+		ns.friendRequest("testid", "kmj1");
+		ns.friendRequest("testid", "kmj2");
+		ns.friendRequest("testid", "kmj3");
+		ns.friendRequest("testid", "kmj4");
+		ns.acceptFriend("kmj1", "testid");
+		ns.acceptFriend("kmj2", "testid");
+		ns.acceptFriend("kmj3", "testid");
+		ns.acceptFriend("kmj4", "testid");
 	}
 }
