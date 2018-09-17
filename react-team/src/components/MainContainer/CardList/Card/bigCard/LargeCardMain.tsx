@@ -25,6 +25,7 @@ import EmotionBox from '../smallCard/EmotionBox';
 import ReplyList from './ReplyList';
 import Scrollbars from 'react-custom-scrollbars';
 import WriterClickMenu from '../smallCard/WriterClickMenu';
+import ReplyEditor from './ReplyEditor';
 
 
 /**
@@ -294,7 +295,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
           />
         </CardActions>
         <div className={classes.replyBox}>
-          {/* editor자리 */}
+          <ReplyEditor />
           <IconButton
             className={classnames(classes.expand, {
               [classes.expandOpen]: this.state.expanded

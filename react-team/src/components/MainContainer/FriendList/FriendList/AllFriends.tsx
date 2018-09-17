@@ -1,23 +1,24 @@
 import * as React from 'react';
 import { GridList, GridListTile } from '@material-ui/core';
 import { IMemberModel } from '../../../../constance/models';
-import { ILoginStore, withLoginContext } from '../../../../contexts/LoginContext';
-import Onetile from './Onetile';
-import axios from 'axios';
+import { INetworkStore, withNetworkContext } from '../../../../contexts/NetworkContext';
+import AllFriendtstile from './AllFriendtstile';
+
+// import axios from 'axios';
 
 /**
  * @author:Kim MinJeong
  * @since:2018.08.28
  * @version:2018.09.06
- * 모든 사람들 목록
+ * 모든 사람들 목록(Onetile.tsx 컴포넌트와 함께)
  */
 
 interface IState {
     friends: IMemberModel[],
 }
 
-class AllFriends extends React.Component<ILoginStore, IState>{
-    constructor(props: ILoginStore) {
+class AllFriends extends React.Component<INetworkStore, IState>{
+    constructor(props: INetworkStore) {
         super(props);
         this.state = {
             friends: [
@@ -32,31 +33,17 @@ class AllFriends extends React.Component<ILoginStore, IState>{
         }
     }
 
-    public componentDidMount() {
-        const axiosInstance = axios.create({
-            headers: {
-                'Cache-Control': 'no-cache'
-            }
-        })
-        axiosInstance.get("http://localhost:8081/members/members").then((result)=>{
-            this.setState({
-                friends : result.data
-            })
-        })
-    }
-
     public render() {
         return (
             <GridList cols={3} cellHeight={300}>
                 {
-                    this.state.friends.map((friend, index) => {
+                    this.props.friendList.map((friend, index) => {
                         return (
                             <GridListTile
-                                key={index}
-                                
+                                key={index}                                
                             >
-                                <Onetile
-                                    friendInfo={friend}
+                                <AllFriendtstile
+                                    friendInfo={friend}                                               
                                 />
                             </GridListTile>
                         );
@@ -66,4 +53,4 @@ class AllFriends extends React.Component<ILoginStore, IState>{
         );
     }
 }
-export default withLoginContext((AllFriends));
+export default withNetworkContext(AllFriends);

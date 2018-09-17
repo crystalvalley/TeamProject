@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Tag;
 import org.team.sns.persistence.BoardRepository;
@@ -63,7 +64,10 @@ public class BoardRestController {
 	}
 
 	@PostMapping("/writeBoard")
-	public void writeBoard(Board board, Principal principal) {
+	public void writeBoard(Board board, Principal principal,MultipartFile[] image) {
+		System.out.println(image[0].getOriginalFilename());
+		System.out.println(image[1].getOriginalFilename());
+		System.out.println(image[2].getOriginalFilename());
 		// board.setWriter(mr.findById("testid").get());
 		board.setWriter(mr.findById("testid").get());
 		bs.saveBoard(board);
@@ -114,10 +118,13 @@ public class BoardRestController {
 	}
 
 	@GetMapping("/getById")
-	public List<Board> getById(Principal principal) {
-		List<Board> list = br.getBoardsByUserId(principal.getName());
-		System.out.println("들어왔따.");
-		System.out.println(list);
-		return list;
-	}
+
+	public List<Board> getById(Principal principal){
+	List<Board> list = br.getBoardsByUserId("testid");
+	System.out.println("들어왔따.");
+	System.out.println(list);
+	return list;
+
+	
+}
 }

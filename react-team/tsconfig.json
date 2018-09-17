@@ -26,5 +26,6 @@
     "webpack",
     "jest",
     "src/setupTests.ts"
-  ]
+  ],
+  "typeRoots": [ "./node_modules/deepstream.io-client.js/src/client.d.ts" ]
 }

@@ -26,8 +26,14 @@ public class NetworkController {
 	NetworkServiceImpl ns;
 	
 	@GetMapping("/requestFriend")
-	public void requestFrien(Principal principal, String target) {
+	public void requestFriend(Principal principal, String target) {
+		System.out.println("친구추가들어옴");
 		ns.friendRequest("testid", target);
+	}
+	
+	@GetMapping("/delFriend")
+	public void delFreind(Principal principal, String target) {
+		ns.delFriend("testid", target);
 	}
 	
 	@GetMapping("/getNetworks")
@@ -49,6 +55,11 @@ public class NetworkController {
 	@GetMapping("/addBlock")
 	public void addBlock(Principal principal, String target) {
 		ns.addBlock("testid", target);
+	}
+	// 2.axios로 보낸 정보를 받아줄 Controller
+	@GetMapping("/delFriend")
+	public void delFriend(Principal principal, String target) {
+		ns.delFriend("testid", target);
 	}
 
 }

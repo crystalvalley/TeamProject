@@ -40,7 +40,4 @@ public class Sound {
 	@JoinColumn(name = "replySound", referencedColumnName = "Reply_id")
 	private Reply soundReply;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "CardSound", referencedColumnName = "sender_id")
-	private Card soundCard;
 }

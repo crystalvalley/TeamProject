@@ -2,11 +2,12 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
 import { EditorState } from 'draft-js';
 import Dropzone from 'react-dropzone';
+import ImageList from './EditorImage/ImageList';
 
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.08.20
- * @version : 2018.09.09
+ * @version : 2018.09.14
  */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -31,7 +32,6 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     photos: {
         display: "flex",
         minHeight: "50px",
-        flexGrow: 1,
         border: "1px solid black",
         margin: "5px",
         flexDirection: "column"
@@ -49,19 +49,15 @@ interface IProps {
     title: string;
     editorState: EditorState;
     writer: string;
-}
-
-interface IState {
     files: File[];
+    deleteImage(index: number): void;
+    onDrop(files: File[]): void;
 }
 
-class EditorMenu extends React.Component<IProps, IState> {
+
+class EditorMenu extends React.Component<IProps> {
     constructor(props: IProps) {
         super(props);
-        this.state = {
-            files: []
-        }
-        this.onDrop = this.onDrop.bind(this);
     }
     public render() {
         const { classes } = this.props
@@ -83,26 +79,18 @@ class EditorMenu extends React.Component<IProps, IState> {
                     className={classes.photos}
                 >
                     <Dropzone
-                        onDrop={this.onDrop}
+                        style={{ width: "100%" }}
+                        onDrop={this.props.onDrop}
                     >
                         <p>Drop here</p>
                     </Dropzone>
-                    <aside>
-                        <h2>dropped files</h2>
-                        <ul>
-                            {
-                                this.state.files.map(f => <li key={f.name}>{f.name} - {f.size} bytes</li>)
-                            }
-                        </ul>
-                    </aside>
                 </div>
+                <ImageList
+                    deleteImage={this.props.deleteImage}
+                    files={this.props.files}
+                />
             </div>
         );
-    }
-    private onDrop(files: File[]) {
-        this.setState({
-            files
-        })
     }
 }
 

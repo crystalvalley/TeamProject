@@ -6,7 +6,7 @@ import axios from 'axios';
 /**
  * @author:ParkHyeokJoon
  * @since : 2018.09.08
- * @version : 2018.09.08
+ * @version : 2018.09.15
  */
 // 채팅 파트 추가 필요
 export interface INetworkStore {
@@ -16,7 +16,7 @@ export interface INetworkStore {
     friendRequest: IMemberModel[];
     followList: IMemberModel[];
     follwerList: IMemberModel[];
-    loginedId : IMemberModel;
+    loginedId: IMemberModel;
     addFriend(id: string): void;
     delFriend(id: string): void;
     addFollow(id: string): void;
@@ -30,10 +30,10 @@ const NetworkContext = React.createContext<INetworkStore>({
     friendRequest: [],
     followList: [],
     follwerList: [],
-    loginedId:{
-        id:"",
-        username:"",
-        profileImg:""
+    loginedId: {
+        id: "",
+        username: "",
+        profileImg: ""
     },
     addFriend: (id: string) => { return },
     delFriend: (id: string) => { return },
@@ -58,7 +58,7 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
             friendRequest: [],
             followList: [],
             follwerList: [],
-            loginedId:this.props.logined,
+            loginedId: this.props.logined,
             addFriend: this.addFriend,
             delFriend: this.delFriend,
             addFollow: this.addFollow,
@@ -71,7 +71,7 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
         this.refresh();
     }
     public render() {
-        const value={...this.state,...this.props.logined}
+        const value = { ...this.state, ...this.props.logined }
         return (
             <NetworkContext.Provider value={value}>
                 {this.props.children}
@@ -79,7 +79,8 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
         );
     }
     private addFriend(memberid: string) {
-        axios.get("http://localhost:8081/networks/requestNetwork", {
+        alert(memberid + "를 친구 추가");
+        axios.get("http://localhost:8081/networks/requestFriend", {
             params: {
                 target: memberid
             }
@@ -87,6 +88,14 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
     }
     private delFriend(memberid: string) {
         alert(memberid + "를 친구 삭제");
+        axios.get("http://localhost:8081/networks/delFriend", {
+            params: {
+                target: memberid
+            }
+        }).then((result) => {
+            this.refresh();
+        })
+
     }
     private addFollow(memberid: string) {
         axios.get("http://localhost:8081/networks/addFollow", {

@@ -22,7 +22,7 @@ import com.dropbox.core.v2.files.Metadata;
  * 
  * @author ParkHyeokjoon
  * @since 2018.09.02
- * @version 2018.09.02
+ * @version 2018.09.17
  *
  */
 @Service
@@ -32,6 +32,7 @@ public class DropboxService {
 	@Autowired
 	MemberRepository mr;
 	
+	//프로필 이미지 업로드
 	public String fileUpload(MultipartFile file,String username) throws Exception{
 		String filePath = rename(file);
 		ByteArrayInputStream bis = new ByteArrayInputStream(file.getBytes());
@@ -47,6 +48,18 @@ public class DropboxService {
 		member.setProfileImg(filePath);
 		mr.save(member);
 		return uploadMetadata.getPathLower();
+	}
+	
+	public String imageUpload(MultipartFile file,String username,int index) throws Exception{
+		String filePath = rename(file);
+		Member member = mr.findById(username).get();
+		filePath = filePath+member.getId()+index;
+		ByteArrayInputStream bis = new ByteArrayInputStream(file.getBytes());
+		Metadata uploadMetadata = dbxClientV2.files().uploadBuilder(filePath).uploadAndFinish(bis);
+		System.out.println("uploadMetadata : "+uploadMetadata.toString());
+		bis.close();
+		return uploadMetadata.getPathLower();
+		
 	}
 	
 	public void fileDownload(HttpServletResponse response,DropboxVO.Download download) throws Exception{

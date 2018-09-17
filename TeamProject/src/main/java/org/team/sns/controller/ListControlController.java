@@ -40,20 +40,6 @@ public class ListControlController {
 	@GetMapping("/getListNames")
 	public List<String> getListNames(Principal principal){
 		// return ls.getListNames("testid");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("testid");
 		return ls.getListNames("testid");
 	}
 	
