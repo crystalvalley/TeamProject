@@ -12,6 +12,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -26,7 +28,7 @@ import lombok.ToString;
 
 @Data
 @Entity
-@Table (name="Alarms")
+@Table (name="Alarm")
 @EqualsAndHashCode(of="alarmId")
 @ToString(exclude = {})
 public class Alarm {
@@ -35,8 +37,9 @@ public class Alarm {
 	@SequenceGenerator(name="seq", sequenceName="Alarms_seq", initialValue=1, allocationSize=1)
 	private int alarmId;
 	
-	@NotNull
-	private Timestamp usdate;
+	
+	@CreationTimestamp
+	private Timestamp createdDate;
 	@NotNull
 	private boolean mentioned;
 	@NotNull
@@ -51,8 +54,10 @@ public class Alarm {
 	private Member actor_id;
 	
 	
+	@ManyToOne
+	@JoinColumn(name="receiver_id", referencedColumnName="user_id", updatable = false, nullable=false)
 	@NotNull
-	private String receiver_id;
+	private Member receiver_id;
 	
 	
 }

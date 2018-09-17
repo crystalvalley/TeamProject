@@ -29,13 +29,11 @@ public class AlarmRepositoryImpl extends QuerydslRepositorySupport implements Al
 
 	@Override
 	public boolean setAlarms(Alarm alarm) {
-		
-		QAlarm qalarm = QAlarm.alarm;
-		JPQLQuery<Alarm> alarmQuery = from(alarm);
-		alarmQuery.
-		
-		return false;
+		System.out.println("여기 들어와서 어쩔건데?");
+		return true;
 	}
+
+	
 
 	
 	

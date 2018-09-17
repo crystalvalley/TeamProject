@@ -22,11 +22,8 @@ import org.team.sns.domain.Reply;
 import org.team.sns.domain.Share;
 import org.team.sns.domain.Strategy;
 import org.team.sns.domain.Tag;
-
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
-
-import lombok.extern.java.Log;
 
 /**
  * 

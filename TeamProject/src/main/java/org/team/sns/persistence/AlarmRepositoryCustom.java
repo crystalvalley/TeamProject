@@ -13,4 +13,5 @@ import org.team.sns.domain.Alarm;
 
 public interface AlarmRepositoryCustom{
 	public boolean setAlarms(Alarm alarm);
+	
 }
