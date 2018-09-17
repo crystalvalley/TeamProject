@@ -30,12 +30,7 @@ public class NetworkController {
 		System.out.println("친구추가들어옴");
 		ns.friendRequest("testid", target);
 	}
-	
-	@GetMapping("/delFriend")
-	public void delFreind(Principal principal, String target) {
-		ns.delFriend("testid", target);
-	}
-	
+		
 	@GetMapping("/getNetworks")
 	public HashMap<String,List<Member>> getNetworks(Principal principal){
 		HashMap<String,List<Member>> result = new HashMap<>();

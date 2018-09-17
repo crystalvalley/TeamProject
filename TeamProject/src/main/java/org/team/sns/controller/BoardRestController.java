@@ -60,13 +60,11 @@ public class BoardRestController {
 	}
 	
 	@PostMapping("/writeBoard")
-	public void writeBoard(Board board, Principal principal,MultipartFile[] image) {
-		System.out.println(image[0].getOriginalFilename());
-		System.out.println(image[1].getOriginalFilename());
-		System.out.println(image[2].getOriginalFilename());
+	public void writeBoard(Board board, Principal principal,MultipartFile[] image) throws Exception {
 		// board.setWriter(mr.findById("testid").get());
 		board.setWriter(mr.findById("testid").get());
 		bs.saveBoard(board);
+		bs.setBoardImage(board, image);
 	}
 	
 	@GetMapping("/checkTag")

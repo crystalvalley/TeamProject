@@ -9,6 +9,7 @@ import FavoriteIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import FilledFavoriteIcon from "@material-ui/icons/Favorite";
 import { IFavoriteStore, withFavoriteContext } from '../../../../../contexts/FavoriteContext';
 import WriterClickMenu from './WriterClickMenu';
+import ImageViewer from './ImageViewer';
 
 
 /**
@@ -94,6 +95,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
         this.closeMenu = this.closeMenu.bind(this);
     }
     public componentDidMount() {
+        if (this.props.card.photos.length > 0) { return }
         if (this.ref!.offsetHeight > 475 && this.state.cutted === false) {
             this.setState({
                 cutted: true
@@ -116,6 +118,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                 >
                     <Avatar
                         className={classes.avatar}
+                        onClick={this.openMenu}
                         src={"http://localhost:8081/resources" + card.writer.profileImg}
                     />
                     <Typography
@@ -154,19 +157,27 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     >
                         {card.title}
                     </Typography>
-                    <CardContent
-                        className={classes.content}
-                    >
-                        <div
-                            ref={(element) => { this.ref = element }}
-                        >
-                            <Editor
-                                readOnly={true}
-                                editorState={this.state.editorState}
-                                onChange={this.editorChange}
-                            />
-                        </div>
-                    </CardContent>
+                    {
+                        this.props.card.photos.length > 0 ?
+                            <ImageViewer
+                                photos={this.props.card.photos}
+                            /> :
+                            (
+                                <CardContent
+                                    className={classes.content}
+                                >
+                                    <div
+                                        ref={(element) => { this.ref = element }}
+                                    >
+                                        <Editor
+                                            readOnly={true}
+                                            editorState={this.state.editorState}
+                                            onChange={this.editorChange}
+                                        />
+                                    </div>
+                                </CardContent>
+                            )
+                    }
                 </div>
 
                 <CardContent>

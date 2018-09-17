@@ -22,8 +22,7 @@ export interface ICardModel {
     content: string;
     // url
     sound: string;
-    // image
-    image: string;
+    photos: IPhotoModel[];
     writeDay: string;
     updateDaty: string;
     hitcount: number;

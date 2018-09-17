@@ -31,7 +31,7 @@ import lombok.ToString;
  * 
  * @author ParkHyeokjoon
  * @since 18.08.10
- * @version 18.08.30
+ * @version 18.09.17
  *
  */
 
@@ -42,8 +42,8 @@ import lombok.ToString;
 @Table(name = "Boards")
 // _id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = { "photos", "replys", "share", "writer", "sounds","mentions","tags","favorite" })
-@JsonIgnoreProperties({ "photos", "replys", "share", "sounds","mentions","tags","favorite" })
+@ToString(exclude = {"replys", "share", "writer", "sounds","mentions","tags","favorite" })
+@JsonIgnoreProperties({ "replys", "share", "sounds","mentions","tags","favorite" })
 public class Board {
 	// primary key
 	@Id

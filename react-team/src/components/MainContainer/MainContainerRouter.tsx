@@ -7,10 +7,7 @@ import AllFriends from './FriendList/FriendList/AllFriends';
 import ListController from './ListControl/ListController';
 import GroupPage from './BoardView/GroupPage';
 import PersonalPage from './BoardView/PersonalPage';
-import RTCTest from './BoardView/RTCTest';
 import ChattingContainer from '../Chatting/ChattingContainer';
-import TestCode from './TestCode';
-import Allmembers from './FriendList/FriendList/Allmembers';
 
 /**
  * @author:ParkHyeokJoon
