@@ -60,6 +60,8 @@ interface IState {
     mentionSuggest: boolean;
     sub: string;
     sS: SelectionState;
+
+    files: File[]
 }
 
 
@@ -80,6 +82,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
             focus: -1,
             hashSuggest: false,
             mentionSuggest: false,
+            files: [],
             sS: SelectionState.createEmpty("")
         }
         this.editorChange = this.editorChange.bind(this);
@@ -87,6 +90,8 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
         this.typeChange = this.typeChange.bind(this);
         this.changeTag = this.changeTag.bind(this);
         this.sendData = this.sendData.bind(this);
+        this.deleteImage = this.deleteImage.bind(this);
+        this.onDrop = this.onDrop.bind(this);
     }
 
     public render() {
@@ -131,6 +136,9 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                     className={classes.menuPart}
                 >
                     <EditorMenu
+                        onDrop={this.onDrop}
+                        files={this.state.files}
+                        deleteImage={this.deleteImage}
                         editorState={editorState}
                         title={this.state.title}
                         writer={this.props.logined.id}
@@ -150,7 +158,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
             this.state.editorState.getCurrentContent().getPlainText()
         )
         data.append("title", this.state.title);
-        data.append("writerId",this.props.logined.id)
+        data.append("writerId", this.props.logined.id)
         axios.post("http://localhost:8081/boards/writeBoard", data)
             .then((response) => {
                 // alert(response.data);
@@ -286,6 +294,19 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
             hashSuggest: false
         }, () => {
             this.typeChange(this.state.editorState)
+        })
+    }
+    private deleteImage(index: number) {
+        const files = this.state.files;
+        files.splice(index, 1);
+        this.setState({
+            files
+        })
+    }
+    private onDrop(files: File[]) {
+        const subFiles = [...this.state.files, ...files];
+        this.setState({
+            files: subFiles
         })
     }
 }
