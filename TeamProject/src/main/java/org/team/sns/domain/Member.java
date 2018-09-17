@@ -25,7 +25,7 @@ import lombok.ToString;
  * @since 18.08.10
  * @version 18.09.02
  * 
- */
+ */	
 // [ 회원 테이블 ]
 
 @Entity

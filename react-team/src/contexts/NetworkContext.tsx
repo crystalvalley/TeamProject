@@ -79,7 +79,8 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
         );
     }
     private addFriend(memberid: string) {
-        axios.get("http://localhost:8081/networks/requestNetwork", {
+        alert(memberid + "를 친구 추가");
+        axios.get("http://localhost:8081/networks/requestFriend", {
             params: {
                 target: memberid
             }
@@ -87,6 +88,14 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
     }
     private delFriend(memberid: string) {
         alert(memberid + "를 친구 삭제");
+        axios.get("http://localhost:8081/networks/delFriend", {
+            params: {
+                target: memberid
+            }
+        }).then((result) => {
+            this.refresh();
+        })
+
     }
     private addFollow(memberid: string) {
         axios.get("http://localhost:8081/networks/addFollow", {

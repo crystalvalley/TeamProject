@@ -8,6 +8,7 @@ import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFrien
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Compare from '@material-ui/icons/Compare';
 import Accessibility from '@material-ui/icons/Accessibility';
+import Book from '@material-ui/icons/Book';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
 
@@ -29,12 +30,10 @@ interface IProps {
         btnBox: string;
     },
     friends: IMemberModel;
-
 }
 
 interface IState {
     modalOpen: number;
-
 }
 
 class BtnBox extends React.Component<IProps, IState>{
@@ -54,6 +53,7 @@ class BtnBox extends React.Component<IProps, IState>{
         const writeHandler2 = () => this.openModal(1);
 
         return (
+          
             <span
                 className={classes.btnBox}
             >
@@ -72,6 +72,11 @@ class BtnBox extends React.Component<IProps, IState>{
                     <FriendListIcon />
                 </IconButton>
 
+                <IconButton>
+                    <NavLink to="/users">
+                        <Book />
+                    </NavLink>
+                </IconButton>     
 
 
                 <IconButton>
@@ -106,6 +111,7 @@ class BtnBox extends React.Component<IProps, IState>{
                     close={this.closeModal}
                 />
             </span>
+           
         );
     }
 

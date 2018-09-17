@@ -65,19 +65,19 @@ public class insertTest {
 		for(int i=1;i<5;i++) {
 			Member member = new Member();
 			member.setId("testid"+i);
-			member.setPassword("12345678");
+			member.setPassword("12345678");		
 			member.setEmail("test@gmail.com");
 			member.setUsername("testman"+i);
 			sus.createUser(member);
 			ms.signup(member);			
 		}
-		ns.friendRequest("testid", "testid1");
-		ns.friendRequest("testid", "testid2");
-		ns.friendRequest("testid", "testid3");
-		ns.friendRequest("testid", "testid4");
-		ns.acceptFriend("testid1", "testid");
-		ns.acceptFriend("testid2", "testid");
-		ns.acceptFriend("testid3", "testid");
-		ns.acceptFriend("testid4", "testid");
+		ns.friendRequest("testid", "kmj1");
+		ns.friendRequest("testid", "kmj2");
+		ns.friendRequest("testid", "kmj3");
+		ns.friendRequest("testid", "kmj4");
+		ns.acceptFriend("kmj1", "testid");
+		ns.acceptFriend("kmj2", "testid");
+		ns.acceptFriend("kmj3", "testid");
+		ns.acceptFriend("kmj4", "testid");
 	}
 }

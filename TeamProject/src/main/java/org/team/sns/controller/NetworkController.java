@@ -26,8 +26,14 @@ public class NetworkController {
 	NetworkServiceImpl ns;
 	
 	@GetMapping("/requestFriend")
-	public void requestFrien(Principal principal, String target) {
+	public void requestFriend(Principal principal, String target) {
+		System.out.println("친구추가들어옴");
 		ns.friendRequest("testid", target);
+	}
+	
+	@GetMapping("/delFriend")
+	public void delFreind(Principal principal, String target) {
+		ns.delFriend("testid", target);
 	}
 	
 	@GetMapping("/getNetworks")

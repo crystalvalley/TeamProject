@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import UpdateUser from './UpdateUser';
 import { DropResult } from 'react-beautiful-dnd';
+
 import { ISearchState } from '../../../contexts/SearchContext';
 import { IFavoriteStore } from '../../../contexts/FavoriteContext';
 
