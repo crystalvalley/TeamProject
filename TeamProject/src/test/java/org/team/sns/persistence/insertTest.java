@@ -13,7 +13,7 @@ import org.team.sns.service.MemberServiceImpl;
 import org.team.sns.service.NetworkServiceImpl;
 import org.team.sns.service.SecurityUserService;
 
-@RunWith(SpringRunner.class)
+/*@RunWith(SpringRunner.class)
 @SpringBootTest
 public class insertTest {
 	@Autowired
@@ -39,7 +39,7 @@ public class insertTest {
 	@Autowired
 	RoomRepository rr;
 	@Autowired
-	RoomMemberRepository rmr;
+	RoomMemberRepository rmr;*/
 	
 	/*
 	 * board에 적당히 값 넣어두는 test
@@ -54,7 +54,7 @@ public class insertTest {
 	 * System.out.println(br.getBoardsByTitle("5")); }
 	 */
 
-	@Test
+/*	@Test
 	public void searchbycontentTest() {
 		Member member2 = new Member();
 		member2.setId("testid");
@@ -82,3 +82,4 @@ public class insertTest {
 		ns.acceptFriend("kmj4", "testid");
 	}
 }
+*/

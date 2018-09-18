@@ -12,15 +12,14 @@ import Book from '@material-ui/icons/Book';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
 import AlarmBadge from './AlarmBadge';
-
-
+import Mail from '@material-ui/icons/Mail';
+import Writer2 from '../MainContainer/FriendList/FriendList/Writer2';
 
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.28
  * @version:2018.08.28
  */
-
 
 const style: StyleRulesCallback = (theme: Theme) => ({
 
@@ -31,6 +30,7 @@ interface IProps {
         btnBox: string;
     },
     friends: IMemberModel;
+  
 }
 interface IState {
     modalOpen: number;
@@ -50,12 +50,23 @@ class BtnBox extends React.Component<IProps, IState>{
         const { modalOpen } = this.state;
         const writeHandler = () => this.openModal(0);
         const writeHandler2 = () => this.openModal(1);
+        const writeHandler3 = () => this.openModal(2);
+  
 
         return (
-          
             <span
                 className={classes.btnBox}
-            >
+            >                
+                <IconButton
+                    onClick={writeHandler3}
+                >
+                    <Mail />
+                </IconButton>
+                <Writer2
+                      open={modalOpen === 2}
+                      onClose={this.closeModal}
+                />
+
                 <IconButton
                     onClick={writeHandler}
                 >
@@ -64,7 +75,8 @@ class BtnBox extends React.Component<IProps, IState>{
                 <Writer
                     open={modalOpen === 0}
                     onClose={this.closeModal}
-                />
+                />      
+
                 <IconButton
                     onClick={writeHandler2}
                 >
@@ -72,7 +84,7 @@ class BtnBox extends React.Component<IProps, IState>{
                 </IconButton>
 
                 <IconButton>
-                    <NavLink to="/users">
+                    <NavLink to="/Users">
                         <Book />
                     </NavLink>
                 </IconButton>     
@@ -111,7 +123,7 @@ class BtnBox extends React.Component<IProps, IState>{
                     <AlarmBadge count="2"/>
                 </IconButton>
             </span>
-           
+
         );
     }
 

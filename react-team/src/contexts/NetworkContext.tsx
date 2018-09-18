@@ -84,8 +84,11 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
             params: {
                 target: memberid
             }
+        }).then((result) => {
+            this.refresh();
         })
     }
+    
     private delFriend(memberid: string) {
         alert(memberid + "를 친구 삭제");
         axios.get("http://localhost:8081/networks/delFriend", {
