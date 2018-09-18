@@ -47,7 +47,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     username: {
         color: "black"
-    }
+    },
 });
 
 interface IProps {
@@ -74,6 +74,7 @@ interface IState {
 class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
     private anchor: HTMLSpanElement | null;
     private ref: HTMLDivElement | null;
+    private imgWidth : HTMLDivElement|null;
     constructor(props: IProps & IFavoriteStore) {
         super(props);
         let sub: EditorState;
@@ -149,6 +150,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     />
                 </div>
                 <div
+                    ref={(element)=>{this.imgWidth = element}}
                     className={classes.cardBody}
                 >
                     <Typography
@@ -160,6 +162,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     {
                         this.props.card.photos.length > 0 ?
                             <ImageViewer
+                                width={this.imgWidth!==undefined?this.imgWidth!.offsetWidth-24:0}
                                 photos={this.props.card.photos}
                             /> :
                             (
@@ -179,7 +182,6 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                             )
                     }
                 </div>
-
                 <CardContent>
                     <EmotionBox
                         id={this.props.card.id}
