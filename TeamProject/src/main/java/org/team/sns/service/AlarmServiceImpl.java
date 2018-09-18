@@ -50,6 +50,7 @@ public class AlarmServiceImpl implements AlarmService {
 		alarm.setReceiver_id(mr.findById(target).get());
 		alarm.setReqFriendship(true);
 		ar.save(alarm);
+		System.out.println("알람 만들어진거봅시다.");
 		return true;
 		
 	}

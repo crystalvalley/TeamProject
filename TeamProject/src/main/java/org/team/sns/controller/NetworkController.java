@@ -38,6 +38,7 @@ public class NetworkController {
 		System.out.println("친구추가들어옴");
 		//ns.friendRequest("testid", target);
 		as.saveFriendRequest(target, principal);
+		
 	}
 	
 	

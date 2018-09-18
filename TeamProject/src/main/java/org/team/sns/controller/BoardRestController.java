@@ -73,7 +73,7 @@ public class BoardRestController {
 		bs.saveBoard(board);
 		// 보드를 날릴 때 알람도 같이 날리게 하려고 이렇게 짬.
 		// 이거 서비스단으로 나눠서 여기는 연결부분만 보이게
-		as.savementionAlarms(board, principal);
+		//as.savementionAlarms(board, principal);
 	}
 
 	@GetMapping("/checkTag")

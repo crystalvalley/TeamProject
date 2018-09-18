@@ -41,13 +41,14 @@ class AlarmBadge extends React.Component<IProps, IState>{
   private getAlarmCount(){
     Axios.get("http://localhost:8081/alarms/requestAlarms")
       .then((response) => {
-        this.setState=({
+        alert("아직 실험")
           
         })
-      })
-  }
+      }
+    }
+  
 
-}
+
 
 
 
