@@ -73,8 +73,11 @@ class CardListContainer extends React.Component<IProps, IState> {
         this.scrollEnd = this.scrollEnd.bind(this);
         this.favoriteCheck = this.favoriteCheck.bind(this);
         this.checkArrow = this.checkArrow.bind(this);
+        
     }
+    
     public componentDidMount() {
+        
         axios.get("http://localhost:8081/lists/getListNames")
             .then((result) => {
                 this.setState({
@@ -298,6 +301,8 @@ class CardListContainer extends React.Component<IProps, IState> {
             starting
         })
     }
+
+    
 }
 
 export default withStyles(style)(CardListContainer)

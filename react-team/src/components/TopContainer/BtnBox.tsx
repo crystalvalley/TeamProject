@@ -11,6 +11,7 @@ import Accessibility from '@material-ui/icons/Accessibility';
 import Book from '@material-ui/icons/Book';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
+import AlarmBadge from './AlarmBadge';
 
 
 
@@ -75,7 +76,11 @@ class BtnBox extends React.Component<IProps, IState>{
                         <Book />
                     </NavLink>
                 </IconButton>     
-
+                <IconButton>
+                    <NavLink to="/Users">
+                        <AccountCircle />
+                    </NavLink>
+                </IconButton>
 
                 <IconButton>
                     <NavLink to="/userUpdate">
@@ -102,6 +107,9 @@ class BtnBox extends React.Component<IProps, IState>{
                     openf={writeHandler2}
                     close={this.closeModal}
                 />
+                <IconButton>
+                    <AlarmBadge count="2"/>
+                </IconButton>
             </span>
            
         );

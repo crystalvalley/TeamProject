@@ -129,7 +129,7 @@ interface IProps {
         bootstrapFormLabel: string;
         input: string;
     }
-
+    
 }
 
 interface IState {
@@ -155,6 +155,7 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
             chepw: "",
             pw: "",
         }
+        
         axios.post("http://localhost:8081/account/selectUsername")
             .then((response) => {
                 // alert(response.data);
@@ -171,6 +172,8 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
         this.doChangechepw = this.doChangechepw.bind(this);
 
     }
+    
+    
     public render() {
 
         const { classes, logined } = this.props;
@@ -286,5 +289,7 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                 alert(response.data + "돌아옴");
             })
     }
+
+    
 }
 export default withLoginContext(withStyles(style)(UpdateUser));

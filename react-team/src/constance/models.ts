@@ -49,6 +49,7 @@ export interface IReplyModel {
     writeDate: string;
     updateDate: string;
 }
+<<<<<<< HEAD
 export interface IConditionModel {
     strategy: string;
     target: string;
@@ -63,4 +64,19 @@ export interface IRoomModel {
 
 export interface IRoomMemberModel{
     member : IMemberModel;
+=======
+export interface IConditionModel{
+    strategy : string;
+    target : string;
+}
+
+export interface IAlarmModel{
+        alarmId: string
+        usdate: string
+        mentioned: boolean
+        reqFriendship: boolean
+        checked: boolean
+        actor_id: IMemberModel
+        receiver: IMemberModel
+>>>>>>> Alarm
 }
