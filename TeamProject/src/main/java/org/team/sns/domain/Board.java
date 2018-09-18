@@ -58,6 +58,7 @@ public class Board {
 	@NotNull
 	private String title; // 글의 제목
 	@NotNull
+	@Column(columnDefinition="text")
 	private String content; // 글의 내용
 
 	// 생성시 시간으로 자동 설정

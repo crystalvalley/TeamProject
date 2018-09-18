@@ -37,7 +37,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "id")
 public class Reply {
 	@Id
-	@Column(name="Reply_id")
+	@Column(name="reply_id")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@SequenceGenerator(name="seq",sequenceName="Replys_seq", initialValue=1, allocationSize=1)	
 	private int id; //참조 시퀀스
