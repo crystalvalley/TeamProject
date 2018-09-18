@@ -49,7 +49,7 @@ public class Reply {
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	// writer_id라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)
-	@JoinColumn(name = "writer_id", referencedColumnName = "user_id",updatable=false,nullable=false)
+	@JoinColumn(name = "writer_id", referencedColumnName = "user_id",updatable=false,nullable=true)
 	private Member writer;
 	
 	@NotNull

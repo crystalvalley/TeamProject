@@ -70,13 +70,11 @@ public class insertTest {
 			sus.createUser(member);
 			ms.signup(member);
 		}
-		ns.friendRequest("testid", "kmj1");
-		ns.friendRequest("testid", "kmj2");
-		ns.friendRequest("testid", "kmj3");
-		ns.friendRequest("testid", "kmj4");
-		ns.acceptFriend("kmj1", "testid");
-		ns.acceptFriend("kmj2", "testid");
-		ns.acceptFriend("kmj3", "testid");
-		ns.acceptFriend("kmj4", "testid");
+		ns.friendRequest("testid", "testid1");
+		ns.friendRequest("testid", "testid2");
+		ns.friendRequest("testid", "testid3");
+		ns.acceptFriend("testid1", "testid");
+		ns.acceptFriend("testid2", "testid");
+		ns.acceptFriend("testid3", "testid");
 	}
 }
