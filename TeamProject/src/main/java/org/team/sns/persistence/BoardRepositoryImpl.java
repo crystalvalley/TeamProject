@@ -335,15 +335,15 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		QBoard board = QBoard.board;
 		QMention mention = QMention.mention;
 		JPQLQuery<Board> query = from(board);
-		JPQLQuery<Mention> subQuery = from(mention);
-		subQuery.where(mention.mentioned.id.eq(keyword.replaceFirst("@", "")));
 		query.select(board);
-		query.where(board.mentions.contains(subQuery));
 		query.join(board.mentions,mention);
+		query.where(mention.mentioned.id.eq(keyword.replaceFirst("@", "")));
+		query.where(mention.mentionBoard.eq(board));
 		//차단 대상은 제외
 		query.where(board.writer.notIn(this.getBlockList(loginId)));
 		query.offset(5*page);
 		query.limit(5);
+		System.out.println(query.fetch());
 		return query.fetch();
 	}
 	// 차단목록
