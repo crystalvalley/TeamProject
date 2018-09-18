@@ -5,15 +5,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.team.sns.domain.Networking;
-import org.team.sns.domain.Room;
-import org.team.sns.domain.RoomMember;
+import org.team.sns.domain.Member;
 import org.team.sns.service.BoardService;
 import org.team.sns.service.MemberServiceImpl;
 import org.team.sns.service.NetworkServiceImpl;
 import org.team.sns.service.SecurityUserService;
 
-/*@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class insertTest {
 	@Autowired
@@ -39,8 +37,8 @@ public class insertTest {
 	@Autowired
 	RoomRepository rr;
 	@Autowired
-	RoomMemberRepository rmr;*/
-	
+	RoomMemberRepository rmr;
+
 	/*
 	 * board에 적당히 값 넣어두는 test
 	 * 
@@ -54,7 +52,7 @@ public class insertTest {
 	 * System.out.println(br.getBoardsByTitle("5")); }
 	 */
 
-/*	@Test
+	@Test
 	public void searchbycontentTest() {
 		Member member2 = new Member();
 		member2.setId("testid");
@@ -62,15 +60,15 @@ public class insertTest {
 		member2.setEmail("test@gmail.com");
 		member2.setUsername("testman");
 		sus.createUser(member2);
-		ms.signup(member2);			
-		for(int i=1;i<5;i++) {
+		ms.signup(member2);
+		for (int i = 1; i < 5; i++) {
 			Member member = new Member();
-			member.setId("testid"+i);
-			member.setPassword("12345678");		
+			member.setId("testid" + i);
+			member.setPassword("12345678");
 			member.setEmail("test@gmail.com");
-			member.setUsername("testman"+i);
+			member.setUsername("testman" + i);
 			sus.createUser(member);
-			ms.signup(member);			
+			ms.signup(member);
 		}
 		ns.friendRequest("testid", "kmj1");
 		ns.friendRequest("testid", "kmj2");
@@ -82,4 +80,3 @@ public class insertTest {
 		ns.acceptFriend("kmj4", "testid");
 	}
 }
-*/

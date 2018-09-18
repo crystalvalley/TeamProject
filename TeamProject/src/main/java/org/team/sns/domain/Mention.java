@@ -1,8 +1,6 @@
 package org.team.sns.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -23,7 +21,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @Table(name = "Mentions")
 @IdClass(MentionPK.class)
-//_id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of= {"mentioned","mentionBoard","mentionReply"})
 public class Mention {	
 	@Id
@@ -39,6 +36,6 @@ public class Mention {
 	@Id
 	@ManyToOne
 	@JoinColumn(name="reply_id",referencedColumnName="reply_id",updatable=false,nullable=true)
-	private Board mentionReply;
+	private Reply mentionReply;
 
 }
