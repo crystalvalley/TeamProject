@@ -64,17 +64,13 @@ public class BoardRestController {
 	}
 
 	@PostMapping("/writeBoard")
-	public void writeBoard(Board board, Principal principal,MultipartFile[] image) {
-		System.out.println(image[0].getOriginalFilename());
-		System.out.println(image[1].getOriginalFilename());
-		System.out.println(image[2].getOriginalFilename());
-		// board.setWriter(mr.findById("testid").get());
-		board.setWriter(mr.findById("testid").get());
-		bs.saveBoard(board);
-		// 보드를 날릴 때 알람도 같이 날리게 하려고 이렇게 짬.
-		// 이거 서비스단으로 나눠서 여기는 연결부분만 보이게
-		//as.savementionAlarms(board, principal);
-	}
+	   public void writeBoard(Board board, Principal principal,MultipartFile[] image) throws Exception {
+	      // board.setWriter(mr.findById("testid").get());
+	      board.setWriter(mr.findById("testid").get());
+	      bs.saveBoard(board);
+	      bs.setBoardImage(board, image);
+	      as.savementionAlarms(board, principal);
+	   }
 
 	@GetMapping("/checkTag")
 	public List<Tag> checkTag(String hashTag) {

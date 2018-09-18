@@ -30,9 +30,9 @@ public class AlarmRestController {
 	
 	@GetMapping("/requestAlarms")
 	public List<Alarm> requestAlarms(Principal principal){
-		
+		System.out.println("알람받아오기 들어");
 		List<Alarm> list = ar.requestAlarms(principal);
-		System.out.println(list);
+		System.out.println("알람리스트 :"+list);
 		return list;
 	}
 	}

@@ -191,6 +191,8 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
          })
 
          
+        
+            
 
         
         this.onChangeFile = this.onChangeFile.bind(this);
