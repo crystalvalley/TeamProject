@@ -50,8 +50,8 @@ import ReplyEditor from './ReplyEditor';
 // flex로 한줄로맞추고 같은 height로 맞춤 
 const styles: StyleRulesCallback = (theme: Theme) => ({
   card: {
-    flexBasis: '100%',
-    width: "90vh"
+    flexBasis: '150%',
+    width: "120vh"
   },
   media: {
     height: 0,
