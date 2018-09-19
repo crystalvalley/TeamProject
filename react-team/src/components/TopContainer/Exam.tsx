@@ -74,9 +74,6 @@ class BtnBox extends React.Component<IProps, IState>{
                 >
                     <FriendListIcon />
                 </BottomNavigationAction>
-
-
-
                 <BottomNavigationAction>
                     <NavLink to="/userUpdate">
                         <AccountCircle />

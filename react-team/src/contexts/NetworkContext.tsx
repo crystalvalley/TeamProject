@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IMemberModel } from '../constance/models';
+import { IMemberModel, IMsgModel } from '../constance/models';
 import { ILoginStore, withLoginContext } from './LoginContext';
 import axios from 'axios';
 
@@ -23,6 +23,8 @@ export interface INetworkStore {
     delFollow(id: string): void;
     addBlock(id: string): void;
     refresh(): void;
+    socketRefresh():void;
+    sendMsg(sendMessage: IMsgModel): void
 }
 
 const NetworkContext = React.createContext<INetworkStore>({
@@ -40,7 +42,9 @@ const NetworkContext = React.createContext<INetworkStore>({
     addFollow: (id: string) => { return },
     delFollow: (id: string) => { return },
     addBlock: (id: string) => { return },
-    refresh: () => { return }
+    sendMsg: (sendMessage: IMsgModel) => { return },
+    refresh: () => { return },
+    socketRefresh: () => { return }
 });
 
 // 친구목록 컨테스트를 사용할 경우에는 로그인 컨텍스트도 같이 사용됨
@@ -64,7 +68,9 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
             addFollow: this.addFollow,
             delFollow: this.delFollow,
             addBlock: this.addBlock,
-            refresh: this.refresh
+            refresh: this.refresh,
+            sendMsg: this.props.sendMessage,
+            socketRefresh : this.props.socketRefesh
         }
     }
     public componentDidMount() {
@@ -88,7 +94,7 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
             this.refresh();
         })
     }
-    
+
     private delFriend(memberid: string) {
         alert(memberid + "를 친구 삭제");
         axios.get("http://localhost:8081/networks/delFriend", {

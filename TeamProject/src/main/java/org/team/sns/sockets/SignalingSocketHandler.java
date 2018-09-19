@@ -1,6 +1,5 @@
 package org.team.sns.sockets;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import org.team.sns.domain.Member;
 import org.team.sns.domain.Room;
 import org.team.sns.persistence.RoomMemberRepository;
 import org.team.sns.persistence.RoomRepository;
+import org.team.sns.vo.ClientSockets;
 import org.team.sns.vo.SignalMessage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,15 +39,16 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 	private static final String LOGIN_RESPONSE = "login-response";
 	private static final String RTC_TYPE = "rtc";
 	private static final String MSG_TYPE = "chat-msg";
+	private static final String REFRESH = "refresh";
 
 	// Jackson JSON converter
 	private ObjectMapper objectMapper = new ObjectMapper();
 
 	// Here is our Directory (MVP way)
-	// 소켓을 username을 키로 저장
-	private Map<String, WebSocketSession> clients = new HashMap<String, WebSocketSession>();
+	// 소켓을 id를 키로 저장
+	private Map<String, WebSocketSession> clients = ClientSockets.CLIENTS;
 	// 소켓ID로 유저네임 저장
-	private Map<String, String> clientIds = new HashMap<String, String>();
+	private Map<String, String> clientIds = ClientSockets.CLIENTIDS;
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -109,6 +110,8 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 			 * 
 			 * destSocket.sendMessage(new TextMessage(stringifiedJSONmsg)); }
 			 */
+		}else if(REFRESH.equalsIgnoreCase(signalMessage.getType())) {
+			this.loginProcess(session, signalMessage);
 		}
 	}
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider } from '@material-ui/core';
 import classNames from 'classnames';
-import { withVoice, IVoiceStore } from '../../contexts/VoiceRecogContext';
 import BtnBox from './BtnBox';
 import { IMemberModel } from '../../constance/models';
 import pige from '../../img/end2.png';
@@ -55,8 +54,8 @@ interface IState {
   userInfo: IMemberModel;
 }
 
-class TopBar extends React.Component<IProps & IVoiceStore, IState> {
-  constructor(props: IProps & IVoiceStore) {
+class TopBar extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       searchKeyword: "",
@@ -109,4 +108,4 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
   }
 }
 
-export default withVoice(withStyles(styles)(TopBar));
+export default withStyles(styles)(TopBar);
