@@ -13,6 +13,12 @@ import { NavLink } from 'react-router-dom';
  * @version:2018.08.24
  * 
  */
+
+/**
+ * 버튼박스 분리
+ * @author:ChaMinJu
+ * @version:2018.09.19
+ */
 const styles: StyleRulesCallback = (theme: Theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,

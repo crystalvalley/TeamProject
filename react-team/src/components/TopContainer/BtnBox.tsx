@@ -21,6 +21,13 @@ import Writer2 from '../MainContainer/FriendList/FriendList/Writer2';
  * @version:2018.08.28
  */
 
+
+/**
+ * 버튼박스 분리
+ * @author:ChaMinJu
+ * @version:2018.09.19
+ */
+
 const style: StyleRulesCallback = (theme: Theme) => ({
 
 })

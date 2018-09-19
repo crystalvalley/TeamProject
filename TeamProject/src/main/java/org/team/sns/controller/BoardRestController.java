@@ -16,11 +16,10 @@ import org.team.sns.domain.Board;
 import org.team.sns.domain.Tag;
 import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.MemberRepository;
-import org.team.sns.service.AlarmService;
 import org.team.sns.service.BoardServiceImpl;
 import org.team.sns.vo.BoardSearchCondition;
 import org.team.sns.vo.Datas;
-
+import org.team.sns.service.AlarmService;
 /**
  * 
  * @author ParkHyeokJoon
@@ -39,6 +38,7 @@ public class BoardRestController {
 	BoardRepository br;
 	@Autowired
 	MemberRepository mr;
+	
 	@Autowired
 	AlarmService as;
 
