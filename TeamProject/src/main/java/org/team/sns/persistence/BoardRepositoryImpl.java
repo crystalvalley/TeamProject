@@ -343,7 +343,6 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		query.where(board.writer.notIn(this.getBlockList(loginId)));
 		query.offset(5*page);
 		query.limit(5);
-		System.out.println(query.fetch());
 		return query.fetch();
 	}
 	// 차단목록

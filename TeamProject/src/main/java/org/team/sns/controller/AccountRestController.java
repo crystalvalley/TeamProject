@@ -1,6 +1,7 @@
 package org.team.sns.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,17 +15,13 @@ import org.team.sns.domain.Board;
 import org.team.sns.domain.Member;
 import org.team.sns.domain.Reply;
 import org.team.sns.persistence.BoardRepository;
-import org.team.sns.persistence.BoardRepositoryImpl;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.persistence.ReplyRepository;
-import org.team.sns.persistence.ReplyRepositorympl;
 import org.team.sns.service.DropboxService;
-import org.team.sns.service.MemberServiceImpl;
-import org.team.sns.service.SecurityUserServiceImpl;
+import org.team.sns.service.MemberService;
+import org.team.sns.service.SecurityUserService;
 // import org.team.sns.service.TestServiceImpl;
 import org.team.sns.vo.RestMsgObject;
-
-import java.util.List;
 
 /**
  * @author ParkHyeokJoon
@@ -39,15 +36,15 @@ public class AccountRestController {
 	@Autowired
 	private MemberRepository mr;
 	@Autowired
-	private MemberServiceImpl ms;
+	private MemberService ms;
 	@Autowired
-	private SecurityUserServiceImpl secUserService;
+	private SecurityUserService secUserService;
 	@Autowired
 	private DropboxService ds;
 	@Autowired
 	private BoardRepository br;
 	@Autowired
-	private BoardRepositoryImpl bs;
+	private BoardRepository bs;
 	@Autowired
 	private ReplyRepository rr;
 	
@@ -89,7 +86,7 @@ public class AccountRestController {
 	public Member loginCheck(Principal principal) {
 		Member member;
 		if (principal != null) {
-			member = mr.findById("testid").get();
+			member = mr.findById(principal.getName()).get();
 		} else {
 			member = new Member();
 			member.setId("FAILED LOGIN");
@@ -101,7 +98,7 @@ public class AccountRestController {
 	@PostMapping("/uploadProfile")
 	public String uploadProfile(@RequestParam("upload") MultipartFile upload, Principal principal) throws Exception {
 		System.out.println("test");
-		return ds.fileUpload(upload, "testid");
+		return ds.fileUpload(upload, principal.getName());
 	}
 
 	@PostMapping("/UpdateUser")
@@ -145,8 +142,8 @@ public class AccountRestController {
 		Reply reply = new Reply();
 		Member member = new Member();
 		System.out.println("리플저장" + cardnum + "," + replyContent + ",");
-		System.out.println("리플저장하기 들어옴" + "testid");
-		member = mr.findById("testid").get();
+		System.out.println("리플저장하기 들어옴" + principal.getName());
+		member = mr.findById(principal.getName()).get();
 		reply.setContent(replyContent);
 		reply.setWriter(member);
 		// System.out.println(cardnum);
@@ -182,7 +179,7 @@ public class AccountRestController {
 	@PostMapping("/selectUsername")
 	public String selectUsername(Principal principal) {
 		Member member = new Member();
-		member = mr.findById("testid").get();
+		member = mr.findById(principal.getName()).get();
 		System.out.println("유저이름찾기" + member.getUsername());
 		return member.getUsername();
 	}

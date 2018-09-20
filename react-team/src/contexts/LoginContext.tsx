@@ -16,6 +16,7 @@ export interface ILoginStore {
     roomIds: number[];
     loginCheck(): void;
     sendMessage(msg: IMsgModel): void;
+    socketRefesh(): void;
 }
 
 
@@ -28,7 +29,8 @@ const loginContext = React.createContext<ILoginStore>({
     rooms: {},
     roomIds: [],
     loginCheck: () => { return },
-    sendMessage: (msg: IMsgModel) => { return }
+    sendMessage: (msg: IMsgModel) => { return },
+    socketRefesh: () => { return }
 });
 class LoginProvider extends React.Component<{}, ILoginStore> {
 
@@ -46,6 +48,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         super(props);
         this.loginCheck = this.loginCheck.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
+        this.socketRefesh = this.socketRefesh.bind(this);
         this.state = {
             logined: {
                 profileImg: "",
@@ -55,7 +58,8 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             rooms: {},
             roomIds: [],
             loginCheck: this.loginCheck,
-            sendMessage: this.sendMessage
+            sendMessage: this.sendMessage,
+            socketRefesh: this.socketRefesh
         }
         this.logError = this.logError.bind(this);
         this.connect = this.connect.bind(this);
@@ -104,7 +108,14 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 }
                 */
             })
-
+    }
+    private socketRefesh() {
+        this.sock.send(
+            JSON.stringify({
+                type: "refresh",
+                sender: this.state.logined.id
+            })
+        )
     }
     private send() {
         this.sock.send(
@@ -188,13 +199,14 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             } else if (message.type === "chat-response") {
                 const nextRooms = this.state.rooms;
                 const sub = nextRooms[message.roomId];
-
                 if (sub.chat === undefined) { sub.chat = [] }
                 sub.chat = [...nextRooms[message.roomId].chat, { type: "", sender: message.sender, destination: [], roomId: message.roomId, data: message.data }]
                 this.setState({
                     rooms: nextRooms
                 })
 
+            }else if(message.type === "refresh"){
+                this.socketRefesh();
             }
         }
     }

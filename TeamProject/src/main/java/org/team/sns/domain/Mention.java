@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @Table(name = "Mentions")
 @IdClass(MentionPK.class)
-@EqualsAndHashCode(of= {"mentioned","mentionBoard","mentionReply"})
+@EqualsAndHashCode(of= {"mentioned","mentionBoard"})
 public class Mention {	
 	@Id
 	@ManyToOne
@@ -30,12 +30,7 @@ public class Mention {
 	
 	@Id
 	@ManyToOne
-	@JoinColumn(name="board_id",referencedColumnName="board_id",updatable=false,nullable=true)
+	@JoinColumn(name="board_id",referencedColumnName="board_id",updatable=false,nullable=false)
 	private Board mentionBoard;
-	
-	@Id
-	@ManyToOne
-	@JoinColumn(name="reply_id",referencedColumnName="reply_id",updatable=false,nullable=true)
-	private Reply mentionReply;
 
 }

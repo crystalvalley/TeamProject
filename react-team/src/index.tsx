@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 // import registerServiceWorker from './registerServiceWorker';
-import { VoiceProvider } from './contexts/VoiceRecogContext';
 import App from './App';
 import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 import { mainTheme } from './constance/MainTheme';
@@ -22,17 +21,15 @@ ReactDOM.render(
   <MuiThemeProvider theme={mainTheme}>
     <LoginProvider>
       <NetworkProvider>
-        <VoiceProvider>
-          <SearchProvider>
-            <EmotionProvider>
-              <FavoriteProvider>
-                <CssBaseline>
-                  <App />
-                </CssBaseline>
-              </FavoriteProvider>
-            </EmotionProvider>
-          </SearchProvider>
-        </VoiceProvider>
+        <SearchProvider>
+          <EmotionProvider>
+            <FavoriteProvider>
+              <CssBaseline>
+                <App />
+              </CssBaseline>
+            </FavoriteProvider>
+          </EmotionProvider>
+        </SearchProvider>
       </NetworkProvider>
     </LoginProvider>
   </MuiThemeProvider>,

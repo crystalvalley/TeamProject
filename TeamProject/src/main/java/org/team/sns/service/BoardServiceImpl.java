@@ -16,6 +16,7 @@ import org.team.sns.domain.Member;
 import org.team.sns.domain.Mention;
 import org.team.sns.domain.Photo;
 import org.team.sns.domain.ProductStrategy;
+import org.team.sns.domain.Reply;
 import org.team.sns.domain.Tag;
 import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.CustomListRepository;
@@ -24,6 +25,7 @@ import org.team.sns.persistence.FavoriteRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.persistence.MentionRepository;
 import org.team.sns.persistence.PhotoRepository;
+import org.team.sns.persistence.ReplyRepository;
 import org.team.sns.persistence.TagRepository;
 import org.team.sns.vo.BoardSearchCondition;
 
@@ -56,6 +58,8 @@ public class BoardServiceImpl implements BoardService {
 	DropboxService ds;
 	@Autowired
 	PhotoRepository pr;
+	@Autowired
+	ReplyRepository rr;
 
 	private final static Pattern HASH_PATTERN = Pattern.compile("#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+");
 	private final static Pattern MENTION_PATTERN = Pattern.compile("@[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+");

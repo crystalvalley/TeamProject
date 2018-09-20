@@ -10,7 +10,7 @@ import AllFriendtstile from './AllFriendtstile';
  * @author:Kim MinJeong
  * @since:2018.08.28
  * @version:2018.09.06
- * 모든 사람들 목록(Onetile.tsx 컴포넌트와 함께)
+ * 모든 사람들 목록
  */
 
 interface IState {
