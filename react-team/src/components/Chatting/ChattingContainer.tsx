@@ -10,14 +10,14 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     listWrapper: {
         display: "flex",
-        alignItems:"flex-end"
+        alignItems: "flex-end"
     },
     back: {
         position: "absolute",
         width: "100vw",
-        bottom: "20px",
-        height: "60px",
-        backgroundColor: "white",
+        bottom: 0,
+        height: "100px",
+        backgroundColor: "lightgrey",
         left: 0,
         right: 0,
 
@@ -46,9 +46,6 @@ class ChattingContainer extends React.Component<IProps & ILoginStore>{
                         vertical: "bottom"
                     }}
                     open={true}
-                    ContentProps={{
-                        'aria-describedby': 'message-id',
-                    }}
                 >
                     <div
                         className={classes.listWrapper}
@@ -56,12 +53,16 @@ class ChattingContainer extends React.Component<IProps & ILoginStore>{
                         {
                             this.props.roomIds.map((roomId, index) => {
                                 return (
-                                    <ChattingBox
+                                    <div
                                         key={index}
-                                        loginedId={this.props.logined}
-                                        sendMessage={this.props.sendMessage}
-                                        {...this.props.rooms[roomId]}
-                                    />
+                                    >
+                                        <ChattingBox
+                                            key={index}
+                                            loginedId={this.props.logined}
+                                            sendMessage={this.props.sendMessage}
+                                            {...this.props.rooms[roomId]}
+                                        />
+                                    </div>
                                 );
                             })
                         }

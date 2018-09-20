@@ -1,5 +1,7 @@
 package org.team.sns.persistence;
 
+import java.io.IOException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.team.sns.service.BoardService;
 import org.team.sns.service.MemberServiceImpl;
 import org.team.sns.service.NetworkServiceImpl;
 import org.team.sns.service.SecurityUserService;
+import org.team.sns.service.SocketService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,6 +41,8 @@ public class insertTest {
 	RoomRepository rr;
 	@Autowired
 	RoomMemberRepository rmr;
+	@Autowired
+	SocketService ss;
 
 	/*
 	 * board에 적당히 값 넣어두는 test
@@ -53,7 +58,7 @@ public class insertTest {
 	 */
 
 	@Test
-	public void searchbycontentTest() {
+	public void init() {
 		Member member2 = new Member();
 		member2.setId("testid");
 		member2.setPassword("12345678");
@@ -76,5 +81,9 @@ public class insertTest {
 		ns.acceptFriend("testid1", "testid");
 		ns.acceptFriend("testid2", "testid");
 		ns.acceptFriend("testid3", "testid");
+	}
+	@Test
+	public void ssTest() throws IOException {
+		ss.makeChatting("testid", "testid2");
 	}
 }

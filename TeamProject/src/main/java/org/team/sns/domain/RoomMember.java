@@ -37,11 +37,11 @@ import lombok.ToString;
 public class RoomMember {	
 	@Id
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="user_id",referencedColumnName="user_id")
+	@JoinColumn(name="user_id",referencedColumnName="user_id",updatable=false,nullable=false)
 	private Member member;
 	@Id
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="onRoom", referencedColumnName="Room_id")
+	@JoinColumn(name="onRoom", referencedColumnName="Room_id",updatable=false,nullable=false)
 	private Room room;
 	
 }
