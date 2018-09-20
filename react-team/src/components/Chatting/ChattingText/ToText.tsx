@@ -38,6 +38,7 @@ interface IProps {
         msgBox:string;
     }
     chat: IMsgModel;
+    profileURL:string;
 }
 
 class ToText extends React.Component<IProps>{
@@ -47,7 +48,7 @@ class ToText extends React.Component<IProps>{
         return (
             <div className={classes.block}>
                 <div className={classes.avatarBlock} >
-                    <Avatar src={chat.sender.profileImg === undefined ? "" : "http://localhost:8081/resources"+chat.sender.profileImg} className={classes.avatar} />
+                    <Avatar src={this.props.profileURL} className={classes.avatar} />
                     {chat.sender.username}
                 </div>
                 <div className={classes.msgBox}>

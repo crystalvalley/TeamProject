@@ -23,7 +23,7 @@ export interface INetworkStore {
     delFollow(id: string): void;
     addBlock(id: string): void;
     refresh(): void;
-    socketRefresh():void;
+    socketRefresh(dataType:string):void;
     sendMsg(sendMessage: IMsgModel): void
 }
 
@@ -44,7 +44,7 @@ const NetworkContext = React.createContext<INetworkStore>({
     addBlock: (id: string) => { return },
     sendMsg: (sendMessage: IMsgModel) => { return },
     refresh: () => { return },
-    socketRefresh: () => { return }
+    socketRefresh: (dataType:string) => { return }
 });
 
 // 친구목록 컨테스트를 사용할 경우에는 로그인 컨텍스트도 같이 사용됨

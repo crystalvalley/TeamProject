@@ -89,7 +89,7 @@ class TopBar extends React.Component<IProps, IState> {
           className={classes.topBar}
         >
          
-            <NavLink to="/CardListContainer">
+            <NavLink to="/ ">
               <img src={pige} onClick={this.home} />
             </NavLink>
 
