@@ -16,6 +16,7 @@ interface IProps {
     }
     chats: IMsgModel[];
     loginedId: IMemberModel;
+    profileURL:string;
 }
 
 class ChatWrapper extends React.Component<IProps>{
@@ -31,7 +32,7 @@ class ChatWrapper extends React.Component<IProps>{
                     this.props.chats.map((chat, index) => {
                         if (chat.sender.id === this.props.loginedId.id) {
                             return (
-                                <ToText key={index} chat={chat} />
+                                <ToText key={index} chat={chat} profileURL={this.props.profileURL} />
                             );
                         } else {
                             return (
