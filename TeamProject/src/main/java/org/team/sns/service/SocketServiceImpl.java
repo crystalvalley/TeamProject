@@ -57,17 +57,17 @@ public class SocketServiceImpl implements SocketService{
 		List<String> refresh = new ArrayList<>();
 		refresh.add(userid);
 		refresh.add(target);
-		sendRefreshMsg(refresh);
+		sendRefreshMsg(refresh,"Chatting");
 		
 	}
 
 	@Override
-	public void sendRefreshMsg(List<String> ids) throws IOException {
+	public void sendRefreshMsg(List<String> ids,String dataType) throws IOException {
 		// TODO Auto-generated method stub
 		for(String id : ids) {
 			SignalMessage msg = new SignalMessage();
 			msg.setType("refresh");
-			msg.setData("board");
+			msg.setData(dataType);
 			String sendMsg = objectMapper.writeValueAsString(msg);
 			clients.get(id).sendMessage(new TextMessage(sendMsg));
 		}
