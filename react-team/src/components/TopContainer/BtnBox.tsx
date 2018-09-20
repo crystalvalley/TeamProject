@@ -12,6 +12,7 @@ import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
 import Mail from '@material-ui/icons/Mail';
 import Writer2 from '../MainContainer/FriendList/FriendList/Writer2';
+import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 
 /**
  * @author:ParkHyeokJoon
@@ -35,7 +36,7 @@ interface IProps {
         btnBox: string;
     },
     friends: IMemberModel;
-  
+
 }
 interface IState {
     modalOpen: number;
@@ -56,20 +57,18 @@ class BtnBox extends React.Component<IProps, IState>{
         const writeHandler = () => this.openModal(0);
         const writeHandler2 = () => this.openModal(1);
         const writeHandler3 = () => this.openModal(2);
-  
-
         return (
             <span
                 className={classes.btnBox}
-            >                
+            >
                 <IconButton
                     onClick={writeHandler3}
                 >
                     <Mail />
                 </IconButton>
                 <Writer2
-                      open={modalOpen === 2}
-                      onClose={this.closeModal}
+                    open={modalOpen === 2}
+                    onClose={this.closeModal}
                 />
 
                 <IconButton
@@ -80,19 +79,24 @@ class BtnBox extends React.Component<IProps, IState>{
                 <Writer
                     open={modalOpen === 0}
                     onClose={this.closeModal}
-                />      
+                />
 
                 <IconButton
                     onClick={writeHandler2}
                 >
                     <FriendListIcon />
                 </IconButton>
+                <ShowupFriendList
+                    open={this.state.modalOpen === 1}
+                    openf={writeHandler2}
+                    close={this.closeModal}
+                />
 
                 <IconButton>
                     <NavLink to="/Users">
                         <Book />
                     </NavLink>
-                </IconButton>     
+                </IconButton>
                 <IconButton>
                     <NavLink to="/Users">
                         <AccountCircle />
