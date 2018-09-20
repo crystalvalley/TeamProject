@@ -20,7 +20,7 @@ import org.team.sns.service.AlarmService;
 import org.team.sns.service.BoardService;
 import org.team.sns.vo.BoardSearchCondition;
 import org.team.sns.vo.Datas;
-
+import org.team.sns.service.AlarmService;
 /**
  * 
  * @author ParkHyeokJoon
@@ -39,6 +39,7 @@ public class BoardRestController {
 	BoardRepository br;
 	@Autowired
 	MemberRepository mr;
+	
 	@Autowired
 	AlarmService as;
 

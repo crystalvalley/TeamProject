@@ -6,11 +6,18 @@ import { IMemberModel } from '../../constance/models';
 import pige from '../../img/end2.png';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
+import BtnBoxButton from './BtnBoxButton';
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
  * @version:2018.08.24
  * 
+ */
+
+/**
+ * 버튼박스 분리
+ * @author:ChaMinJu
+ * @version:2018.09.19
  */
 const styles: StyleRulesCallback = (theme: Theme) => ({
   appBar: {
@@ -31,6 +38,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     display: 'none',
   },
   toolBox: {
+    display: "flex",
+    flexDirection: "column",
     flexBasis: "25%",
     flexGrow: 1,
     textAlign: "center"
@@ -87,9 +96,16 @@ class TopBar extends React.Component<IProps, IState> {
           <span
             className={classes.toolBox}
           >
+          <div>
             <BtnBox
               friends={this.state.userInfo}
             />
+            </div>
+            <div>
+            <BtnBoxButton
+              friends={this.state.userInfo}
+            />
+            </div>
           </span>
         </Toolbar>
         <Divider />
