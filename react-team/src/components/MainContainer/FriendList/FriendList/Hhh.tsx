@@ -18,6 +18,7 @@ interface IProps {
     friendInfo: IMemberModel
     delFriend(id: string): void;
 }
+
 interface IState {
     open: boolean;
 }
@@ -43,7 +44,6 @@ class Hhh extends React.Component<IProps, IState>{
                     <Avatar src={this.props.friendInfo.profileImg} />
                     <ListItemText
                         onClick={this.openMenu}
-
                     >
                         <span ref={(element) => { this.anchor = element }} />
                         {this.props.friendInfo.id}

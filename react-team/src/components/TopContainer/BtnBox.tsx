@@ -11,7 +11,8 @@ import Book from '@material-ui/icons/Book';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
 import Mail from '@material-ui/icons/Mail';
-import Writer2 from '../MainContainer/FriendList/FriendList/Writer2';
+// import ShowupFriendListtile from '../MainContainer/FriendList/FriendList/ShowupFriendListtile';
+
 
 /**
  * @author:ParkHyeokJoon
@@ -35,19 +36,21 @@ interface IProps {
         btnBox: string;
     },
     friends: IMemberModel;
-  
 }
 interface IState {
     modalOpen: number;
+    open:boolean
 }
 class BtnBox extends React.Component<IProps, IState>{
     constructor(props: IProps) {
         super(props);
         this.state = {
-            modalOpen: -1
+            modalOpen: -1,
+            open:false
         }
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.openMenu = this.openMenu.bind(this);
     }
 
     public render() {
@@ -55,23 +58,17 @@ class BtnBox extends React.Component<IProps, IState>{
         const { modalOpen } = this.state;
         const writeHandler = () => this.openModal(0);
         const writeHandler2 = () => this.openModal(1);
-        const writeHandler3 = () => this.openModal(2);
-  
+        const writer3 = () => this.openMenu(0);
 
         return (
             <span
                 className={classes.btnBox}
             >                
-                <IconButton
-                    onClick={writeHandler3}
+                <IconButton                   
                 >
                     <Mail />
                 </IconButton>
-                <Writer2
-                      open={modalOpen === 2}
-                      onClose={this.closeModal}
-                />
-
+               
                 <IconButton
                     onClick={writeHandler}
                 >
@@ -93,15 +90,43 @@ class BtnBox extends React.Component<IProps, IState>{
                         <Book />
                     </NavLink>
                 </IconButton>     
+             
                 <IconButton>
-                    <NavLink to="/Users">
+                    <NavLink to="/userUpdate">
                         <AccountCircle />
                     </NavLink>
                 </IconButton>
-
+                <IconButton>
+                    <NavLink to="/AllFriends">
+                        <Accessibility />
+                    </NavLink>
+                </IconButton>
+                <IconButton>
+                    <NavLink to="/createGroup">
+                        <Compare />
+                    </NavLink>
+                </IconButton>
+                <IconButton>
+                    <NavLink to="/listControl">
+                        <List />
+                    </NavLink>
+                </IconButton>
+                <ShowupFriendList
+                    open={this.state.modalOpen === 1}
+                    openf={writeHandler2}
+                    close={this.closeModal}
+                />
+                <IconButton>
+                    <AlarmBadge count="2"/>
+                </IconButton>
             </span>
 
         );
+    }
+    private openMenu(clicked:number) {
+        this.setState({
+            open: true
+        })
     }
 
     private openModal(clicked: number) {

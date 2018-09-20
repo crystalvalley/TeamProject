@@ -13,7 +13,6 @@ import Allmemberstile from './Allmemberstile';
  * 전체 모든 사람들 목록
  */
 
-
 interface IState {
     friends: IMemberModel[],
 }
