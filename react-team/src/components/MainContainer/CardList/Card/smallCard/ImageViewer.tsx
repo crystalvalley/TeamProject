@@ -32,7 +32,7 @@ class ImageViewer extends React.Component<IProps, IState>{
         const files: string[] = []
         for (const photo of this.props.photos) {
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", "http://localhost:8081/resources" + photo.url);
+            xhr.open("GET", "http://localhost:8081/resources" +  photo.url);
             xhr.responseType = "blob";
             xhr.addEventListener("load", () => {
                 files.push(URL.createObjectURL(xhr.response));

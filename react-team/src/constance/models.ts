@@ -1,8 +1,7 @@
-
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
- * @version:2018.09.13
+ * @version:2018.09.21
  * 
  */
 export interface IMsgModel {
