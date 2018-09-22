@@ -1,18 +1,14 @@
 import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, IconButton } from '@material-ui/core';
 import Create from '@material-ui/icons/Create';
-
 import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
-
 import AccountCircle from '@material-ui/icons/AccountCircle';
-
 import Book from '@material-ui/icons/Book';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
 import Mail from '@material-ui/icons/Mail';
-// import ShowupFriendListtile from '../MainContainer/FriendList/FriendList/ShowupFriendListtile';
-
+import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 
 /**
  * @author:ParkHyeokJoon
@@ -58,8 +54,7 @@ class BtnBox extends React.Component<IProps, IState>{
         const { modalOpen } = this.state;
         const writeHandler = () => this.openModal(0);
         const writeHandler2 = () => this.openModal(1);
-        const writer3 = () => this.openMenu(0);
-
+      
         return (
             <span
                 className={classes.btnBox}
@@ -84,6 +79,11 @@ class BtnBox extends React.Component<IProps, IState>{
                 >
                     <FriendListIcon />
                 </IconButton>
+                <ShowupFriendList
+                    open={this.state.modalOpen === 1}
+                    openf={writeHandler2}
+                    close={this.closeModal}
+                />
 
                 <IconButton>
                     <NavLink to="/Users">
@@ -96,29 +96,9 @@ class BtnBox extends React.Component<IProps, IState>{
                         <AccountCircle />
                     </NavLink>
                 </IconButton>
-                <IconButton>
-                    <NavLink to="/AllFriends">
-                        <Accessibility />
-                    </NavLink>
-                </IconButton>
-                <IconButton>
-                    <NavLink to="/createGroup">
-                        <Compare />
-                    </NavLink>
-                </IconButton>
-                <IconButton>
-                    <NavLink to="/listControl">
-                        <List />
-                    </NavLink>
-                </IconButton>
-                <ShowupFriendList
-                    open={this.state.modalOpen === 1}
-                    openf={writeHandler2}
-                    close={this.closeModal}
-                />
-                <IconButton>
-                    <AlarmBadge count="2"/>
-                </IconButton>
+               
+                
+              
             </span>
 
         );
