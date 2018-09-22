@@ -23,6 +23,7 @@ import org.team.sns.domain.Share;
 import org.team.sns.domain.Strategy;
 import org.team.sns.domain.Tag;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.jpa.JPQLQuery;
 
 /**
@@ -405,9 +406,12 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	}
 	private BooleanBuilder friendCheck(QBoard board, BooleanBuilder builder, Member member) {
 		QNetworking net = QNetworking.networking;
-		JPQLQuery<Member> subQuery = from(net).select(net.target);
-		subQuery.where(net.type.eq("Friend"));
+		QNetworking owners = new QNetworking("owners");
+		JPQLQuery<Member> subQuery = from(net,owners).select(net.target);
+		subQuery.where(net.type.eq("Follow"));
 		subQuery.where(net.member.eq(member));
+		subQuery.where(net.target.eq(owners.member));
+		subQuery.where(owners.type.eq("Follow"));		
 		builder.and(board.writer.in(subQuery));
 		return builder;
 		

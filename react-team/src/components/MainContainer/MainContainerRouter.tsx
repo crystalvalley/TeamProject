@@ -9,6 +9,7 @@ import GroupPage from './BoardView/GroupPage';
 import PersonalPage from './BoardView/PersonalPage';
 import ChattingContainer from '../Chatting/ChattingContainer';
 import Allmembers from './FriendList/FriendList/Allmembers';
+import Refresh from '../../Refresh';
 
 
 /**
@@ -66,6 +67,8 @@ class MainContainerRouter extends React.Component<IProps> {
                 <div className={classes.toolbar} />
                 <div className={classes.toolbar} />
                 <Switch>
+                    {/* refresh 용도*/}
+                    <Route path="/refreshPage/:path?" component={this.refreshHandler()} />
                     <Route path="/Users" component={Allmembers} />
                     <Route path="/PersonalPage" component={PersonalPage} />
                     <Route path="/GroupPage" component={GroupPage} />                                
@@ -77,6 +80,11 @@ class MainContainerRouter extends React.Component<IProps> {
                 <ChattingContainer />
             </main>
         );
+    }
+    private refreshHandler() {
+        return ({ match } : any) => (
+            <Refresh path={match.params.path}/>
+        )
     }
 }
 

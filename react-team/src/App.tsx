@@ -4,7 +4,6 @@ import SignIn from './components/Account/SignIn';
 import SignUp from './components/Account/SignUp';
 import AppContainer from './components/AppContainer';
 import CreateGroup from './components/Account/CreateGroup';
-import Refresh from './Refresh';
 
 /**
  * @author ParkHyeokJoon
@@ -22,13 +21,11 @@ export default class App extends React.Component {
                     <Route path="/signin" component={SignIn} />
                     {/* 회원 가입 화면 */}
                     <Route path="/signup" component={SignUp} />
-                    {/* refresh 용도*/}
-                    <Route path="/refreshPage" component={Refresh}/>
                     {/* 그 외 */}
                     <Route path="/" component={AppContainer} />
-                   
-                   
-                    
+
+
+
                 </Switch>
             </BrowserRouter>
         );

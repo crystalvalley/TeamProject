@@ -1,14 +1,19 @@
 import * as React from 'react';
-import { RouteComponentProps, withRouter, match } from 'react-router';
-
+import { RouteComponentProps, withRouter} from 'react-router';
+/**
+ * @author : ParkHyeokJoon
+ * @since : 2018.09.22
+ * @version : 2018.09.22
+ * 
+ */
 interface IProps{
-    match : match<any>
+    path:string
 }
 
 class Refresh extends React.Component<IProps&RouteComponentProps<{}>>{
     public componentDidMount(){
-        alert(this.props.match.params.path)
-        this.props.history.replace(this.props.match.params.path);
+        const path = this.props.path===undefined?"":this.props.path
+        this.props.history.replace("/"+path);
     }
     public render(){
         return(<div/>);

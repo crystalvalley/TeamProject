@@ -165,7 +165,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore&RouteCompo
         axios.post("http://localhost:8081/boards/writeBoard", data)
             .then((response) => {
                 // alert(response.data);
-                this.props.history.push("/refreshPage?path="+window.location.pathname)
+                this.props.history.push("/refreshPage"+window.location.pathname)
             })
             .catch(() => {
                 this.props.history.push("/")
