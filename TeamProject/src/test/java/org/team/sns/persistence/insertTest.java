@@ -79,8 +79,6 @@ public class insertTest {
 		ns.friendRequest("testid", "testid2");
 		ns.friendRequest("testid", "testid3");
 		ns.acceptFriend("testid1", "testid");
-		ns.acceptFriend("testid2", "testid");
-		ns.acceptFriend("testid3", "testid");
 	}
 	@Test
 	public void ssTest() throws IOException {

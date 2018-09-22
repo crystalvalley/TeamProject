@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TableRow, TableCell, Select, MenuItem, TextField } from '@material-ui/core';
+import { TableRow, TableCell, Select, MenuItem, TextField, Button } from '@material-ui/core';
 import { IConditionModel } from '../../../constance/models';
 
 interface IProps {
@@ -7,6 +7,7 @@ interface IProps {
     target: string;
     handler(e: React.ChangeEvent<HTMLSelectElement>): void;
     targetHandler(e: React.ChangeEvent<HTMLInputElement>): void;
+    delHandler(): void;
 }
 
 export default class ConditionRow extends React.Component<IProps> {
@@ -45,6 +46,13 @@ export default class ConditionRow extends React.Component<IProps> {
                         fullWidth={true}
                         onChange={this.props.targetHandler}
                     />
+                </TableCell>
+                <TableCell>
+                    <Button
+                        onClick={this.props.delHandler}
+                    >
+                        삭제
+                    </Button>
                 </TableCell>
             </TableRow>
         );

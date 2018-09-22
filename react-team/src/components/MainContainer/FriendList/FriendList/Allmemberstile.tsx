@@ -14,6 +14,11 @@ import { IMemberModel } from '../../../../constance/models';
  * member 목록리스트에 해당되는 하나의 타일(전체화면)-Allmembers.tsx와 함께 
  */
 
+/**
+ * @author:Kim MinJeong
+ * @version:2018.09.19
+ */
+
 const style: StyleRulesCallback = (theme: Theme) => ({
     card: {
         maxWidth: 345,
@@ -46,6 +51,7 @@ class Allmembertile extends React.Component<IProps> {
         super(props);  
       this.addFriend=this.addFriend.bind(this);
     }
+    
     public render() {
         const { classes,friendInfo} = this.props;
      
@@ -60,7 +66,7 @@ class Allmembertile extends React.Component<IProps> {
             <Card className={classes.card}>
                 <CardMedia
                     className={classes.media}
-                  
+
                     src={"http://localhost:8081/resources" + friendInfo.profileImg}                    
                 />
                 <CardContent>

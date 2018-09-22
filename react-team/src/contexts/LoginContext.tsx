@@ -14,9 +14,10 @@ export interface ILoginStore {
         [roomId: number]: IRoomModel
     }
     roomIds: number[];
+    profileURL:string,
     loginCheck(): void;
     sendMessage(msg: IMsgModel): void;
-    socketRefesh(): void;
+    socketRefesh(dataType:string): void;
 }
 
 
@@ -28,9 +29,10 @@ const loginContext = React.createContext<ILoginStore>({
     },
     rooms: {},
     roomIds: [],
+    profileURL:"",
     loginCheck: () => { return },
     sendMessage: (msg: IMsgModel) => { return },
-    socketRefesh: () => { return }
+    socketRefesh: (dataType:string) => { return }
 });
 class LoginProvider extends React.Component<{}, ILoginStore> {
 
@@ -55,6 +57,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 id: "testid",
                 username: ""
             },
+            profileURL:"",
             rooms: {},
             roomIds: [],
             loginCheck: this.loginCheck,
@@ -98,6 +101,17 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 }, () => {
                     // 로그인 처리 완료 후에 소켓을 즉시 연결
                     this.connect();
+                    if(this.state.profileURL===""){
+                        const xhr = new XMLHttpRequest();
+                        xhr.open("GET", "http://localhost:8081/resources" + this.state.logined.profileImg);
+                        xhr.responseType = "blob";
+                        xhr.addEventListener("load", () => {                            
+                            this.setState({
+                                profileURL:URL.createObjectURL(xhr.response)
+                            })
+                        })
+                        xhr.send();
+                    }
                 })
                 /*
                 else{
@@ -109,11 +123,12 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 */
             })
     }
-    private socketRefesh() {
+    private socketRefesh(dataType : string) {
         this.sock.send(
             JSON.stringify({
                 type: "refresh",
-                sender: this.state.logined.id
+                sender: this.state.logined.id,
+                data : dataType
             })
         )
     }
@@ -206,7 +221,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 })
 
             }else if(message.type === "refresh"){
-                this.socketRefesh();
+                this.socketRefesh(message.data);
             }
         }
     }

@@ -242,7 +242,6 @@ class CardListContainer extends React.Component<IProps, IState> {
                 }
             })
         })
-
     }
 
     private scrollEnd(listName: string) {

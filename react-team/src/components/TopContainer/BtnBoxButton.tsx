@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, IconButton } from '@material-ui/core';
 import List from "@material-ui/icons/List";
-import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Compare from '@material-ui/icons/Compare';
 import Accessibility from '@material-ui/icons/Accessibility';
@@ -44,43 +43,37 @@ class BtnBox extends React.Component<IProps, IState>{
 
     public render() {
         const { classes } = this.props;
-        const writeHandler2 = () => this.openModal(1);
 
         return (
-          
+
             <span
                 className={classes.btnBox}
             >
-                 <IconButton>
-                    <NavLink to="/userUpdate">
+                <NavLink to="/userUpdate">
+                    <IconButton>
                         <AccountCircle />
-                    </NavLink>
-                </IconButton>
-                <IconButton>
+                    </IconButton>
+                </NavLink>
                     <NavLink to="/AllFriends">
+                <IconButton>
                         <Accessibility />
-                    </NavLink>
                 </IconButton>
-                <IconButton>
+                    </NavLink>
                     <NavLink to="/createGroup">
+                <IconButton>
                         <Compare />
-                    </NavLink>
                 </IconButton>
-                <IconButton>
+                    </NavLink>
                     <NavLink to="/listControl">
-                        <List />
-                    </NavLink>
-                </IconButton>
-                <ShowupFriendList
-                    open={this.state.modalOpen === 1}
-                    openf={writeHandler2}
-                    close={this.closeModal}
-                />
                 <IconButton>
-                    <AlarmBadge count="2"/>
+                        <List />
+                </IconButton>
+                    </NavLink>
+                <IconButton>
+                    <AlarmBadge count="2" />
                 </IconButton>
             </span>
-           
+
         );
     }
 

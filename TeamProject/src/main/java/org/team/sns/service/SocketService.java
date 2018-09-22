@@ -14,5 +14,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface SocketService {
 	public void makeChatting(String userid, String target) throws IOException;
-	public void sendRefreshMsg(List<String> ids) throws IOException;
+	public void sendRefreshMsg(List<String> ids, String dataType) throws IOException;
 }
