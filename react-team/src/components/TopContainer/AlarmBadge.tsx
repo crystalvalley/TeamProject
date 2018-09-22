@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IconButton, Badge } from '@material-ui/core';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import Axios from 'axios';
+import EmailIcon from '@material-ui/icons/Email';
+
 
 /**
  * @author:GilJoonsung
@@ -10,49 +10,33 @@ import Axios from 'axios';
  */
 
 
-interface IProps {
-  count: string
-}
-
-interface IState {
-  alarmCount: string
+interface IProps{
+  alarmCount:number
+  
 }
 
 
 
-class AlarmBadge extends React.Component<IProps, IState>{
+
+
+class AlarmBadge extends React.Component<IProps>{
   constructor(props: IProps) {
     super(props)
-    this.state = {
-      alarmCount: ''
-    }
-    this.getAlarmCount = this.getAlarmCount.bind(this)
+    
   }
+
+  
   public render() {
     
     return (
       <IconButton aria-label="Cart">
-        <Badge badgeContent={this.state.alarmCount} color="primary" >
-          <ShoppingCartIcon />
+        <Badge badgeContent={this.props.alarmCount} color="primary" >
+          <EmailIcon />
         </Badge>
       </IconButton>
     );
   }
-  private getAlarmCount(){
-    Axios.get("http://localhost:8081/alarms/requestAlarms")
-      .then((response) => {
-        alert("아직 실험")
-          
-        })
-      }
+  
     }
   
-
-
-
-
-
-
-
-
 export default AlarmBadge;

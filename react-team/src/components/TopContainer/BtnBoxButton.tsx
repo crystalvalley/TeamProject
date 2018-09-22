@@ -7,7 +7,8 @@ import Accessibility from '@material-ui/icons/Accessibility';
 
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
-import AlarmBadge from './AlarmBadge';
+import AlarmPage from '../NewWindows/AlarmPage';
+
 
 
 
@@ -75,7 +76,7 @@ class BtnBox extends React.Component<IProps, IState>{
                     </IconButton>
                 </NavLink>
                 <IconButton>
-                    <AlarmBadge count="2" />
+                    <AlarmPage/>
                 </IconButton>
             </span>
 
