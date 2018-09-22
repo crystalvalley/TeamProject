@@ -12,6 +12,7 @@ import AlarmPage from '../NewWindows/AlarmPage';
 
 
 
+
 /**
  * @author:ChaMinJu
  * @since:2018.09.19
@@ -71,7 +72,7 @@ class BtnBox extends React.Component<IProps, IState>{
                 </IconButton>
                     </NavLink>
                 <IconButton>
-                    <AlarmPage open={false}/>
+                    <AlarmPage/>
                 </IconButton>
             </span>
 
