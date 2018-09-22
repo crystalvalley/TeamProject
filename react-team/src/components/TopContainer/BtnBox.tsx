@@ -91,19 +91,18 @@ class BtnBox extends React.Component<IProps, IState>{
                     openf={writeHandler2}
                     close={this.closeModal}
                 />
-
-                <IconButton>
-                    <NavLink to="/Users">
+                <NavLink to="/Users">
+                    <IconButton>
                         <Book />
-                    </NavLink>
-                </IconButton>
-                <IconButton>
-                    <NavLink to="/Users">
+                    </IconButton>
+                </NavLink>
+                <NavLink to="/Users">
+                    <IconButton>
                         <AccountCircle />
-                    </NavLink>
-                </IconButton>
+                    </IconButton>
+                </NavLink>
 
-            </span>
+            </span >
 
         );
     }

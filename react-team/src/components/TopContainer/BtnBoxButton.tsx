@@ -7,7 +7,8 @@ import Accessibility from '@material-ui/icons/Accessibility';
 
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
-import AlarmBadge from './AlarmBadge';
+import AlarmPage from '../NewWindows/AlarmPage';
+
 
 
 
@@ -45,35 +46,35 @@ class BtnBox extends React.Component<IProps, IState>{
         const { classes } = this.props;
 
         return (
-          
+
             <span
                 className={classes.btnBox}
             >
-                 <IconButton>
-                    <NavLink to="/userUpdate">
+                <NavLink to="/userUpdate">
+                    <IconButton>
                         <AccountCircle />
-                    </NavLink>
-                </IconButton>
-                <IconButton>
+                    </IconButton>
+                </NavLink>
                     <NavLink to="/AllFriends">
+                <IconButton>
                         <Accessibility />
-                    </NavLink>
                 </IconButton>
-                <IconButton>
+                    </NavLink>
                     <NavLink to="/createGroup">
+                <IconButton>
                         <Compare />
-                    </NavLink>
                 </IconButton>
-                <IconButton>
+                    </NavLink>
                     <NavLink to="/listControl">
-                        <List />
-                    </NavLink>
-                </IconButton>
                 <IconButton>
-                    <AlarmBadge count="2"/>
+                        <List />
+                </IconButton>
+                    </NavLink>
+                <IconButton>
+                    <AlarmPage open={false}/>
                 </IconButton>
             </span>
-           
+
         );
     }
 
