@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider } from '@material-ui/core';
+import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider, Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import BtnBox from './BtnBox';
 import { IMemberModel } from '../../constance/models';
@@ -7,10 +7,11 @@ import pige from '../../img/end2.png';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import BtnBoxButton from './BtnBoxButton';
+import { ILoginStore, withLoginContext } from '../../contexts/LoginContext';
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
- * @version:2018.08.24
+ * @version:2018.09.23
  * 
  */
 
@@ -43,6 +44,11 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     flexBasis: "25%",
     flexGrow: 1,
     textAlign: "center"
+  },
+  id:{
+    marginLeft:"10vw",
+    fontSize:"3em",
+    color:"black"
   }
 })
 
@@ -55,6 +61,7 @@ interface IProps {
     secondaryToolbar: string;
     toolBox: string;
     topBar: string;
+    id:string;
   },
 }
 
@@ -63,15 +70,14 @@ interface IState {
   userInfo: IMemberModel;
 }
 
-class TopBar extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+class TopBar extends React.Component<IProps & ILoginStore, IState> {
+  constructor(props: IProps & ILoginStore) {
     super(props);
     this.state = {
       searchKeyword: "",
       userInfo: {
         profileImg: "",
         id: "",
-        username: ""
       }
     }
     this.onChange = this.onChange.bind(this);
@@ -88,23 +94,27 @@ class TopBar extends React.Component<IProps, IState> {
         <Toolbar
           className={classes.topBar}
         >
-         
-            <NavLink to="/ ">
-              <img src={pige} onClick={this.home} />
-            </NavLink>
 
+          <NavLink to="/ ">
+            <img src={pige} onClick={this.home} />
+          </NavLink>
+          <Typography
+            className={classes.id}
+          >
+            {this.props.logined.id}
+          </Typography>
           <span
             className={classes.toolBox}
           >
-          <div>
-            <BtnBox
-              friends={this.state.userInfo}
-            />
+            <div>
+              <BtnBox
+                friends={this.state.userInfo}
+              />
             </div>
             <div>
-            <BtnBoxButton
-              friends={this.state.userInfo}
-            />
+              <BtnBoxButton
+                friends={this.state.userInfo}
+              />
             </div>
           </span>
         </Toolbar>
@@ -124,4 +134,4 @@ class TopBar extends React.Component<IProps, IState> {
   }
 }
 
-export default withStyles(styles)(TopBar);
+export default withLoginContext(withStyles(styles)(TopBar));

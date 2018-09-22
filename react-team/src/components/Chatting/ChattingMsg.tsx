@@ -19,7 +19,7 @@ class ChattingMsg extends React.Component<IProps>{
             <div>
                 <Typography>
                     <Avatar src={this.props.speaker.profileImg} />
-                    {this.props.speaker.username}
+                    {this.props.speaker.id}
                 </Typography>
                 <div>
                     {this.props.text}

@@ -25,7 +25,6 @@ const loginContext = React.createContext<ILoginStore>({
     logined: {
         profileImg: "",
         id: "",
-        username: ""
     },
     rooms: {},
     roomIds: [],
@@ -55,7 +54,6 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             logined: {
                 profileImg: "",
                 id: "testid",
-                username: ""
             },
             profileURL:"",
             rooms: {},

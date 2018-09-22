@@ -47,7 +47,7 @@ class FromText extends React.Component<IProps>{
             <div className={classes.block}>
                 <div className={classes.avatarBlock} >
                     <Avatar src={chat.sender.profileImg === undefined ? "" : "http://localhost:8081/resources"+chat.sender.profileImg} className={classes.avatar} />
-                    {chat.sender.username}
+                    {chat.sender.id}
                 </div>
                 <div className={classes.msgBox}>
                     {chat.data}

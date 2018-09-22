@@ -42,7 +42,9 @@ class Writer extends React.Component<IProps>{
                 <div
                     className={classes.writerContainer}
                 >
-                    <SnsEditorContainer />
+                    <SnsEditorContainer 
+                        onClose={this.props.onClose}
+                    />
                 </div>
             </Modal>
         );

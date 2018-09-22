@@ -16,6 +16,11 @@ import AlarmBadge from './AlarmBadge';
  * @since:2018.09.19
  * @version:2018.09.19
  */
+/**
+ * @author:ParkHyeokJoon
+ * @since : 2018.09.23
+ * @version:2018.09.23
+ */
 
 
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -54,21 +59,21 @@ class BtnBox extends React.Component<IProps, IState>{
                         <AccountCircle />
                     </IconButton>
                 </NavLink>
-                    <NavLink to="/AllFriends">
-                <IconButton>
+                <NavLink to="/AllFriends">
+                    <IconButton>
                         <Accessibility />
-                </IconButton>
-                    </NavLink>
-                    <NavLink to="/createGroup">
-                <IconButton>
+                    </IconButton>
+                </NavLink>
+                <NavLink to="/createGroup">
+                    <IconButton>
                         <Compare />
-                </IconButton>
-                    </NavLink>
-                    <NavLink to="/listControl">
-                <IconButton>
+                    </IconButton>
+                </NavLink>
+                <NavLink to="/listControl">
+                    <IconButton>
                         <List />
-                </IconButton>
-                    </NavLink>
+                    </IconButton>
+                </NavLink>
                 <IconButton>
                     <AlarmBadge count="2" />
                 </IconButton>
