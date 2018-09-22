@@ -63,6 +63,12 @@ export interface IRoomModel {
 export interface IRoomMemberModel{
     member : IMemberModel;
 }
+
+
+export interface IConditionModel{
+    strategy : string;
+    target : string;
+}
 export interface IAlarmModel{
         alarmId: string
         usdate: string

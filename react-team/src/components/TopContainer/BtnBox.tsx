@@ -1,17 +1,13 @@
 import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, IconButton } from '@material-ui/core';
 import Create from '@material-ui/icons/Create';
-
 import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
-
 import AccountCircle from '@material-ui/icons/AccountCircle';
-
 import Book from '@material-ui/icons/Book';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
 import Mail from '@material-ui/icons/Mail';
-import Writer2 from '../MainContainer/FriendList/FriendList/Writer2';
 import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 
 /**
@@ -36,19 +32,21 @@ interface IProps {
         btnBox: string;
     },
     friends: IMemberModel;
-
 }
 interface IState {
     modalOpen: number;
+    open:boolean
 }
 class BtnBox extends React.Component<IProps, IState>{
     constructor(props: IProps) {
         super(props);
         this.state = {
-            modalOpen: -1
+            modalOpen: -1,
+            open:false
         }
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.openMenu = this.openMenu.bind(this);
     }
 
     public render() {
@@ -56,21 +54,16 @@ class BtnBox extends React.Component<IProps, IState>{
         const { modalOpen } = this.state;
         const writeHandler = () => this.openModal(0);
         const writeHandler2 = () => this.openModal(1);
-        const writeHandler3 = () => this.openModal(2);
+      
         return (
             <span
                 className={classes.btnBox}
-            >
-                <IconButton
-                    onClick={writeHandler3}
+            >                
+                <IconButton                   
                 >
                     <Mail />
                 </IconButton>
-                <Writer2
-                    open={modalOpen === 2}
-                    onClose={this.closeModal}
-                />
-
+               
                 <IconButton
                     onClick={writeHandler}
                 >
@@ -105,6 +98,11 @@ class BtnBox extends React.Component<IProps, IState>{
             </span >
 
         );
+    }
+    private openMenu(clicked:number) {
+        this.setState({
+            open: true
+        })
     }
 
     private openModal(clicked: number) {

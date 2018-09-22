@@ -3,7 +3,6 @@ package org.team.sns.controller;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +35,6 @@ public class NetworkController {
 		System.out.println("친구추가들어옴");
 		//ns.friendRequest("testid", target);
 		as.saveFriendRequest(target, principal);
-		
 	}
 		
 	@GetMapping("/getNetworks")
@@ -51,10 +49,12 @@ public class NetworkController {
 	public void addFollow(Principal principal, String target) {
 		ns.addFollow("testid", target);
 	}
+	
 	@GetMapping("/delFollow")
 	public void delFollow(Principal principal, String target) {
 		ns.delFollow("testid", target);
 	}
+	
 	@GetMapping("/addBlock")
 	public void addBlock(Principal principal, String target) {
 		ns.addBlock("testid", target);
