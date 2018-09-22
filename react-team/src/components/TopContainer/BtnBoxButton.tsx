@@ -71,7 +71,7 @@ class BtnBox extends React.Component<IProps, IState>{
                 </IconButton>
                     </NavLink>
                 <IconButton>
-                    <AlarmPage open={false}/>
+                    <AlarmPage/>
                 </IconButton>
             </span>
 

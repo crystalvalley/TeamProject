@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Menu, MenuItem, MenuList, StyleRulesCallback, Theme, withStyles } from "@material-ui/core";
+import { Menu, StyleRulesCallback, Theme, withStyles, MenuList, MenuItem } from "@material-ui/core";
 import AlarmBadge from "../TopContainer/AlarmBadge";
 import { IAlarmModel } from "../../constance/models";
 import Axios from "axios";
@@ -29,7 +29,7 @@ interface IProps {
     root: string,
     paper: string
   }
-  open: boolean
+  
 
 
 }
@@ -37,7 +37,7 @@ interface IProps {
 interface IState {
   anchorEl: any
   alarms: IAlarmModel[]
-  menuStatue: boolean
+  open: boolean
 }
 class AlarmPage extends React.Component<IProps, IState>{
   
@@ -48,7 +48,7 @@ class AlarmPage extends React.Component<IProps, IState>{
     this.state = {
       anchorEl: "",
       alarms: [],
-      menuStatue: false
+      open: false
     }
 
 
@@ -56,6 +56,7 @@ class AlarmPage extends React.Component<IProps, IState>{
     this.handleClose = this.handleClose.bind(this)
     this.componentDidMount = this.componentDidMount.bind(this)
     this.openMenu = this.openMenu.bind(this)
+    this.closeMenu = this.closeMenu.bind(this)
   };
 
 
@@ -71,12 +72,15 @@ class AlarmPage extends React.Component<IProps, IState>{
         })
       })
   }
-  public openMenu(){
+  public openMenu(){  
     this.setState({
-      menuStatue: true
+      open: true
+      
     })
     
-    
+  }
+  public closeMenu(){
+      this.setState({open:false})
   }
 
   public render() {
@@ -93,14 +97,14 @@ class AlarmPage extends React.Component<IProps, IState>{
               Open Menu
             </Button> */}
         <div id="anchor" > {/* ref={ref => { this.state.mydiv=ref}}  */}
-          <span ref={(element) => { this.divAnchor = element }}><AlarmBadge  alarmCount={this.state.alarms.length} /></span>
+          <span onClick={this.openMenu} ref={(element) => { this.divAnchor = element }}><AlarmBadge  alarmCount={this.state.alarms.length} /></span>
         </div>
         <Menu
           id="menuList"
           anchorEl={this.divAnchor}
           // open={this.state.menuStatue} 이거 계속 여러 방법으로 해도 안되네.. 이거랑 리스트 anchor에 붙히는거 계속 안되서 ㅠ 시간 그만 보내야 할 듯....
-          open={false}
-          onClose={this.handleClose}
+          open={this.state.open}
+          onClose={this.closeMenu}
         >
           <MenuList>
             {
@@ -111,7 +115,7 @@ class AlarmPage extends React.Component<IProps, IState>{
                     <MenuItem key={index}>{alarm.actor_id.id + "님으로 부터 친구요청"}</MenuItem>
                 );
               })}<br />
-          </MenuList>
+            </MenuList>
         </Menu>
       </div>
     );
