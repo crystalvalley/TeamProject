@@ -114,14 +114,6 @@ public class AccountRestController {
 		//System.out.println("들어온다2222" + member);
 		Member me = mr.findById(member.getId()).get();
 		// System.out.println("가져온거" + me);
-		if (member.getUsername() != null) {
-			me.setUsername(member.getUsername());
-			//System.out.println("들어온다1");
-		} else if (member.getUsername() == null) {
-			me.setUsername(me.getUsername());
-			//System.out.println("들어온다2");
-		}
-
 		if (member.getPassword() != null) {
 			me.setPassword(member.getPassword());
 			//System.out.println("들어온다3");
@@ -176,16 +168,4 @@ public class AccountRestController {
 		System.out.println("잘불러와짐" + result.toString());
 		return result;
 	}
-
-	@PostMapping("/selectUsername")
-	public String selectUsername(Principal principal) {
-		Member member = new Member();
-		member = mr.findById("testid").get();
-		System.out.println("유저이름찾기" + member.getUsername());
-		return member.getUsername();
-	}
-/*	@GetMapping("/test")
-	public void test(String id,String pw,String email, String name) {
-		ts.test(id, pw, email, name);
-	}*/
 }

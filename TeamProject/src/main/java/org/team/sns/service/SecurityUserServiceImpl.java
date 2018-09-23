@@ -28,14 +28,14 @@ public class SecurityUserServiceImpl implements SecurityUserService {
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		Member member = mr.findById(id).get();
-		return new SecurityUser(member.getId(), member.getPassword(), member.getUsername());
+		return new SecurityUser(member.getId(), member.getPassword(),  member.getId());
 	}
 
 	@Override
 	public SecurityUser readUser(String id) {
 		// TODO Auto-generated method stub
 		Member member = mr.findById(id).get();
-		return new SecurityUser(member.getId(), member.getPassword(), member.getUsername());
+		return new SecurityUser(member.getId(), member.getPassword(), member.getId());
 	}
 
 	@Override

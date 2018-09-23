@@ -34,7 +34,7 @@ import lombok.ToString;
 @Table(name = "Members")
 //_id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = { "boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom",
+@ToString(exclude = { "boards", "favorited", "myNetwork", "networked", "shared", "onRoom",
 		"groups", "customList", "mentionList", "share" })
 @JsonIgnoreProperties({ "boards", "received", "sended", "favorited", "myNetwork", "networked", "shared", "onRoom",
 		"groups", "customList", "mentionList", "share" })
@@ -52,8 +52,6 @@ public class Member {
 	private String email;
 	@NotNull
 	private String password;
-	@NotNull
-	private String username;
 
 	@CreationTimestamp
 	private Timestamp signupDate;

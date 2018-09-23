@@ -128,7 +128,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         className={classes.username}
                     >
                         <span ref={(element) => { this.anchor = element }} />
-                        {card.writer.username}
+                        {card.writer.id}
                     </Typography>
                     <IconButton
                         style={{

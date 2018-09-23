@@ -25,7 +25,6 @@ class AllFriends extends React.Component<INetworkStore, IState>{
 
                 {
                     id: "",
-                    username: "",
                     profileImg: ""
                 }
 

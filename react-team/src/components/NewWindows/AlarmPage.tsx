@@ -138,10 +138,6 @@ class AlarmPage extends React.Component<IProps, IState>{
                 );
               })}<br />
             </MenuList>
-        
-        
-        
-        
         </Menu>
         
       </div>

@@ -13,7 +13,7 @@ import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFrien
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.28
- * @version:2018.08.28
+ * @version:2018.09.23
  */
 
 
@@ -35,14 +35,14 @@ interface IProps {
 }
 interface IState {
     modalOpen: number;
-    open:boolean
+    open: boolean
 }
 class BtnBox extends React.Component<IProps, IState>{
     constructor(props: IProps) {
         super(props);
         this.state = {
             modalOpen: -1,
-            open:false
+            open: false
         }
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -54,16 +54,16 @@ class BtnBox extends React.Component<IProps, IState>{
         const { modalOpen } = this.state;
         const writeHandler = () => this.openModal(0);
         const writeHandler2 = () => this.openModal(1);
-      
+
         return (
             <span
                 className={classes.btnBox}
-            >                
-                <IconButton                   
+            >
+                <IconButton
                 >
                     <Mail />
                 </IconButton>
-               
+
                 <IconButton
                     onClick={writeHandler}
                 >
@@ -89,17 +89,15 @@ class BtnBox extends React.Component<IProps, IState>{
                         <Book />
                     </IconButton>
                 </NavLink>
-                <NavLink to="/Users">
+                <NavLink to="/userUpdate">
                     <IconButton>
                         <AccountCircle />
                     </IconButton>
                 </NavLink>
-
-            </span >
-
+            </span>
         );
     }
-    private openMenu(clicked:number) {
+    private openMenu(clicked: number) {
         this.setState({
             open: true
         })
