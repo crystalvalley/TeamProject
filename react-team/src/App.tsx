@@ -23,9 +23,9 @@ export default class App extends React.Component {
                     <Route path="/signup" component={SignUp} />
                     {/* 그 외 */}
                     <Route path="/" component={AppContainer} />
-                   
-                   
-                    
+
+
+
                 </Switch>
             </BrowserRouter>
         );

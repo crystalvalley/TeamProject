@@ -50,8 +50,8 @@ public class BoardRestController {
 
 	@GetMapping("/getByListName")
 	public List<Board> getByListName(String listName, Principal principal, int page) {
-		// return bs.getBoardByListName(listName,principal.getName());
-		return bs.getBoardByListName(listName, principal.getName(), page);
+		// return bs.getBoardByListName(listName,"testid");
+		return bs.getBoardByListName(listName, "testid", page);
 	}
 
 	@GetMapping("/view")
@@ -59,15 +59,15 @@ public class BoardRestController {
 		HashMap<String, Object> result = new HashMap<>();
 		Board board = br.findById(num).get();
 		result.put("content", board);
-		result.put("writer", board.getWriter().getUsername());
+		result.put("writer", board.getWriter().getId());
 		result.put("image", board.getPhotos());
 		return result;
 	}
 
 	@PostMapping("/writeBoard")
 	   public void writeBoard(Board board, Principal principal,MultipartFile[] image) throws Exception {
-	      // board.setWriter(mr.findById(principal.getName()).get());
-	      board.setWriter(mr.findById(principal.getName()).get());
+	      // board.setWriter(mr.findById("testid").get());
+	      board.setWriter(mr.findById("testid").get());
 	      bs.saveBoard(board);
 	      bs.setBoardImage(board, image);
 	      as.savementionAlarms(board, principal);
@@ -86,12 +86,12 @@ public class BoardRestController {
 
 	@GetMapping("/getEmotion")
 	public List<Integer> getEmotion(int boardId, Principal principal) {
-		return bs.getEmotions(boardId, principal.getName());
+		return bs.getEmotions(boardId, "testid");
 	}
 
 	@GetMapping("/addEmotion")
 	public String setEmotion(int emotionType, int boardId, Principal principal) {
-		bs.addEmotion(boardId, emotionType, principal.getName());
+		bs.addEmotion(boardId, emotionType, "testid");
 		return "success";
 	}
 
@@ -101,23 +101,23 @@ public class BoardRestController {
 		if (keyword.equals("")) {
 			return null;
 		}
-		return bs.getBoardBySearchKeyword(keyword, page, principal.getName());
+		return bs.getBoardBySearchKeyword(keyword, page, "testid");
 	}
 
 	@GetMapping("/getFavorites")
 	public List<Integer> getFavorites(Principal principal) {
-		return bs.getFavorites(principal.getName());
+		return bs.getFavorites("testid");
 	}
 
 	@GetMapping("/setFavorites")
 	public void setFavorites(Principal principal, int id) {
-		bs.setFavorites(principal.getName(), id);
+		bs.setFavorites("testid", id);
 	}
 
 	@GetMapping("/getById")
 
 	public List<Board> getById(Principal principal){
-	List<Board> list = br.getBoardsByUserId(principal.getName());
+	List<Board> list = br.getBoardsByUserId("testid");
 	System.out.println("들어왔따.");
 	System.out.println(list);
 	return list;

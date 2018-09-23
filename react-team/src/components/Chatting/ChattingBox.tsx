@@ -92,6 +92,7 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                     <Grow in={open} >
                         <Paper elevation={4} className={classes.paper + addSubName}>
                             <ChatWrapper
+                                roomMembers = {this.props.roomMembers}
                                 profileURL={this.props.profileURL}
                                 chats={this.props.chat===undefined?[]:this.props.chat}
                                 loginedId={this.props.loginedId}

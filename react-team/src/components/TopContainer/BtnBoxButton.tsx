@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, IconButton } from '@material-ui/core';
 import List from "@material-ui/icons/List";
-import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Compare from '@material-ui/icons/Compare';
 import Accessibility from '@material-ui/icons/Accessibility';
 
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
-import AlarmBadge from './AlarmBadge';
+import AlarmPage from '../NewWindows/AlarmPage';
+
 
 
 
@@ -16,6 +16,11 @@ import AlarmBadge from './AlarmBadge';
  * @author:ChaMinJu
  * @since:2018.09.19
  * @version:2018.09.19
+ */
+/**
+ * @author:ParkHyeokJoon
+ * @since : 2018.09.23
+ * @version:2018.09.23
  */
 
 
@@ -44,43 +49,37 @@ class BtnBox extends React.Component<IProps, IState>{
 
     public render() {
         const { classes } = this.props;
-        const writeHandler2 = () => this.openModal(1);
 
         return (
-          
+
             <span
                 className={classes.btnBox}
             >
-                 <IconButton>
-                    <NavLink to="/userUpdate">
+                <NavLink to="/userUpdate">
+                    <IconButton>
                         <AccountCircle />
-                    </NavLink>
-                </IconButton>
-                <IconButton>
-                    <NavLink to="/AllFriends">
+                    </IconButton>
+                </NavLink>
+                <NavLink to="/AllFriends">
+                    <IconButton>
                         <Accessibility />
-                    </NavLink>
-                </IconButton>
-                <IconButton>
-                    <NavLink to="/createGroup">
+                    </IconButton>
+                </NavLink>
+                <NavLink to="/createGroup">
+                    <IconButton>
                         <Compare />
-                    </NavLink>
-                </IconButton>
-                <IconButton>
-                    <NavLink to="/listControl">
+                    </IconButton>
+                </NavLink>
+                <NavLink to="/listControl">
+                    <IconButton>
                         <List />
-                    </NavLink>
-                </IconButton>
-                <ShowupFriendList
-                    open={this.state.modalOpen === 1}
-                    openf={writeHandler2}
-                    close={this.closeModal}
-                />
+                    </IconButton>
+                </NavLink>
                 <IconButton>
-                    <AlarmBadge count="2"/>
+                    <AlarmPage/>
                 </IconButton>
             </span>
-           
+
         );
     }
 

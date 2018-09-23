@@ -9,6 +9,7 @@ import TagSuggestBox from './Suggestion/Components/TagSuggestBox';
 import { ISuggestState } from './EditorConstance/props';
 import MentionSuggestBox from './Suggestion/Components/MentionSuggestBox';
 import axios from "axios";
+import { withRouter, RouteComponentProps } from 'react-router';
 
 
 /**
@@ -49,6 +50,7 @@ interface IProps {
         editorPart: string;
         menuPart: string;
     },
+    onClose(): void;
 }
 
 interface IState {
@@ -64,8 +66,8 @@ interface IState {
 }
 
 
-class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
-    constructor(props: IProps & ILoginStore) {
+class SNSEditorContainer extends React.Component<IProps & ILoginStore & RouteComponentProps<{}>, IState>{
+    constructor(props: IProps & ILoginStore & RouteComponentProps<{}>) {
         super(props);
         this.state = {
             editorState: EditorState.createEmpty(SNSDecorator),
@@ -158,16 +160,17 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
         )
         data.append("title", this.state.title);
         data.append("writerId", this.props.logined.id)
-        for(const file of this.state.files){
-            data.append("image",file)
+        for (const file of this.state.files) {
+            data.append("image", file)
         }
         axios.post("http://localhost:8081/boards/writeBoard", data)
             .then((response) => {
                 // alert(response.data);
-                location.href = "/";
+                this.props.history.push("/refreshPage" + window.location.pathname)
+                this.props.onClose();
             })
             .catch(() => {
-                location.href = "/";
+                this.props.history.push("/")
             })
     }
     private editorChange(e: EditorState) {
@@ -313,4 +316,4 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
     }
 }
 
-export default withLoginContext(withStyles(style)(SNSEditorContainer))
+export default withRouter(withLoginContext(withStyles(style)(SNSEditorContainer)))

@@ -63,7 +63,6 @@ public class insertTest {
 		member2.setId("testid");
 		member2.setPassword("12345678");
 		member2.setEmail("test@gmail.com");
-		member2.setUsername("testman");
 		sus.createUser(member2);
 		ms.signup(member2);
 		for (int i = 1; i < 5; i++) {
@@ -71,7 +70,6 @@ public class insertTest {
 			member.setId("testid" + i);
 			member.setPassword("12345678");
 			member.setEmail("test@gmail.com");
-			member.setUsername("testman" + i);
 			sus.createUser(member);
 			ms.signup(member);
 		}
@@ -79,11 +77,5 @@ public class insertTest {
 		ns.friendRequest("testid", "testid2");
 		ns.friendRequest("testid", "testid3");
 		ns.acceptFriend("testid1", "testid");
-		ns.acceptFriend("testid2", "testid");
-		ns.acceptFriend("testid3", "testid");
-	}
-	@Test
-	public void ssTest() throws IOException {
-		ss.makeChatting("testid", "testid2");
 	}
 }

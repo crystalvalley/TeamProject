@@ -13,6 +13,11 @@ import Allmemberstile from './Allmemberstile';
  * 전체 모든 사람들 목록
  */
 
+/**
+ * @author:Kim MinJeong
+ * @version:2018.09.19
+ */
+
 interface IState {
     friends: IMemberModel[],
 }
@@ -25,7 +30,6 @@ class AllFriends extends React.Component<INetworkStore & ILoginStore, IState>{
 
                 {
                     id: "",
-                    username: "",
                     profileImg: ""
                 }
 

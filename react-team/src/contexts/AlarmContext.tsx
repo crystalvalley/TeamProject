@@ -21,12 +21,10 @@ const AlarmContext = React.createContext<IStore>({
     actor_id: {
         id: "",
         profileImg: "",
-        username: ""
     },
     receiver: {
         id: "",
-        profileImg: "",
-        username: ""
+        profileImg: "",   
     },
 
 
@@ -44,12 +42,10 @@ export default class AlarmProvider extends React.Component<{}, IStore>{
             actor_id: {
                 id: "",
                 profileImg: "",
-                username: ""
             },
             receiver: {
                 id: "",
                 profileImg: "",
-                username: ""
             },
 
         }
