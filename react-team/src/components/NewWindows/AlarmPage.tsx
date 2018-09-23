@@ -3,6 +3,7 @@ import { Menu, StyleRulesCallback, Theme, withStyles, MenuList, MenuItem } from 
 import AlarmBadge from "../TopContainer/AlarmBadge";
 import { IAlarmModel } from "../../constance/models";
 import Axios from "axios";
+// import FriConfirm from "../TopContainer/FriConfirm";
 
 
 // 일단 알람 페이지랑 알람 뱃지랑 합쳐서 해야 할 것 같다는 생각이 들었고
@@ -19,15 +20,18 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     display: 'flex',
   },
   paper: {
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 3,
+    
   },
+  
 });
 
 
 interface IProps {
   classes: {
     root: string,
-    paper: string
+    paper: string,
+    menu:string
   }
   
 
@@ -38,17 +42,23 @@ interface IState {
   anchorEl: any
   alarms: IAlarmModel[]
   open: boolean
+  confirmOpen:boolean
 }
 class AlarmPage extends React.Component<IProps, IState>{
   
   private divAnchor: HTMLSpanElement | null;
+
+  private dummy=[
+    {"actor_id":"AAA", checked:false, mentioned:true},{"actor_id":"BBB", checked:false, mentioned:false}
+  ]
   constructor(props: IProps) {
 
     super(props)
     this.state = {
       anchorEl: "",
       alarms: [],
-      open: false
+      open: false,
+      confirmOpen:false
     }
 
 
@@ -57,6 +67,8 @@ class AlarmPage extends React.Component<IProps, IState>{
     this.componentDidMount = this.componentDidMount.bind(this)
     this.openMenu = this.openMenu.bind(this)
     this.closeMenu = this.closeMenu.bind(this)
+    this.confrimOpen = this.confrimOpen.bind(this)
+    this.confirmClose = this.confirmClose.bind(this)
   };
 
 
@@ -83,6 +95,14 @@ class AlarmPage extends React.Component<IProps, IState>{
       this.setState({open:false})
   }
 
+  public confrimOpen(){
+    this.setState({confirmOpen:true})
+  }
+  public confirmClose(){
+    this.setState({confirmOpen:false})
+  }
+  
+
   public render() {
     // const { anchorEl } = this.state;
     // const divAnchor = document.getElementById("anchor")
@@ -100,23 +120,26 @@ class AlarmPage extends React.Component<IProps, IState>{
           <span onClick={this.openMenu} ref={(element) => { this.divAnchor = element }}><AlarmBadge  alarmCount={this.state.alarms.length} /></span>
         </div>
         <Menu
+          className={this.props.classes.menu}
           id="menuList"
           anchorEl={this.divAnchor}
           // open={this.state.menuStatue} 이거 계속 여러 방법으로 해도 안되네.. 이거랑 리스트 anchor에 붙히는거 계속 안되서 ㅠ 시간 그만 보내야 할 듯....
           open={this.state.open}
           onClose={this.closeMenu}
         >
-          <MenuList>
+         
+         <MenuList>
             {
-              this.state.alarms.map((alarm, index) => {
+              this.dummy.map((alarm, index) => {
                 return (
                   !alarm.checked && alarm.mentioned === true ?
-                    <MenuItem key={index}>{alarm.actor_id.id + "님으로 부터 멘션"}</MenuItem> :
-                    <MenuItem key={index}>{alarm.actor_id.id + "님으로 부터 친구요청"}</MenuItem>
+                    <MenuItem key={index}>{alarm.actor_id + "님으로 부터 멘션"}</MenuItem> :
+                    <MenuItem key={index}>{alarm.actor_id + "님으로 부터 친구요청"}</MenuItem>
                 );
               })}<br />
             </MenuList>
         </Menu>
+        
       </div>
     );
   }

@@ -139,7 +139,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     >
                         {this.props.favorites.indexOf(this.props.card.id) === -1 ?
                             <FavoriteIcon /> :
-                            <FilledFavoriteIcon />
+                            <FilledFavoriteIcon style={{color:"red"}}/>
 
                         }
                     </IconButton>

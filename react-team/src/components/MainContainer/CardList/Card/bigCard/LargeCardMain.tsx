@@ -236,7 +236,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
         <CardHeader
           avatar={
             <Avatar aria-label="Recipe" className={classes.avatar}>
-              R
+             R
             </Avatar>
           }
           action={
@@ -306,6 +306,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
           >
             <ExpandMoreIcon />
           </IconButton>
+
         </div>
 
 

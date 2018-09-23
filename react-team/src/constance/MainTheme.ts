@@ -16,12 +16,12 @@ export const mainTheme = createMuiTheme({
         },
         // 배경
         background: {
-            default: "#ffffff",
+            default: "#f2f2f2",
             paper: "#ffffff",
         },
         primary: {
-            light: '#9900ff',
-            main: '#9900ff',
+            light: '#ffffff',
+            main: '#ffcccc',    
             dark: '#9900ff',
             contrastText: '#303030',
         },
@@ -29,7 +29,7 @@ export const mainTheme = createMuiTheme({
     overrides:{
         MuiTypography:{
             title :{
-                color:"#ffffff"
+                color:"#ffcccc"
             },
             button:{
                 color:"blue"
