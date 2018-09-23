@@ -28,6 +28,7 @@ import WriterClickMenu from '../smallCard/WriterClickMenu';
 import ReplyEditor from './ReplyEditor';
 
 
+
 /**
  * @author:Joonsung Gil
  * @since:2018.08.29
@@ -236,7 +237,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
         <CardHeader
           avatar={
             <Avatar aria-label="Recipe" className={classes.avatar}>
-              R
+              ID
             </Avatar>
           }
           action={
@@ -308,7 +309,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
           </IconButton>
         </div>
 
-
+            <button onClick={this.submit}>save</button>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit={true}>
           <Scrollbars
             autoHeight={true}

@@ -59,7 +59,7 @@ public class BoardRestController {
 		HashMap<String, Object> result = new HashMap<>();
 		Board board = br.findById(num).get();
 		result.put("content", board);
-		result.put("writer", board.getWriter().getUsername());
+		result.put("writer", board.getWriter().getId());
 		result.put("image", board.getPhotos());
 		return result;
 	}
@@ -67,7 +67,7 @@ public class BoardRestController {
 	@PostMapping("/writeBoard")
 	   public void writeBoard(Board board, Principal principal,MultipartFile[] image) throws Exception {
 	      // board.setWriter(mr.findById("testid").get());
-	      board.setWriter(mr.findById("testid").get());
+	      board.setWriter(mr.findById(principal.getName()).get());
 	      bs.saveBoard(board);
 	      bs.setBoardImage(board, image);
 	      as.savementionAlarms(board, principal);

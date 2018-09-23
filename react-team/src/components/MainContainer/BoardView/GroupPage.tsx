@@ -107,7 +107,6 @@ class GroupPage extends React.Component<IProps & ILoginStore, IState>{
             userInfo: {
                 id: "",
                 profileImg: "",
-                username: ""
             },
             click: 0,
             firstContainer: "",

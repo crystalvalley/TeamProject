@@ -1,7 +1,7 @@
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
- * @version:2018.09.21
+ * @version:2018.09.23
  * 
  */
 export interface IMsgModel {
@@ -30,7 +30,6 @@ export interface ICardModel {
 export interface IMemberModel {
     id: string;
     profileImg: string;
-    username: string;
 }
 
 export interface IPhotoModel {

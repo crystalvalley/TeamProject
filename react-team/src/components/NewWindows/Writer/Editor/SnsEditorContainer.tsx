@@ -18,6 +18,13 @@ import { withRouter, RouteComponentProps } from 'react-router';
  * @version : 2018.08.28
  */
 
+/**
+ * @author : GilJoonsung
+ * @since : 2018.09.23
+ * @version : 2018.09.23
+ * css  수정
+ */ 
+
 const style: StyleRulesCallback = (theme: Theme) => ({
     editorContainer: {
         backgroundColor: "white",
@@ -32,7 +39,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         height: "100%",
         marginRight: "20px",
         padding: "25px",
-        backgroundColor: "white",
+        backgroundColor: "#f2f5f9",
         display: "flex",
         flexDirection: "column",
         position: "relative"
@@ -40,7 +47,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     menuPart: {
         flexBasis: "25%",
         height: "100%",
-        backgroundColor: "white"
+        backgroundColor: "#f2f5f9"
     },
 })
 
@@ -50,6 +57,7 @@ interface IProps {
         editorPart: string;
         menuPart: string;
     },
+    onClose(): void;
 }
 
 interface IState {
@@ -65,8 +73,8 @@ interface IState {
 }
 
 
-class SNSEditorContainer extends React.Component<IProps & ILoginStore&RouteComponentProps<{}>, IState>{
-    constructor(props: IProps & ILoginStore&RouteComponentProps<{}>) {
+class SNSEditorContainer extends React.Component<IProps & ILoginStore & RouteComponentProps<{}>, IState>{
+    constructor(props: IProps & ILoginStore & RouteComponentProps<{}>) {
         super(props);
         this.state = {
             editorState: EditorState.createEmpty(SNSDecorator),
@@ -99,6 +107,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore&RouteCompo
         const { editorState } = this.state;
         return (
             <React.Fragment>
+                <div>글쓰기</div>
                 <div
                     className={classes.editorPart}
                 >
@@ -159,13 +168,14 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore&RouteCompo
         )
         data.append("title", this.state.title);
         data.append("writerId", this.props.logined.id)
-        for(const file of this.state.files){
-            data.append("image",file)
+        for (const file of this.state.files) {
+            data.append("image", file)
         }
         axios.post("http://localhost:8081/boards/writeBoard", data)
             .then((response) => {
                 // alert(response.data);
-                this.props.history.push("/refreshPage"+window.location.pathname)
+                this.props.history.push("/refreshPage" + window.location.pathname)
+                this.props.onClose();
             })
             .catch(() => {
                 this.props.history.push("/")

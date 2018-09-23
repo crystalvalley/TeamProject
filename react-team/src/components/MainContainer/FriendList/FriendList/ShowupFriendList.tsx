@@ -63,7 +63,6 @@ class ShowupFriendList extends React.Component<INetworkStore & IProps, IState> {
 
         {
           id: "",
-          username: "",
           profileImg: ""
         }
 

@@ -49,7 +49,7 @@ class AlarmPage extends React.Component<IProps, IState>{
   private divAnchor: HTMLSpanElement | null;
 
   private dummy=[
-    {"actor_id":"AAA", checked:false, mentioned:true},{"actor_id":"BBB", checked:false, mentioned:false}
+    {"actor_id":"James", checked:false, mentioned:true},{"actor_id":"Tom", checked:false, mentioned:false}
   ]
   constructor(props: IProps) {
 
@@ -138,10 +138,6 @@ class AlarmPage extends React.Component<IProps, IState>{
                 );
               })}<br />
             </MenuList>
-        
-        
-        
-        
         </Menu>
         
       </div>
