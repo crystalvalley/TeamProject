@@ -68,18 +68,17 @@ export default class RTCTest extends React.Component<{},IState> {
         alert(error)
     }
 
-    private connect(username: string) {
+    private connect(userid: string) {
         alert("connected")
         const uri = "ws://localhost:8081/signal"
         this.sock = new WebSocket(uri);
 
         this.sock.onopen = (e: any) => {
-            alert('open' + e);
             this.sock.send(
                 JSON.stringify(
                     {
                         type: "login",
-                        data: username
+                        data: userid
                     }
                 )
             );

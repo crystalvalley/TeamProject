@@ -34,7 +34,6 @@ const NetworkContext = React.createContext<INetworkStore>({
     follwerList: [],
     loginedId: {
         id: "",
-        username: "",
         profileImg: ""
     },
     addFriend: (id: string) => { return },

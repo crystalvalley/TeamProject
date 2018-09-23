@@ -49,7 +49,7 @@ class ToText extends React.Component<IProps>{
             <div className={classes.block}>
                 <div className={classes.avatarBlock} >
                     <Avatar src={this.props.profileURL} className={classes.avatar} />
-                    {chat.sender.username}
+                    {chat.sender.id}
                 </div>
                 <div className={classes.msgBox}>
                     {chat.data}

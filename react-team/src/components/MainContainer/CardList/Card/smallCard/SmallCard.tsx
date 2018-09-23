@@ -128,7 +128,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         className={classes.username}
                     >
                         <span ref={(element) => { this.anchor = element }} />
-                        {card.writer.username}
+                        {card.writer.id}
                     </Typography>
                     <IconButton
                         style={{
@@ -139,7 +139,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     >
                         {this.props.favorites.indexOf(this.props.card.id) === -1 ?
                             <FavoriteIcon /> :
-                            <FilledFavoriteIcon />
+                            <FilledFavoriteIcon style={{color:"red"}}/>
 
                         }
                     </IconButton>

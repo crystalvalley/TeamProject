@@ -30,7 +30,6 @@ class AllFriends extends React.Component<INetworkStore & ILoginStore, IState>{
 
                 {
                     id: "",
-                    username: "",
                     profileImg: ""
                 }
 
