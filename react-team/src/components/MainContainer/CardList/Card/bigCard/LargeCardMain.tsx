@@ -26,6 +26,7 @@ import ReplyList from './ReplyList';
 import Scrollbars from 'react-custom-scrollbars';
 import WriterClickMenu from '../smallCard/WriterClickMenu';
 import ReplyEditor from './ReplyEditor';
+import ImageViewer from '../smallCard/ImageViewer';
 
 
 
@@ -51,8 +52,9 @@ import ReplyEditor from './ReplyEditor';
 // flex로 한줄로맞추고 같은 height로 맞춤 
 const styles: StyleRulesCallback = (theme: Theme) => ({
   card: {
-    flexBasis: '150%',
-    width: "120vh"
+    flexBasis: '250%',
+    width: "120vh",
+    height: "60vh",
   },
   media: {
     height: 0,
@@ -87,11 +89,14 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   },
   imageContainer: {
     height: "40%",
-    width: "30%"
+    width: "30%",
+    padding: "30px",
+    
   },
   content: {
     height: "100%",
-    width: "30%"
+    width: "30%",
+    padding: "30px",
   },
   img: {
     height: "100%",
@@ -149,6 +154,26 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   },
   tableTatil: {
     width: '30px%',
+  },
+  main: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  left: {
+    padding: "20px",
+  },
+  right: {
+   position: "absolute",
+   left: "50%",
+   padding: "20px",
+   top: "30vh",   
+  },
+  hight :{
+    padding: "20px",
+  },
+  down :{
+    top: "30vh",    
+    position: "absolute"
   }
 });
 
@@ -175,10 +200,16 @@ interface IProps {
     root: string;
     table: string;
     tableTatil: string;
+    main: string;
+    left: string;
+    right: string;
+    hight :string;
+    down:string;
   }
   // listName: string;
   // id: string;
   // scrollEnd(listName:string):void;
+
   card: ICardModel;
 }
 
@@ -193,6 +224,7 @@ interface IState {
 class RecipeReviewCard extends React.Component<IProps, IState> {
   // private div: HTMLDivElement | null;
   // private scroll: Scrollbars | null;
+  private imgWidth: HTMLDivElement | null;
   private anchor: HTMLSpanElement | null;
   constructor(props: IProps) {
     super(props)
@@ -233,113 +265,137 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     return (
       /* 모달 눌렀을 때 전체의 오른쪽 모습 */
       <Card className={classes.card}>
+
         <span ref={handler} />
-        <CardHeader
-          avatar={
-            <Avatar aria-label="Recipe" className={classes.avatar}>
-              ID
+        <div className={classes.main}>
+          <div className={classes.left}>
+          <div className={classes.hight}>
+            <CardHeader
+              avatar={
+                <Avatar aria-label="Recipe" className={classes.avatar}>
+                  ID
             </Avatar>
-          }
-          action={
-            <IconButton>
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={card.writer.id}
-          subheader={card.writeDay}
-          onClick={this.writerMenuOpen}
-        />
-        <WriterClickMenu
-          left={60}
-          top={80}
-          anchor={this.anchor}
-          open={this.state.open}
-          closeMenu={this.closeMenu}
-          id={card.writer.id}
-        />
+              }
+              action={
+                <IconButton>
+                  <MoreVertIcon />
+                </IconButton>
+              }
+              title={card.writer.id}
+              subheader={card.writeDay}
+              onClick={this.writerMenuOpen}
+            />
+            <WriterClickMenu
+              left={60}
+              top={80}
+              anchor={this.anchor}
+              open={this.state.open}
+              closeMenu={this.closeMenu}
+              id={card.writer.id}
+            />
+              </div>
 
-        <CardContent className={classes.containers}>
-          <div className={classes.imageContainer}>
-            <img className={classes.img} src={"http://localhost:8081/resources" + card.writer.profileImg} />
-          </div>
-          <div className={classes.content}>
+              {/*디브 위 아래 */}
 
-            <Scrollbars
-              autoHeight={true}
-              autoHide={true}
-            >
-              <CardContent>
-                <Editor
-                  readOnly={true}
-                  editorState={this.state.editorState}
-                  onChange={this.editorChange}
+
+              <div className={classes.down}>
+            <CardContent className={classes.containers}>
+
+            {/*이미지 위 
+              이미지 사이즈 지정 어떻게 하는지 모르겠다
+            */}
+              <div className={classes.imageContainer}>
+                <ImageViewer
+                  width={this.imgWidth !== undefined ? this.imgWidth!.offsetWidth - 24 : 0}
+                  photos={this.props.card.photos}
                 />
-              </CardContent>
-            </Scrollbars>
-          </div>
-        </CardContent>
+              </div>
 
-        <CardActions className={classes.actions} disableActionSpacing={true}>
-          <IconButton aria-label="Add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="Share">
-            <ShareIcon />
-          </IconButton>
-          <IconButton aria-label="reply">
-            <ReplyIcon />
-          </IconButton>
-          {/* 이부분 유저가 누른걸 가져오게 수정해야한다*/}
-          {/* 마음&즐겨찾기 추후 추가*/}
-          <EmotionBox
-            id={this.props.card.id}
-          />
-        </CardActions>
-        <div className={classes.replyBox}>
-          <ReplyEditor />
-          <IconButton
-            className={classnames(classes.expand, {
-              [classes.expandOpen]: this.state.expanded
-            })}
-            onClick={this.handleExpandClick}
-            aria-expanded={this.state.expanded}
-            aria-label="Show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </div>
+               {/*글  아래 */}
+              <div className={classes.content}>
+
+                <Scrollbars
+                  autoHeight={true}
+                  autoHide={true}
+                >
+                  <CardContent>
+                    <Editor
+                      readOnly={true}
+                      editorState={this.state.editorState}
+                      onChange={this.editorChange}
+                    />
+                  </CardContent>
+                </Scrollbars>
+              </div>
+            </CardContent>
+            </div>
+          </div>
+
+
+          <div className={classes.right}>
+            <CardActions className={classes.actions} disableActionSpacing={true}>
+              <IconButton aria-label="Add to favorites">
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton aria-label="Share">
+                <ShareIcon />
+              </IconButton>
+              <IconButton aria-label="reply">
+                <ReplyIcon />
+              </IconButton>
+              {/* 이부분 유저가 누른걸 가져오게 수정해야한다*/}
+              {/* 마음&즐겨찾기 추후 추가*/}
+              <EmotionBox
+                id={this.props.card.id}
+              />
+            </CardActions>
+            <div className={classes.replyBox}>
+              <ReplyEditor />
+              <IconButton
+                className={classnames(classes.expand, {
+                  [classes.expandOpen]: this.state.expanded
+                })}
+                onClick={this.handleExpandClick}
+                aria-expanded={this.state.expanded}
+                aria-label="Show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </div>
 
             <button onClick={this.submit}>save</button>
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit={true}>
-          <Scrollbars
-            autoHeight={true}
-            autoHide={true}
-          >
-            <CardContent>
-              <Paper>
-                <Table className={classes.table}>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>작성자</TableCell>
-                      <TableCell>내용</TableCell>
-                      <TableCell>작성시간</TableCell>
-                    </TableRow>
-                    {
-                      this.state.replys.map((reply, index) => {
-                        return (
-                          <TableRow key={index}>
-                            <ReplyList reply={reply} />
-                          </TableRow>
-                        );
-                      })}
+            <Collapse in={this.state.expanded} timeout="auto" unmountOnExit={true}>
+              <Scrollbars
+                autoHeight={true}
+                autoHide={true}
+              >
+                <CardContent>
+                  <Paper>
+                    <Table className={classes.table}>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>작성자</TableCell>
+                          <TableCell>내용</TableCell>
+                          <TableCell>작성시간</TableCell>
+                        </TableRow>
+                        {
+                          this.state.replys.map((reply, index) => {
+                            return (
+                              <TableRow key={index}>
+                                <ReplyList reply={reply} />
+                              </TableRow>
+                            );
+                          })}
 
-                  </TableBody>
-                </Table>
-              </Paper>
+                      </TableBody>
+                    </Table>
+                  </Paper>
 
-            </CardContent>
-          </Scrollbars>
-        </Collapse>
+                </CardContent>
+              </Scrollbars>
+            </Collapse>
+          </div>
+        </div>
       </Card>
     );
   }
