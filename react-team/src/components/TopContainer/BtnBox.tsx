@@ -10,6 +10,7 @@ import { IMemberModel } from '../../constance/models';
 import Mail from '@material-ui/icons/Mail';
 import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 
+
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.28
@@ -76,7 +77,7 @@ class BtnBox extends React.Component<IProps, IState>{
             <span
                 className={classes.btnBox}
             >
-                <IconButton
+                <IconButton 
                 >
                     <Mail />
                 </IconButton>

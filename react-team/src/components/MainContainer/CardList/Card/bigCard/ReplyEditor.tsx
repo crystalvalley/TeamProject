@@ -27,7 +27,7 @@ export default class ReplyEditor extends React.Component<{}, IState>{
             <div
                 style={{
                     width: "100%",
-                    backgroundColor: "skyblue",
+                    backgroundColor: "#f9fbff",
                     padding: "6px"
                 }}
             >
@@ -42,6 +42,7 @@ export default class ReplyEditor extends React.Component<{}, IState>{
                         ref={(e)=>{this.editor=e}}
                         editorState={this.state.editorState}
                         onChange={this.editorChange}
+                        placeholder="댓글은 여기에 쓰세요"
                     />
                 </Scrollbars>
             </div>
