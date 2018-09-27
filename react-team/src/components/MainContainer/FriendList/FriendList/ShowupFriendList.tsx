@@ -2,22 +2,23 @@ import * as React from 'react';
 import { withStyles, StyleRulesCallback, Theme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
-import Forming from './Forming';
 import { ListItem } from '@material-ui/core';
 import Scrollbars from 'react-custom-scrollbars';
 import { withNetworkContext, INetworkStore } from '../../../../contexts/NetworkContext';
-
+import { IMemberModel } from '../../../../constance/models';
+import Axios from '../../../../../node_modules/axios';
+import ShowupFriendListtile from './ShowupFriendListtile';
 
 /**
  * @author:Kim MinJeong
  * @since:2018.08.28
  * @version:2018.09.08
  */
+
 /**
  * @author:ParkHyeokJoon
  * @version:2018.09.08
  */
-
 
 const styles: StyleRulesCallback = (theme: Theme) => ({
   paper: {
@@ -48,6 +49,7 @@ interface IProps {
 interface IState {
   cutted: boolean;
   open: boolean;
+  friends: IMemberModel[];
 }
 
 class ShowupFriendList extends React.Component<INetworkStore & IProps, IState> {
@@ -56,24 +58,40 @@ class ShowupFriendList extends React.Component<INetworkStore & IProps, IState> {
     super(props);
     this.state = {
       cutted: false,
-      open: false
+      open: false,
+      friends: [
+
+        {
+          id: "",
+          profileImg: ""
+        }
+
+      ]
     }
   }
-
+  public componentDidMount() {
+    const axiosInstance = Axios.create({
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
+    })
+    axiosInstance.get("http://localhost:8081/networks/getNetworks").then((result) => {
+      this.setState({
+        friends: result.data.friendlist
+      })
+    })
+  }
 
   public render() {
     const { classes } = this.props;
     return (
-
       <Drawer
         open={this.props.open}
         onClose={this.props.close}
         onOpen={this.props.openf}
       >
 
-
         <div className={classes.list}>
-
           <Scrollbars
             style={{
               height: "100vh"
@@ -82,15 +100,17 @@ class ShowupFriendList extends React.Component<INetworkStore & IProps, IState> {
           >
             <List>
               {
-                this.props.friendList.map((friend, index) => {
+                this.props.friendList.map((friendlsit, index) => {
                   return (
                     <ListItem
                       key={index}
                     >
-                      <Forming
-                        delFriend={this.props.delFriend}
+                      <ShowupFriendListtile
+                        sendMsg={this.props.sendMsg}
                         list={this.props.classes.list}
-                        friendInfo={friend}
+                        delFriend={this.props.delFriend}
+                        friendInfo={friendlsit}
+                        id={this.props.loginedId}
                       />
                     </ListItem>
                   );

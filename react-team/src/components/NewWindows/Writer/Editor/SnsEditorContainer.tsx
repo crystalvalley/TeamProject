@@ -9,6 +9,7 @@ import TagSuggestBox from './Suggestion/Components/TagSuggestBox';
 import { ISuggestState } from './EditorConstance/props';
 import MentionSuggestBox from './Suggestion/Components/MentionSuggestBox';
 import axios from "axios";
+import { withRouter, RouteComponentProps } from 'react-router';
 
 
 /**
@@ -49,6 +50,7 @@ interface IProps {
         editorPart: string;
         menuPart: string;
     },
+    onClose(): void;
 }
 
 interface IState {
@@ -60,11 +62,12 @@ interface IState {
     mentionSuggest: boolean;
     sub: string;
     sS: SelectionState;
+    files: File[]
 }
 
 
-class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
-    constructor(props: IProps & ILoginStore) {
+class SNSEditorContainer extends React.Component<IProps & ILoginStore & RouteComponentProps<{}>, IState>{
+    constructor(props: IProps & ILoginStore & RouteComponentProps<{}>) {
         super(props);
         this.state = {
             editorState: EditorState.createEmpty(SNSDecorator),
@@ -80,6 +83,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
             focus: -1,
             hashSuggest: false,
             mentionSuggest: false,
+            files: [],
             sS: SelectionState.createEmpty("")
         }
         this.editorChange = this.editorChange.bind(this);
@@ -87,6 +91,8 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
         this.typeChange = this.typeChange.bind(this);
         this.changeTag = this.changeTag.bind(this);
         this.sendData = this.sendData.bind(this);
+        this.deleteImage = this.deleteImage.bind(this);
+        this.onDrop = this.onDrop.bind(this);
     }
 
     public render() {
@@ -131,6 +137,9 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
                     className={classes.menuPart}
                 >
                     <EditorMenu
+                        onDrop={this.onDrop}
+                        files={this.state.files}
+                        deleteImage={this.deleteImage}
                         editorState={editorState}
                         title={this.state.title}
                         writer={this.props.logined.id}
@@ -150,14 +159,18 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
             this.state.editorState.getCurrentContent().getPlainText()
         )
         data.append("title", this.state.title);
-        data.append("writerId",this.props.logined.id)
+        data.append("writerId", this.props.logined.id)
+        for (const file of this.state.files) {
+            data.append("image", file)
+        }
         axios.post("http://localhost:8081/boards/writeBoard", data)
             .then((response) => {
                 // alert(response.data);
-                location.href = "/";
+                this.props.history.push("/refreshPage" + window.location.pathname)
+                this.props.onClose();
             })
             .catch(() => {
-                location.href = "/";
+                this.props.history.push("/")
             })
     }
     private editorChange(e: EditorState) {
@@ -288,6 +301,19 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore, IState>{
             this.typeChange(this.state.editorState)
         })
     }
+    private deleteImage(index: number) {
+        const files = this.state.files;
+        files.splice(index, 1);
+        this.setState({
+            files
+        })
+    }
+    private onDrop(files: File[]) {
+        const subFiles = [...this.state.files, ...files];
+        this.setState({
+            files: subFiles
+        })
+    }
 }
 
-export default withLoginContext(withStyles(style)(SNSEditorContainer))
+export default withRouter(withLoginContext(withStyles(style)(SNSEditorContainer)))

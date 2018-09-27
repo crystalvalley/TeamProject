@@ -1,15 +1,24 @@
 import * as React from 'react';
-import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider } from '@material-ui/core';
+import { StyleRulesCallback, Theme, withStyles, Toolbar, AppBar, Divider, Typography } from '@material-ui/core';
 import classNames from 'classnames';
-import SearchField from './SearchField';
-import { withVoice, IVoiceStore } from '../../contexts/VoiceRecogContext';
 import BtnBox from './BtnBox';
 import { IMemberModel } from '../../constance/models';
+import pige from '../../img/end2.png';
+import axios from 'axios';
+import { NavLink } from 'react-router-dom';
+import BtnBoxButton from './BtnBoxButton';
+import { ILoginStore, withLoginContext } from '../../contexts/LoginContext';
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.14
- * @version:2018.08.24
+ * @version:2018.09.23
  * 
+ */
+
+/**
+ * 버튼박스 분리
+ * @author:ChaMinJu
+ * @version:2018.09.19
  */
 const styles: StyleRulesCallback = (theme: Theme) => ({
   appBar: {
@@ -30,9 +39,16 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     display: 'none',
   },
   toolBox: {
+    display: "flex",
+    flexDirection: "column",
     flexBasis: "25%",
     flexGrow: 1,
     textAlign: "center"
+  },
+  id:{
+    marginLeft:"10vw",
+    fontSize:"3em",
+    color:"black"
   }
 })
 
@@ -45,6 +61,7 @@ interface IProps {
     secondaryToolbar: string;
     toolBox: string;
     topBar: string;
+    id:string;
   },
 }
 
@@ -53,15 +70,14 @@ interface IState {
   userInfo: IMemberModel;
 }
 
-class TopBar extends React.Component<IProps & IVoiceStore, IState> {
-  constructor(props: IProps & IVoiceStore) {
+class TopBar extends React.Component<IProps & ILoginStore, IState> {
+  constructor(props: IProps & ILoginStore) {
     super(props);
     this.state = {
       searchKeyword: "",
       userInfo: {
         profileImg: "",
         id: "",
-        username:""
       }
     }
     this.onChange = this.onChange.bind(this);
@@ -74,33 +90,41 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
         position="absolute"
         className={classNames(classes.appBar)}
       >
+
         <Toolbar
           className={classes.topBar}
         >
-          <SearchField
-            onChange={this.onChange}
-          />
+
+          <NavLink to="/ ">
+            <img src={pige} onClick={this.home} />
+          </NavLink>
+          <Typography
+            className={classes.id}
+          >
+            {this.props.logined.id}
+          </Typography>
           <span
             className={classes.toolBox}
           >
-            <BtnBox 
-              friends={this.state.userInfo}
-            />
+            <div>
+              <BtnBox
+                friends={this.state.userInfo}
+              />
+            </div>
+            <div>
+              <BtnBoxButton
+                friends={this.state.userInfo}
+              />
+            </div>
           </span>
         </Toolbar>
         <Divider />
-        <Toolbar
-          variant="dense"
-        >
-          <span>
-            {this.props.inputValue}
-          </span>
-
-        </Toolbar>
       </AppBar>
     );
   }
-
+  private home() {
+    axios.get("http://localhost:8081/home")
+  }
 
 
   private onChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -110,4 +134,4 @@ class TopBar extends React.Component<IProps & IVoiceStore, IState> {
   }
 }
 
-export default withVoice(withStyles(styles)(TopBar));
+export default withLoginContext(withStyles(styles)(TopBar));

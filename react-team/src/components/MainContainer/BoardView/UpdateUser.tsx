@@ -3,7 +3,7 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Toolbar, TextField, Button } from '@material-ui/core';
 import axios from 'axios';
 import { withLoginContext, ILoginStore } from '../../../contexts/LoginContext';
-import { ICardModel, IPhotoModel, IMemberModel } from '../../../constance/models';
+import { IMemberModel } from '../../../constance/models';
 
 /**
  * @author:chaMinju
@@ -12,7 +12,7 @@ import { ICardModel, IPhotoModel, IMemberModel } from '../../../constance/models
  */
 /**
  * @author : ParkHyeokJoon
- * @version : 2018.09.02
+ * @version : 2018.09.23
  *  - 이미지 업로드 기능 추가
  */
 
@@ -129,20 +129,14 @@ interface IProps {
         bootstrapFormLabel: string;
         input: string;
     }
-
+    
 }
 
 interface IState {
-    item: {
-        content: ICardModel,
-        writer: string,
-        image: IPhotoModel[],
-    },
     userInfo: IMemberModel,
     pw: string;
-    userid:string;
-    username:string;
-    chepw:string
+    userid: string;
+    chepw: string
 }
 
 class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
@@ -150,55 +144,27 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
     constructor(props: IProps & ILoginStore) {
         super(props);
         this.state = {
-            item: {
-                content: {
-                    id: 0,
-                    writer: {
-                        id: "",
-                        profileImg: "",
-                        username: ""
-                    },
-                    title: "",
-                    content: "",
-                    // url
-                    sound: "",
-                    // image
-                    image: "",
-                    writeDay: "",
-                    updateDaty: "",
-                    hitcount: 0,
-                },
-                writer: "",
-                image: [],
-            },
             userInfo: {
                 id: "",
                 profileImg: "",
-                username: ""
             },
-            userid:"",
-            username:"",
-            chepw:"",
+            userid: "",
+            chepw: "",
             pw: "",
         }
-        axios.post("http://localhost:8081/account/selectUsername")
-        .then((response) => {
-            // alert(response.data);
-            this.setState({
-                username : response.data
-            })
-         })
-
         
+
+
         this.onChangeFile = this.onChangeFile.bind(this);
         this.submit = this.submit.bind(this);
-        this.doChangename = this.doChangename.bind(this);
         this.doChangepw = this.doChangepw.bind(this);
         this.doChangechepw = this.doChangechepw.bind(this);
-        
+
     }
+    
+    
     public render() {
-        
+
         const { classes, logined } = this.props;
         // const doChange = (e:Event) => this.doChange(e);
         return (
@@ -237,10 +203,9 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                     className={classes.replyContainer}>
                     <h2>개인정보 수정</h2><br />
                     <TextField label={this.props.logined.id} name="id" disabled={true} /><br /><br />
-                    <TextField label={this.state.username} placeholder="name" name="name"onChange={this.doChangename} >{this.state.username}</TextField><br /><br />
                     {/*에이젝스로 비밀번호르 쏴서 확인한다*/}
                     <TextField type="password" name="userpw" label="비밀번호" onChange={this.doChangepw} >{this.state.pw}</TextField><br /><br />
-                    <TextField type="password" label="비밀번호 확인" name="chepw"onChange={this.doChangechepw}>{this.state.chepw}</TextField>
+                    <TextField type="password" label="비밀번호 확인" name="chepw" onChange={this.doChangechepw}>{this.state.chepw}</TextField>
                 </div>
                 <div className={classes.replyContainer}>
                     <TextField
@@ -265,17 +230,12 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                     </Button>
                 </div>
                 <div className={classes.buttons1}>
-                <Button variant="outlined" onClick={this.submit} color="primary" className={classes.button}>
+                    <Button variant="outlined" onClick={this.submit} color="primary" className={classes.button}>
                         정보수정
                      </Button>
                 </div>
             </div>
         )
-    }
-    private doChangename(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({
-            username: event.currentTarget.value
-        })
     }
     private doChangepw(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({
@@ -299,18 +259,18 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
     }
 
     private submit() {
-        alert(this.state.username);
         // alert("알얼트당");
         {/*비밀번호는 폼으로 가져오면된다.  */ }
         const data = new FormData();
-        data.append("chepw",this.state.chepw);
-        data.append("username",this.state.username);
-        data.append("id",this.props.logined.id);
-        data.append("password",this.state.pw);
-        axios.post("http://localhost:8081/account/updatauser",data )
+        data.append("chepw", this.state.chepw);
+        data.append("id", this.props.logined.id);
+        data.append("password", this.state.pw);
+        axios.post("http://localhost:8081/account/updatauser", data)
             .then((response) => {
-               alert(response.data+"돌아옴");
+                alert(response.data + "돌아옴");
             })
     }
+
+    
 }
 export default withLoginContext(withStyles(style)(UpdateUser));

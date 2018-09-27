@@ -25,6 +25,7 @@ import EmotionBox from '../smallCard/EmotionBox';
 import ReplyList from './ReplyList';
 import Scrollbars from 'react-custom-scrollbars';
 import WriterClickMenu from '../smallCard/WriterClickMenu';
+import ReplyEditor from './ReplyEditor';
 
 
 /**
@@ -49,8 +50,8 @@ import WriterClickMenu from '../smallCard/WriterClickMenu';
 // flex로 한줄로맞추고 같은 height로 맞춤 
 const styles: StyleRulesCallback = (theme: Theme) => ({
   card: {
-    flexBasis: '100%',
-    width: "90vh"
+    flexBasis: '150%',
+    width: "120vh"
   },
   media: {
     height: 0,
@@ -294,7 +295,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
           />
         </CardActions>
         <div className={classes.replyBox}>
-          {/* editor자리 */}
+          <ReplyEditor />
           <IconButton
             className={classnames(classes.expand, {
               [classes.expandOpen]: this.state.expanded

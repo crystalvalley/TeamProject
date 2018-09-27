@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { IMemberModel } from '../constance/models';
+import { IMemberModel, IMsgModel } from '../constance/models';
 import { ILoginStore, withLoginContext } from './LoginContext';
 import axios from 'axios';
 
 /**
  * @author:ParkHyeokJoon
  * @since : 2018.09.08
- * @version : 2018.09.08
+ * @version : 2018.09.15
  */
 // 채팅 파트 추가 필요
 export interface INetworkStore {
@@ -16,13 +16,15 @@ export interface INetworkStore {
     friendRequest: IMemberModel[];
     followList: IMemberModel[];
     follwerList: IMemberModel[];
-    loginedId : IMemberModel;
+    loginedId: IMemberModel;
     addFriend(id: string): void;
     delFriend(id: string): void;
     addFollow(id: string): void;
     delFollow(id: string): void;
     addBlock(id: string): void;
     refresh(): void;
+    socketRefresh(dataType:string):void;
+    sendMsg(sendMessage: IMsgModel): void
 }
 
 const NetworkContext = React.createContext<INetworkStore>({
@@ -30,17 +32,18 @@ const NetworkContext = React.createContext<INetworkStore>({
     friendRequest: [],
     followList: [],
     follwerList: [],
-    loginedId:{
-        id:"",
-        username:"",
-        profileImg:""
+    loginedId: {
+        id: "",
+        profileImg: ""
     },
     addFriend: (id: string) => { return },
     delFriend: (id: string) => { return },
     addFollow: (id: string) => { return },
     delFollow: (id: string) => { return },
     addBlock: (id: string) => { return },
-    refresh: () => { return }
+    sendMsg: (sendMessage: IMsgModel) => { return },
+    refresh: () => { return },
+    socketRefresh: (dataType:string) => { return }
 });
 
 // 친구목록 컨테스트를 사용할 경우에는 로그인 컨텍스트도 같이 사용됨
@@ -58,20 +61,22 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
             friendRequest: [],
             followList: [],
             follwerList: [],
-            loginedId:this.props.logined,
+            loginedId: this.props.logined,
             addFriend: this.addFriend,
             delFriend: this.delFriend,
             addFollow: this.addFollow,
             delFollow: this.delFollow,
             addBlock: this.addBlock,
-            refresh: this.refresh
+            refresh: this.refresh,
+            sendMsg: this.props.sendMessage,
+            socketRefresh : this.props.socketRefesh
         }
     }
     public componentDidMount() {
         this.refresh();
     }
     public render() {
-        const value={...this.state,...this.props.logined}
+        const value = { ...this.state, ...this.props.logined }
         return (
             <NetworkContext.Provider value={value}>
                 {this.props.children}
@@ -79,14 +84,26 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
         );
     }
     private addFriend(memberid: string) {
-        axios.get("http://localhost:8081/networks/requestNetwork", {
+        alert(memberid + "를 친구 추가");
+        axios.get("http://localhost:8081/networks/requestFriend", {
             params: {
                 target: memberid
             }
+        }).then((result) => {
+            this.refresh();
         })
     }
+
     private delFriend(memberid: string) {
         alert(memberid + "를 친구 삭제");
+        axios.get("http://localhost:8081/networks/delFriend", {
+            params: {
+                target: memberid
+            }
+        }).then((result) => {
+            this.refresh();
+        })
+
     }
     private addFollow(memberid: string) {
         axios.get("http://localhost:8081/networks/addFollow", {

@@ -26,22 +26,22 @@ import org.team.sns.domain.Tag;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 
-import lombok.extern.java.Log;
-
 /**
  * 
  * @author ParkHyeokjoon
  * @since 18.08.12
- * @version 18.09.09
+ * @version 18.09.23
  *
  */
-@Log
+
 public class BoardRepositoryImpl extends QuerydslRepositorySupport implements BoardRepositoryCustom {
-	
+
 	@Autowired
 	MemberRepository mr;
 	@Autowired
 	TagRepository tr;
+	@Autowired
+	MentionRepository menr;
 
 	public BoardRepositoryImpl() {
 		super(Board.class);
@@ -273,30 +273,32 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	}
 
 	@Override
-	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList, int page,Member loginId) {
+	public List<Board> getBoardByCondition(List<ProductStrategy> pstrList, int page, Member loginId) {
 		// TODO Auto-generated method stub
 		// 즐겨찾기가 조건에 있다면, 등록날짜 기준
-		Boolean check = false;
+		// 0이면 즐겨찾기
+		// 1이면 멘션
+		int check = -1;
 		QBoard board = QBoard.board;
 		QFavorites fav = QFavorites.favorites;
+		QMention men = QMention.mention;
 		JPQLQuery<Board> query = from(board);
-		JPQLQuery<Favorites> subQuery = from(fav);		
-		subQuery.where(fav.adder.eq(loginId));
-		subQuery.where(fav.board.eq(board));
-		
+
 		query.select(board);
 		BooleanBuilder whereCondition = new BooleanBuilder();
 		for (ProductStrategy pstr : pstrList) {
-			ArrayList<Object> result = checkType(pstr.getStrategies(),loginId);
-			whereCondition.or((BooleanBuilder)result.get(0));
-			check = (boolean)result.get(1);
+			ArrayList<Object> result = checkType(pstr.getStrategies(), loginId);
+			whereCondition.or((BooleanBuilder) result.get(0));
+			check = (Integer) result.get(1);
 		}
 		query.where(whereCondition);
-		//차단 대상은 제외
+		// 차단 대상은 제외
 		query.where(board.writer.notIn(this.getBlockList(loginId)));
-		if(check) {
-			// 즐겨찾기 등록 순 정렬은 나중에
-			query.orderBy(board.id.desc());
+		if (check == 0) {
+			query.join(board.favorite, fav);
+			query.orderBy(fav.uploaddate.desc());
+		}else if(check==1) {
+			
 		}else {
 			query.orderBy(board.id.desc());
 		}
@@ -306,21 +308,21 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	}
 
 	@Override
-	public List<Board> getBoardByKeyword(String keyword,int page,Member loginId) {
+	public List<Board> getBoardByKeyword(String keyword, int page, Member loginId) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		JPQLQuery<Board> query = from(board);
 		query.select(board);
 		query.where((board.title.contains(keyword)).or(board.plainText.contains(keyword)));
-		//차단 대상은 제외
+		// 차단 대상은 제외
 		query.where(board.writer.notIn(this.getBlockList(loginId)));
-		query.offset(5*page);
+		query.offset(5 * page);
 		query.limit(5);
 		return query.fetch();
 	}
 
 	@Override
-	public List<Board> getBoardByHashTag(String keyword,int page,Member loginId) {
+	public List<Board> getBoardByHashTag(String keyword, int page, Member loginId) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		QTag tag = QTag.tag;
@@ -328,57 +330,81 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		JPQLQuery<Tag> subQuery = from(tag);
 		query.select(board);
 		query.where(board.tags.contains(subQuery.where(tag.hashTag.contains(keyword.replaceFirst("#", "")))));
-		//차단 대상은 제외
+		// 차단 대상은 제외
 		query.where(board.writer.notIn(this.getBlockList(loginId)));
-		query.offset(5*page);
+		query.offset(5 * page);
 		query.limit(5);
 		return query.fetch();
 	}
 
 	@Override
-	public List<Board> getBoardByMention(String keyword,int page,Member loginId) {
+	public List<Board> getBoardByMention(String keyword, int page, Member loginId) {
 		// TODO Auto-generated method stub
 		QBoard board = QBoard.board;
 		QMention mention = QMention.mention;
 		JPQLQuery<Board> query = from(board);
-		JPQLQuery<Mention> subQuery = from(mention);
 		query.select(board);
-		query.where(board.mentions.contains(subQuery.where(mention.mentioned.id.eq(keyword.replaceFirst("@", "")))));
-		//차단 대상은 제외
+		query.join(board.mentions, mention);
+		query.where(mention.mentioned.id.eq(keyword.replaceFirst("@", "")));
+		query.where(mention.mentionBoard.eq(board));
+		// 차단 대상은 제외
 		query.where(board.writer.notIn(this.getBlockList(loginId)));
-		query.offset(5*page);
+		query.offset(5 * page);
 		query.limit(5);
 		return query.fetch();
 	}
+
 	// 차단목록
-	private JPQLQuery<Member> getBlockList(Member member){
+	private JPQLQuery<Member> getBlockList(Member member) {
 		QNetworking net = QNetworking.networking;
 		JPQLQuery<Member> result = from(net).select(net.target);
 		result.where(net.member.eq(member));
 		result.where(net.type.eq("Block"));
-		return result;		
+		return result;
 	}
-	
+
 	// CustomList를 위한 타입 체크
-	public ArrayList<Object> checkType(List<Strategy> strList,Member member) {
+	public ArrayList<Object> checkType(List<Strategy> strList, Member member) {
 		ArrayList<Object> result = new ArrayList<>();
 		QBoard board = QBoard.board;
 		BooleanBuilder builder = new BooleanBuilder();
 		result.add(builder);
 		for (Strategy str : strList) {
 			switch (str.getType()) {
+			case "Mention": {
+				mentionCheck(board, builder, str.getTargets());
+				result.add(1);
+				break;
+			}
+			case "Follow": {
+				followCheck(board, builder, member);
+				break;
+			}
+			case "Friend": {
+				friendCheck(board, builder, member);
+				break;
+			}
 			// 즐겨찾기의 경우
 			case "Favorites": {
-				favCheck(board,builder,member);		
-				result.add(true);
+				favCheck(board, builder, member);
+				result.add(0);
 				break;
 			}
 			// 태그의 경우
-			case "tag": {
+			case "Tag": {
 				tagCheck(board, builder, str.getTargets());
 				break;
 			}
-			// base인 경우
+			// 작성자의 경우
+			case "Writer":{
+				writerCheck(board,builder,str.getTargets());
+				break;
+			}
+			// 내용이나 제목에 특정단어가 들어있을 경우
+			case "Content":{
+				contentCheck(board,builder,str.getTargets());
+				break;				
+			}				
 			default: {
 				// 보드의 시퀀스는 1보다 크기때문에 0을 넣으면 됨
 				// 즉 다 찾는 다는 이야기
@@ -386,24 +412,77 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 			}
 			}
 		}
-		if(result.size()<2) {
-			result.add(false);
+		if (result.size() < 2) {
+			result.add(-1);
 		}
 		return result;
+	}
+
+	private BooleanBuilder followCheck(QBoard board, BooleanBuilder builder, Member member) {
+		QNetworking net = QNetworking.networking;
+		JPQLQuery<Member> subQuery = from(net).select(net.target);
+		subQuery.where(net.type.eq("Follow"));
+		subQuery.where(net.member.eq(member));
+		builder.and(board.writer.in(subQuery));
+		return builder;
+
+	}
+
+	private BooleanBuilder friendCheck(QBoard board, BooleanBuilder builder, Member member) {
+		QNetworking net = QNetworking.networking;
+		QNetworking owners = new QNetworking("owners");
+		JPQLQuery<Member> subQuery = from(net, owners).select(net.target);
+		subQuery.where(net.type.eq("Follow"));
+		subQuery.where(net.member.eq(member));
+		subQuery.where(net.target.eq(owners.member));
+		subQuery.where(owners.type.eq("Follow"));
+		builder.and(board.writer.in(subQuery));
+		return builder;
+
 	}
 
 	private BooleanBuilder tagCheck(QBoard board, BooleanBuilder builder, String targets) {
 		String[] array = targets.split(",");
 		for (String target : array) {
+			target = target.trim();
 			builder.and(board.tags.contains(tr.findById(target).get()));
 		}
 		return builder;
 	}
-	private BooleanBuilder favCheck(QBoard board, BooleanBuilder builder,Member member) {
+
+	private BooleanBuilder favCheck(QBoard board, BooleanBuilder builder, Member member) {
 		QFavorites fav = QFavorites.favorites;
 		JPQLQuery<Board> subQuery = from(fav).select(fav.board);
 		subQuery.where(fav.adder.eq(member));
 		builder.and(subQuery.contains(board));
 		return builder;
 	}
+
+	private BooleanBuilder mentionCheck(QBoard board, BooleanBuilder builder, String targets) {
+		QMention mention = QMention.mention;
+		String[] array = targets.split(",");
+		for (String target : array) {
+			target = target.trim();
+			JPQLQuery<Board> subQuery = from(mention).select(mention.mentionBoard);
+			subQuery.where(mention.mentioned.id.eq(target));
+			builder.and(subQuery.contains(board));
+		}
+		return builder;
+	}
+	private BooleanBuilder writerCheck(QBoard board, BooleanBuilder builder, String targets) {
+		String[] array = targets.split(",");
+		for (String target : array) {
+			target = target.trim();
+			builder.and(board.writer.eq(mr.findById(target).get()));
+		}
+		return builder;
+	}
+	private BooleanBuilder contentCheck(QBoard board, BooleanBuilder builder, String targets) {
+		String[] array = targets.split(",");
+		for (String target : array) {
+			builder.and(board.plainText.like(target).or(board.title.like(target)));			
+		}
+		return builder;
+	}
+
 }

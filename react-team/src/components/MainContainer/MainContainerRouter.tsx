@@ -5,9 +5,11 @@ import CardListContainer from './CardList/CardListContainer';
 import UpdateUser from './BoardView/UpdateUser';
 import AllFriends from './FriendList/FriendList/AllFriends';
 import ListController from './ListControl/ListController';
-
-
-
+import GroupPage from './BoardView/GroupPage';
+import PersonalPage from './BoardView/PersonalPage';
+import ChattingContainer from '../Chatting/ChattingContainer';
+import Allmembers from './FriendList/FriendList/Allmembers';
+import Refresh from '../../Refresh';
 
 
 /**
@@ -65,13 +67,24 @@ class MainContainerRouter extends React.Component<IProps> {
                 <div className={classes.toolbar} />
                 <div className={classes.toolbar} />
                 <Switch>
+                    {/* refresh 용도*/}
+                    <Route path="/refreshPage/:path?" component={this.refreshHandler()} />
+                    <Route path="/Users" component={Allmembers} />
+                    <Route path="/PersonalPage" component={PersonalPage} />
+                    <Route path="/GroupPage" component={GroupPage} />                                
                     <Route path="/listControl" component={ListController} />
                     <Route path="/AllFriends" component={AllFriends} />
                     <Route path="/userUpdate" component={UpdateUser} />
                     <Route path="/" component={CardListContainer} />
                 </Switch>
+                <ChattingContainer />
             </main>
         );
+    }
+    private refreshHandler() {
+        return ({ match } : any) => (
+            <Refresh path={match.params.path}/>
+        )
     }
 }
 

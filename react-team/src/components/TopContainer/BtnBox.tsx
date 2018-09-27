@@ -1,24 +1,27 @@
 import * as React from 'react';
-import { Theme, StyleRulesCallback, withStyles, IconButton, Button, Icon } from '@material-ui/core';
+import { Theme, StyleRulesCallback, withStyles, IconButton} from '@material-ui/core';
 import Create from '@material-ui/icons/Create';
 import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
-import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Compare from '@material-ui/icons/Compare';
-import Accessibility from '@material-ui/icons/Accessibility';
-import Alarm from '@material-ui/icons/Alarm';
+import Book from '@material-ui/icons/Book';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
-
-
+import Mail from '@material-ui/icons/Mail';
+import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 
 /**
  * @author:ParkHyeokJoon
  * @since:2018.08.28
- * @version:2018.08.28
+ * @version:2018.09.23
  */
 
+
+/**
+ * 버튼박스 분리
+ * @author:ChaMinJu
+ * @version:2018.09.19
+ */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
     button: {
@@ -46,22 +49,21 @@ interface IProps {
         iconSmall: string
     },
     friends: IMemberModel;
-
 }
-
 interface IState {
     modalOpen: number;
-
+    open: boolean
 }
-
 class BtnBox extends React.Component<IProps, IState>{
     constructor(props: IProps) {
         super(props);
         this.state = {
-            modalOpen: -1
+            modalOpen: -1,
+            open: false
         }
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.openMenu = this.openMenu.bind(this);
     }
 
     public render() {
@@ -75,6 +77,11 @@ class BtnBox extends React.Component<IProps, IState>{
                 className={classes.btnBox}
             >
                 <IconButton
+                >
+                    <Mail />
+                </IconButton>
+
+                <IconButton
                     onClick={writeHandler}
                 >
                     <Create />
@@ -83,52 +90,34 @@ class BtnBox extends React.Component<IProps, IState>{
                     open={modalOpen === 0}
                     onClose={this.closeModal}
                 />
+
                 <IconButton
                     onClick={writeHandler2}
                 >
                     <FriendListIcon />
                 </IconButton>
-
-
-
-                <IconButton>
-                    <NavLink to="/userUpdate">
-                        <AccountCircle />
-                    </NavLink>
-                </IconButton>
-
-                <IconButton>
-                    <NavLink to="/AllFriends">
-                        <Accessibility />
-                    </NavLink>
-                </IconButton>
-
-
-                <IconButton>
-                    <NavLink to="/createGroup">
-                        <Compare />
-                    </NavLink>
-                </IconButton>
-
-                <IconButton>
-                    <a href="http://naver.com">
-                        <Alarm />
-                    </a>
-                </IconButton>
-
-                
-                <Button variant="contained" color="primary" className={classes.button}>
-                    send
-                <Icon className={classes.rightIcon}>send</Icon>
-                </Button>
-                
                 <ShowupFriendList
                     open={this.state.modalOpen === 1}
                     openf={writeHandler2}
                     close={this.closeModal}
                 />
+                <NavLink to="/Users">
+                    <IconButton>
+                        <Book />
+                    </IconButton>
+                </NavLink>
+                <NavLink to="/userUpdate">
+                    <IconButton>
+                        <AccountCircle />
+                    </IconButton>
+                </NavLink>
             </span>
         );
+    }
+    private openMenu(clicked: number) {
+        this.setState({
+            open: true
+        })
     }
 
     private openModal(clicked: number) {

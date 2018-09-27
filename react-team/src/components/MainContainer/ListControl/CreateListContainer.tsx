@@ -64,6 +64,7 @@ class CreateListContainer extends React.Component<IProps, IState>{
         this.targetChange = this.targetChange.bind(this);
         this.submitNewList = this.submitNewList.bind(this);
         this.nameChange = this.nameChange.bind(this);
+        this.deleteCondition = this.deleteCondition.bind(this);
     }
     public render() {
         const { classes } = this.props;
@@ -110,6 +111,13 @@ class CreateListContainer extends React.Component<IProps, IState>{
                             >
                                 대상
                             </TableCell>
+                            <TableCell
+                                style={{
+                                    width: "5%"
+                                }}
+                            >
+                                삭제
+                            </TableCell>
                         </TableHead>
                         {
                             this.state.bigConditions.map((conditions, index) => {
@@ -125,7 +133,7 @@ class CreateListContainer extends React.Component<IProps, IState>{
                                             </TableCell>
                                             <TableCell
                                                 className={classes.alignCenter}
-                                                colSpan={2}
+                                                colSpan={3}
 
                                             >
                                                 이하의 조건들은 AND처리됩니다. 대상 사이에는 ,를 넣어주세요
@@ -135,8 +143,10 @@ class CreateListContainer extends React.Component<IProps, IState>{
                                             conditions.map((condition, index2) => {
                                                 const handler = (e: React.ChangeEvent<HTMLSelectElement>) => { this.conditionChange(e, index, index2) }
                                                 const targetChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => { this.targetChange(e, index, index2) }
+                                                const delHandler = () => { this.deleteCondition(index,index2) }
                                                 return (
                                                     <ConditionRow
+                                                        delHandler={delHandler}
                                                         key={index2}
                                                         condition={condition}
                                                         handler={handler}
@@ -149,7 +159,7 @@ class CreateListContainer extends React.Component<IProps, IState>{
                                         <TableRow>
                                             <TableCell
                                                 className={classes.alignCenter}
-                                                colSpan={2}
+                                                colSpan={3}
                                             >
                                                 <Button
                                                     onClick={addConditionHandler}
@@ -166,7 +176,7 @@ class CreateListContainer extends React.Component<IProps, IState>{
                         }
                         <TableRow>
                             <TableCell
-                                colSpan={3}
+                                colSpan={4}
                                 className={classes.alignCenter}
                             >
                                 <Button
@@ -196,6 +206,13 @@ class CreateListContainer extends React.Component<IProps, IState>{
             bigConditions: [...this.state.bigConditions, newCondition]
         })
     }
+    private deleteCondition(index: number, index2: number) {
+        const newCondition = this.state.bigConditions;
+        newCondition[index].splice(index2, 1);
+        this.setState({
+            bigConditions: newCondition
+        })
+    }
     private addCondition(index: number) {
         const addCondition: IConditionModel = {
             strategy: "all",
@@ -221,18 +238,18 @@ class CreateListContainer extends React.Component<IProps, IState>{
         })
     }
     private submitNewList() {
-        if (this.props.listNames.indexOf(this.state.listName)===-1) {
+        if (this.props.listNames.indexOf(this.state.listName) === -1) {
             // 존재하지 않는 이름이라면 추가
             axios.post("http://localhost:8081/lists/addCustomList", {
                 name: this.state.listName,
                 lists: JSON.stringify(this.state.bigConditions)
-            }).then(()=>{this.props.refresh()})
-        }else{
+            }).then(() => { this.props.refresh() })
+        } else {
             // 존재하는 이름이면 수정
             axios.post("http://localhost:8081/lists/updateCustomList", {
                 name: this.state.listName,
                 lists: JSON.stringify(this.state.bigConditions)
-            }).then(()=>{this.props.refresh()})
+            }).then(() => { this.props.refresh() })
         }
     }
 }

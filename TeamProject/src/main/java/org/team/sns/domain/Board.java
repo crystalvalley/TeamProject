@@ -3,10 +3,8 @@ package org.team.sns.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +31,7 @@ import lombok.ToString;
  * 
  * @author ParkHyeokjoon
  * @since 18.08.10
- * @version 18.08.30
+ * @version 18.09.17
  *
  */
 
@@ -44,8 +42,8 @@ import lombok.ToString;
 @Table(name = "Boards")
 // _id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = { "photos", "replys", "share", "writer", "sounds","mentions","tags","favorite" })
-@JsonIgnoreProperties({ "photos", "replys", "share", "sounds","mentions","tags","favorite" })
+@ToString(exclude = {"replys", "share", "writer", "sounds","mentions","tags","favorite" })
+@JsonIgnoreProperties({ "replys", "share", "sounds","mentions","tags","favorite" })
 public class Board {
 	// primary key
 	@Id
@@ -60,6 +58,7 @@ public class Board {
 	@NotNull
 	private String title; // 글의 제목
 	@NotNull
+	@Column(columnDefinition="text")
 	private String content; // 글의 내용
 
 	// 생성시 시간으로 자동 설정

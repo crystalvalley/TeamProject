@@ -5,17 +5,18 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.CustomListPK;
 import org.team.sns.domain.EmotionExpression;
 import org.team.sns.domain.Favorites;
 import org.team.sns.domain.Member;
 import org.team.sns.domain.Mention;
+import org.team.sns.domain.Photo;
 import org.team.sns.domain.ProductStrategy;
+import org.team.sns.domain.Reply;
 import org.team.sns.domain.Tag;
 import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.CustomListRepository;
@@ -23,6 +24,8 @@ import org.team.sns.persistence.EmotionRepository;
 import org.team.sns.persistence.FavoriteRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.persistence.MentionRepository;
+import org.team.sns.persistence.PhotoRepository;
+import org.team.sns.persistence.ReplyRepository;
 import org.team.sns.persistence.TagRepository;
 import org.team.sns.vo.BoardSearchCondition;
 
@@ -51,6 +54,12 @@ public class BoardServiceImpl implements BoardService {
 	EmotionRepository er;
 	@Autowired
 	FavoriteRepository fr;
+	@Autowired
+	DropboxService ds;
+	@Autowired
+	PhotoRepository pr;
+	@Autowired
+	ReplyRepository rr;
 
 	private final static Pattern HASH_PATTERN = Pattern.compile("#[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+");
 	private final static Pattern MENTION_PATTERN = Pattern.compile("@[ㅏ-ㅣㄱ-ㅎ가-힣0-9a-zA-Z.]+");
@@ -218,6 +227,18 @@ public class BoardServiceImpl implements BoardService {
 			fr.delete(fav);
 		}
 		
+	}
+
+	@Override
+	public void setBoardImage(Board board, MultipartFile[] files) throws Exception {
+		// TODO Auto-generated method stub
+		for(int i=0;i<files.length;i++) {
+			Photo photo = new Photo();
+			photo.setOwnerBoard(board);
+			String url = ds.imageUpload(files[i], board.getWriter().getId(), i);
+			photo.setUrl(url);
+			pr.save(photo);			
+		}
 	}
 
 }

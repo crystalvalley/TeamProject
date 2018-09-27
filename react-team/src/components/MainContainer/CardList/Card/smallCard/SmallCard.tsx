@@ -9,6 +9,7 @@ import FavoriteIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import FilledFavoriteIcon from "@material-ui/icons/Favorite";
 import { IFavoriteStore, withFavoriteContext } from '../../../../../contexts/FavoriteContext';
 import WriterClickMenu from './WriterClickMenu';
+import ImageViewer from './ImageViewer';
 
 
 /**
@@ -46,7 +47,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     username: {
         color: "black"
-    }
+    },
 });
 
 interface IProps {
@@ -73,6 +74,7 @@ interface IState {
 class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
     private anchor: HTMLSpanElement | null;
     private ref: HTMLDivElement | null;
+    private imgWidth : HTMLDivElement|null;
     constructor(props: IProps & IFavoriteStore) {
         super(props);
         let sub: EditorState;
@@ -94,6 +96,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
         this.closeMenu = this.closeMenu.bind(this);
     }
     public componentDidMount() {
+        if (this.props.card.photos.length > 0) { return }
         if (this.ref!.offsetHeight > 475 && this.state.cutted === false) {
             this.setState({
                 cutted: true
@@ -116,6 +119,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                 >
                     <Avatar
                         className={classes.avatar}
+                        onClick={this.openMenu}
                         src={"http://localhost:8081/resources" + card.writer.profileImg}
                     />
                     <Typography
@@ -124,7 +128,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         className={classes.username}
                     >
                         <span ref={(element) => { this.anchor = element }} />
-                        {card.writer.username}
+                        {card.writer.id}
                     </Typography>
                     <IconButton
                         style={{
@@ -146,6 +150,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     />
                 </div>
                 <div
+                    ref={(element)=>{this.imgWidth = element}}
                     className={classes.cardBody}
                 >
                     <Typography
@@ -154,28 +159,33 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     >
                         {card.title}
                     </Typography>
-                    <CardContent
-                        className={classes.content}
-                    >
-                        <div
-                            ref={(element) => { this.ref = element }}
-                        >
-                            <Editor
-                                readOnly={true}
-                                editorState={this.state.editorState}
-                                onChange={this.editorChange}
-                            />
-                        </div>
-                    </CardContent>
+                    {
+                        this.props.card.photos.length > 0 ?
+                            <ImageViewer
+                                width={this.imgWidth!==undefined?this.imgWidth!.offsetWidth-24:0}
+                                photos={this.props.card.photos}
+                            /> :
+                            (
+                                <CardContent
+                                    className={classes.content}
+                                >
+                                    <div
+                                        ref={(element) => { this.ref = element }}
+                                    >
+                                        <Editor
+                                            readOnly={true}
+                                            editorState={this.state.editorState}
+                                            onChange={this.editorChange}
+                                        />
+                                    </div>
+                                </CardContent>
+                            )
+                    }
                 </div>
-
                 <CardContent>
                     <EmotionBox
                         id={this.props.card.id}
                     />
-                </CardContent>
-                <CardContent>
-                    메뉴
                 </CardContent>
                 <WriterClickMenu
                     left={0}

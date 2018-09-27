@@ -5,16 +5,17 @@ import CreateListContainer from './CreateListContainer';
 import axios from 'axios';
 
 /**
- * @author ParkHyeokJoon
- * @since 2018.09.06
- * @version 2018.09.06
+ * @author : ParkHyeokJoon
+ * @since : 2018.09.06
+ * @version : 2018.09.22
  */
 const style: StyleRulesCallback = (theme: Theme) => ({
     contollerBody: {
         border: "1px solid black",
         height: "100%",
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
+        marginBottom:"100px"
     },
     boxes: {
         flexBasis: "50%",

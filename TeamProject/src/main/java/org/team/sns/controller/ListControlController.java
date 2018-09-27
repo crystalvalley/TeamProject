@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.team.sns.service.ListServiceImpl;
+import org.team.sns.service.ListService;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -34,26 +34,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @CrossOrigin(origins = "*")
 public class ListControlController {
 	@Autowired
-	ListServiceImpl ls;
+	ListService ls;
 	
 	
 	@GetMapping("/getListNames")
 	public List<String> getListNames(Principal principal){
 		// return ls.getListNames("testid");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("loginID");
-		System.out.println("testid");
 		return ls.getListNames("testid");
 	}
 	

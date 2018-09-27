@@ -37,7 +37,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "id")
 public class Reply {
 	@Id
-	@Column(name="Reply_id")
+	@Column(name="reply_id")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@SequenceGenerator(name="seq",sequenceName="Replys_seq", initialValue=1, allocationSize=1)	
 	private int id; //참조 시퀀스
@@ -49,7 +49,7 @@ public class Reply {
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	// writer_id라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)
-	@JoinColumn(name = "writer_id", referencedColumnName = "user_id",updatable=false,nullable=false)
+	@JoinColumn(name = "writer_id", referencedColumnName = "user_id",updatable=false,nullable=true)
 	private Member writer;
 	
 	@NotNull

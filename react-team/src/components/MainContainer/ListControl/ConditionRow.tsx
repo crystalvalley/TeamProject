@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TableRow, TableCell, Select, MenuItem, TextField } from '@material-ui/core';
+import { TableRow, TableCell, Select, MenuItem, TextField, Button } from '@material-ui/core';
 import { IConditionModel } from '../../../constance/models';
 
 interface IProps {
@@ -7,12 +7,13 @@ interface IProps {
     target: string;
     handler(e: React.ChangeEvent<HTMLSelectElement>): void;
     targetHandler(e: React.ChangeEvent<HTMLInputElement>): void;
+    delHandler(): void;
 }
 
 export default class ConditionRow extends React.Component<IProps> {
     public render() {
         const str = this.props.condition.strategy
-        const disable: boolean = (str === "All" || str === "Favorite") ? true : false
+        const disable: boolean = (str === "All" || str === "Favorite" || str === "Friend" || str === "Follow") ? true : false
         return (
             <TableRow>
                 <TableCell>
@@ -26,7 +27,8 @@ export default class ConditionRow extends React.Component<IProps> {
                     >
                         <MenuItem value="All">All</MenuItem>
                         <MenuItem value="Favorite">Favorite</MenuItem>
-                        <MenuItem value="Friend">Friend</MenuItem>
+                        <MenuItem value="Follow">Follow</MenuItem>
+                        <MenuItem value="Friend">Follow</MenuItem>
                         <MenuItem value="Mention">Mention</MenuItem>
                         <MenuItem value="Tag">Tag</MenuItem>
                         <MenuItem value="Writer">Writer</MenuItem>
@@ -45,6 +47,13 @@ export default class ConditionRow extends React.Component<IProps> {
                         fullWidth={true}
                         onChange={this.props.targetHandler}
                     />
+                </TableCell>
+                <TableCell>
+                    <Button
+                        onClick={this.props.delHandler}
+                    >
+                        삭제
+                    </Button>
                 </TableCell>
             </TableRow>
         );

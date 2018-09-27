@@ -7,8 +7,8 @@ interface IProps {
     anchor: HTMLSpanElement | null
     open: boolean
     id: string;
-    left:number,
-    top:number,
+    left: number,
+    top: number,
     closeMenu(): void;
 }
 
@@ -26,24 +26,26 @@ class WriterClickMenu extends React.Component<IProps & INetworkStore>{
         return (
             <Menu
                 style={{
-                    top: this.props.top+"px",
-                    left : this.props.left+"px"
+                    top: this.props.top + "px",
+                    left: this.props.left + "px"
                 }}
                 anchorEl={this.props.anchor}
-                open={this.props.id===this.props.loginedId.id?false:this.props.open}
+                open={this.props.id === this.props.loginedId.id ? false : this.props.open}
                 onClose={this.props.closeMenu}
             >
                 {
                     this.checkValue(this.props.friendList) ?
-                        <MenuItem onClick={this.addFriend}>친구요청</MenuItem> :
-                        <MenuItem onClick={this.delFriend}>친구끊기</MenuItem>
+                        <MenuItem onClick={this.delFriend}>친구끊기</MenuItem> :
+                        <React.Fragment>
+                            <MenuItem onClick={this.addFriend}>친구요청</MenuItem>
+                            {
+                                this.checkValue(this.props.followList) ?
+                                    <MenuItem onClick={this.unFollow}>언팔로우</MenuItem> :
+                                    <MenuItem onClick={this.addFollow}>팔로우</MenuItem>
+                            }
+                        </React.Fragment>
                 }
-                {
-                    this.checkValue(this.props.followList) ?
-                        <MenuItem onClick={this.unFollow}>언팔로우</MenuItem> :
-                        <MenuItem onClick={this.addFollow}>팔로우</MenuItem>
 
-                }
                 <MenuItem onClick={this.addBlock}>차단</MenuItem>
             </Menu>
         );

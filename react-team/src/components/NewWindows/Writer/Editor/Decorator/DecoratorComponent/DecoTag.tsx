@@ -17,7 +17,7 @@ class DecoTag extends React.Component<IProps&ISearchState> {
     public render() {
         const handler = ()=> this.props.setKeyword(this.props.decoratedText);
         return (
-            <div
+            <span
                 style={{
                     color : 'rgba(95, 184, 138, 1.0)'
                 }}
@@ -25,7 +25,7 @@ class DecoTag extends React.Component<IProps&ISearchState> {
                 data-offset-key={this.props.offsetKey}
             >
                 {this.props.children}
-            </div>
+            </span>
         );
     }
 }

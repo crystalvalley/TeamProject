@@ -1,6 +1,7 @@
 package org.team.sns.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,16 +15,14 @@ import org.team.sns.domain.Board;
 import org.team.sns.domain.Member;
 import org.team.sns.domain.Reply;
 import org.team.sns.persistence.BoardRepository;
-import org.team.sns.persistence.BoardRepositoryImpl;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.persistence.ReplyRepository;
-import org.team.sns.persistence.ReplyRepositorympl;
+import org.team.sns.service.BoardService;
 import org.team.sns.service.DropboxService;
-import org.team.sns.service.MemberServiceImpl;
-import org.team.sns.service.SecurityUserServiceImpl;
+import org.team.sns.service.MemberService;
+import org.team.sns.service.SecurityUserService;
+// import org.team.sns.service.TestServiceImpl;
 import org.team.sns.vo.RestMsgObject;
-
-import java.util.List;
 
 /**
  * @author ParkHyeokJoon
@@ -38,17 +37,20 @@ public class AccountRestController {
 	@Autowired
 	private MemberRepository mr;
 	@Autowired
-	private MemberServiceImpl ms;
+	private MemberService ms;
 	@Autowired
-	private SecurityUserServiceImpl secUserService;
+	private SecurityUserService secUserService;
 	@Autowired
 	private DropboxService ds;
 	@Autowired
 	private BoardRepository br;
 	@Autowired
-	private BoardRepositoryImpl bs;
+	private BoardService bs;
 	@Autowired
 	private ReplyRepository rr;
+	
+	//@Autowired
+	//private TestServiceImpl ts;
 
 	@GetMapping("/idCheck")
 	public RestMsgObject idCheck(String _id) {
@@ -87,7 +89,9 @@ public class AccountRestController {
 		if (principal != null) {
 			member = mr.findById("testid").get();
 		} else {
-			return null;
+			member = new Member();
+			member.setId("FAILED LOGIN");
+			return member;
 		}
 		return member;
 	}
@@ -110,14 +114,6 @@ public class AccountRestController {
 		//System.out.println("들어온다2222" + member);
 		Member me = mr.findById(member.getId()).get();
 		// System.out.println("가져온거" + me);
-		if (member.getUsername() != null) {
-			me.setUsername(member.getUsername());
-			//System.out.println("들어온다1");
-		} else if (member.getUsername() == null) {
-			me.setUsername(me.getUsername());
-			//System.out.println("들어온다2");
-		}
-
 		if (member.getPassword() != null) {
 			me.setPassword(member.getPassword());
 			//System.out.println("들어온다3");
@@ -171,13 +167,5 @@ public class AccountRestController {
 
 		System.out.println("잘불러와짐" + result.toString());
 		return result;
-	}
-
-	@PostMapping("/selectUsername")
-	public String selectUsername(Principal principal) {
-		Member member = new Member();
-		member = mr.findById("testid").get();
-		System.out.println("유저이름찾기" + member.getUsername());
-		return member.getUsername();
 	}
 }

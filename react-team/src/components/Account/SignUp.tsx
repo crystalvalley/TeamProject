@@ -54,8 +54,10 @@ class SignUp extends React.Component<IProps, IState> {
         }
         this.onChange = this.onChange.bind(this);
         this.submit = this.submit.bind(this);
+        
     }
     public componentDidUpdate(presProps: IProps, prevState: IState) {
+        
         const { user_id, idValid, password, passwordValid, passwordCheck } = this.state
         if(prevState.user_id !== user_id){
             if (user_id.length > 5 && user_id.length < 16) {
@@ -227,6 +229,7 @@ class SignUp extends React.Component<IProps, IState> {
 
     private submit() {
         const data = new FormData();
+        
         data.append("id",this.state.user_id);
         data.append("password",this.state.password);
         data.append("username",this.state.username);
@@ -237,6 +240,8 @@ class SignUp extends React.Component<IProps, IState> {
             }
         )
     }
+
+    
 
     private onChange(e: React.ChangeEvent<HTMLInputElement>) {
         const name: string = e.currentTarget.name;
