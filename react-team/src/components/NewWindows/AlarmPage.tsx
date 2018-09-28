@@ -49,7 +49,7 @@ class AlarmPage extends React.Component<IProps, IState>{
   private divAnchor: HTMLSpanElement | null;
 
   private dummy=[
-    {"actor_id":"James", checked:false, mentioned:true},{"actor_id":"Tom", checked:false, mentioned:false}
+    {"actor_id":"testid1", checked:false, mentioned:true},{"actor_id":"testid1", checked:false, mentioned:false}
   ]
   constructor(props: IProps) {
 
@@ -134,7 +134,7 @@ class AlarmPage extends React.Component<IProps, IState>{
                 return (
                   !alarm.checked && alarm.mentioned === true ?
                     <MenuItem key={index}>{alarm.actor_id + "님으로 부터 멘션"}</MenuItem> :
-                    <MenuItem key={index}>{alarm.actor_id + "님으로 부터 친구요청"}<FriConfirm/></MenuItem>
+                    <MenuItem key={index}>{alarm.actor_id + "님으로 부터 친구요청"}<FriConfirm target={alarm.actor_id}/></MenuItem>
                 );
               })}<br />
             </MenuList>

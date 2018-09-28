@@ -36,6 +36,12 @@ public class NetworkController {
 		//ns.friendRequest("testid", target);
 		as.saveFriendRequest(target, principal);
 	}
+	@GetMapping("/acceptFriend")
+	public void acceptFriend(Principal principal, String target) {
+		System.out.println("accept trying");
+		ns.acceptFriend(principal.getName(), target);
+		
+	}
 		
 	@GetMapping("/getNetworks")
 	public HashMap<String,List<Member>> getNetworks(Principal principal){
