@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ListItem, ListItemText, Menu, MenuItem, Avatar } from "@material-ui/core";
 import { IMemberModel, IMsgModel } from '../../../../constance/models';
 import axios from 'axios';
-// import ChatBubble from '@material-ui/icons/ChatBubble';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 
 /**
@@ -21,15 +21,16 @@ interface IProps {
     friendInfo: IMemberModel,
     id: IMemberModel
     delFriend(id: string): void,
-    sendMsg(sendMessage: IMsgModel):void
+    sendMsg(sendMessage: IMsgModel): void
+    close():void;
 }
 interface IState {
     open: boolean;
 }
 
-class ShowupFriendListtile extends React.Component<IProps, IState>{
+class ShowupFriendListtile extends React.Component<IProps & RouteComponentProps<{}>, IState>{
     private anchor: HTMLSpanElement | null;
-    constructor(props: IProps) {
+    constructor(props: IProps & RouteComponentProps<{}>) {
         super(props);
         this.state = {
             open: false
@@ -38,6 +39,7 @@ class ShowupFriendListtile extends React.Component<IProps, IState>{
         this.closeMenu = this.closeMenu.bind(this);
         this.delFriend = this.delFriend.bind(this);
         this.openChatting = this.openChatting.bind(this);
+        this.visit = this.visit.bind(this);
     }
 
     public render() {
@@ -46,10 +48,9 @@ class ShowupFriendListtile extends React.Component<IProps, IState>{
         return (
             <div>
                 <ListItem>
-                    <Avatar src={this.props.friendInfo.profileImg} />
+                    <Avatar src={"http://localhost:8081/resources" + this.props.friendInfo.profileImg} />
                     <ListItemText
                         onClick={this.openMenu}
-
                     >
                         <span ref={(element) => { this.anchor = element }} />
                         {this.props.friendInfo.id}
@@ -57,17 +58,14 @@ class ShowupFriendListtile extends React.Component<IProps, IState>{
                     <Menu
                         style={{
                             top: "60px"
-                            
+
                         }}
                         anchorEl={this.anchor}
                         open={this.state.open}
                         onClose={this.closeMenu}
                     >
-                        <MenuItem onClick={this.openChatting}>
-                            
-                        채팅하기
-                        
-                        </MenuItem>
+                        <MenuItem onClick={this.visit}>방문하기</MenuItem>
+                        <MenuItem onClick={this.openChatting}>채팅하기</MenuItem>
                         <MenuItem onClick={this.delFriend}>친구삭제</MenuItem>
                     </Menu>
                 </ListItem>
@@ -96,5 +94,10 @@ class ShowupFriendListtile extends React.Component<IProps, IState>{
         })
         this.closeMenu();
     }
+    private visit() {
+        this.props.history.push("/personalPage/" + this.props.friendInfo.id);
+        this.closeMenu();
+        this.props.close();
+    }
 }
-export default (ShowupFriendListtile);
+export default withRouter(ShowupFriendListtile);

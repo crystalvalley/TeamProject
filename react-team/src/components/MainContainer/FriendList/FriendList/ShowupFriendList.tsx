@@ -106,6 +106,7 @@ class ShowupFriendList extends React.Component<INetworkStore & IProps, IState> {
                       key={index}
                     >
                       <ShowupFriendListtile
+                        close={this.props.close}
                         sendMsg={this.props.sendMsg}
                         list={this.props.classes.list}
                         delFriend={this.props.delFriend}
