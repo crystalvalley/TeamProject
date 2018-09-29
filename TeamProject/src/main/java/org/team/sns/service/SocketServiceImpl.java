@@ -68,6 +68,9 @@ public class SocketServiceImpl implements SocketService{
 			msg.setType("refresh");
 			msg.setData(dataType);
 			String sendMsg = objectMapper.writeValueAsString(msg);
+			if(clients.get(id)==null) {
+				continue;
+			}
 			clients.get(id).sendMessage(new TextMessage(sendMsg));
 		}
 	}
