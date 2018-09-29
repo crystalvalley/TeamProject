@@ -27,7 +27,7 @@ export const signInStyle: StyleRulesCallback = (theme: Theme) => ({
     },
     form: {
         padding: "30px",
-        paddingTop: "60px",
+        paddingTop: "100px",
         backgroundColor: "white",
     },
     textField: {
@@ -45,7 +45,7 @@ export const signInStyle: StyleRulesCallback = (theme: Theme) => ({
     },
     footer: {
         opacity: 0.7,
-        padding: "10px",
+        padding: "30px",
         marginTop: "-16px",
         lineHeight: "25px",
         backgroundColor: "#ff6666"

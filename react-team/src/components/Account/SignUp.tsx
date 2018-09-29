@@ -59,12 +59,12 @@ class SignUp extends React.Component<IProps, IState> {
         }
         this.onChange = this.onChange.bind(this);
         this.submit = this.submit.bind(this);
-        
+
     }
     public componentDidUpdate(presProps: IProps, prevState: IState) {
-        
+
         const { user_id, idValid, password, passwordValid, passwordCheck } = this.state
-        if(prevState.user_id !== user_id){
+        if (prevState.user_id !== user_id) {
             if (user_id.length > 5 && user_id.length < 16) {
                 axios.get("http://localhost:8081/account/idCheck", {
                     params: {
@@ -113,7 +113,7 @@ class SignUp extends React.Component<IProps, IState> {
                                 root: classes.headTyphoRoot
                             }}
                         >
-                           <h1> SNS SIGNUP</h1>
+                            <h1> SNS SIGNUP</h1>
 
                         </Typography>
                     </div>
@@ -211,7 +211,13 @@ class SignUp extends React.Component<IProps, IState> {
                             Subscribe
                         </Button>
                     </form>
-              
+                    {/* footer */}
+                    <div className={classes.footer}>
+                        <Typography>
+                            Powered By SCI
+                        </Typography>
+                    </div>
+
                 </div>
             </div>
         );
@@ -230,19 +236,19 @@ class SignUp extends React.Component<IProps, IState> {
 
     private submit() {
         const data = new FormData();
-        
-        data.append("id",this.state.user_id);
-        data.append("password",this.state.password);
-        data.append("username",this.state.username);
-        data.append("email",this.state.emailFirst+"@"+this.state.emailSecond);
+
+        data.append("id", this.state.user_id);
+        data.append("password", this.state.password);
+        data.append("username", this.state.username);
+        data.append("email", this.state.emailFirst + "@" + this.state.emailSecond);
         axios.post("http://localhost:8081/account/signup", data)
             .then((response) => {
                 location.href = "/signin";
             }
-        )
+            )
     }
 
-    
+
 
     private onChange(e: React.ChangeEvent<HTMLInputElement>) {
         const name: string = e.currentTarget.name;
