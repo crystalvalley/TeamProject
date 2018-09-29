@@ -33,6 +33,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         display: "flex",
         minHeight: "50px",
         border: "1px solid black",
+        borderRadius:"15px",
         margin: "5px",
         flexDirection: "column"
     }

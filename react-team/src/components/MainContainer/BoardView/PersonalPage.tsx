@@ -1,44 +1,37 @@
 import * as React from 'react';
-import { StyleRulesCallback,  withStyles, Avatar, Button, TextField } from '@material-ui/core';
+import { StyleRulesCallback, withStyles, Avatar, Typography } from '@material-ui/core';
 import { IPhotoModel, IMemberModel, ICardModel } from '../../../constance/models';
-import { ILoginStore, withLoginContext } from '../../../contexts/LoginContext';
-import { Switch, Route } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import { ILoginStore } from '../../../contexts/LoginContext';
+// import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-import UpdateUser from './UpdateUser';
-import { DropResult } from 'react-beautiful-dnd';
-
-import { ISearchState } from '../../../contexts/SearchContext';
-import { IFavoriteStore } from '../../../contexts/FavoriteContext';
+import PersonalList from './PersonalList';
 
 
 
 /**
  * @author:KoBongSu
  * @since:2018.09.02
- * @version:2018.09.04
+ * @version:2018.09.28
  */
 
 const style: StyleRulesCallback = () => ({
     viewContainer: {
         backgroundColor: "white",
-        height: "100%",
+        flexGrow: 1,
         padding: "10px",
         boxShadow: "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: " space-around"
+        justifyContent: " space-around",
     },
     firstContainer: {
         height: "100%",
         width: "50%",
-        border: "1px solid black"
     },
     secondContainer: {
         height: "100%",
-        width: "50%",
-        border: "1px solid black"
+        width: "50%"
     },
     imageSize: {
         padding: "8px",
@@ -54,13 +47,13 @@ const style: StyleRulesCallback = () => ({
     },
     buttons: {
         position: "relative",
-        top: "30%",
-        left: "15.5%"
+        top: "26%",
+        left: "23%"
     },
     texts: {
         position: "relative",
-        top: "40%",
-        left: "38%",
+        top: "37%",
+        left: "32%",
         font: "bold"
     },
     textfields: {
@@ -70,7 +63,7 @@ const style: StyleRulesCallback = () => ({
     }
 })
 
-interface IProps extends ISearchState, IFavoriteStore{
+interface IProps {
     classes: {
         viewContainer: string;
         wrapper: string;
@@ -87,8 +80,7 @@ interface IProps extends ISearchState, IFavoriteStore{
         textField: string;
         textfields: string;
     }
-    location: Location,
-    card:ICardModel
+    id: string;
 }
 interface IState {
     item: {
@@ -98,12 +90,9 @@ interface IState {
     userInfo: IMemberModel,
     click: number,
     firstContainer: string,
-    order:string[],
-    cards: ICardModel[],
-    
-
+    cards: ICardModel[]
 }
-class PersonalPage extends React.Component<IProps & ILoginStore, IState>{
+class PersonalPage extends React.Component<IProps, IState>{
     constructor(props: IProps & ILoginStore) {
         super(props);
         this.state = {
@@ -117,100 +106,46 @@ class PersonalPage extends React.Component<IProps & ILoginStore, IState>{
             },
             click: 0,
             firstContainer: "",
-            order:[],
-            cards:[]
-            
+            cards: []
         }
-      
-
-        this.onDragEnd = this.onDragEnd.bind(this);
     }
-       
     public componentDidMount() {
-        axios.get("http://localhost:8081/boards/getById")
-            .then((response) => {
-               this.setState({
-                    cards: response.data 
-                  })
+        axios.get("http://localhost:8081/boards/getPersonalPage", {
+            params: {
+                target: this.props.id
+            }
+        }).then((response) => {
+            this.setState({
+                userInfo: response.data.target,
+                cards: response.data.cards
             })
+        })
     }
-   
-
     public render() {
-        const { classes, logined } = this.props;
-        const handler = () => this.numberhandler(0);
-        const handler1 = () => this.numberhandler(1);
-        const handler2 = () => this.numberhandler(2);
+        const { classes } = this.props;
         return (
             <div className={classes.viewContainer}>
                 <div className={classes.firstContainer}>
-                    <Switch>
-                        {/*<CardList cards={this.state.cards} />*/}
-                        <Route path="/PersonalPage/UpdateUser" componenet={UpdateUser}/>
-                        <Route path="/PersonalPage/UpdateUser2" componenet={UpdateUser}/>
-                    </Switch>
+                    <PersonalList cards={this.state.cards} />
                 </div>
-
-
                 <div className={classes.secondContainer}>
-                    <Avatar alt="user" src={logined.profileImg} className={classes.avatar} />
+                    <Avatar src={"http://localhost:8081/resources" + this.state.userInfo.profileImg} className={classes.avatar} />
                     <div className={classes.textfields}>
-                        <TextField label={logined.id} /><br /><br />
-                    </div>
-                    <div className={classes.buttons}>
-                        <Button variant="contained" onClick={handler} color="primary" className={classes.buttons}>
-                            <NavLink to="/PersonalPage/CardListContainer">타임라인</NavLink>
-                        </Button>
-                        <Button variant="contained" onClick={handler1} color="primary" className={classes.buttons}>
-                            <NavLink to="/PersonalPage/UpdateUser">개인정보</NavLink>
-                        </Button>
-                        <Button variant="contained" onClick={handler2} color="primary" className={classes.buttons}>
-                        <NavLink to="/PersonalPage/UpdateUser">친구목록</NavLink>
-                        </Button>
+                        <Typography
+
+                        >
+                            {this.props.id}
+                        </Typography>
+                        <br />
+                        <br />
                     </div>
                     <div className={classes.texts}>
-                        나의 페이지다 이것들아
-                        </div>
+                        POKYBOOK에 오신 것을 환영합니다.
+                    </div>
                 </div>
             </div>
         );
     }
-    private onDragEnd(result: DropResult) {
-        const { destination, source, draggableId } = result;
-
-        // 목적지가 없다면 => 바뀐게 없다면
-        if (!destination) { return; }
-        // 드랍된 곳이 원래 있던 곳인데, 순서가 그대로 라면
-        if (
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        ) { return; }
-        const newOrder = this.state.order;
-        // 순서를 조절함
-        newOrder.splice(source.index, 1);
-        newOrder.splice(destination.index, 0, draggableId);
-
-        const newState: IState = {
-            ...this.state,
-            order: newOrder
-        }
-        this.setState(newState);
-        const axiosInstance = axios.create();
-        axiosInstance.post("http://localhost:8081/lists/setListOrder", {
-            names: newOrder
-        })
-        return;
-    }
-
-    private numberhandler(num: number) {
-        this.setState({
-            click: num
-        })
-
-    }
-
-
-
 }
 
-export default withLoginContext(withStyles(style)(PersonalPage))
+export default withStyles(style)(PersonalPage)

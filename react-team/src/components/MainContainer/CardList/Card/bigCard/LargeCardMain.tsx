@@ -1,12 +1,10 @@
+
 import * as React from 'react';
 import { withStyles, StyleRulesCallback, Theme } from "@material-ui/core/styles";
-
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import red from "@material-ui/core/colors/red";
@@ -55,7 +53,7 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     width: "150vh",
     height: "80vh",
     // flexShrink: 0,
-    borderRadius: "20px",
+    borderRadius: "50px",
     // boxShadow: "2px 2px 3px 3px lightgrey",
     // marginTop: "25px"
   },
@@ -127,8 +125,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     overflowX: 'auto',
   },
   table: {
-    width: "65vh",
-    // height :"100vh"
+    width: "670px",
+    height: "430px",
   },
   main: {
     display: "flex",
@@ -143,6 +141,7 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     left: "50%",
     padding: "20px",
     top: "20vh",
+    maxHeight: "600px"
   },
   hight: {
     padding: "20px",
@@ -159,7 +158,14 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   },
   tablebox: {
     height: "100%",
+  },
+  hi: {
+    maxHeight: "600px",
+    height: "430px",
+    overflowY: "hidden",
+    overflowX: "auto",
   }
+
 });
 
 interface IProps {
@@ -190,6 +196,7 @@ interface IProps {
     down: string;
     button: string;
     tablebox: string;
+    hi: string;
   }
   // listName: string;
   // id: string;
@@ -285,26 +292,18 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
                 {/*이미지 위 
               이미지 사이즈 지정 어떻게 하는지 모르겠다
             */}
-                {
-                  this.props.card.photos.length > 0 ?
-                    (
-                      <div
-                        ref={(e) => { this.imgWidth = e }}
-                        className={classes.imageContainer}
-                      >
-                        <ImageViewer
-                          width={this.imgWidth !== undefined ? this.imgWidth!.offsetWidth - 24 : 0}
-                          photos={this.props.card.photos}
-                        />
-                      </div>
-                    ) : ""
-                }
+                <div className={classes.imageContainer}>
+                  <ImageViewer
+                    width={this.imgWidth !== undefined ? this.imgWidth!.offsetWidth - 24 : 0}
+                    photos={this.props.card.photos}
+                  />
+                </div>
+
                 {/*글  아래 */}
                 <div className={classes.content}>
 
                   <Scrollbars
-                    autoHeight={true}
-                    autoHide={true}
+                    style={{ height: "80%" }}
                   >
                     <CardContent>
                       <Editor
@@ -317,10 +316,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
                 </div>
               </div>
             </CardContent>
-
           </div>
-
-
           <div className={classes.right}>
             <CardActions className={classes.actions} disableActionSpacing={true}>
               <IconButton aria-label="Add to favorites">
@@ -345,41 +341,39 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
               />
               <Button onClick={this.submit} className={classes.button}>save</Button>
             </div>
-            <div>
-
-              {/*스크롤때문에 댓글창이 제대로 안나온다*/}
 
 
-              <CardContent className={classes.table}>
-                <Scrollbars
-                  // style={innerHeight=100}
-                  autoHeight={true}
-                  autoHide={true}
-                >
-                  <Paper>
-                    <Table>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell>작성자</TableCell>
-                          <TableCell>내용</TableCell>
-                          <TableCell>작성시간</TableCell>
-                        </TableRow>
-                        {
-                          this.state.replys.map((reply, index) => {
-                            return (
-                              <TableRow key={index}>
-                                <ReplyList reply={reply} />
-                              </TableRow>
-                            );
-                          })}
 
-                      </TableBody>
-                    </Table>
-                  </Paper>
-                </Scrollbars>
-              </CardContent>
+            {/*스크롤때문에 댓글창이 제대로 안나온다*/}
 
-            </div>
+            <CardContent className={classes.table}>
+              <Scrollbars className={classes.hi}
+                autoHide={true}
+              >
+                <Paper>
+                  <Table>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>작성자</TableCell>
+                        <TableCell>내용</TableCell>
+                        <TableCell>작성시간</TableCell>
+                      </TableRow>
+                      {
+                        this.state.replys.map((reply, index) => {
+                          return (
+                            <TableRow key={index}>
+                              <ReplyList reply={reply} />
+                            </TableRow>
+                          );
+                        })}
+
+                    </TableBody>
+                  </Table>
+                </Paper>
+              </Scrollbars>
+            </CardContent>
+
+
           </div>
         </div>
       </Card>
@@ -426,4 +420,9 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
 
 }
 
-export default withStyles(styles)(RecipeReviewCard); 
+export default withStyles(styles)(RecipeReviewCard);
+
+
+
+
+

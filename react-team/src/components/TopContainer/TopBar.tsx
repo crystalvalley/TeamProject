@@ -113,6 +113,7 @@ class TopBar extends React.Component<IProps & ILoginStore, IState> {
             </div>
             <div>
               <BtnBoxButton
+                loginedId={this.props.logined.id}
                 friends={this.state.userInfo}
               />
             </div>
