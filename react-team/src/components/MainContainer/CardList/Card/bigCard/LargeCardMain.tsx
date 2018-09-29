@@ -1,13 +1,10 @@
 
 import * as React from 'react';
 import { withStyles, StyleRulesCallback, Theme } from "@material-ui/core/styles";
-
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import red from "@material-ui/core/colors/red";
@@ -319,10 +316,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
                 </div>
               </div>
             </CardContent>
-
           </div>
-
-
           <div className={classes.right}>
             <CardActions className={classes.actions} disableActionSpacing={true}>
               <IconButton aria-label="Add to favorites">
@@ -426,7 +420,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
 
 }
 
-export default withStyles(styles)(RecipeReviewCard); 
+export default withStyles(styles)(RecipeReviewCard);
 
 
 
