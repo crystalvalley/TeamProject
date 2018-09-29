@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ListItem, ListItemText, Menu, MenuItem, Avatar } from "@material-ui/core";
 import { IMemberModel, IMsgModel } from '../../../../constance/models';
 import axios from 'axios';
+// import ChatBubble from '@material-ui/icons/ChatBubble';
 
 
 /**
@@ -62,7 +63,11 @@ class ShowupFriendListtile extends React.Component<IProps, IState>{
                         open={this.state.open}
                         onClose={this.closeMenu}
                     >
-                        <MenuItem onClick={this.openChatting}>채팅하기</MenuItem>
+                        <MenuItem onClick={this.openChatting}>
+                            
+                        채팅하기
+                        
+                        </MenuItem>
                         <MenuItem onClick={this.delFriend}>친구삭제</MenuItem>
                     </Menu>
                 </ListItem>

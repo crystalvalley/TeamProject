@@ -49,7 +49,7 @@ class AllFriends extends React.Component<INetworkStore & ILoginStore, IState>{
             })
         })
     }
-
+    
     public render() {
         return (
             <GridList cols={3} cellHeight={300}>
