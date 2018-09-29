@@ -70,6 +70,7 @@ class EditorMenu extends React.Component<IProps> {
             <div
                 className={classes.container}
             >
+            
                 <div
                     className={classes.photos}
                 >

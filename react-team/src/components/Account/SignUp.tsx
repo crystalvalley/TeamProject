@@ -8,6 +8,11 @@ import { signUpStyle } from './Styles/SignUpStyle';
  * @since 18.08.13
  * @version 18.08.13
  */
+/**
+ * @author:Kim MinJeong
+ * @version:2018.09.29
+ */
+
 interface IProps {
     // Props 안에 classes property 무조건 넣어야함
     classes: {
@@ -108,7 +113,8 @@ class SignUp extends React.Component<IProps, IState> {
                                 root: classes.headTyphoRoot
                             }}
                         >
-                            SNS SIGNUP
+                           <h1> SNS SIGNUP</h1>
+
                         </Typography>
                     </div>
                     {/* form */}
@@ -205,12 +211,7 @@ class SignUp extends React.Component<IProps, IState> {
                             Subscribe
                         </Button>
                     </form>
-                    {/* footer */}
-                    <div className={classes.footer}>
-                        <Typography>
-                            Powered By SCI
-                        </Typography>
-                    </div>
+              
                 </div>
             </div>
         );

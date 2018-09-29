@@ -7,7 +7,6 @@ import Exit from '@material-ui/icons/ExitToApp';
 import Book from '@material-ui/icons/Book';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
-import Mail from '@material-ui/icons/Mail';
 import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFriendList';
 
 
@@ -17,11 +16,16 @@ import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFrien
  * @version:2018.09.23
  */
 
-
 /**
  * 버튼박스 분리
  * @author:ChaMinJu
  * @version:2018.09.19
+ */
+
+/**
+ * 버튼박스 첫번째 메일아이콘 삭제
+ * @author:Kim MinJeong
+ * @version:2018.09.23
  */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -75,15 +79,12 @@ class BtnBox extends React.Component<IProps, IState>{
 
         return (
             <span
-                className={classes.btnBox}
+                className={classes.btnBox} 
             >
-                <IconButton
-                >
-                    <Mail />
-                </IconButton>
-
+               
                 <IconButton
                     onClick={writeHandler}
+                    style={{color:"#80aaff"}}
                 >
                     <Create />
                 </IconButton>
@@ -91,7 +92,7 @@ class BtnBox extends React.Component<IProps, IState>{
                     open={modalOpen === 0}
                     onClose={this.closeModal}
                 />
-
+               
                 <IconButton
                     onClick={writeHandler2}
                 >

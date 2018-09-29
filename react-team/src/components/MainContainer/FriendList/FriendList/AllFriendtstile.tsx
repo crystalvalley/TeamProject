@@ -11,6 +11,12 @@ import { NavLink } from 'react-router-dom';
  * member 목록리스트에 해당되는 하나의 타일(전체화면)-Allmembers.tsx와 연결
  */
 
+/**
+ * @author:Kim MinJeong
+ * @version:2018.09.30
+ * 들어가보기 넘어가도록
+ */
+
 const style: StyleRulesCallback = (theme: Theme) => ({
     card: {
         maxWidth: 345,
