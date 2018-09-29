@@ -2,7 +2,8 @@ import * as React from 'react';
 import { withStyles, TextField, Button, Typography } from '@material-ui/core';
 import { signInStyle } from './Styles/SignInStyle';
 import { ILoginStore, withLoginContext } from '../../contexts/LoginContext';
-
+import imgg from '../../img/pockyheand.png';
+import title from '../../img/TITEL.png';
 /**
  * @author : ParkHyeokJoon
  * @since : 18.08.13
@@ -23,6 +24,8 @@ interface IProps {
         leftBottom: string;
         leftBottomInner: string;
         rightTopInner: string;
+        imgBox: string;
+        title :string;
     }
 }
 
@@ -36,16 +39,16 @@ interface IState {
 class SignIn extends React.Component<IProps & ILoginStore, IState> {
     constructor(props: IProps & ILoginStore) {
         super(props);
-        this.state={
-            password:"",
-            userid:""
+        this.state = {
+            password: "",
+            userid: ""
         }
         this.onChangeId = this.onChangeId.bind(this);
         this.onChangePw = this.onChangePw.bind(this);
     }
 
-    public componentWillReceiveProps(){
-        if(this.props.logined.id!==""){            
+    public componentWillReceiveProps() {
+        if (this.props.logined.id !== "") {
             // 이미 로그인이 되있다면
             location.replace("/")
         }
@@ -59,8 +62,16 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                 <div className={classes.rightTop} />
                 <div className={classes.leftBottomInner} />
                 <div className={classes.rightTopInner} />
+                <div className={classes.title}>
+                    <img src={title} />
+                </div>
+                <div className={classes.imgBox}>
+                    <img src={imgg} />
+                </div>
                 <div className={classes.formBox}>
+
                     <div className={classes.head}>
+
                         <Typography
                             classes={{
                                 root: classes.headTyphoRoot
@@ -102,10 +113,13 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                             Powered By SCI
                         </Typography>
                         {this.state.userid}<br />
-                        {this.state.password}<br/>
+                        {this.state.password}<br />
                         {this.props.logined.id}
                     </div>
                 </div>
+
+
+
             </div>
         );
     }

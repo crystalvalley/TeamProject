@@ -37,7 +37,7 @@ export const signInStyle: StyleRulesCallback = (theme: Theme) => ({
         textAlign: "center",
         opacity: 0.7,
         padding: "30px",
-        backgroundColor: "#3F51B5",
+        backgroundColor: "#ff6666",
         color: "#ecf0f1"
     },
     headTyphoRoot: {
@@ -48,7 +48,7 @@ export const signInStyle: StyleRulesCallback = (theme: Theme) => ({
         padding: "10px",
         marginTop: "-16px",
         lineHeight: "25px",
-        backgroundColor: "#737fc5"
+        backgroundColor: "#ff6666"
     },
     btnRoot: {
         position: "relative",
@@ -67,7 +67,7 @@ export const signInStyle: StyleRulesCallback = (theme: Theme) => ({
         right:0,
         width: 0,
         height: 0,
-        borderTop: "50vh solid #3F51B5",
+        borderTop: "50vh solid #ffcccc",
         borderLeft: "50vw solid transparent"
     },
     rightTopInner: {
@@ -77,7 +77,7 @@ export const signInStyle: StyleRulesCallback = (theme: Theme) => ({
         width: 0,
         height: 0,
         opacity:0.5,
-        borderTop: "75vh solid #3F51B5",
+        borderTop: "75vh solid #ffcccc",
         borderLeft: "55vw solid transparent"
     },
     leftBottom: {
@@ -86,7 +86,7 @@ export const signInStyle: StyleRulesCallback = (theme: Theme) => ({
         bottom:0,
         width: 0,
         height: 0,
-        borderBottom: "50vh solid #3F51B5",
+        borderBottom: "50vh solid #ffcccc",
         borderRight: "50vw solid transparent"
     },
     leftBottomInner: {
@@ -96,7 +96,21 @@ export const signInStyle: StyleRulesCallback = (theme: Theme) => ({
         width: 0,
         height: 0,
         opacity:0.5,
-        borderBottom: "75vh solid #3F51B5",
+        borderBottom: "75vh solid #ffcccc",
         borderRight: "55vw solid transparent"
     },
+    imgBox :{
+        position:"absolute",
+        top:"22.5%",
+        right:"63%",
+        width: 0,
+        height: 0
+    },
+    title :{
+        position:"absolute",
+        top:"10%",
+        right:"61%",
+        width: 0,
+        height: 0
+    }
 })

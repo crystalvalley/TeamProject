@@ -18,6 +18,13 @@ import { withRouter, RouteComponentProps } from 'react-router';
  * @version : 2018.08.28
  */
 
+/**
+ * @author : GilJoonsung
+ * @since : 2018.09.23
+ * @version : 2018.09.23
+ * css  수정
+ */ 
+
 const style: StyleRulesCallback = (theme: Theme) => ({
     editorContainer: {
         backgroundColor: "white",
@@ -32,7 +39,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         height: "100%",
         marginRight: "20px",
         padding: "25px",
-        backgroundColor: "white",
+        backgroundColor: "#f2f5f9",
         display: "flex",
         flexDirection: "column",
         position: "relative"
@@ -40,7 +47,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     menuPart: {
         flexBasis: "25%",
         height: "100%",
-        backgroundColor: "white"
+        backgroundColor: "#f2f5f9"
     },
 })
 
@@ -100,6 +107,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore & RouteCom
         const { editorState } = this.state;
         return (
             <React.Fragment>
+                <div>글쓰기</div>
                 <div
                     className={classes.editorPart}
                 >

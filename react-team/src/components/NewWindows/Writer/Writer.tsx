@@ -13,6 +13,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         width: "1000px",
         height: "750px",
         display: "flex",
+        
     },
     modal: {
         display: "flex",
@@ -34,6 +35,7 @@ class Writer extends React.Component<IProps>{
     public render() {
         const { classes } = this.props;
         return (
+            
             <Modal
                 className={classes.modal}
                 open={this.props.open}
