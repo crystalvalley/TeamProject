@@ -3,6 +3,7 @@ import { Card, CardMedia, CardContent, Typography, CardActions, Button, StyleRul
 import HomeIcon from '@material-ui/icons/Home';
 import TouchApp from '@material-ui/icons/TouchApp';
 import { IMemberModel } from '../../../../constance/models';
+import { NavLink } from 'react-router-dom';
 // import { INetworkStore } from '../../../../contexts/NetworkContext';
 // import SearchedList from '../../CardList/Card/SearchedList';
 
@@ -17,6 +18,12 @@ import { IMemberModel } from '../../../../constance/models';
 /**
  * @author:Kim MinJeong
  * @version:2018.09.19
+ */
+
+/**
+ * @author:Kim MinJeong
+ * @version:2018.09.30
+ * 프로필사진 뜨도록
  */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
@@ -65,9 +72,9 @@ class Allmembertile extends React.Component<IProps> {
         return (            
             <Card className={classes.card}>
                 <CardMedia
-                    className={classes.media}
-
-                    src={"http://localhost:8081/resources" + friendInfo.profileImg}                    
+                     component="img"
+                     className={classes.media}
+                     image={"http://localhost:8081/resources" + friendInfo.profileImg}
                 />
                 <CardContent>
                     <Typography gutterBottom={true} variant="headline" component="h2">
@@ -80,10 +87,18 @@ class Allmembertile extends React.Component<IProps> {
                         친구추가
                             <TouchApp className={classes.rightIcon} />
                     </Button>
-                    <Button size="small" color="primary">
-                        들어가보기
+                  
+                    <NavLink
+                        style={{
+                            textDecoration: "none"
+                        }}
+                        to={"/personalPage/" + friendInfo.id}
+                    >
+                        <Button size="small" color="primary">
+                            들어가보기
                             <HomeIcon className={classes.rightIcon} />
-                    </Button>
+                        </Button>
+                    </NavLink>
                 </CardActions>
             </Card>        
         )
