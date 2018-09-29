@@ -106,6 +106,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 }, () => {
                     // 로그인 처리 완료 후에 소켓을 즉시 연결
                     this.connect();
+                    this.alarmRefresh();
                     if (this.state.profileURL === "") {
                         const xhr = new XMLHttpRequest();
                         xhr.open("GET", "http://localhost:8081/resources" + this.state.logined.profileImg);

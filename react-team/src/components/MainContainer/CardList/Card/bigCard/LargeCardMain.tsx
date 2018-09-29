@@ -127,8 +127,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     overflowX: 'auto',
   },
   table: {
-    width :"65vh",
-   // height :"100vh"
+    width: "65vh",
+    // height :"100vh"
   },
   main: {
     display: "flex",
@@ -256,9 +256,9 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
               <CardHeader
                 avatar={
                   <Avatar
-                  className={classes.avatar}
-                  src={"http://localhost:8081/resources" + card.writer.profileImg}
-              />
+                    className={classes.avatar}
+                    src={"http://localhost:8081/resources" + card.writer.profileImg}
+                  />
                 }
                 action={
                   <IconButton>
@@ -285,13 +285,17 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
                 {/*이미지 위 
               이미지 사이즈 지정 어떻게 하는지 모르겠다
             */}
-                <div className={classes.imageContainer}>
-                  <ImageViewer
-                    width={this.imgWidth !== undefined ? this.imgWidth!.offsetWidth - 24 : 0}
-                    photos={this.props.card.photos}
-                  />
-                </div>
-
+                {
+                  this.props.card.photos.length > 0 ?
+                    (
+                      <div className={classes.imageContainer}>
+                        <ImageViewer
+                          width={this.imgWidth !== undefined ? this.imgWidth!.offsetWidth - 24 : 0}
+                          photos={this.props.card.photos}
+                        />
+                      </div>
+                    ) : ""
+                }
                 {/*글  아래 */}
                 <div className={classes.content}>
 
@@ -339,16 +343,16 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
               <Button onClick={this.submit} className={classes.button}>save</Button>
             </div>
             <div>
-            
-            {/*스크롤때문에 댓글창이 제대로 안나온다*/}
 
-           
-                <CardContent className={classes.table}>
+              {/*스크롤때문에 댓글창이 제대로 안나온다*/}
+
+
+              <CardContent className={classes.table}>
                 <Scrollbars
-              // style={innerHeight=100}
-              autoHeight={true}
-              autoHide={true}
-            >
+                  // style={innerHeight=100}
+                  autoHeight={true}
+                  autoHide={true}
+                >
                   <Paper>
                     <Table>
                       <TableBody>
@@ -369,9 +373,9 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
                       </TableBody>
                     </Table>
                   </Paper>
-                  </Scrollbars>
-                </CardContent>
-               
+                </Scrollbars>
+              </CardContent>
+
             </div>
           </div>
         </div>
