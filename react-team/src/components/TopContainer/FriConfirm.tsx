@@ -1,26 +1,44 @@
 import * as React from 'react'
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import Axios from 'axios';
 
-
+interface IProp{
+    target:string
+}
 
 interface IState{
     open:boolean
 }
-export default class FriConfirm extends React.Component<{},IState>{
-    constructor(props:{}){
+export default class FriConfirm extends React.Component<IProp,IState>{
+    constructor(props:IProp){
         super(props)
         this.state={
             open:false
         }
         this.openMenu = this.openMenu.bind(this);
-        this.handleClose  = this.handleClose.bind(this);
+        this.ahandleClose  = this.ahandleClose.bind(this);
+        this.dhandleClose  = this.dhandleClose.bind(this);
     }
 
     public openMenu(){
         this.setState({open:true})
     }
-    public handleClose(){
+    public ahandleClose(){
+        this.saveFriend();
         this.setState({open:false})
+    }
+    public dhandleClose(){
+        
+        this.setState({open:false})
+    }
+    public saveFriend(){
+        Axios.get("http://localhost:8081/networks/acceptFriend",{
+            params: {
+                target:this.props.target
+            }
+            
+        }).then(()=>{alert("친구 됐다~")})
+        
     }
 
     public render(){
@@ -30,7 +48,7 @@ export default class FriConfirm extends React.Component<{},IState>{
         <Dialog
          fullScreen={false}
           open={this.state.open}
-          onClose={this.handleClose}
+          onClose={this.dhandleClose}
           aria-labelledby="responsive-dialog-title"
         >
          
@@ -41,10 +59,10 @@ export default class FriConfirm extends React.Component<{},IState>{
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={this.dhandleClose} color="primary">
               Disagree
             </Button>
-            <Button onClick={this.handleClose} color="primary" autoFocus={true}>
+            <Button onClick={this.ahandleClose} color="primary" autoFocus={true}>
               Agree
             </Button>
           </DialogActions>
