@@ -58,6 +58,10 @@ interface IProps {
 class EditorMenu extends React.Component<IProps> {
     constructor(props: IProps) {
         super(props);
+        this.state = {
+            files: []
+        }
+        this.onDrop = this.onDrop.bind(this);
     }
     public render() {
         const { classes } = this.props
@@ -91,6 +95,11 @@ class EditorMenu extends React.Component<IProps> {
                 />
             </div>
         );
+    }
+    private onDrop(files: File[]) {
+        this.setState({
+            files
+        })
     }
 }
 
