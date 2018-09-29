@@ -70,16 +70,6 @@ class EditorMenu extends React.Component<IProps> {
                 className={classes.container}
             >
                 <div
-                    className={classes.buttons}
-                >
-                    Buttons
-                </div>
-                <div
-                    className={classes.audio}
-                >
-                    Audio
-                </div>
-                <div
                     className={classes.photos}
                 >
                     <Dropzone

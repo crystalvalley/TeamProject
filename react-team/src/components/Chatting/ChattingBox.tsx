@@ -19,7 +19,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         margin: theme.spacing.unit,
         boxShadow: "1px 1px 2px 2px grey",
         width: "300px",
-        padding:"10px"
+        padding: "10px"
     },
     svg: {
         width: 100,
@@ -60,7 +60,7 @@ interface IProps {
     },
     key: number;
     loginedId: IMemberModel;
-    profileURL : string,
+    profileURL: string,
     sendMessage(msg: IMsgModel): void;
 }
 
@@ -84,6 +84,15 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
         const { open } = this.state;
         const { classes } = this.props;
         const addSubName = this.state.open ? "" : " " + classes.hide
+        let title: string = "";
+        for(const m of this.props.roomMembers){
+            if(title!==""){
+                title+=","
+            }
+            if(m.member.id===this.props.loginedId.id){continue;}
+            title +=m.member.id
+        }
+        title += "과의 채팅"
         return (
             <div
                 className={classes.chatBox}
@@ -92,9 +101,9 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                     <Grow in={open} >
                         <Paper elevation={4} className={classes.paper + addSubName}>
                             <ChatWrapper
-                                roomMembers = {this.props.roomMembers}
+                                roomMembers={this.props.roomMembers}
                                 profileURL={this.props.profileURL}
-                                chats={this.props.chat===undefined?[]:this.props.chat}
+                                chats={this.props.chat === undefined ? [] : this.props.chat}
                                 loginedId={this.props.loginedId}
                             />
                         </Paper>
@@ -106,7 +115,7 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                             className={classes.chatname}
                         >
                             <p className={classes.nameNfieldBox}>
-                                Chatting  {this.props.roomId}
+                                {title}
                             </p>
                             <IconButton
                                 onClick={this.onCheck}
@@ -123,6 +132,7 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                         >
                             <p className={classes.nameNfieldBox}>
                                 <TextField
+                                    value={this.state.msg}
                                     fullWidth={true}
                                     onKeyDown={this.onKeyDown}
                                     onChange={this.onChange}

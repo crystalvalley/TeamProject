@@ -42,12 +42,12 @@ interface IState {
   confirmOpen: boolean
   board?: ICardModel
 }
-class AlarmPage extends React.Component<IProps&ILoginStore, IState>{
+class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
   private divAnchor: HTMLSpanElement | null;
   // private dummy=[
   //   {"actor_id":"testid1", checked:false, mentioned:true, "alarmId":"1"},{"actor_id":"testid1", checked:false, mentioned:false, "alarmId":"1"}
   // ]
-  constructor(props: IProps&ILoginStore) {
+  constructor(props: IProps & ILoginStore) {
     super(props)
     this.state = {
       anchorEl: "",

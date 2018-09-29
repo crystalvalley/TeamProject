@@ -48,7 +48,7 @@ public class NetworkServiceImpl implements NetworkService{
 		Networking net = new Networking();
 		net.setMember(mr.findById(memberid).get());
 		net.setTarget(mr.findById(target).get());
-		net.setType("Friend");
+		net.setType("Follow");
 		nr.save(net);
 	}
 

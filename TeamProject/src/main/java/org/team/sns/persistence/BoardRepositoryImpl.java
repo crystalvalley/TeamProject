@@ -281,7 +281,6 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		int check = -1;
 		QBoard board = QBoard.board;
 		QFavorites fav = QFavorites.favorites;
-		QMention men = QMention.mention;
 		JPQLQuery<Board> query = from(board);
 
 		query.select(board);
@@ -480,7 +479,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 	private BooleanBuilder contentCheck(QBoard board, BooleanBuilder builder, String targets) {
 		String[] array = targets.split(",");
 		for (String target : array) {
-			builder.and(board.plainText.like(target).or(board.title.like(target)));			
+			builder.and(board.plainText.like(target));			
 		}
 		return builder;
 	}

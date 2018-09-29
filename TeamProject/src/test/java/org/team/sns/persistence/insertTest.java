@@ -1,7 +1,5 @@
 package org.team.sns.persistence;
 
-import java.io.IOException;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +56,7 @@ public class insertTest {
 	 * System.out.println(br.getBoardsByTitle("5")); }
 	 */
 
-	/*
+	
 	@Test
 	public void init() {
 		Member member2 = new Member();
@@ -80,5 +78,5 @@ public class insertTest {
 		ns.friendRequest("testid", "testid3");
 		ns.acceptFriend("testid1", "testid");
 	}
-	*/
+	
 }
