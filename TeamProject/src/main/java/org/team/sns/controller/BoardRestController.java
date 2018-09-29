@@ -121,7 +121,13 @@ public class BoardRestController {
 	System.out.println("들어왔따.");
 	System.out.println(list);
 	return list;
-
+	}
 	
-}
+	@GetMapping("/getByBoardNum")
+	public Board getByBoardNum(Principal principal, int boardNum){
+		System.out.println("보드 가지러 들어왔나?");
+		Board board = br.findById(boardNum).get();
+		
+		return board;
+	}
 }

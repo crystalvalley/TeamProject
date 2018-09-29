@@ -1,9 +1,10 @@
 import * as React from "react";
 import { Menu, StyleRulesCallback, Theme, withStyles, MenuList, MenuItem } from "@material-ui/core";
 import AlarmBadge from "../TopContainer/AlarmBadge";
-import { IAlarmModel } from "../../constance/models";
+import { IAlarmModel, ICardModel } from "../../constance/models";
 import Axios from "axios";
 import FriConfirm from "../TopContainer/FriConfirm";
+
 
 
 // 일단 알람 페이지랑 알람 뱃지랑 합쳐서 해야 할 것 같다는 생각이 들었고
@@ -43,22 +44,25 @@ interface IState {
   alarms: IAlarmModel[]
   open: boolean
   confirmOpen:boolean
+  board?: ICardModel
 }
 class AlarmPage extends React.Component<IProps, IState>{
   
   private divAnchor: HTMLSpanElement | null;
 
-  private dummy=[
-    {"actor_id":"testid1", checked:false, mentioned:true},{"actor_id":"testid1", checked:false, mentioned:false}
-  ]
+ // private dummy=[
+ //   {"actor_id":"testid1", checked:false, mentioned:true, "alarmId":"1"},{"actor_id":"testid1", checked:false, mentioned:false, "alarmId":"1"}
+ // ]
   constructor(props: IProps) {
-
-    super(props)
+   
+   super(props)
+   
     this.state = {
       anchorEl: "",
       alarms: [],
       open: false,
-      confirmOpen:false
+      confirmOpen:false,
+      board: undefined
     }
 
 
@@ -69,8 +73,17 @@ class AlarmPage extends React.Component<IProps, IState>{
     this.closeMenu = this.closeMenu.bind(this)
     this.confrimOpen = this.confrimOpen.bind(this)
     this.confirmClose = this.confirmClose.bind(this)
+    this.getBoards = this.getBoards.bind(this)
   };
-
+  public getBoards(){
+    Axios.get("http://localhost:8081/boards/getByBoardNum")
+    .then((response)=>{
+     this.setState({
+       board:response.data
+     })
+    })
+    
+  }
 
   public handleClose() {
     this.setState({ anchorEl: "" })
@@ -81,12 +94,17 @@ class AlarmPage extends React.Component<IProps, IState>{
       .then((response) => {
         this.setState({
           alarms: response.data
+          
         })
       })
   }
+ 
+
+
   public openMenu(){  
     this.setState({
       open: true
+      
       
     })
     
@@ -130,11 +148,12 @@ class AlarmPage extends React.Component<IProps, IState>{
          
          <MenuList>
             {
-              this.dummy.map((alarm, index) => {
+              this.state.alarms.map((alarm, index) => {
                 return (
-                  !alarm.checked && alarm.mentioned === true ?
-                    <MenuItem key={index}>{alarm.actor_id + "님으로 부터 멘션"}</MenuItem> :
-                    <MenuItem key={index}>{alarm.actor_id + "님으로 부터 친구요청"}<FriConfirm target={alarm.actor_id}/></MenuItem>
+                   alarm.mentioned === true?
+                  <MenuItem onClick={this.getBoards} key={index}>{alarm.actor_id.id + "님으로 부터 멘션"}</MenuItem> :
+                  <MenuItem key={index}>{alarm.actor_id.id + "님으로 부터 친구요청"}<FriConfirm alarmId={alarm.alarmId} target={alarm.actor_id.id}/></MenuItem>
+                  
                 );
               })}<br />
             </MenuList>

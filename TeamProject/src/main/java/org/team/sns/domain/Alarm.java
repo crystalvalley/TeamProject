@@ -48,6 +48,9 @@ public class Alarm {
 	@NotNull
 	private boolean checked;
 	
+	
+	private int boardNum;
+	
 	@ManyToOne
 	@JoinColumn(name="actor_id", referencedColumnName="user_id", updatable = false, nullable=false)
 	@NotNull
@@ -58,6 +61,8 @@ public class Alarm {
 	@JoinColumn(name="receiver_id", referencedColumnName="user_id", updatable = false, nullable=false)
 	@NotNull
 	private Member receiver_id;
+	
+	
 	
 	
 }

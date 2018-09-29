@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.team.sns.domain.Alarm;
 import org.team.sns.domain.Member;
+import org.team.sns.persistence.AlarmRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.service.AlarmService;
 import org.team.sns.service.NetworkService;
@@ -29,6 +31,8 @@ public class NetworkController {
 	MemberRepository mr;
 	@Autowired
 	AlarmService as;
+	@Autowired
+	AlarmRepository ar;
 	
 	@GetMapping("/requestFriend")
 	public void requestFriend(Principal principal, String target) {
@@ -37,9 +41,14 @@ public class NetworkController {
 		as.saveFriendRequest(target, principal);
 	}
 	@GetMapping("/acceptFriend")
-	public void acceptFriend(Principal principal, String target) {
+	public void acceptFriend(Principal principal, String target, String alarmId) {
 		System.out.println("accept trying");
+		System.out.println(principal.getName()+"target:"+target);
 		ns.acceptFriend(principal.getName(), target);
+		Alarm alarm=ar.findById(Integer.parseInt(alarmId)).get();
+		alarm.setChecked(true);
+		ar.save(alarm);
+		
 		
 	}
 		

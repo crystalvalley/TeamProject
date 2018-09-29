@@ -2,8 +2,10 @@ import * as React from 'react'
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 import Axios from 'axios';
 
+
 interface IProp{
-    target:string
+    target:string,
+    alarmId:string
 }
 
 interface IState{
@@ -34,6 +36,7 @@ export default class FriConfirm extends React.Component<IProp,IState>{
     public saveFriend(){
         Axios.get("http://localhost:8081/networks/acceptFriend",{
             params: {
+                alarmId:this.props.alarmId,
                 target:this.props.target
             }
             
