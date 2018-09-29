@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GridList, GridListTile } from '@material-ui/core';
+import { GridList, GridListTile, StyleRulesCallback, Theme } from '@material-ui/core';
 import { IMemberModel } from '../../../../constance/models';
 import { INetworkStore, withNetworkContext } from '../../../../contexts/NetworkContext';
 import AllFriendtstile from './AllFriendtstile';
@@ -12,13 +12,25 @@ import AllFriendtstile from './AllFriendtstile';
  * @version:2018.09.06
  * 모든 사람들 목록
  */
+const style: StyleRulesCallback = (theme: Theme) => ({
+    container: {
+        display: "flex",
+        borderRadius: "2em",
+    }
+})
+
+interface IProps{
+    classes:{
+        container:string;
+    }
+}
 
 interface IState {
     friends: IMemberModel[],
 }
 
-class AllFriends extends React.Component<INetworkStore, IState>{
-    constructor(props: INetworkStore) {
+class AllFriends extends React.Component<IProps&INetworkStore, IState>{
+    constructor(props: IProps&INetworkStore) {
         super(props);
         this.state = {
             friends: [
