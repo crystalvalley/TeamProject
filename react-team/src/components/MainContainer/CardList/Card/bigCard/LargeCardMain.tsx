@@ -16,7 +16,7 @@ import ReplyIcon from "@material-ui/icons/Reply";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from 'axios';
-import { EditorState, convertFromRaw, Editor } from 'draft-js';
+import { EditorState, convertFromRaw, Editor, convertToRaw } from 'draft-js';
 import { Paper, Table, TableRow, TableCell, TableBody } from '@material-ui/core';
 import Axios from 'axios';
 import { ICardModel, IReplyModel } from '../../../../../constance/models';
@@ -216,7 +216,7 @@ interface IProps {
 interface IState {
   editorState: EditorState;
   expanded: boolean;
-  replyContent: string;
+  replyContent: EditorState;
   replys: IReplyModel[]
   open: boolean;
 }
@@ -230,7 +230,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     super(props)
     this.state = {
       expanded: false,
-      replyContent: "",
+      replyContent: EditorState.createEmpty(SNSDecorator),
       editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator),
       replys: [],
       open: false
@@ -350,7 +350,10 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
               />
             </CardActions>
             <div className={classes.replyBox}>
-              <ReplyEditor />
+              <ReplyEditor 
+                editorState={this.state.replyContent}
+                editorChange={this.doChangeReply}
+              />
               <IconButton
                 className={classnames(classes.expand, {
                   [classes.expandOpen]: this.state.expanded
@@ -405,17 +408,21 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       editorState: es
     })
   }
-  private doChangeReply(event: React.ChangeEvent<HTMLInputElement>) {
+  private doChangeReply(e : EditorState) {
     // alert();
     this.setState({
-      replyContent: event.currentTarget.value
+      replyContent : e
     })
   }
   private submit() {
     alert(this.props.card.id);
     {/*비밀번호는 폼으로 가져오면된다.  */ }
     const data = new FormData();
-    data.append("replyContent", this.state.replyContent);
+    data.append("replyContent",
+        JSON.stringify(
+            convertToRaw(this.state.replyContent.getCurrentContent())
+        )
+    );
     data.append("cardnum", this.props.card.id + "");
     Axios.post("http://localhost:8081/account/saveReply", data)
       .then((response) => {

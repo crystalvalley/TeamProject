@@ -1,25 +1,21 @@
 import * as React from 'react';
 import { Editor, EditorState } from 'draft-js';
-import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 import Scrollbars from 'react-custom-scrollbars';
 
 /**
  * @author : ParkHyeokJoon
  * @since : 2018.09.12
- * @version:2018.09.12
+ * @version:2018.09.28
  */
-interface IState {
-    editorState: EditorState
+interface IProps {
+    editorState: EditorState,
+    editorChange(e:EditorState):void
 }
 
-export default class ReplyEditor extends React.Component<{}, IState>{
+export default class ReplyEditor extends React.Component<IProps>{
     private editor:any;
-    constructor(props: {}) {
+    constructor(props: IProps) {
         super(props);
-        this.state = {
-            editorState: EditorState.createEmpty(SNSDecorator)
-        }
-        this.editorChange = this.editorChange.bind(this);
         this.focus = this.focus.bind(this);
     }
     public render() {
@@ -40,18 +36,13 @@ export default class ReplyEditor extends React.Component<{}, IState>{
                 >
                     <Editor
                         ref={(e)=>{this.editor=e}}
-                        editorState={this.state.editorState}
-                        onChange={this.editorChange}
+                        editorState={this.props.editorState}
+                        onChange={this.props.editorChange}
                         placeholder="댓글은 여기에 쓰세요"
                     />
                 </Scrollbars>
             </div>
         );
-    }
-    private editorChange(e: EditorState) {
-        this.setState({
-            editorState: e
-        })
     }
     private focus() {
         this.editor.focus();

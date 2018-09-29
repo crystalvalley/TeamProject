@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { IReplyModel } from '../../../../../constance/models';
-import { Table, TableCell, StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
+import { TableCell, StyleRulesCallback, Theme, withStyles, TableRow } from '@material-ui/core';
+import { Editor, EditorState, convertFromRaw } from 'draft-js';
+import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 /**
  * 댓글 받아오기 댓글폼
  * @author:MinJu Cha
  * @since:2018.9.5
- * @version:2018.9.7
- * 
+ * @version:2018.9.7 
+ */
+/**
+ * @author:Park HyeokJoon
+ * @version: 2018.09.29
  */
 
 
@@ -31,24 +36,40 @@ interface IProps {
     reply: IReplyModel;
 }
 
+interface IState{
+    editorState : EditorState,
+}
 
-class ReplyList extends React.Component<IProps>{
+
+class ReplyList extends React.Component<IProps,IState>{
+    constructor(props : IProps){
+        super(props);
+        this.state={
+            editorState : EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.reply.content)), SNSDecorator)
+        }
+    }
     public render() {
         const { classes } = this.props;
         return (
-
-            <Table className={classes.table}>
+            <TableRow className={classes.table}>
                 <TableCell >
                     {this.props.reply.writer.id}
                 </TableCell>
                 <TableCell >
-                    {this.props.reply.content}
+                    <Editor
+                        editorState={this.state.editorState}
+                        onChange={this.editorChange}
+                    />
                 </TableCell>
                 <TableCell > {this.props.reply.writeDate}</TableCell>
-            </Table>
+            </TableRow>
         );
     }
-
+    private editorChange(e : EditorState){
+        this.setState({
+            editorState : e
+        })
+    }
 }
 
 export default withStyles(styles)(ReplyList); 
