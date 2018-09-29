@@ -29,13 +29,16 @@ import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFrien
  */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
-   
+   IconButton:{
+       background:'grey'
+   }
 })
+
 
 interface IProps {
     classes: {
         btnBox: string;
-     
+        
     },
     friends: IMemberModel;
 }
@@ -65,7 +68,11 @@ class BtnBox extends React.Component<IProps, IState>{
             <span
                 className={classes.btnBox} 
             >
-               
+                <IconButton 
+                >
+                    <Mail />
+                </IconButton>
+
                 <IconButton
                     onClick={writeHandler}
                     style={{color:"#80aaff"}}

@@ -99,4 +99,18 @@ export const signInStyle: StyleRulesCallback = (theme: Theme) => ({
         borderBottom: "75vh solid #ffcccc",
         borderRight: "55vw solid transparent"
     },
+    imgBox :{
+        position:"absolute",
+        top:"22.5%",
+        right:"63%",
+        width: 0,
+        height: 0
+    },
+    title :{
+        position:"absolute",
+        top:"10%",
+        right:"61%",
+        width: 0,
+        height: 0
+    }
 })

@@ -3,7 +3,7 @@ import { Menu, StyleRulesCallback, Theme, withStyles, MenuList, MenuItem } from 
 import AlarmBadge from "../TopContainer/AlarmBadge";
 import { IAlarmModel } from "../../constance/models";
 import Axios from "axios";
-// import FriConfirm from "../TopContainer/FriConfirm";
+import FriConfirm from "../TopContainer/FriConfirm";
 
 
 // 일단 알람 페이지랑 알람 뱃지랑 합쳐서 해야 할 것 같다는 생각이 들었고
@@ -134,7 +134,7 @@ class AlarmPage extends React.Component<IProps, IState>{
                 return (
                   !alarm.checked && alarm.mentioned === true ?
                     <MenuItem key={index}>{alarm.actor_id + "님으로 부터 멘션"}</MenuItem> :
-                    <MenuItem key={index}>{alarm.actor_id + "님으로 부터 친구요청"}</MenuItem>
+                    <MenuItem key={index}>{alarm.actor_id + "님으로 부터 친구요청"}<FriConfirm/></MenuItem>
                 );
               })}<br />
             </MenuList>

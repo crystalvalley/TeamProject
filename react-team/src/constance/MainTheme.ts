@@ -16,12 +16,12 @@ export const mainTheme = createMuiTheme({
         },
         // 배경
         background: {
-            default: "#f2f2f2",
+            default: "#cf9f9",
             paper: "#ffffff",
         },
         primary: {
-            light: '#ffffff',
-            main: '#ffcccc',    
+            light: '#9900ff',
+            main: '#ffcccc',
             dark: '#9900ff',
             contrastText: '#303030',
         },
@@ -40,5 +40,6 @@ export const mainTheme = createMuiTheme({
                 width:"5vw"
             }
         },
+        
     }
 });
