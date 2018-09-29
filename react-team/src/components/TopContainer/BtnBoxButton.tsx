@@ -4,7 +4,7 @@ import List from "@material-ui/icons/List";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Compare from '@material-ui/icons/Compare';
 import Accessibility from '@material-ui/icons/Accessibility';
-
+import Person from '@material-ui/icons/Person';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
 import AlarmPage from '../NewWindows/AlarmPage';
@@ -56,6 +56,11 @@ class BtnBox extends React.Component<IProps, IState>{
             <span
                 className={classes.btnBox}
             >
+                <NavLink to="/PersonalPage">
+                    <IconButton>
+                        <Person />
+                    </IconButton>
+                </NavLink>
                 <NavLink to="/userUpdate">
                     <IconButton>
                         <AccountCircle />

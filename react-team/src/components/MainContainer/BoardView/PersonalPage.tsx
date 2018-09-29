@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { StyleRulesCallback,  withStyles, Avatar, Button, TextField } from '@material-ui/core';
+import { StyleRulesCallback,  withStyles, Avatar,  TextField } from '@material-ui/core';
 import { IPhotoModel, IMemberModel, ICardModel } from '../../../constance/models';
 import { ILoginStore, withLoginContext } from '../../../contexts/LoginContext';
-import { Switch, Route } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import { Switch } from 'react-router';
+// import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-import UpdateUser from './UpdateUser';
 import { DropResult } from 'react-beautiful-dnd';
-
 import { ISearchState } from '../../../contexts/SearchContext';
 import { IFavoriteStore } from '../../../contexts/FavoriteContext';
+import PersonalList from './PersonalList';
 
 
 
@@ -22,7 +21,7 @@ import { IFavoriteStore } from '../../../contexts/FavoriteContext';
 const style: StyleRulesCallback = () => ({
     viewContainer: {
         backgroundColor: "white",
-        height: "100%",
+        height: "70%",
         padding: "10px",
         boxShadow: "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);",
         display: "flex",
@@ -54,13 +53,13 @@ const style: StyleRulesCallback = () => ({
     },
     buttons: {
         position: "relative",
-        top: "30%",
-        left: "15.5%"
+        top: "26%",
+        left: "23%"
     },
     texts: {
         position: "relative",
-        top: "40%",
-        left: "38%",
+        top: "37%",
+        left: "32%",
         font: "bold"
     },
     textfields: {
@@ -99,9 +98,7 @@ interface IState {
     click: number,
     firstContainer: string,
     order:string[],
-    cards: ICardModel[],
-    
-
+    cards: ICardModel[]
 }
 class PersonalPage extends React.Component<IProps & ILoginStore, IState>{
     constructor(props: IProps & ILoginStore) {
@@ -138,38 +135,27 @@ class PersonalPage extends React.Component<IProps & ILoginStore, IState>{
 
     public render() {
         const { classes, logined } = this.props;
-        const handler = () => this.numberhandler(0);
-        const handler1 = () => this.numberhandler(1);
-        const handler2 = () => this.numberhandler(2);
+        // const handler = () => this.numberhandler(0);
+        // const handler1 = () => this.numberhandler(1);
+        // const handler2 = () => this.numberhandler(2);
         return (
             <div className={classes.viewContainer}>
                 <div className={classes.firstContainer}>
                     <Switch>
-                        {/*<CardList cards={this.state.cards} />*/}
-                        <Route path="/PersonalPage/UpdateUser" componenet={UpdateUser}/>
-                        <Route path="/PersonalPage/UpdateUser2" componenet={UpdateUser}/>
+                        <PersonalList cards={this.state.cards} />
+                        
                     </Switch>
                 </div>
 
 
                 <div className={classes.secondContainer}>
-                    <Avatar alt="user" src={logined.profileImg} className={classes.avatar} />
+                    <Avatar src={logined !== undefined ? "http://localhost:8081/resources"+logined.profileImg : ""} className={classes.avatar} />
                     <div className={classes.textfields}>
                         <TextField label={logined.id} /><br /><br />
                     </div>
-                    <div className={classes.buttons}>
-                        <Button variant="contained" onClick={handler} color="primary" className={classes.buttons}>
-                            <NavLink to="/PersonalPage/CardListContainer">타임라인</NavLink>
-                        </Button>
-                        <Button variant="contained" onClick={handler1} color="primary" className={classes.buttons}>
-                            <NavLink to="/PersonalPage/UpdateUser">개인정보</NavLink>
-                        </Button>
-                        <Button variant="contained" onClick={handler2} color="primary" className={classes.buttons}>
-                        <NavLink to="/PersonalPage/UpdateUser">친구목록</NavLink>
-                        </Button>
-                    </div>
+                
                     <div className={classes.texts}>
-                        나의 페이지다 이것들아
+                        POKYBOOK에 오신 것을 환영합니다.
                         </div>
                 </div>
             </div>
@@ -202,12 +188,12 @@ class PersonalPage extends React.Component<IProps & ILoginStore, IState>{
         return;
     }
 
-    private numberhandler(num: number) {
-        this.setState({
-            click: num
-        })
+    // private numberhandler(num: number) {
+    //     this.setState({
+    //         click: num
+    //     })
 
-    }
+    // }
 
 
 
