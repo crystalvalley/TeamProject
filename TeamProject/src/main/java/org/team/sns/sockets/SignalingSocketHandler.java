@@ -138,9 +138,10 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 	}
 
 	private void loginProcess(WebSocketSession session, SignalMessage signalMessage) throws Exception {
+		System.out.println("로그인");
 		Member user = signalMessage.getSender();
 		// 웹소켓 생성
-		WebSocketSession client = clients.get(user);
+		WebSocketSession client = clients.get(user.getId());
 
 		// 유저네임이 이미 있거나 없을 경우를 체크
 		if (client == null || !client.isOpen()) {
