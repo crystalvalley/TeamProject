@@ -101,6 +101,7 @@ class BtnBox extends React.Component<IProps, IState>{
                     open={this.state.modalOpen === 1}
                     openf={writeHandler2}
                     close={this.closeModal}
+                    
                 />
                 <NavLink to="/Users">
                     <IconButton>
