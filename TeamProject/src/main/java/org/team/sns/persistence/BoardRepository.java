@@ -11,4 +11,6 @@ import org.team.sns.domain.Board;
  */
 public interface BoardRepository extends CrudRepository<Board, Integer>,BoardRepositoryCustom{
 
+	
+
 }

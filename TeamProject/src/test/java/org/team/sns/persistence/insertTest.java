@@ -43,7 +43,8 @@ public class insertTest {
 	RoomMemberRepository rmr;
 	@Autowired
 	SocketService ss;
-
+	@Autowired
+	ReplyRepository rpr;
 	/*
 	 * board에 적당히 값 넣어두는 test
 	 * 
@@ -57,6 +58,7 @@ public class insertTest {
 	 * System.out.println(br.getBoardsByTitle("5")); }
 	 */
 
+	/*
 	@Test
 	public void init() {
 		Member member2 = new Member();
@@ -78,4 +80,5 @@ public class insertTest {
 		ns.friendRequest("testid", "testid3");
 		ns.acceptFriend("testid1", "testid");
 	}
+	*/
 }

@@ -43,10 +43,12 @@ public class NetworkServiceImpl implements NetworkService{
 		// TODO Auto-generated method stub
 		// 먼저 자신한테 온 요청을 수정함
 		// 그리고 자신도 친구목록에 추가
+		// 준성 : 누군가가 먼저 요청했고 내가 받아들이면 친구로 저장하자.
+		System.out.println("여긴 들어갔나?");
 		Networking net = new Networking();
 		net.setMember(mr.findById(memberid).get());
 		net.setTarget(mr.findById(target).get());
-		net.setType("Follow");
+		net.setType("Friend");
 		nr.save(net);
 	}
 

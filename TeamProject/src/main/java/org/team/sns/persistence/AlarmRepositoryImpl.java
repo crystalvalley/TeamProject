@@ -41,10 +41,16 @@ public class AlarmRepositoryImpl extends QuerydslRepositorySupport implements Al
 		QAlarm alarm = QAlarm.alarm;
 		JPQLQuery<Alarm> alarmQuery = from(alarm);
 		alarmQuery.select(alarm);
-		//alarmQuery.where(alarm.receiver_id.username.eq(principal.getName()));
+		alarmQuery.where(alarm.receiver_id.eq(mr.findById(principal.getName()).get()));
+		alarmQuery.where(alarm.checked.eq(false));
 		List<Alarm> result  = alarmQuery.fetch();
+		System.out.println("리시버의 id:"+alarm.receiver_id);
 		System.out.println("찾아온 결과:"+result);
 		return result;
+		/*System.out.println("result!!!!!!!!!!!"+result);
+		for(int i=0;i<result.size();i++) {
+			System.out.println("제발 아뒤 불러와::::"+result.get(i).getReceiver_id().getId());
+		}*/
 	}
 	
 	

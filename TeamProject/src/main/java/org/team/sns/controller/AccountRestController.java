@@ -87,10 +87,15 @@ public class AccountRestController {
 	public Member loginCheck(Principal principal) {
 		Member member;
 		if (principal != null) {
-			member = mr.findById("testid").get();
+			member = mr.findById(principal.getName()).get();
 		} else {
 			member = new Member();
 			member.setId("FAILED LOGIN");
+			
+			
+			member = mr.findById("testid").get();
+			
+			
 			return member;
 		}
 		return member;
@@ -99,7 +104,7 @@ public class AccountRestController {
 	@PostMapping("/uploadProfile")
 	public String uploadProfile(@RequestParam("upload") MultipartFile upload, Principal principal) throws Exception {
 		System.out.println("test");
-		return ds.fileUpload(upload, "testid");
+		return ds.fileUpload(upload, principal.getName());
 	}
 
 	@PostMapping("/UpdateUser")
