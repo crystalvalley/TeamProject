@@ -37,7 +37,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
         display: "flex",
         flexDirection: "column",
         marginLeft: "7.5%",
-        marginRight: "7.5%"
+        marginRight: "7.5%",
+        marginBottom:"100px"
     },
 })
 

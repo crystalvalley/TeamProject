@@ -21,6 +21,7 @@ import org.team.sns.service.BoardService;
 import org.team.sns.vo.BoardSearchCondition;
 import org.team.sns.vo.Datas;
 import org.team.sns.service.AlarmService;
+
 /**
  * 
  * @author ParkHyeokJoon
@@ -39,7 +40,7 @@ public class BoardRestController {
 	BoardRepository br;
 	@Autowired
 	MemberRepository mr;
-	
+
 	@Autowired
 	AlarmService as;
 
@@ -65,13 +66,13 @@ public class BoardRestController {
 	}
 
 	@PostMapping("/writeBoard")
-	   public void writeBoard(Board board, Principal principal,MultipartFile[] image) throws Exception {
-	      // board.setWriter(mr.findById("testid").get());
-	      board.setWriter(mr.findById(principal.getName()).get());
-	      bs.saveBoard(board);
-	      bs.setBoardImage(board, image);
-	      as.savementionAlarms(board, principal);
-	   }
+	public void writeBoard(Board board, Principal principal, MultipartFile[] image) throws Exception {
+		// board.setWriter(mr.findById("testid").get());
+		board.setWriter(mr.findById("testid").get());
+		bs.saveBoard(board);
+		bs.setBoardImage(board, image);
+		as.savementionAlarms(board, "testid");
+	}
 
 	@GetMapping("/checkTag")
 	public List<Tag> checkTag(String hashTag) {
@@ -116,18 +117,17 @@ public class BoardRestController {
 
 	@GetMapping("/getById")
 
-	public List<Board> getById(Principal principal){
-	List<Board> list = br.getBoardsByUserId("testid");
-	System.out.println("들어왔따.");
-	System.out.println(list);
-	return list;
+	public List<Board> getById(Principal principal) {
+		List<Board> list = br.getBoardsByUserId("testid");
+		System.out.println("들어왔따.");
+		System.out.println(list);
+		return list;
 	}
-	
+
 	@GetMapping("/getByBoardNum")
-	public Board getByBoardNum(Principal principal, int boardNum){
+	public Board getByBoardNum(Principal principal, int boardNum) {
 		System.out.println("보드 가지러 들어왔나?");
 		Board board = br.findById(boardNum).get();
-		
 		return board;
 	}
 }

@@ -1,6 +1,6 @@
 import * as  React from 'react';
 import axios from 'axios';
-import { IMemberModel, IRoomModel, IMsgModel } from '../constance/models';
+import { IMemberModel, IRoomModel, IMsgModel, IAlarmModel } from '../constance/models';
 
 /**
  * @author : ParkHyeokjoon
@@ -14,10 +14,12 @@ export interface ILoginStore {
         [roomId: number]: IRoomModel
     }
     roomIds: number[];
-    profileURL:string,
+    profileURL: string,
+    alarms: IAlarmModel[];
     loginCheck(): void;
     sendMessage(msg: IMsgModel): void;
-    socketRefesh(dataType:string): void;
+    socketRefesh(dataType: string): void;
+    alarmRefresh(): void;
 }
 
 
@@ -26,12 +28,14 @@ const loginContext = React.createContext<ILoginStore>({
         profileImg: "",
         id: "",
     },
+    alarms: [],
     rooms: {},
     roomIds: [],
-    profileURL:"",
+    profileURL: "",
     loginCheck: () => { return },
     sendMessage: (msg: IMsgModel) => { return },
-    socketRefesh: (dataType:string) => { return }
+    socketRefesh: (dataType: string) => { return },
+    alarmRefresh: () => { return; }
 });
 class LoginProvider extends React.Component<{}, ILoginStore> {
 
@@ -50,17 +54,20 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         this.loginCheck = this.loginCheck.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.socketRefesh = this.socketRefesh.bind(this);
+        this.alarmRefresh = this.alarmRefresh.bind(this);
         this.state = {
             logined: {
                 profileImg: "",
                 id: "testid",
             },
-            profileURL:"",
+            alarms: [],
+            profileURL: "",
             rooms: {},
             roomIds: [],
             loginCheck: this.loginCheck,
             sendMessage: this.sendMessage,
-            socketRefesh: this.socketRefesh
+            socketRefesh: this.socketRefesh,
+            alarmRefresh: this.alarmRefresh
         }
         this.logError = this.logError.bind(this);
         this.connect = this.connect.bind(this);
@@ -99,13 +106,14 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 }, () => {
                     // 로그인 처리 완료 후에 소켓을 즉시 연결
                     this.connect();
-                    if(this.state.profileURL===""){
+                    this.alarmRefresh();
+                    if (this.state.profileURL === "") {
                         const xhr = new XMLHttpRequest();
                         xhr.open("GET", "http://localhost:8081/resources" + this.state.logined.profileImg);
                         xhr.responseType = "blob";
-                        xhr.addEventListener("load", () => {                            
+                        xhr.addEventListener("load", () => {
                             this.setState({
-                                profileURL:URL.createObjectURL(xhr.response)
+                                profileURL: URL.createObjectURL(xhr.response)
                             })
                         })
                         xhr.send();
@@ -121,12 +129,12 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 */
             })
     }
-    private socketRefesh(dataType : string) {
+    private socketRefesh(dataType: string) {
         this.sock.send(
             JSON.stringify({
                 type: "refresh",
                 sender: this.state.logined.id,
-                data : dataType
+                data: dataType
             })
         )
     }
@@ -217,9 +225,10 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 this.setState({
                     rooms: nextRooms
                 })
-
-            }else if(message.type === "refresh"){
+            } else if (message.type === "refresh") {
                 this.socketRefesh(message.data);
+            } else if (message.type === "alarm-Refresh") {
+                this.alarmRefresh();
             }
         }
     }
@@ -293,6 +302,14 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         }
         // this.setConnected(false);
     }
+    private alarmRefresh() {
+        axios.get("http://localhost:8081/alarms/requestAlarms")
+            .then((response) => {
+                this.setState({
+                    alarms: response.data
+                })
+            })
+    }
 }
 export { LoginProvider };
 
@@ -309,3 +326,4 @@ export function withLoginContext<P extends ILoginStore>(Component: React.Compone
         );
     }
 }
+

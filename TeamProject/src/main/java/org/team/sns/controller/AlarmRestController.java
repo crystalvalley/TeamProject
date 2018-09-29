@@ -19,25 +19,18 @@ import org.team.sns.persistence.AlarmRepository;
  *
  */
 
-
 @RestController
-@RequestMapping(value="/alarms")
+@RequestMapping(value = "/alarms")
 public class AlarmRestController {
-	
+
 	@Autowired
 	AlarmRepository ar;
-	
-	
+
 	@GetMapping("/requestAlarms")
-	public List<Alarm> requestAlarms(Principal principal){
+	public List<Alarm> requestAlarms(Principal principal) {
 		System.out.println("알람받아오기 들어");
-		List<Alarm> list = ar.requestAlarms(principal);
-		System.out.println("알람리스트 :"+list);
+		List<Alarm> list = ar.requestAlarms("testid");
+		System.out.println("알람리스트 :" + list);
 		return list;
 	}
-	}
-	
-	
-	
-	
-
+}

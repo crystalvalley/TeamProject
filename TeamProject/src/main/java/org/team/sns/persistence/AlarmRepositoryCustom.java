@@ -16,5 +16,5 @@ import org.team.sns.domain.Alarm;
 
 public interface AlarmRepositoryCustom{
 	public boolean setAlarms(Alarm alarm);
-	public List<Alarm> requestAlarms(Principal principal);
+	public List<Alarm> requestAlarms(String username);
 }
