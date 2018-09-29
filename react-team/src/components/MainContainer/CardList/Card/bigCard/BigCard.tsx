@@ -16,8 +16,10 @@ import LargeCardMain from './LargeCardMain';
 const style: StyleRulesCallback = (theme: Theme) => ({
     writerContainer: {
         display: "flex",
+        borderRadius: "20px",
     },
     modal: {
+        borderRadius: "20px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
