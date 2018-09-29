@@ -33,7 +33,7 @@ public class NetworkController {
 	@GetMapping("/requestFriend")
 	public void requestFriend(Principal principal, String target) {
 		System.out.println("친구추가들어옴");
-		//ns.friendRequest("testid", target);
+		ns.friendRequest("testid", target);
 		as.saveFriendRequest(target, principal);
 	}
 		

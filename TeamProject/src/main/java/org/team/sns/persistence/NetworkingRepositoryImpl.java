@@ -26,9 +26,13 @@ public class NetworkingRepositoryImpl extends QuerydslRepositorySupport implemen
 	public List<Member> getFriend(String memberid) {
 		// TODO Auto-generated method stub
 		QNetworking net = QNetworking.networking;
-		JPQLQuery<Member> query = from(net).select(net.target);
+		QNetworking net2 = new QNetworking("net2");
+		JPQLQuery<Member> query = from(net,net2).select(net.target);
 		query.where(net.member.id.eq(memberid));
-		query.where(net.type.eq("Friend"));
+		query.where(net.type.eq("Follow"));
+		query.where(net.target.eq(net2.member));
+		query.where(net2.target.eq(net.member));
+		query.where(net2.type.eq("Follow"));
 		return query.fetch();
 	}
 
