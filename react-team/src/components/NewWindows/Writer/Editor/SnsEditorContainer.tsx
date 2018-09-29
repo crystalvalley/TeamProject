@@ -35,6 +35,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         flexDirection: "column"
     },
     editorPart: {
+        borderRadius:"20px",
         flexBasis: "75%",
         height: "100%",
         marginRight: "20px",
@@ -45,6 +46,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         position: "relative"
     },
     menuPart: {
+        borderRadius:"20px",
         flexBasis: "25%",
         height: "100%",
         backgroundColor: "#f2f5f9"
@@ -107,7 +109,6 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore & RouteCom
         const { editorState } = this.state;
         return (
             <React.Fragment>
-                <div>글쓰기</div>
                 <div
                     className={classes.editorPart}
                 >

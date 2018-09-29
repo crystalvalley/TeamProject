@@ -41,29 +41,25 @@ public class SocketServiceImpl implements SocketService {
 	public void makeChatting(String userid, String target) throws IOException {
 		// TODO Auto-generated method stub
 		// 이미 채팅방이 있다면 return
-		String[] list = { userid, target };
-		Room room = rr.getRoomByRoomMember(list);
-		if (room == null) {
-			room = new Room();
-			room.setContentUrl("");
-			room.setChatOrder(0);
-			rr.save(room);
-			List<RoomMember> members = new ArrayList<>();
-			RoomMember roomMember = new RoomMember();
-			roomMember.setRoom(room);
-			roomMember.setMember(mr.findById(userid).get());
-			members.add(roomMember);
-			rmr.save(roomMember);
-			roomMember = new RoomMember();
-			roomMember.setRoom(room);
-			roomMember.setMember(mr.findById(target).get());
-			rmr.save(roomMember);
-			members.add(roomMember);
-			List<String> refresh = new ArrayList<>();
-			refresh.add(userid);
-			refresh.add(target);
-			sendRefreshMsg(refresh, "Chatting");
-		}
+		Room room = new Room();
+		room.setContentUrl("");
+		room.setChatOrder(0);
+		rr.save(room);
+		List<RoomMember> members = new ArrayList<>();
+		RoomMember roomMember = new RoomMember();
+		roomMember.setRoom(room);
+		roomMember.setMember(mr.findById(userid).get());
+		members.add(roomMember);
+		rmr.save(roomMember);
+		roomMember = new RoomMember();
+		roomMember.setRoom(room);
+		roomMember.setMember(mr.findById(target).get());
+		rmr.save(roomMember);
+		members.add(roomMember);
+		List<String> refresh = new ArrayList<>();
+		refresh.add(userid);
+		refresh.add(target);
+		sendRefreshMsg(refresh, "Chatting");
 
 	}
 

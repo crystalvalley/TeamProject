@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Theme, StyleRulesCallback, withStyles, IconButton} from '@material-ui/core';
+import { Theme, StyleRulesCallback, withStyles, IconButton } from '@material-ui/core';
 import Create from '@material-ui/icons/Create';
 import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import Exit from '@material-ui/icons/ExitToApp';
 import Book from '@material-ui/icons/Book';
 import { NavLink } from 'react-router-dom';
 import { IMemberModel } from '../../constance/models';
@@ -77,7 +77,7 @@ class BtnBox extends React.Component<IProps, IState>{
             <span
                 className={classes.btnBox}
             >
-                <IconButton 
+                <IconButton
                 >
                     <Mail />
                 </IconButton>
@@ -107,11 +107,9 @@ class BtnBox extends React.Component<IProps, IState>{
                         <Book />
                     </IconButton>
                 </NavLink>
-                <NavLink to="/userUpdate">
-                    <IconButton>
-                        <AccountCircle />
-                    </IconButton>
-                </NavLink>
+                <IconButton onClick={this.logout}>
+                    <Exit />
+                </IconButton>
             </span>
         );
     }
@@ -130,6 +128,9 @@ class BtnBox extends React.Component<IProps, IState>{
         this.setState({
             modalOpen: -1
         })
+    }
+    private logout(){
+        location.href="/logout"
     }
 
 

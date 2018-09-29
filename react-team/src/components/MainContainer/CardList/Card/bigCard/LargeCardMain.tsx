@@ -288,7 +288,10 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
                 {
                   this.props.card.photos.length > 0 ?
                     (
-                      <div className={classes.imageContainer}>
+                      <div
+                        ref={(e) => { this.imgWidth = e }}
+                        className={classes.imageContainer}
+                      >
                         <ImageViewer
                           width={this.imgWidth !== undefined ? this.imgWidth!.offsetWidth - 24 : 0}
                           photos={this.props.card.photos}
