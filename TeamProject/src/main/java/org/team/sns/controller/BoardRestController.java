@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.team.sns.domain.Board;
+import org.team.sns.domain.Member;
 import org.team.sns.domain.Tag;
 import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.MemberRepository;
@@ -20,7 +21,6 @@ import org.team.sns.service.AlarmService;
 import org.team.sns.service.BoardService;
 import org.team.sns.vo.BoardSearchCondition;
 import org.team.sns.vo.Datas;
-import org.team.sns.service.AlarmService;
 
 /**
  * 
@@ -115,19 +115,21 @@ public class BoardRestController {
 		bs.setFavorites("testid", id);
 	}
 
-	@GetMapping("/getById")
-
-	public List<Board> getById(Principal principal) {
-		List<Board> list = br.getBoardsByUserId("testid");
-		System.out.println("들어왔따.");
-		System.out.println(list);
-		return list;
-	}
-
 	@GetMapping("/getByBoardNum")
 	public Board getByBoardNum(Principal principal, int boardNum) {
 		System.out.println("보드 가지러 들어왔나?");
 		Board board = br.findById(boardNum).get();
 		return board;
+	}
+	
+	@GetMapping("/getPersonalPage")
+	public Map<String,Object> getPersonalPage(String target){
+		System.out.println(target);
+		HashMap<String, Object> result = new HashMap<>();	
+		Member targetInfo = mr.findById(target).get();
+		List<Board> list = br.getBoardsByUserId(target);
+		result.put("cards", list);
+		result.put("target", targetInfo);
+		return result;
 	}
 }

@@ -5,7 +5,6 @@ import CardListContainer from './CardList/CardListContainer';
 import UpdateUser from './BoardView/UpdateUser';
 import AllFriends from './FriendList/FriendList/AllFriends';
 import ListController from './ListControl/ListController';
-
 import PersonalPage from './BoardView/PersonalPage';
 import ChattingContainer from '../Chatting/ChattingContainer';
 import Allmembers from './FriendList/FriendList/Allmembers';
@@ -38,7 +37,7 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
         flexDirection: "column",
         marginLeft: "7.5%",
         marginRight: "7.5%",
-        marginBottom:"100px"
+        marginBottom: "100px"
     },
 })
 
@@ -71,8 +70,7 @@ class MainContainerRouter extends React.Component<IProps> {
                     {/* refresh 용도*/}
                     <Route path="/refreshPage/:path?" component={this.refreshHandler()} />
                     <Route path="/Users" component={Allmembers} />
-                    <Route path="/PersonalPage" component={PersonalPage} />
-                           
+                    <Route path="/PersonalPage/:id" component={this.personalPageHandler()} />
                     <Route path="/listControl" component={ListController} />
                     <Route path="/AllFriends" component={AllFriends} />
                     <Route path="/userUpdate" component={UpdateUser} />
@@ -83,8 +81,13 @@ class MainContainerRouter extends React.Component<IProps> {
         );
     }
     private refreshHandler() {
-        return ({ match } : any) => (
-            <Refresh path={match.params.path}/>
+        return ({ match }: any) => (
+            <Refresh path={match.params.path} />
+        )
+    }
+    private personalPageHandler() {
+        return ({ match }: any) => (
+            <PersonalPage id={match.params.id}/>
         )
     }
 }

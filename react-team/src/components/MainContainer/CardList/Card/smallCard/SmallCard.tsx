@@ -20,7 +20,6 @@ import ImageViewer from './ImageViewer';
  */
 const style: StyleRulesCallback = (theme: Theme) => ({
     card: {
-        maxWidth: 500,
         flexShrink: 0,
         borderRadius: "20px",
         boxShadow: "2px 2px 3px 3px lightgrey",
@@ -60,7 +59,8 @@ interface IProps {
         content: string;
         username: string;
     }
-    card: ICardModel
+    card: ICardModel,
+    personal?:boolean
 }
 
 interface IState {
@@ -113,7 +113,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
         const writeHandler = () => this.openModal(0);
         const handler = () => this.props.setFavorite(this.props.card.id)
         return (
-            <Card className={classes.card}>
+            <Card className={classes.card} style={{width:this.props.personal?"100%":"", maxWidth:this.props.personal?"":"500px"}}>
                 <div
                     className={classes.cardHead}
                 >

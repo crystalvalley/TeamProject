@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { StyleRulesCallback, withStyles } from '@material-ui/core';
-import axios from 'axios';
 import Scrollbars from 'react-custom-scrollbars';
-import { ICardModel, IMemberModel } from '../../../constance/models';
+import { ICardModel } from '../../../constance/models';
 import SmallCard from '../CardList/Card/smallCard/SmallCard';
 
 
@@ -11,7 +10,6 @@ const style: StyleRulesCallback = () => ({
     viewContainer: {
         backgroundColor: "white",
         height: "100%",
-        boxShadow: "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
@@ -43,45 +41,24 @@ interface IProps {
     },
     cards: ICardModel[];
 }
-interface IState  {
-   
-    userInfo : IMemberModel;
-    cards: ICardModel[];
-}
-
-class PersonalList extends React.Component<IProps, IState>{
+class PersonalList extends React.Component<IProps>{
     constructor(props: IProps) {
         super(props);
-        this.state = {
-           
-            userInfo: {
-                id: "",
-                profileImg: ""
-            },
-            cards: []
-        }
-        axios.get("http://localhost:8081/boards/getById")
-        .then((response) => {
-           this.setState({
-                cards: response.data 
-              })
-        })
     }
     public render() {
         const { classes } = this.props;
         return (
             <div className={classes.viewContainer}>
                 <Scrollbars
-                    autoHeight={true}
                     autoHide={true}
                 >
                     <div className={classes.listBody}>
-                        {this.state.cards.map((card, index) => {
+                        {this.props.cards.map((card, index) => {
                             return (
                                 <SmallCard
                                     card={card}
                                     key={index}
-                                    
+                                    personal={true}
                                 />
                             );
                         })
