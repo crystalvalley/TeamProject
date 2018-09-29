@@ -168,7 +168,7 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
         data.append("chepw", this.state.chepw);
         data.append("id", this.props.logined.id);
         data.append("password", this.state.pw);
-        axios.post("http://localhost:8081/account/updatauser", data)
+        axios.post("http://localhost:8081/account/updateuser", data)
             .then((response) => {
                 alert(response.data + "돌아옴");
             })
