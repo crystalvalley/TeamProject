@@ -76,4 +76,5 @@ export interface IAlarmModel{
         checked: boolean
         actor_id: IMemberModel
         receiver: IMemberModel
+        boardNum:number
 }

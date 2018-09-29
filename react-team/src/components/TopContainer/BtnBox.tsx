@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Theme, StyleRulesCallback, withStyles, IconButton } from '@material-ui/core';
+import { Theme, StyleRulesCallback, withStyles, IconButton} from '@material-ui/core';
 import Create from '@material-ui/icons/Create';
 import Writer from '../NewWindows/Writer/Writer';
 import FriendListIcon from '@material-ui/icons/Grade';
@@ -29,16 +29,29 @@ import ShowupFriendList from '../MainContainer/FriendList/FriendList/ShowupFrien
  */
 
 const style: StyleRulesCallback = (theme: Theme) => ({
-   IconButton:{
-       background:'grey'
-   }
-})
+    button: {
+        margin: theme.spacing.unit,
+    },
+    leftIcon: {
+        marginRight: theme.spacing.unit,
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
+    iconSmall: {
+        fontSize: 20,
+    },
+
+});
 
 
 interface IProps {
     classes: {
         btnBox: string;
-        
+        button: string;
+        leftIcon: string;
+        rightIcon: string;
+        iconSmall: string
     },
     friends: IMemberModel;
 }
