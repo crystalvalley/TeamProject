@@ -2,6 +2,7 @@ import * as React from 'react';
 import { INetworkStore, withNetworkContext } from '../../../../../contexts/NetworkContext';
 import { MenuItem, Menu } from '@material-ui/core';
 import { IMemberModel } from '../../../../../constance/models';
+import { NavLink } from 'react-router-dom';
 
 interface IProps {
     anchor: HTMLSpanElement | null
@@ -43,6 +44,16 @@ class WriterClickMenu extends React.Component<IProps & INetworkStore>{
                                     <MenuItem onClick={this.unFollow}>언팔로우</MenuItem> :
                                     <MenuItem onClick={this.addFollow}>팔로우</MenuItem>
                             }
+                            <NavLink
+                                style={{
+                                    textDecoration: "none"
+                                }}
+                                to={"/personalPage/" + this.props.id}
+                            >
+                                <MenuItem>
+                                    방문하기
+                                </MenuItem>
+                            </NavLink>
                         </React.Fragment>
                 }
 

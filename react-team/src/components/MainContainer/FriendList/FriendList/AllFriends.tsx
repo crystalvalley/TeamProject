@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GridList, GridListTile } from '@material-ui/core';
+import { GridList, GridListTile} from '@material-ui/core';
 import { IMemberModel } from '../../../../constance/models';
 import { INetworkStore, withNetworkContext } from '../../../../contexts/NetworkContext';
 import AllFriendtstile from './AllFriendtstile';
@@ -13,12 +13,19 @@ import AllFriendtstile from './AllFriendtstile';
  * 모든 사람들 목록
  */
 
+
+interface IProps{
+    classes:{
+        container:string;
+    }
+}
+
 interface IState {
     friends: IMemberModel[],
 }
 
-class AllFriends extends React.Component<INetworkStore, IState>{
-    constructor(props: INetworkStore) {
+class AllFriends extends React.Component<IProps&INetworkStore, IState>{
+    constructor(props: IProps&INetworkStore) {
         super(props);
         this.state = {
             friends: [
@@ -33,6 +40,7 @@ class AllFriends extends React.Component<INetworkStore, IState>{
     }
 
     public render() {
+       
         return (
             <GridList cols={3} cellHeight={300}>
                 {
@@ -42,7 +50,7 @@ class AllFriends extends React.Component<INetworkStore, IState>{
                                 key={index}                                
                             >
                                 <AllFriendtstile
-                                    friendInfo={friend}                                               
+                                    friendInfo={friend}
                                 />
                             </GridListTile>
                         );

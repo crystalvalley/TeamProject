@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Favorites;
 import org.team.sns.domain.Member;
-import org.team.sns.domain.Mention;
 import org.team.sns.domain.Networking;
 import org.team.sns.domain.ProductStrategy;
 import org.team.sns.domain.QBoard;

@@ -47,7 +47,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     menuPart: {
         borderRadius:"20px",
-        flexBasis: "25%",
+        flexBasis: "50%",
         height: "100%",
         backgroundColor: "#f2f5f9"
     },

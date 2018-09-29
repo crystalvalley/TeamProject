@@ -103,14 +103,7 @@ public class AccountRestController {
 		return ds.fileUpload(upload, "testid");
 	}
 
-	@PostMapping("/UpdateUser")
-	public Member UpdateUser(String name, String pw, Principal principal) {
-		Member member = new Member();
-		System.out.println("들어온다" + name + pw);
-		return member;
-	}
-
-	@PostMapping("/updatauser")
+	@PostMapping("/updateuser")
 	public Member updatauser(String chepw, Member member, Principal principal) {
 		// System.out.println("들어온다2222" + member);
 		Member me = mr.findById(member.getId()).get();

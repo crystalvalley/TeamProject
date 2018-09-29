@@ -9,6 +9,10 @@ import title from '../../img/TITEL.png';
  * @since : 18.08.13
  * @version : 18.08.13
  */
+/**
+ * @author:Kim MinJeong
+ * @version:2018.09.29
+ */
 
 interface IProps {
     classes: {
@@ -108,14 +112,6 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                             Subscribe
                         </Button>
                     </form>
-                    <div className={classes.footer}>
-                        <Typography>
-                            Powered By SCI
-                        </Typography>
-                        {this.state.userid}<br />
-                        {this.state.password}<br />
-                        {this.props.logined.id}
-                    </div>
                 </div>
 
 

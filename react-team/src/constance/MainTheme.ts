@@ -29,7 +29,7 @@ export const mainTheme = createMuiTheme({
     overrides:{
         MuiTypography:{
             title :{
-                color:"#ffffff"
+                color:"#ffcccc"
             },
             button:{
                 color:"blue"
