@@ -36,12 +36,11 @@ public class AlarmRepositoryImpl extends QuerydslRepositorySupport implements Al
 		return true;
 	}
 
-	@Override
-	public List<Alarm> requestAlarms(Principal principal) {
+	public List<Alarm> requestAlarms(String userid) {
 		QAlarm alarm = QAlarm.alarm;
 		JPQLQuery<Alarm> alarmQuery = from(alarm);
 		alarmQuery.select(alarm);
-		alarmQuery.where(alarm.receiver_id.eq(mr.findById(principal.getName()).get()));
+		alarmQuery.where(alarm.receiver_id.eq(mr.findById(userid).get()));
 		alarmQuery.where(alarm.checked.eq(false));
 		List<Alarm> result  = alarmQuery.fetch();
 		System.out.println("리시버의 id:"+alarm.receiver_id);

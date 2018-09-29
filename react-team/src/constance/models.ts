@@ -6,7 +6,7 @@
  */
 export interface IMsgModel {
     type: string;
-    roomId:number;
+    roomId: number;
     destination: IMemberModel[];
     sender: IMemberModel;
     data: any;
@@ -56,25 +56,25 @@ export interface IRoomModel {
     roomId: number;
     roomMembers: IRoomMemberModel[]
     contentUrl: string;
-    chat:IMsgModel[];
+    chat: IMsgModel[];
 }
 
-export interface IRoomMemberModel{
-    member : IMemberModel;
+export interface IRoomMemberModel {
+    member: IMemberModel;
 }
 
 
-export interface IConditionModel{
-    strategy : string;
-    target : string;
+export interface IConditionModel {
+    strategy: string;
+    target: string;
 }
-export interface IAlarmModel{
-        alarmId: string
-        usdate: string
-        mentioned: boolean
-        reqFriendship: boolean
-        checked: boolean
-        actor_id: IMemberModel
-        receiver: IMemberModel
-        boardNum:number
+export interface IAlarmModel {
+    alarmId: string
+    usdate: string
+    mentioned: boolean
+    reqFriendship: boolean
+    checked: boolean
+    actor_id: IMemberModel
+    receiver: IMemberModel
+    boardNum: number
 }
