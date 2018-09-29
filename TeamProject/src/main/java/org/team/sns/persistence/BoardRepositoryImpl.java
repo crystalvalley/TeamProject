@@ -240,6 +240,8 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		}
 		return resultBoard;
 	}
+	
+	
 
 	/**
 	 * @author minju
@@ -484,4 +486,18 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		return builder;
 	}
 
+	@Override
+	public List<Board> getByBoardId(int boardNum) {
+		
+		QBoard board = QBoard.board;
+		JPQLQuery<Board> boardQuery = from(board);
+		boardQuery.select(board);
+		List<Board> list = boardQuery.fetch();
+		return list;
+	}
+	
+	
+	
+	
+	
 }

@@ -91,14 +91,7 @@ public class AccountRestController {
 		} else {
 			member = new Member();
 			member.setId("FAILED LOGIN");
-<<<<<<< HEAD
-			
-			
-			
-			
-			
-=======
->>>>>>> master
+
 			return member;
 		}
 		return member;

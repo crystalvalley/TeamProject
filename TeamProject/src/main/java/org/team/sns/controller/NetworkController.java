@@ -44,7 +44,7 @@ public class NetworkController {
 	public void acceptFriend(Principal principal, String target, String alarmId) {
 		System.out.println("accept trying");
 		System.out.println("testid"+"target:"+target);
-		ns.acceptFriend("testid", target);
+		ns.acceptFriend(principal.getName(), target);
 		Alarm alarm=ar.findById(Integer.parseInt(alarmId)).get();
 		alarm.setChecked(true);
 		ar.save(alarm);

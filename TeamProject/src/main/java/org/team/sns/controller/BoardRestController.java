@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.team.sns.domain.Alarm;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Tag;
+import org.team.sns.persistence.AlarmRepository;
 import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.service.AlarmService;
@@ -40,6 +42,8 @@ public class BoardRestController {
 	BoardRepository br;
 	@Autowired
 	MemberRepository mr;
+	@Autowired
+	AlarmRepository ar;
 
 	@Autowired
 	AlarmService as;
@@ -125,9 +129,15 @@ public class BoardRestController {
 	}
 
 	@GetMapping("/getByBoardNum")
-	public Board getByBoardNum(Principal principal, int boardNum) {
+	public Board getByBoardNum(Principal principal,int boardNum, String alarmId) {
 		System.out.println("보드 가지러 들어왔나?");
+		System.out.println("integer:"+boardNum);
 		Board board = br.findById(boardNum).get();
+		System.out.println(board);
+		System.out.println("alarmId:"+alarmId);
+		Alarm arm = ar.findById(Integer.parseInt(alarmId)).get();
+		arm.setChecked(true);
+		ar.save(arm);
 		return board;
 	}
 }

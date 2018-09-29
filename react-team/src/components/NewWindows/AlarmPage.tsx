@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Menu, StyleRulesCallback, Theme, withStyles, MenuList, MenuItem } from "@material-ui/core";
 import AlarmBadge from "../TopContainer/AlarmBadge";
-import { ICardModel } from "../../constance/models";
 import Axios from "axios";
 import FriConfirm from "../TopContainer/FriConfirm";
 import { ILoginStore, withLoginContext } from "../../contexts/LoginContext";
+import BigCard from "../MainContainer/CardList/Card/bigCard/BigCard";
+
 
 
 
@@ -34,13 +35,16 @@ interface IProps {
     paper: string,
     menu: string
   }
+  
 }
 
 interface IState {
   anchorEl: any
   open: boolean
   confirmOpen: boolean
-  board?: ICardModel
+  card:any
+  bigCardOpen:boolean
+  
 }
 class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
   private divAnchor: HTMLSpanElement | null;
@@ -48,12 +52,16 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
   //   {"actor_id":"testid1", checked:false, mentioned:true, "alarmId":"1"},{"actor_id":"testid1", checked:false, mentioned:false, "alarmId":"1"}
   // ]
   constructor(props: IProps & ILoginStore) {
+    
     super(props)
+    
     this.state = {
       anchorEl: "",
       open: false,
       confirmOpen: false,
-      board: undefined
+      card:"",
+      bigCardOpen:false,
+      
     }
     this.handleClose = this.handleClose.bind(this)
     this.openMenu = this.openMenu.bind(this)
@@ -61,16 +69,29 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
     this.confrimOpen = this.confrimOpen.bind(this)
     this.confirmClose = this.confirmClose.bind(this)
     this.getBoards = this.getBoards.bind(this)
+    this.bigCardOpen = this.bigCardOpen.bind(this)
+    this.bigCardClose = this.bigCardClose.bind(this)
+    
   };
+
+
   public getBoards() {
-    Axios.get("http://localhost:8081/boards/getByBoardNum")
+    Axios.get("http://localhost:8081/boards/getByBoardNum",{
+      params:{
+        boardNum:this.props.alarms[0].board.id,
+        alarmId:this.props.alarms[0].alarmId
+      }}
+    )
       .then((response) => {
         this.setState({
-          board: response.data
+          card: response.data,
+          bigCardOpen:true
+
         })
       })
+      
   }
-
+  
   public handleClose() {
     this.setState({ anchorEl: "" })
   }
@@ -90,6 +111,17 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
   public confirmClose() {
     this.setState({ confirmOpen: false })
   }
+
+  public bigCardClose(){
+    this.setState({bigCardOpen:false})
+  }
+
+  public bigCardOpen(){
+    this.setState({bigCardOpen:true})
+    
+  }
+  
+  
 
   public render() {
     // const { anchorEl } = this.state;
@@ -119,14 +151,16 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
               this.props.alarms.map((alarm, index) => {
                 return (
                   alarm.mentioned === true ?
-                    <MenuItem onClick={this.getBoards} key={index}>{alarm.actor_id.id + "님으로 부터 멘션"}</MenuItem> :
+                    <MenuItem onClick={this.getBoards} key={index}>{alarm.actor_id.id + "님으로 부터 멘션"} </MenuItem> :
                     <MenuItem key={index}>{alarm.actor_id.id + "님으로 부터 친구요청"}<FriConfirm alarmId={alarm.alarmId} target={alarm.actor_id.id} /></MenuItem>
                 );
               })
             }
+            <BigCard card={this.state.card} open={this.state.bigCardOpen} onClose={this.bigCardClose}/>
             <br />
           </MenuList>
         </Menu>
+       
       </div>
     );
   }
