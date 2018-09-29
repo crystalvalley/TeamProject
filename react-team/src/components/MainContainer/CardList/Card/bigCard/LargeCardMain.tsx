@@ -249,7 +249,6 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     return (
       /* 모달 눌렀을 때 전체의 오른쪽 모습 */
       <Card className={classes.card}>
-
         <span ref={handler} />
         <div className={classes.main}>
           <div className={classes.left}>

@@ -48,9 +48,9 @@ public class AccountRestController {
 	private BoardService bs;
 	@Autowired
 	private ReplyRepository rr;
-	
-	//@Autowired
-	//private TestServiceImpl ts;
+
+	// @Autowired
+	// private TestServiceImpl ts;
 
 	@GetMapping("/idCheck")
 	public RestMsgObject idCheck(String _id) {
@@ -87,15 +87,11 @@ public class AccountRestController {
 	public Member loginCheck(Principal principal) {
 		Member member;
 		if (principal != null) {
-			member = mr.findById(principal.getName()).get();
+			member = mr.findById("testid").get();
 		} else {
 			member = new Member();
 			member.setId("FAILED LOGIN");
-			
-			
 			member = mr.findById("testid").get();
-			
-			
 			return member;
 		}
 		return member;
@@ -104,7 +100,7 @@ public class AccountRestController {
 	@PostMapping("/uploadProfile")
 	public String uploadProfile(@RequestParam("upload") MultipartFile upload, Principal principal) throws Exception {
 		System.out.println("test");
-		return ds.fileUpload(upload, principal.getName());
+		return ds.fileUpload(upload, "testid");
 	}
 
 	@PostMapping("/UpdateUser")
@@ -116,19 +112,19 @@ public class AccountRestController {
 
 	@PostMapping("/updatauser")
 	public Member updatauser(String chepw, Member member, Principal principal) {
-		//System.out.println("들어온다2222" + member);
+		// System.out.println("들어온다2222" + member);
 		Member me = mr.findById(member.getId()).get();
 		// System.out.println("가져온거" + me);
 		if (member.getPassword() != null) {
 			me.setPassword(member.getPassword());
-			//System.out.println("들어온다3");
+			// System.out.println("들어온다3");
 		} else if (member.getPassword() == null) {
 			me.setPassword(me.getPassword());
-			//System.out.println("들어온다4");
+			// System.out.println("들어온다4");
 		}
-		//System.out.println("뭐가 없는거지" +me);
+		// System.out.println("뭐가 없는거지" +me);
 		secUserService.createUser(me);
-		//System.out.println("들어온다5" + me);
+		// System.out.println("들어온다5" + me);
 		mr.save(me);
 		System.out.println("수정됨><" + me);
 		return me;

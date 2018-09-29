@@ -38,13 +38,13 @@ public class NetworkController {
 	public void requestFriend(Principal principal, String target) {
 		System.out.println("친구추가들어옴");
 		ns.friendRequest("testid", target);
-		as.saveFriendRequest(target, principal);
+		as.saveFriendRequest(target, "testid");
 	}
 	@GetMapping("/acceptFriend")
 	public void acceptFriend(Principal principal, String target, String alarmId) {
 		System.out.println("accept trying");
-		System.out.println(principal.getName()+"target:"+target);
-		ns.acceptFriend(principal.getName(), target);
+		System.out.println("testid"+"target:"+target);
+		ns.acceptFriend("testid", target);
 		Alarm alarm=ar.findById(Integer.parseInt(alarmId)).get();
 		alarm.setChecked(true);
 		ar.save(alarm);

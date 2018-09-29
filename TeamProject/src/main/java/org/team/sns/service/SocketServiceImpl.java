@@ -74,4 +74,17 @@ public class SocketServiceImpl implements SocketService{
 			clients.get(id).sendMessage(new TextMessage(sendMsg));
 		}
 	}
+
+	@Override
+	public void refreshAlarm(String targetid) throws IOException {
+		// TODO Auto-generated method stub
+		SignalMessage msg = new SignalMessage();
+		msg.setType("alarm-Refresh");
+		String sendMsg = objectMapper.writeValueAsString(msg);
+		if(clients.get(targetid)==null) {
+			return;
+		}
+		clients.get(targetid).sendMessage(new TextMessage(sendMsg));
+		
+	}
 }
