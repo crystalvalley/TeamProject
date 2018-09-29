@@ -3,6 +3,7 @@ import { ListItem, ListItemText, Menu, MenuItem, Avatar } from "@material-ui/cor
 import { IMemberModel, IMsgModel } from '../../../../constance/models';
 import axios from 'axios';
 
+
 /**
  * @author:Kim MinJeong
  * @since:2018.08.28
@@ -55,6 +56,7 @@ class ShowupFriendListtile extends React.Component<IProps, IState>{
                     <Menu
                         style={{
                             top: "60px"
+                            
                         }}
                         anchorEl={this.anchor}
                         open={this.state.open}

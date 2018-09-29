@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
  * 
  * @author ParkHyeokJoon
  * @since 18.08.10
- * @version 18.08.14
+ * @version 18.09.28
  */
 
 //[ 댓글 테이블 ]
@@ -53,6 +53,7 @@ public class Reply {
 	private Member writer;
 	
 	@NotNull
+	@Column(columnDefinition="text")
 	private String content;
 	
 	@OneToOne
