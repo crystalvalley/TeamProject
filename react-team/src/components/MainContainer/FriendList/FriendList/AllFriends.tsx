@@ -42,7 +42,7 @@ class AllFriends extends React.Component<INetworkStore, IState>{
                                 key={index}                                
                             >
                                 <AllFriendtstile
-                                    friendInfo={friend}                                               
+                                    friendInfo={friend}
                                 />
                             </GridListTile>
                         );

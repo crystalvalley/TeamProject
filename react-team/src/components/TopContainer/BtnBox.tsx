@@ -68,11 +68,7 @@ class BtnBox extends React.Component<IProps, IState>{
             <span
                 className={classes.btnBox} 
             >
-                <IconButton 
-                >
-                    <Mail />
-                </IconButton>
-
+               
                 <IconButton
                     onClick={writeHandler}
                     style={{color:"#80aaff"}}
