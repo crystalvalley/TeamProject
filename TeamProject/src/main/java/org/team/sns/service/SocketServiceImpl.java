@@ -18,6 +18,7 @@ import org.team.sns.vo.ClientSockets;
 import org.team.sns.vo.SignalMessage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * 
  * @author ParkHyeokJoon
@@ -26,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @Service
-public class SocketServiceImpl implements SocketService{
+public class SocketServiceImpl implements SocketService {
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private Map<String, WebSocketSession> clients = ClientSockets.CLIENTS;
 	@Autowired
@@ -35,9 +36,11 @@ public class SocketServiceImpl implements SocketService{
 	RoomRepository rr;
 	@Autowired
 	MemberRepository mr;
+
 	@Override
 	public void makeChatting(String userid, String target) throws IOException {
 		// TODO Auto-generated method stub
+		// 이미 채팅방이 있다면 return
 		Room room = new Room();
 		room.setContentUrl("");
 		room.setChatOrder(0);
@@ -51,27 +54,40 @@ public class SocketServiceImpl implements SocketService{
 		roomMember = new RoomMember();
 		roomMember.setRoom(room);
 		roomMember.setMember(mr.findById(target).get());
-		rmr.save(roomMember);		
+		rmr.save(roomMember);
 		members.add(roomMember);
 		List<String> refresh = new ArrayList<>();
 		refresh.add(userid);
 		refresh.add(target);
-		sendRefreshMsg(refresh,"Chatting");
-		
+		sendRefreshMsg(refresh, "Chatting");
+
 	}
 
 	@Override
-	public void sendRefreshMsg(List<String> ids,String dataType) throws IOException {
+	public void sendRefreshMsg(List<String> ids, String dataType) throws IOException {
 		// TODO Auto-generated method stub
-		for(String id : ids) {
+		for (String id : ids) {
 			SignalMessage msg = new SignalMessage();
 			msg.setType("refresh");
 			msg.setData(dataType);
 			String sendMsg = objectMapper.writeValueAsString(msg);
-			if(clients.get(id)==null) {
+			if (clients.get(id) == null) {
 				continue;
 			}
 			clients.get(id).sendMessage(new TextMessage(sendMsg));
 		}
+	}
+
+	@Override
+	public void refreshAlarm(String targetid) throws IOException {
+		// TODO Auto-generated method stub
+		SignalMessage msg = new SignalMessage();
+		msg.setType("alarm-Refresh");
+		String sendMsg = objectMapper.writeValueAsString(msg);
+		if (clients.get(targetid) == null) {
+			return;
+		}
+		clients.get(targetid).sendMessage(new TextMessage(sendMsg));
+
 	}
 }

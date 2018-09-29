@@ -47,8 +47,9 @@ class ImageViewer extends React.Component<IProps, IState>{
         const { show } = this.state;
         return (
             <div
-                style={{
+                style={{                    
                     minHeight: this.props.width + "px",
+                    maxHeight:"475px",
                     textAlign: "center",
                     lineHeight:this.props.width+"px"
                 }}

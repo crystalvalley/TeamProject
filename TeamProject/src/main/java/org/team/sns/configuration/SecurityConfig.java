@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()			
 				.antMatchers("/loginCheck").permitAll()
+				.antMatchers("/alarms/**").permitAll()
 				.antMatchers("/boards/**").permitAll()
 				.antMatchers("/lists/**").permitAll()
 				.antMatchers("/chattings/**").permitAll()

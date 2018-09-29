@@ -1,9 +1,10 @@
 import * as React from "react";
 import { Menu, StyleRulesCallback, Theme, withStyles, MenuList, MenuItem } from "@material-ui/core";
 import AlarmBadge from "../TopContainer/AlarmBadge";
-import { IAlarmModel, ICardModel } from "../../constance/models";
+import { ICardModel } from "../../constance/models";
 import Axios from "axios";
 import FriConfirm from "../TopContainer/FriConfirm";
+import { ILoginStore, withLoginContext } from "../../contexts/LoginContext";
 
 
 
@@ -22,9 +23,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   },
   paper: {
     marginRight: theme.spacing.unit * 3,
-    
+
   },
-  
 });
 
 
@@ -32,99 +32,68 @@ interface IProps {
   classes: {
     root: string,
     paper: string,
-    menu:string
+    menu: string
   }
-  
-
-
 }
 
 interface IState {
   anchorEl: any
-  alarms: IAlarmModel[]
   open: boolean
-  confirmOpen:boolean
+  confirmOpen: boolean
   board?: ICardModel
 }
-class AlarmPage extends React.Component<IProps, IState>{
-  
+class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
   private divAnchor: HTMLSpanElement | null;
-
- // private dummy=[
- //   {"actor_id":"testid1", checked:false, mentioned:true, "alarmId":"1"},{"actor_id":"testid1", checked:false, mentioned:false, "alarmId":"1"}
- // ]
-  constructor(props: IProps) {
-   
-   super(props)
-   
+  // private dummy=[
+  //   {"actor_id":"testid1", checked:false, mentioned:true, "alarmId":"1"},{"actor_id":"testid1", checked:false, mentioned:false, "alarmId":"1"}
+  // ]
+  constructor(props: IProps & ILoginStore) {
+    super(props)
     this.state = {
       anchorEl: "",
-      alarms: [],
       open: false,
-      confirmOpen:false,
+      confirmOpen: false,
       board: undefined
     }
-
-
-
     this.handleClose = this.handleClose.bind(this)
-    this.componentDidMount = this.componentDidMount.bind(this)
     this.openMenu = this.openMenu.bind(this)
     this.closeMenu = this.closeMenu.bind(this)
     this.confrimOpen = this.confrimOpen.bind(this)
     this.confirmClose = this.confirmClose.bind(this)
     this.getBoards = this.getBoards.bind(this)
   };
-  public getBoards(){
+  public getBoards() {
     Axios.get("http://localhost:8081/boards/getByBoardNum")
-    .then((response)=>{
-     this.setState({
-       board:response.data
-     })
-    })
-    
+      .then((response) => {
+        this.setState({
+          board: response.data
+        })
+      })
   }
 
   public handleClose() {
     this.setState({ anchorEl: "" })
   }
-
-  public componentDidMount() {
-    Axios.get("http://localhost:8081/alarms/requestAlarms")
-      .then((response) => {
-        this.setState({
-          alarms: response.data
-          
-        })
-      })
-  }
- 
-
-
-  public openMenu(){  
+  public openMenu() {
     this.setState({
       open: true
-      
-      
     })
-    
+
   }
-  public closeMenu(){
-      this.setState({open:false})
+  public closeMenu() {
+    this.setState({ open: false })
   }
 
-  public confrimOpen(){
-    this.setState({confirmOpen:true})
+  public confrimOpen() {
+    this.setState({ confirmOpen: true })
   }
-  public confirmClose(){
-    this.setState({confirmOpen:false})
+  public confirmClose() {
+    this.setState({ confirmOpen: false })
   }
-  
 
   public render() {
     // const { anchorEl } = this.state;
     // const divAnchor = document.getElementById("anchor")
-
     return (
       <div>
         {/* <Button
@@ -135,7 +104,7 @@ class AlarmPage extends React.Component<IProps, IState>{
               Open Menu
             </Button> */}
         <div id="anchor" > {/* ref={ref => { this.state.mydiv=ref}}  */}
-          <span onClick={this.openMenu} ref={(element) => { this.divAnchor = element }}><AlarmBadge  alarmCount={this.state.alarms.length} /></span>
+          <span onClick={this.openMenu} ref={(element) => { this.divAnchor = element }}><AlarmBadge alarmCount={this.props.alarms.length} /></span>
         </div>
         <Menu
           className={this.props.classes.menu}
@@ -145,23 +114,22 @@ class AlarmPage extends React.Component<IProps, IState>{
           open={this.state.open}
           onClose={this.closeMenu}
         >
-         
-         <MenuList>
+          <MenuList>
             {
-              this.state.alarms.map((alarm, index) => {
+              this.props.alarms.map((alarm, index) => {
                 return (
-                   alarm.mentioned === true?
-                  <MenuItem onClick={this.getBoards} key={index}>{alarm.actor_id.id + "님으로 부터 멘션"}</MenuItem> :
-                  <MenuItem key={index}>{alarm.actor_id.id + "님으로 부터 친구요청"}<FriConfirm alarmId={alarm.alarmId} target={alarm.actor_id.id}/></MenuItem>
-                  
+                  alarm.mentioned === true ?
+                    <MenuItem onClick={this.getBoards} key={index}>{alarm.actor_id.id + "님으로 부터 멘션"}</MenuItem> :
+                    <MenuItem key={index}>{alarm.actor_id.id + "님으로 부터 친구요청"}<FriConfirm alarmId={alarm.alarmId} target={alarm.actor_id.id} /></MenuItem>
                 );
-              })}<br />
-            </MenuList>
+              })
+            }
+            <br />
+          </MenuList>
         </Menu>
-        
       </div>
     );
   }
 }
 
-export default withStyles(styles)(AlarmPage);
+export default withLoginContext(withStyles(styles)(AlarmPage));
