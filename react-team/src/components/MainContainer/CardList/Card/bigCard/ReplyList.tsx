@@ -20,9 +20,11 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     root: {
         width: '100%',
         // marginTop: theme.spacing.unit * 3,
+        height:"100%",
         overflowX: 'auto',
     },
     table: {
+        height:"100%",
         minWidth: 700,
     }
 })
