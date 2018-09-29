@@ -1,32 +1,31 @@
 import * as React from 'react';
 import { withStyles, StyleRulesCallback, Theme } from "@material-ui/core/styles";
-import classnames from "classnames";
+
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
+
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import red from "@material-ui/core/colors/red";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ReplyIcon from "@material-ui/icons/Reply";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from 'axios';
 import { EditorState, convertFromRaw, Editor, convertToRaw } from 'draft-js';
-import { Paper, Table, TableRow, TableCell, TableBody } from '@material-ui/core';
+import { Button, Paper, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
 import Axios from 'axios';
 import { ICardModel, IReplyModel } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 import EmotionBox from '../smallCard/EmotionBox';
-import ReplyList from './ReplyList';
 import Scrollbars from 'react-custom-scrollbars';
 import WriterClickMenu from '../smallCard/WriterClickMenu';
 import ReplyEditor from './ReplyEditor';
 import ImageViewer from '../smallCard/ImageViewer';
+import ReplyList from './ReplyList';
 
 
 
@@ -53,8 +52,12 @@ import ImageViewer from '../smallCard/ImageViewer';
 const styles: StyleRulesCallback = (theme: Theme) => ({
   card: {
     flexBasis: '250%',
-    width: "120vh",
-    height: "60vh",
+    width: "150vh",
+    height: "80vh",
+    // flexShrink: 0,
+    borderRadius: "20px",
+    // boxShadow: "2px 2px 3px 3px lightgrey",
+    // marginTop: "25px"
   },
   media: {
     height: 0,
@@ -88,10 +91,10 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     display: "flex",
   },
   imageContainer: {
-    height: "40%",
-    width: "30%",
+    height: "100%",
+    width: "100%",
     padding: "30px",
-    
+
   },
   content: {
     height: "100%",
@@ -101,32 +104,6 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   img: {
     height: "100%",
     width: "90%"
-  },
-  bootstrapInput: {
-    borderRadius: 4,
-    backgroundColor: theme.palette.common.white,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    padding: '10px 12px',
-    width: 'calc(100% - 14px)',
-    height: "80%",
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    '&:focus': {
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    },
   },
   bootstrapFormLabel: {
     fontSize: 18,
@@ -150,10 +127,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     overflowX: 'auto',
   },
   table: {
-    minWidth: 700,
-  },
-  tableTatil: {
-    width: '30px%',
+    width :"65vh",
+   // height :"100vh"
   },
   main: {
     display: "flex",
@@ -163,17 +138,27 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     padding: "20px",
   },
   right: {
-   position: "absolute",
-   left: "50%",
-   padding: "20px",
-   top: "30vh",   
+    height: "100vh",
+    position: "absolute",
+    left: "50%",
+    padding: "20px",
+    top: "20vh",
   },
-  hight :{
+  hight: {
     padding: "20px",
   },
-  down :{
-    top: "30vh",    
+  down: {
+    top: "30vh",
     position: "absolute"
+  },
+  button: {
+    border: '1px solid #ced4da',
+    backgroundColor: theme.palette.common.white,
+    borderRadius: 4,
+    borderColor: '#80bdff',
+  },
+  tablebox: {
+    height: "100%",
   }
 });
 
@@ -191,7 +176,6 @@ interface IProps {
     containers: string;
     img: string;
     bootstrapRoot: string;
-    bootstrapInput: string;
     bootstrapFormLabel: string;
     input: string;
     replyBox: string;
@@ -199,17 +183,17 @@ interface IProps {
     replyBtn: string;
     root: string;
     table: string;
-    tableTatil: string;
     main: string;
     left: string;
     right: string;
-    hight :string;
-    down:string;
+    hight: string;
+    down: string;
+    button: string;
+    tablebox: string;
   }
   // listName: string;
   // id: string;
   // scrollEnd(listName:string):void;
-
   card: ICardModel;
 }
 
@@ -269,66 +253,65 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
         <span ref={handler} />
         <div className={classes.main}>
           <div className={classes.left}>
-          <div className={classes.hight}>
-            <CardHeader
-              avatar={
-                <Avatar aria-label="Recipe" className={classes.avatar}>
-                  ID
-            </Avatar>
-              }
-              action={
-                <IconButton>
-                  <MoreVertIcon />
-                </IconButton>
-              }
-              title={card.writer.id}
-              subheader={card.writeDay}
-              onClick={this.writerMenuOpen}
-            />
-            <WriterClickMenu
-              left={60}
-              top={80}
-              anchor={this.anchor}
-              open={this.state.open}
-              closeMenu={this.closeMenu}
-              id={card.writer.id}
-            />
-              </div>
+            <div className={classes.hight}>
+              <CardHeader
+                avatar={
+                  <Avatar
+                  className={classes.avatar}
+                  src={"http://localhost:8081/resources" + card.writer.profileImg}
+              />
+                }
+                action={
+                  <IconButton>
+                    <MoreVertIcon />
+                  </IconButton>
+                }
+                title={card.writer.id}
+                subheader={card.writeDay}
+                onClick={this.writerMenuOpen}
+              />
+              <WriterClickMenu
+                left={60}
+                top={80}
+                anchor={this.anchor}
+                open={this.state.open}
+                closeMenu={this.closeMenu}
+                id={card.writer.id}
+              />
+            </div>
 
-              {/*디브 위 아래 */}
-
-
-              <div className={classes.down}>
+            {/*디브 위 아래 */}
             <CardContent className={classes.containers}>
-
-            {/*이미지 위 
+              <div className={classes.down}>
+                {/*이미지 위 
               이미지 사이즈 지정 어떻게 하는지 모르겠다
             */}
-              <div className={classes.imageContainer}>
-                <ImageViewer
-                  width={this.imgWidth !== undefined ? this.imgWidth!.offsetWidth - 24 : 0}
-                  photos={this.props.card.photos}
-                />
-              </div>
+                <div className={classes.imageContainer}>
+                  <ImageViewer
+                    width={this.imgWidth !== undefined ? this.imgWidth!.offsetWidth - 24 : 0}
+                    photos={this.props.card.photos}
+                  />
+                </div>
 
-               {/*글  아래 */}
-              <div className={classes.content}>
+                {/*글  아래 */}
+                <div className={classes.content}>
 
-                <Scrollbars
-                  autoHeight={true}
-                  autoHide={true}
-                >
-                  <CardContent>
-                    <Editor
-                      readOnly={true}
-                      editorState={this.state.editorState}
-                      onChange={this.editorChange}
-                    />
-                  </CardContent>
-                </Scrollbars>
+                  <Scrollbars
+                    autoHeight={true}
+                    autoHide={true}
+                  >
+                    <CardContent>
+                      <Editor
+                        readOnly={true}
+                        editorState={this.state.editorState}
+                        onChange={this.editorChange}
+                      />
+                    </CardContent>
+                  </Scrollbars>
+                </div>
               </div>
             </CardContent>
-            </div>
+
           </div>
 
 
@@ -350,31 +333,25 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
               />
             </CardActions>
             <div className={classes.replyBox}>
-              <ReplyEditor 
+              <ReplyEditor
                 editorState={this.state.replyContent}
                 editorChange={this.doChangeReply}
               />
-              <IconButton
-                className={classnames(classes.expand, {
-                  [classes.expandOpen]: this.state.expanded
-                })}
-                onClick={this.handleExpandClick}
-                aria-expanded={this.state.expanded}
-                aria-label="Show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
+              <Button onClick={this.submit} className={classes.button}>save</Button>
             </div>
+            <div>
+            
+            {/*스크롤때문에 댓글창이 제대로 안나온다*/}
 
-            <button onClick={this.submit}>save</button>
-            <Collapse in={this.state.expanded} timeout="auto" unmountOnExit={true}>
-              <Scrollbars
-                autoHeight={true}
-                autoHide={true}
-              >
-                <CardContent>
+           
+                <CardContent className={classes.table}>
+                <Scrollbars
+              // style={innerHeight=100}
+              autoHeight={true}
+              autoHide={true}
+            >
                   <Paper>
-                    <Table className={classes.table}>
+                    <Table>
                       <TableBody>
                         <TableRow>
                           <TableCell>작성자</TableCell>
@@ -393,10 +370,10 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
                       </TableBody>
                     </Table>
                   </Paper>
-
+                  </Scrollbars>
                 </CardContent>
-              </Scrollbars>
-            </Collapse>
+               
+            </div>
           </div>
         </div>
       </Card>
@@ -408,10 +385,10 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       editorState: es
     })
   }
-  private doChangeReply(e : EditorState) {
+  private doChangeReply(e: EditorState) {
     // alert();
     this.setState({
-      replyContent : e
+      replyContent: e
     })
   }
   private submit() {
@@ -419,9 +396,9 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     {/*비밀번호는 폼으로 가져오면된다.  */ }
     const data = new FormData();
     data.append("replyContent",
-        JSON.stringify(
-            convertToRaw(this.state.replyContent.getCurrentContent())
-        )
+      JSON.stringify(
+        convertToRaw(this.state.replyContent.getCurrentContent())
+      )
     );
     data.append("cardnum", this.props.card.id + "");
     Axios.post("http://localhost:8081/account/saveReply", data)

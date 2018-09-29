@@ -67,7 +67,7 @@ public class BoardRestController {
 	@PostMapping("/writeBoard")
 	   public void writeBoard(Board board, Principal principal,MultipartFile[] image) throws Exception {
 	      // board.setWriter(mr.findById("testid").get());
-	      board.setWriter(mr.findById("testid").get());
+	      board.setWriter(mr.findById(principal.getName()).get());
 	      bs.saveBoard(board);
 	      bs.setBoardImage(board, image);
 	      as.savementionAlarms(board, principal);
@@ -121,7 +121,13 @@ public class BoardRestController {
 	System.out.println("들어왔따.");
 	System.out.println(list);
 	return list;
-
+	}
 	
-}
+	@GetMapping("/getByBoardNum")
+	public Board getByBoardNum(Principal principal, int boardNum){
+		System.out.println("보드 가지러 들어왔나?");
+		Board board = br.findById(boardNum).get();
+		
+		return board;
+	}
 }
