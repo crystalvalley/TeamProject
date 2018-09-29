@@ -55,8 +55,8 @@ public class NetworkController {
 	@GetMapping("/getNetworks")
 	public HashMap<String,List<Member>> getNetworks(Principal principal){
 		HashMap<String,List<Member>> result = new HashMap<>();
-		result.put("friendList", ns.getFriends("testid"));
-		result.put("friendRequest", ns.getFriendsRequest("testid"));
+		result.put("friendList", ns.getFriends(principal.getName()));
+		result.put("friendRequest", ns.getFriendsRequest(principal.getName()));
 		return result;
 	}
 	
