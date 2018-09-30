@@ -45,10 +45,10 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     flexGrow: 1,
     textAlign: "center"
   },
-  id:{
-    marginLeft:"10vw",
-    fontSize:"3em",
-    color:"black"
+  id: {
+    marginLeft: "10vw",
+    fontSize: "3em",
+    color: "black"
   }
 })
 
@@ -61,7 +61,7 @@ interface IProps {
     secondaryToolbar: string;
     toolBox: string;
     topBar: string;
-    id:string;
+    id: string;
   },
 }
 
@@ -96,7 +96,7 @@ class TopBar extends React.Component<IProps & ILoginStore, IState> {
         >
 
           <NavLink to="/ ">
-            <img src={pige} onClick={this.home} />
+            <img src={pige} />
           </NavLink>
           <Typography
             className={classes.id}
@@ -123,11 +123,6 @@ class TopBar extends React.Component<IProps & ILoginStore, IState> {
       </AppBar>
     );
   }
-  private home() {
-    axios.get("http://localhost:8081/home")
-  }
-
-
   private onChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
       searchKeyword: event.currentTarget.value
