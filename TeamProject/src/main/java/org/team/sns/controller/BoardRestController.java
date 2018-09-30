@@ -1,5 +1,6 @@
 package org.team.sns.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.service.AlarmService;
 import org.team.sns.service.BoardService;
+import org.team.sns.service.SocketService;
 import org.team.sns.vo.BoardSearchCondition;
 import org.team.sns.vo.Datas;
 
@@ -44,6 +46,8 @@ public class BoardRestController {
 	MemberRepository mr;
 	@Autowired
 	AlarmRepository ar;
+	@Autowired
+	SocketService ss;
 
 	@Autowired
 	AlarmService as;
@@ -55,8 +59,8 @@ public class BoardRestController {
 
 	@GetMapping("/getByListName")
 	public List<Board> getByListName(String listName, Principal principal, int page) {
-		// return bs.getBoardByListName(listName,"testid");
-		return bs.getBoardByListName(listName, "testid", page);
+		// return bs.getBoardByListName(listName,principal.getName());
+		return bs.getBoardByListName(listName, principal.getName(), page);
 	}
 
 	@GetMapping("/view")
@@ -71,11 +75,11 @@ public class BoardRestController {
 
 	@PostMapping("/writeBoard")
 	public void writeBoard(Board board, Principal principal, MultipartFile[] image) throws Exception {
-		// board.setWriter(mr.findById("testid").get());
-		board.setWriter(mr.findById("testid").get());
+		// board.setWriter(mr.findById(principal.getName()).get());
+		board.setWriter(mr.findById(principal.getName()).get());
 		bs.saveBoard(board);
 		bs.setBoardImage(board, image);
-		as.savementionAlarms(board, "testid");
+		as.savementionAlarms(board, principal.getName());
 	}
 
 	@GetMapping("/checkTag")
@@ -91,12 +95,12 @@ public class BoardRestController {
 
 	@GetMapping("/getEmotion")
 	public List<Integer> getEmotion(int boardId, Principal principal) {
-		return bs.getEmotions(boardId, "testid");
+		return bs.getEmotions(boardId, principal.getName());
 	}
 
 	@GetMapping("/addEmotion")
 	public String setEmotion(int emotionType, int boardId, Principal principal) {
-		bs.addEmotion(boardId, emotionType, "testid");
+		bs.addEmotion(boardId, emotionType, principal.getName());
 		return "success";
 	}
 
@@ -106,17 +110,17 @@ public class BoardRestController {
 		if (keyword.equals("")) {
 			return null;
 		}
-		return bs.getBoardBySearchKeyword(keyword, page, "testid");
+		return bs.getBoardBySearchKeyword(keyword, page, principal.getName());
 	}
 
 	@GetMapping("/getFavorites")
 	public List<Integer> getFavorites(Principal principal) {
-		return bs.getFavorites("testid");
+		return bs.getFavorites(principal.getName());
 	}
 
 	@GetMapping("/setFavorites")
 	public void setFavorites(Principal principal, int id) {
-		bs.setFavorites("testid", id);
+		bs.setFavorites(principal.getName(), id);
 	}
 
 	@GetMapping("/getByBoardNum")
@@ -129,6 +133,12 @@ public class BoardRestController {
 		Alarm arm = ar.findById(Integer.parseInt(alarmId)).get();
 		arm.setChecked(true);
 		ar.save(arm);
+		try {
+			ss.refreshAlarm(arm.getReceiver_id().getId());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return board;
 	}
 	

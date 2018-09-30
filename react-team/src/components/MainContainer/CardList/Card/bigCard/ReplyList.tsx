@@ -20,11 +20,11 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     root: {
         width: '100%',
         // marginTop: theme.spacing.unit * 3,
-        height:"100%",
+        height: "100%",
         overflowX: 'auto',
     },
     table: {
-        height:"100%",
+        height: "100%",
         minWidth: 700,
     }
 })
@@ -38,38 +38,40 @@ interface IProps {
     reply: IReplyModel;
 }
 
-interface IState{
-    editorState : EditorState,
+interface IState {
+    editorState: EditorState,
 }
 
 
-class ReplyList extends React.Component<IProps,IState>{
-    constructor(props : IProps){
+class ReplyList extends React.Component<IProps, IState>{
+    constructor(props: IProps) {
         super(props);
-        this.state={
-            editorState : EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.reply.content)), SNSDecorator)
+        this.state = {
+            editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.reply.content)), SNSDecorator)
         }
     }
     public render() {
         const { classes } = this.props;
         return (
             <TableRow className={classes.table}>
-                <TableCell >
+                <TableCell style={{ width: "20%" }}>
                     {this.props.reply.writer.id}
                 </TableCell>
-                <TableCell >
+                <TableCell style={{ width: "60%" }}>
                     <Editor
                         editorState={this.state.editorState}
                         onChange={this.editorChange}
                     />
                 </TableCell>
-                <TableCell > {this.props.reply.writeDate}</TableCell>
+                <TableCell style={{ width: "20%" }}>
+                    {this.props.reply.writeDate.substring(2,10)+" "+this.props.reply.writeDate.substring(11,16)}
+                </TableCell>
             </TableRow>
         );
     }
-    private editorChange(e : EditorState){
+    private editorChange(e: EditorState) {
         this.setState({
-            editorState : e
+            editorState: e
         })
     }
 }

@@ -100,7 +100,6 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     private loginCheck() {
         axios.post("http://localhost:8081/account/loginCheck")
             .then((response) => {
-                this.alarmRefresh();
                 if (response.data.id === "FAILED LOGIN") { return; }
                 this.setState({
                     logined: response.data
@@ -306,6 +305,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     private alarmRefresh() {
         axios.get("http://localhost:8081/alarms/requestAlarms")
             .then((response) => {
+                alert(response.data)
                 this.setState({
                     alarms: response.data
                 })
