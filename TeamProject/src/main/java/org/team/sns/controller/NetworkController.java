@@ -1,5 +1,6 @@
 package org.team.sns.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.team.sns.persistence.AlarmRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.service.AlarmService;
 import org.team.sns.service.NetworkService;
+import org.team.sns.service.SocketService;
 
 /**
  * @author ParkHyeokJoon
@@ -33,6 +35,8 @@ public class NetworkController {
 	AlarmService as;
 	@Autowired
 	AlarmRepository ar;
+	@Autowired
+	SocketService ss;
 	
 	@GetMapping("/requestFriend")
 	public void requestFriend(Principal principal, String target) {
@@ -47,6 +51,12 @@ public class NetworkController {
 		ns.acceptFriend("testid", target);
 		Alarm alarm=ar.findById(Integer.parseInt(alarmId)).get();
 		alarm.setChecked(true);
+		try {
+			ss.refreshAlarm(alarm.getReceiver_id().getId());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ar.save(alarm);
 		
 		

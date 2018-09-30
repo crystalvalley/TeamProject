@@ -1,5 +1,6 @@
 package org.team.sns.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.team.sns.persistence.BoardRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.service.AlarmService;
 import org.team.sns.service.BoardService;
+import org.team.sns.service.SocketService;
 import org.team.sns.vo.BoardSearchCondition;
 import org.team.sns.vo.Datas;
 
@@ -44,6 +46,8 @@ public class BoardRestController {
 	MemberRepository mr;
 	@Autowired
 	AlarmRepository ar;
+	@Autowired
+	SocketService ss;
 
 	@Autowired
 	AlarmService as;
@@ -129,6 +133,12 @@ public class BoardRestController {
 		Alarm arm = ar.findById(Integer.parseInt(alarmId)).get();
 		arm.setChecked(true);
 		ar.save(arm);
+		try {
+			ss.refreshAlarm(arm.getReceiver_id().getId());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return board;
 	}
 	
