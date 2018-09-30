@@ -63,6 +63,7 @@ class ImageViewer extends React.Component<IProps, IState>{
                                 width: "100%",
                                 height: "auto",
                                 verticalAlign: "middle",
+                                objectFit: "contain",
                             }}
                             src={this.state.files[show]}
                         />

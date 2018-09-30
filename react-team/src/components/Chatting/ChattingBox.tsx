@@ -86,13 +86,11 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
         const addSubName = this.state.open ? "" : " " + classes.hide
         let title: string = "";
         for(const m of this.props.roomMembers){
-            if(title!==""){
-                title+=","
-            }
             if(m.member.id===this.props.loginedId.id){continue;}
-            title +=m.member.id
+            title +=","+m.member.id
         }
         title += "과의 채팅"
+        title = title.substring(1);
         return (
             <div
                 className={classes.chatBox}
