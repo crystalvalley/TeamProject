@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Menu, StyleRulesCallback, Theme, withStyles, MenuList, MenuItem } from "@material-ui/core";
+import { Menu, StyleRulesCallback, Theme, withStyles, MenuList, MenuItem, IconButton } from "@material-ui/core";
 import AlarmBadge from "../TopContainer/AlarmBadge";
 import Axios from "axios";
 import FriConfirm from "../TopContainer/FriConfirm";
@@ -34,17 +34,17 @@ interface IProps {
     root: string,
     paper: string,
     menu: string
-  }
-  
+  },
+
 }
 
 interface IState {
   anchorEl: any
-  open: boolean
   confirmOpen: boolean
-  card:any
-  bigCardOpen:boolean
-  
+  card: any
+  bigCardOpen: boolean
+  alarmOpen: boolean;
+
 }
 class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
   private divAnchor: HTMLSpanElement | null;
@@ -52,59 +52,47 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
   //   {"actor_id":"testid1", checked:false, mentioned:true, "alarmId":"1"},{"actor_id":"testid1", checked:false, mentioned:false, "alarmId":"1"}
   // ]
   constructor(props: IProps & ILoginStore) {
-    
+
     super(props)
-    
+
     this.state = {
       anchorEl: "",
-      open: false,
       confirmOpen: false,
-      card:"",
-      bigCardOpen:false,
-      
+      card: "",
+      bigCardOpen: false,
+      alarmOpen: false
+
     }
     this.handleClose = this.handleClose.bind(this)
-    this.openMenu = this.openMenu.bind(this)
-    this.closeMenu = this.closeMenu.bind(this)
     this.confrimOpen = this.confrimOpen.bind(this)
     this.confirmClose = this.confirmClose.bind(this)
     this.getBoards = this.getBoards.bind(this)
     this.bigCardOpen = this.bigCardOpen.bind(this)
     this.bigCardClose = this.bigCardClose.bind(this)
-    
+    this.closeAlarm = this.closeAlarm.bind(this);
+    this.openAlarm = this.openAlarm.bind(this);
+
   };
 
-
   public getBoards() {
-    Axios.get("http://localhost:8081/boards/getByBoardNum",{
-      params:{
-        boardNum:this.props.alarms[0].board.id,
-        alarmId:this.props.alarms[0].alarmId
-      }}
-    )
-      .then((response) => {
-        this.setState({
-          card: response.data,
-          bigCardOpen:true
-
-        })
+    Axios.get("http://localhost:8081/boards/getByBoardNum", {
+      params: {
+        boardNum: this.props.alarms[0].board.id,
+        alarmId: this.props.alarms[0].alarmId
+      }
+    }
+    ).then((response) => {
+      this.setState({
+        card: response.data,
+        bigCardOpen: true
       })
-      
-  }
-  
-  public handleClose() {
-    this.setState({ anchorEl: "" })
-  }
-  public openMenu() {
-    this.setState({
-      open: true
     })
 
   }
-  public closeMenu() {
-    this.setState({ open: false })
-  }
 
+  public handleClose() {
+    this.setState({ anchorEl: "" })
+  }
   public confrimOpen() {
     this.setState({ confirmOpen: true })
   }
@@ -112,39 +100,32 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
     this.setState({ confirmOpen: false })
   }
 
-  public bigCardClose(){
-    this.setState({bigCardOpen:false})
+  public bigCardClose() {
+    this.setState({ bigCardOpen: false })
   }
 
-  public bigCardOpen(){
-    this.setState({bigCardOpen:true})
-    
+  public bigCardOpen() {
+    this.setState({ bigCardOpen: true })
+
   }
-  
-  
 
   public render() {
-    // const { anchorEl } = this.state;
-    // const divAnchor = document.getElementById("anchor")
     return (
-      <div>
-        {/* <Button
-              // aria-owns={anchorEl ? 'simple-menu' : null}
-              aria-haspopup="true"
-              onClick={this.handleClick}
-            >
-              Open Menu
-            </Button> */}
-        <div id="anchor" > {/* ref={ref => { this.state.mydiv=ref}}  */}
-          <span onClick={this.openMenu} ref={(element) => { this.divAnchor = element }}><AlarmBadge alarmCount={this.props.alarms.length} /></span>
-        </div>
+      <React.Fragment>
+        <IconButton
+          onClick={
+            this.state.alarmOpen ? this.closeAlarm : this.openAlarm
+          }
+        >
+          <span ref={(element) => { this.divAnchor = element }} />
+          <AlarmBadge alarmCount={this.props.alarms.length} />
+        </IconButton>
         <Menu
           className={this.props.classes.menu}
           id="menuList"
           anchorEl={this.divAnchor}
-          // open={this.state.menuStatue} 이거 계속 여러 방법으로 해도 안되네.. 이거랑 리스트 anchor에 붙히는거 계속 안되서 ㅠ 시간 그만 보내야 할 듯....
-          open={this.state.open}
-          onClose={this.closeMenu}
+          open={this.state.alarmOpen}
+          onClose={this.closeAlarm}
         >
           <MenuList>
             {
@@ -156,13 +137,22 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
                 );
               })
             }
-            <BigCard card={this.state.card} open={this.state.bigCardOpen} onClose={this.bigCardClose}/>
             <br />
           </MenuList>
         </Menu>
-       
-      </div>
+        <BigCard card={this.state.card} open={this.state.bigCardOpen} onClose={this.bigCardClose} />
+      </React.Fragment>
     );
+  }
+  private openAlarm() {
+    this.setState({
+      alarmOpen: true
+    })
+  }
+  private closeAlarm() {
+    this.setState({
+      alarmOpen: false
+    })
   }
 }
 

@@ -33,7 +33,7 @@ interface IProps {
         btnBox: string;
     },
     friends: IMemberModel;
-    loginedId:string;
+    loginedId: string;
 }
 interface IState {
     modalOpen: number;
@@ -42,7 +42,7 @@ class BtnBox extends React.Component<IProps, IState>{
     constructor(props: IProps) {
         super(props);
         this.state = {
-            modalOpen: -1
+            modalOpen: -1,
         }
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -56,7 +56,7 @@ class BtnBox extends React.Component<IProps, IState>{
             <span
                 className={classes.btnBox}
             >
-                <NavLink to={"/PersonalPage/"+this.props.loginedId}>
+                <NavLink to={"/PersonalPage/" + this.props.loginedId}>
                     <IconButton>
                         <Person />
                     </IconButton>
@@ -76,9 +76,7 @@ class BtnBox extends React.Component<IProps, IState>{
                         <List />
                     </IconButton>
                 </NavLink>
-                <IconButton>
-                    <AlarmPage/>
-                </IconButton>
+                <AlarmPage/>
             </span>
 
         );
