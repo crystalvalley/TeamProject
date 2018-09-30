@@ -179,7 +179,6 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
   // private scroll: Scrollbars | null;
   private imgWidth: HTMLDivElement | null;
   private anchor: HTMLSpanElement | null;
-  private scroll: Scrollbars | null;
   constructor(props: IProps) {
     super(props)
     this.state = {
@@ -236,7 +235,6 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
             />
             {/*글  아래 */}
             <Scrollbars
-              ref={(e) => { this.scroll = e }}
               style={{
                 width: this.imgWidth ? this.imgWidth.clientWidth * 45 / 100 : ""
               }}
@@ -313,8 +311,6 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       .then((response) => {
         this.setState({
           replys: response.data
-        }, () => {
-          this.scroll!.scrollToBottom()
         })
       })
   }
