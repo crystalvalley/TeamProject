@@ -40,7 +40,7 @@ public class AlarmServiceImpl implements AlarmService {
 			arm.setActor_id(actor.get());
 			arm.setReceiver_id(list.get(i).getMentioned());
 			arm.setMentioned(true);
-			arm.setBoardNum(board.getId());
+			arm.setBoard(board);
 			ar.save(arm);
 			ss.refreshAlarm(arm.getReceiver_id().getId());
 		}

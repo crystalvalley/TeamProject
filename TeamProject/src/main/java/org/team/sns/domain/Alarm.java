@@ -48,8 +48,9 @@ public class Alarm {
 	@NotNull
 	private boolean checked;
 	
-	
-	private int boardNum;
+	@ManyToOne
+	@JoinColumn(name="board",referencedColumnName="board_id")
+	private Board board;
 	
 	@ManyToOne
 	@JoinColumn(name="actor_id", referencedColumnName="user_id", updatable = false, nullable=false)
