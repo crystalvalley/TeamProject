@@ -111,7 +111,7 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                             type="submit"
                             variant="contained"
                         >
-                            Subscribe
+                            LogIn
                         </Button>
                         <Button variant="contained"
                             onClick={this.join}

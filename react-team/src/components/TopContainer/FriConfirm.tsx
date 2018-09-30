@@ -40,7 +40,7 @@ export default class FriConfirm extends React.Component<IProp, IState>{
                 target: this.props.target
             }
 
-        }).then(() => { alert("친구 됐다~") })
+        })
 
     }
 
