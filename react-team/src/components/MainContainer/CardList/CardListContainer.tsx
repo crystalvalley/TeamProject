@@ -7,6 +7,7 @@ import { ICardModel } from '../../../constance/models';
 import ArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import ArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import { Motion, spring } from 'react-motion';
+import { INetworkStore, withNetworkContext } from '../../../contexts/NetworkContext';
 
 /**
  * @author : ParkHyeokJoon
@@ -51,8 +52,8 @@ interface IState {
     starting: number;
 }
 
-class CardListContainer extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
+class CardListContainer extends React.Component<IProps & INetworkStore, IState> {
+    constructor(props: IProps & INetworkStore) {
         super(props);
         this.state = {
             order: [],
@@ -73,39 +74,18 @@ class CardListContainer extends React.Component<IProps, IState> {
         this.scrollEnd = this.scrollEnd.bind(this);
         this.favoriteCheck = this.favoriteCheck.bind(this);
         this.checkArrow = this.checkArrow.bind(this);
-        
+        this.refresh = this.refresh.bind(this);
+    }
+
+    public componentDidMount() {
+        this.refresh();
     }
     
-    public componentDidMount() {
-        
-        axios.get("http://localhost:8081/lists/getListNames")
-            .then((result) => {
-                this.setState({
-                    order: result.data
-                }, () => {
-                    this.state.order.map((name, index) => {
-                        // 검색만 예외, context에서 가져오므로
-                        if (name === "SearchField") { return }
-                        axios.get("http://localhost:8081/boards/getByListName", {
-                            params: {
-                                listName: name,
-                                page: 0
-                            }
-                        }).then((result2) => {
-                            this.setState({
-                                lists: {
-                                    ...this.state.lists,
-                                    [name]: {
-                                        cards: result2.data,
-                                        getPage: 1,
-                                        end: false
-                                    }
-                                }
-                            })
-                        })
-                    })
-                })
-            }).then(() => { this.checkArrow(0) })
+    public componentDidUpdate(){
+        if(this.props.refreshCondition){
+            this.props.conditionCheck();
+            this.refresh();
+        }
     }
 
     public render() {
@@ -195,6 +175,36 @@ class CardListContainer extends React.Component<IProps, IState> {
                 </DragDropContext>
             </React.Fragment>
         );
+    }
+    private refresh() {
+        axios.get("http://localhost:8081/lists/getListNames")
+            .then((result) => {
+                this.setState({
+                    order: result.data
+                }, () => {
+                    this.state.order.map((name, index) => {
+                        // 검색만 예외, context에서 가져오므로
+                        if (name === "SearchField") { return }
+                        axios.get("http://localhost:8081/boards/getByListName", {
+                            params: {
+                                listName: name,
+                                page: 0
+                            }
+                        }).then((result2) => {
+                            this.setState({
+                                lists: {
+                                    ...this.state.lists,
+                                    [name]: {
+                                        cards: result2.data,
+                                        getPage: 1,
+                                        end: false
+                                    }
+                                }
+                            })
+                        })
+                    })
+                })
+            }).then(() => { this.checkArrow(0) })
     }
     private onDragEnd(result: DropResult) {
         const { destination, source, draggableId } = result;
@@ -287,7 +297,7 @@ class CardListContainer extends React.Component<IProps, IState> {
         const adder = remain === 0 ? 0 : 1;
         const maxSlide = Math.floor(this.state.order.length / 5 + adder);
         // 딱 5개뿐이라 어차피 1페이지밖에 출력 못한다면 초기값그대로 가면 됨
-        if(maxSlide===1){return;}
+        if (maxSlide === 1) { return; }
         const slide = this.state.slide + turn;
         const left = slide === 0 ? false : true;
         const right = slide === maxSlide - 1 ? false : true;
@@ -301,7 +311,7 @@ class CardListContainer extends React.Component<IProps, IState> {
         })
     }
 
-    
+
 }
 
-export default withStyles(style)(CardListContainer)
+export default withNetworkContext(withStyles(style)(CardListContainer));

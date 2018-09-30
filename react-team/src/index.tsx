@@ -9,6 +9,7 @@ import { SearchProvider } from './contexts/SearchContext';
 import { EmotionProvider } from './contexts/EmotionContext';
 import { FavoriteProvider } from './contexts/FavoriteContext';
 import NetworkProvider from './contexts/NetworkContext';
+import { BrowserRouter } from 'react-router-dom';
 
 /**
  * @author : ParkHyeokjoon
@@ -18,21 +19,23 @@ import NetworkProvider from './contexts/NetworkContext';
 
 ReactDOM.render(
 
-  <MuiThemeProvider theme={mainTheme}>
-    <LoginProvider>
-      <NetworkProvider>
-        <SearchProvider>
-          <EmotionProvider>
-            <FavoriteProvider>
-              <CssBaseline>
-                <App />
-              </CssBaseline>
-            </FavoriteProvider>
-          </EmotionProvider>
-        </SearchProvider>
-      </NetworkProvider>
-    </LoginProvider>
-  </MuiThemeProvider>,
+  <BrowserRouter>
+    <MuiThemeProvider theme={mainTheme}>
+      <LoginProvider>
+        <NetworkProvider>
+          <SearchProvider>
+            <EmotionProvider>
+              <FavoriteProvider>
+                <CssBaseline>
+                  <App />
+                </CssBaseline>
+              </FavoriteProvider>
+            </EmotionProvider>
+          </SearchProvider>
+        </NetworkProvider>
+      </LoginProvider>
+    </MuiThemeProvider>
+  </BrowserRouter>,
   document.getElementById('root') as HTMLElement
 );
 // registerServiceWorker();
