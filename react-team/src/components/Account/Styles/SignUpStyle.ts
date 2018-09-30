@@ -18,7 +18,7 @@ export const signUpStyle: StyleRulesCallback = (theme: Theme) => ({
     formBox: {
         position: "absolute",
         width: "420px",
-        height: "617px",
+        height: "520px",
         margin: "auto",
         top: 0,
         left: 0,

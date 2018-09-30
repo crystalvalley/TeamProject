@@ -33,7 +33,7 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
         }
     }
     public componentWillReceiveProps(prevProps: IProps & ISuggestState) {
-        if (this.props.text === prevProps.text || prevProps.text.length > 4|| !prevProps.open) { return }
+        if (this.props.text === prevProps.text || prevProps.text.length > 4 || !prevProps.open) { return }
         // 3글자 이하까지는 db에서 서치
         axios.get("http://localhost:8081/boards/checkTag", {
             params: {
@@ -66,12 +66,14 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                     top: this.props.positionY,
                     left: this.props.positionX
                 }}
-                hidden={(!this.props.open)||filteredList.length===0}
-            >  
-                <ul
+                hidden={(!this.props.open) || filteredList.length === 0}
+            >
+                <div
                     style={{
                         border: "1px solid black",
-                    }}>
+                        padding: "5px"
+                    }}
+                    >
                     {
                         filteredList !== undefined ?
                             filteredList.map((tag, index) => {
@@ -81,16 +83,18 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                                     )
                                 }
                                 return (
-                                    <li
-                                        key={index}
-                                        onClick={handler}
-                                    >
-                                        {tag}
-                                    </li>
+                                    <React.Fragment key={index}>
+                                        <span
+                                            style={{ marginBottom: "3px" }}
+                                            onClick={handler}
+                                        >
+                                            {tag}
+                                        </span><br />
+                                    </React.Fragment>
                                 );
                             }) : ""
                     }
-                </ul>
+                </div>
             </div>
         );
     }

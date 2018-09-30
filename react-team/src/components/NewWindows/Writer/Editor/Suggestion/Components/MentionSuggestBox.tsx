@@ -59,15 +59,17 @@ class MentionSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                 style={{
                     position: "absolute",
                     display: "float",
-                    top: this.props.positionY,
+                    top: this.props.positionY + 15,
                     left: this.props.positionX
                 }}
-                hidden={(!this.props.open)||filteredList.length===0}
+                hidden={(!this.props.open) || filteredList.length === 0}
             >
-                <ul
+                <div
                     style={{
                         border: "1px solid black",
-                    }}>
+                        padding: "5px"
+                    }}
+                >
                     {
                         filteredList !== undefined ?
                             filteredList.map((mention, index) => {
@@ -77,16 +79,18 @@ class MentionSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                                     )
                                 }
                                 return (
-                                    <li
-                                        key={index}
-                                        onClick={handler}
-                                    >
-                                        {mention}
-                                    </li>
+                                    <React.Fragment key={index}>
+                                        <span
+                                            style={{ marginBottom: "3px" }}
+                                            onClick={handler}
+                                        >
+                                            {mention}
+                                        </span><br />
+                                    </React.Fragment>
                                 );
-                            }) : <div>시발</div>
+                            }) : <div />
                     }
-                </ul>
+                </div>
             </div>
         );
     }
