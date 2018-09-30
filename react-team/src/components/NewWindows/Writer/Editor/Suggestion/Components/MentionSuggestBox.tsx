@@ -49,11 +49,14 @@ class MentionSuggestBox extends React.Component<IProps & ISuggestState, IState>{
         const { metionList } = this.state;
         const keyword = this.props.text.slice(1);
         const listOpen = metionList !== undefined ? metionList.length : 0;
-        const filteredList = keyword.length > 3 && listOpen !== 0 ?
+        let filteredList = keyword.length > 3 && listOpen !== 0 ?
             this.state.metionList.filter((item) => {
-                return item.indexOf(keyword) === 0
+                return item.toLowerCase().indexOf(keyword.toLowerCase()) === 0
             })
             : this.state.metionList
+        if(filteredList.length>5){
+            filteredList = filteredList.splice(0,5);
+        }
         return (
             <div
                 style={{
