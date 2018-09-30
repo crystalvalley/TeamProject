@@ -17,13 +17,15 @@ export interface INetworkStore {
     followList: IMemberModel[];
     follwerList: IMemberModel[];
     loginedId: IMemberModel;
+    refreshCondition:boolean;
+    conditionCheck():void;
     addFriend(id: string): void;
     delFriend(id: string): void;
     addFollow(id: string): void;
     delFollow(id: string): void;
     addBlock(id: string): void;
     refresh(): void;
-    socketRefresh(dataType:string):void;
+    socketRefresh(dataType: string): void;
     sendMsg(sendMessage: IMsgModel): void
 }
 
@@ -36,6 +38,8 @@ const NetworkContext = React.createContext<INetworkStore>({
         id: "",
         profileImg: ""
     },
+    refreshCondition:false,
+    conditionCheck:()=>{return},
     addFriend: (id: string) => { return },
     delFriend: (id: string) => { return },
     addFollow: (id: string) => { return },
@@ -43,7 +47,7 @@ const NetworkContext = React.createContext<INetworkStore>({
     addBlock: (id: string) => { return },
     sendMsg: (sendMessage: IMsgModel) => { return },
     refresh: () => { return },
-    socketRefresh: (dataType:string) => { return }
+    socketRefresh: (dataType: string) => { return }
 });
 
 // 친구목록 컨테스트를 사용할 경우에는 로그인 컨텍스트도 같이 사용됨
@@ -56,11 +60,14 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
         this.delFollow = this.delFollow.bind(this);
         this.addBlock = this.addBlock.bind(this);
         this.refresh = this.refresh.bind(this);
+        this.conditionCheck = this.conditionCheck.bind(this);
         this.state = {
             friendList: [],
             friendRequest: [],
             followList: [],
             follwerList: [],
+            refreshCondition:false,
+            conditionCheck : this.conditionCheck,
             loginedId: this.props.logined,
             addFriend: this.addFriend,
             delFriend: this.delFriend,
@@ -69,7 +76,7 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
             addBlock: this.addBlock,
             refresh: this.refresh,
             sendMsg: this.props.sendMessage,
-            socketRefresh : this.props.socketRefesh
+            socketRefresh: this.props.socketRefesh
         }
     }
     public componentDidMount() {
@@ -130,7 +137,8 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
             .then((result) => {
                 this.setState({
                     friendList: result.data.friendList,
-                    friendRequest: result.data.friendRequest
+                    friendRequest: result.data.friendRequest,
+                    refreshCondition:true
                 })
             })
     }
@@ -143,9 +151,14 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
             this.refresh();
         })
     }
+    private conditionCheck(){
+        this.setState({
+            refreshCondition:false
+        })
+    }
 }
 
-export default withLoginContext(NetworkProvider)
+export default withLoginContext(NetworkProvider);
 
 export function withNetworkContext<P extends INetworkStore>(Component: React.ComponentType<P>) {
     return function userNetworkContext(props: Pick<P, Exclude<keyof P, keyof INetworkStore>>) {
