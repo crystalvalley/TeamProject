@@ -121,14 +121,14 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                             </Button>
 
                     </form>
-                        </form>
-                        <div className={classes.footer}>
+
+                    <div className={classes.footer}>
                         <Typography>
                             Powered By SCI
                         </Typography>
-                        </div>
+                    </div>
 
-                   
+
                 </div>
 
 
