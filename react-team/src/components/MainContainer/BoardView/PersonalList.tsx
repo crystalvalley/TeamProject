@@ -48,7 +48,7 @@ class PersonalList extends React.Component<IProps>{
     public render() {
         const { classes } = this.props;
         return (
-            <div className={classes.viewContainer}>
+            <div className={classes.viewContainer} style={{ height: "100%" }}>
                 <Scrollbars
                     autoHide={true}
                 >
