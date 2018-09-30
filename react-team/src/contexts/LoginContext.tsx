@@ -305,6 +305,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     private alarmRefresh() {
         axios.get("http://localhost:8081/alarms/requestAlarms")
             .then((response) => {
+                alert(response.data)
                 this.setState({
                     alarms: response.data
                 })
