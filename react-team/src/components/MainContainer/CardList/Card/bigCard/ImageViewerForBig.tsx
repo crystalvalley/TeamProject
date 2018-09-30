@@ -11,7 +11,8 @@ interface IProps {
 
     },
     photos: IPhotoModel[]
-    width: number
+    width: number,
+    height:number
 }
 
 interface IState {
@@ -32,7 +33,7 @@ class ImageViewerForBig extends React.Component<IProps, IState>{
         const files: string[] = []
         for (const photo of this.props.photos) {
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", "http://localhost:8081/resources" +  photo.url);
+            xhr.open("GET", "http://localhost:8081/resources" + photo.url);
             xhr.responseType = "blob";
             xhr.addEventListener("load", () => {
                 files.push(URL.createObjectURL(xhr.response));
@@ -47,11 +48,10 @@ class ImageViewerForBig extends React.Component<IProps, IState>{
         const { show } = this.state;
         return (
             <div
-                style={{                    
-                    minHeight: this.props.width + "px",
-                    maxHeight:"475px",
-                    textAlign: "center",
-                    lineHeight:this.props.width+"px"
+                style={{
+                    width: this.props.width,
+                    flexBasis:this.props.height+"px",
+                    maxHeight:this.props.height
                 }}
                 onClick={this.changeShow}
             >
@@ -59,10 +59,10 @@ class ImageViewerForBig extends React.Component<IProps, IState>{
                     this.state.files.length === 0 ?
                         this.state.files.length :
                         <img
-                            style={{ 
-                                width: "100%", 
-                                height: "auto",
-                                verticalAlign: "middle",
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "contain",
                             }}
                             src={this.state.files[show]}
                         />

@@ -29,7 +29,8 @@ interface IProps {
         leftBottomInner: string;
         rightTopInner: string;
         imgBox: string;
-        title :string;
+        title: string;
+        button: string;
     }
 }
 
@@ -106,11 +107,19 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                         />
                         <br />
                         <Button
+                            className={classes.button}
                             type="submit"
                             variant="contained"
                         >
                             Subscribe
                         </Button>
+                        <Button variant="contained"
+                            onClick={this.join}
+                            className={classes.button}
+                        >
+                            JOIN
+                            </Button>
+
                     </form>
                 </div>
 
@@ -119,6 +128,11 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
             </div>
         );
     }
+
+    private join() {
+        location.href = "/signup";
+    }
+
     // event를 파라미터로 입력받음
     private onChangeId(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({
