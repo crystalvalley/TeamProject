@@ -179,6 +179,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
   // private scroll: Scrollbars | null;
   private imgWidth: HTMLDivElement | null;
   private anchor: HTMLSpanElement | null;
+  private scroll: Scrollbars | null;
   constructor(props: IProps) {
     super(props)
     this.state = {
@@ -188,23 +189,15 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       open: false
 
     }
-    axios.get("http://localhost:8081/account/getByCardReply", {
-      params: {
-        cardnum: this.props.card.id + ""
-      }
-    })
-      .then((response) => {
-        this.setState({
-          replys: response.data
-        })
-        // alert(response.data + "리플돌아옴");
-      })
     this.editorChange = this.editorChange.bind;
     this.doChangeReply = this.doChangeReply.bind(this);
     this.submit = this.submit.bind(this);
     this.writerMenuOpen = this.writerMenuOpen.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
+    this.getReply = this.getReply.bind(this);
+    this.getReply();
   }
+
   public render() {
     const { classes, card } = this.props;
     return (
@@ -243,6 +236,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
             />
             {/*글  아래 */}
             <Scrollbars
+              ref={(e) => { this.scroll = e }}
               style={{
                 width: this.imgWidth ? this.imgWidth.clientWidth * 45 / 100 : ""
               }}
@@ -289,9 +283,9 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
                 <Table>
                   <TableBody>
                     <TableHead>
-                      <TableCell style={{width:"20%"}}>작성자</TableCell>
-                      <TableCell style={{width:"60%"}}>내용</TableCell>
-                      <TableCell style={{width:"20%"}}>작성시간</TableCell>
+                      <TableCell style={{ width: "20%" }}>작성자</TableCell>
+                      <TableCell style={{ width: "60%" }}>내용</TableCell>
+                      <TableCell style={{ width: "20%" }}>작성시간</TableCell>
                     </TableHead>
                     {
                       this.state.replys.map((reply, index) => {
@@ -309,6 +303,20 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
         </div>
       </Card >
     );
+  }
+  private getReply() {
+    axios.get("http://localhost:8081/account/getByCardReply", {
+      params: {
+        cardnum: this.props.card.id + ""
+      }
+    })
+      .then((response) => {
+        this.setState({
+          replys: response.data
+        }, () => {
+          this.scroll!.scrollToBottom()
+        })
+      })
   }
 
   private editorChange(es: EditorState) {
@@ -335,7 +343,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     Axios.post("http://localhost:8081/account/saveReply", data)
       .then((response) => {
         // alert(response.data + "리플돌아옴");
-        location.href = "/LageCardMain"
+        this.getReply();
       })
   }
   private closeMenu() {
