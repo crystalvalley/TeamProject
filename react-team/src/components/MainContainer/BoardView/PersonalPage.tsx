@@ -93,6 +93,8 @@ interface IState {
     cards: ICardModel[]
 }
 class PersonalPage extends React.Component<IProps, IState>{
+    // 크롬계열 height %가 안 먹는 문제 해결
+    private imgSize: HTMLDivElement | null;
     constructor(props: IProps & ILoginStore) {
         super(props);
         this.state = {
@@ -124,8 +126,16 @@ class PersonalPage extends React.Component<IProps, IState>{
     public render() {
         const { classes } = this.props;
         return (
-            <div className={classes.viewContainer}>
-                <div className={classes.firstContainer}>
+            <div
+                ref={(e) => { this.imgSize = e }}
+                className={classes.viewContainer}
+            >
+                <div
+                    className={classes.firstContainer}
+                    style={{
+                        height : this.imgSize?this.imgSize.offsetHeight-20:""
+                    }}
+                >
                     <PersonalList cards={this.state.cards} />
                 </div>
                 <div className={classes.secondContainer}>

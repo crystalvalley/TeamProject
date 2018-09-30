@@ -63,4 +63,5 @@ public interface BoardRepositoryCustom {
 	//Mention 검색
 	public List<Board> getBoardByMention(String keyword,int page,Member loginId);
 	
+	public List<Board> getByBoardId(int boardNum);
 }
