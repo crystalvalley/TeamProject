@@ -87,7 +87,7 @@ public class AccountRestController {
 	public Member loginCheck(Principal principal) {
 		Member member;
 		if (principal != null) {
-			member = mr.findById("testid").get();
+			member = mr.findById(principal.getName()).get();
 		} else {
 			member = new Member();
 			member.setId("FAILED LOGIN");
@@ -99,7 +99,7 @@ public class AccountRestController {
 	@PostMapping("/uploadProfile")
 	public String uploadProfile(@RequestParam("upload") MultipartFile upload, Principal principal) throws Exception {
 		System.out.println("test");
-		return ds.fileUpload(upload, "testid");
+		return ds.fileUpload(upload, principal.getName());
 	}
 
 	@PostMapping("/updateuser")
@@ -128,8 +128,8 @@ public class AccountRestController {
 		Reply reply = new Reply();
 		Member member = new Member();
 		System.out.println("리플저장" + cardnum + "," + replyContent + ",");
-		System.out.println("리플저장하기 들어옴" + "testid");
-		member = mr.findById("testid").get();
+		System.out.println("리플저장하기 들어옴" + principal.getName());
+		member = mr.findById(principal.getName()).get();
 		reply.setContent(replyContent);
 		reply.setWriter(member);
 		// System.out.println(cardnum);
