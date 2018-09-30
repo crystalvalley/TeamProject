@@ -88,7 +88,7 @@ export default class RTCTest extends React.Component<{},IState> {
         }
 
         this.sock.onclose = (e: CloseEvent) => {
-            alert('close' + e);
+            // alert('close' + e);
         }
 
         this.sock.onerror = (e: Event) => {

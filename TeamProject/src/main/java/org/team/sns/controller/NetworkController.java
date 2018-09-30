@@ -43,6 +43,13 @@ public class NetworkController {
 		System.out.println("친구추가들어옴");
 		ns.friendRequest(principal.getName(), target);
 		as.saveFriendRequest(target, principal.getName());
+		
+		try {
+			ss.refreshAlarm(target);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	@GetMapping("/acceptFriend")
 	public void acceptFriend(Principal principal, String target, String alarmId) {

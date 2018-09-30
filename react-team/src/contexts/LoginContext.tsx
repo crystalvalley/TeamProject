@@ -171,7 +171,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         }
 
         this.sock.onclose = (e: CloseEvent) => {
-            alert('close' + e);
+            // alert('close' + e);
         }
 
         this.sock.onerror = (e: Event) => {
@@ -305,7 +305,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     private alarmRefresh() {
         axios.get("http://localhost:8081/alarms/requestAlarms")
             .then((response) => {
-                alert(response.data)
+                
                 this.setState({
                     alarms: response.data
                 })

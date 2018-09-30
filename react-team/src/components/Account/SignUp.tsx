@@ -36,7 +36,6 @@ interface IState {
     user_id: string;
     password: string;
     passwordCheck: string;
-    username: string;
     emailFirst: string;
     emailSecond: string;
     passwordValid: boolean;
@@ -53,18 +52,17 @@ class SignUp extends React.Component<IProps, IState> {
             passwordCheck: "",
             passwordValid: false,
             idValid: false,
-            username: "",
             emailFirst: "",
             emailSecond: ""
         }
         this.onChange = this.onChange.bind(this);
         this.submit = this.submit.bind(this);
-        
+
     }
     public componentDidUpdate(presProps: IProps, prevState: IState) {
-        
+
         const { user_id, idValid, password, passwordValid, passwordCheck } = this.state
-        if(prevState.user_id !== user_id){
+        if (prevState.user_id !== user_id) {
             if (user_id.length > 5 && user_id.length < 16) {
                 axios.get("http://localhost:8081/account/idCheck", {
                     params: {
@@ -95,7 +93,7 @@ class SignUp extends React.Component<IProps, IState> {
     public render() {
         const { classes } = this.props;
         const {
-            idValid, passwordValid, user_id, passwordCheck, password, username, emailFirst, emailSecond
+            idValid, passwordValid, user_id, passwordCheck, password, emailFirst, emailSecond
         } = this.state
         return (
             <div className={classes.backGround}>
@@ -113,7 +111,7 @@ class SignUp extends React.Component<IProps, IState> {
                                 root: classes.headTyphoRoot
                             }}
                         >
-                           <h1> SNS SIGNUP</h1>
+                            <h1> SNS SIGNUP</h1>
 
                         </Typography>
                     </div>
@@ -173,20 +171,6 @@ class SignUp extends React.Component<IProps, IState> {
                         <br />
                         <TextField
                             onChange={this.onChange}
-                            fullWidth={true}
-                            className={classes.textField}
-                            name="username"
-                            label={
-                                username === "" ?
-                                    "username" :
-                                    username.length > 2 && username.length < 15 ?
-                                        "username" :
-                                        "이름은 3글자 이상 14글자 이하여야 합니다."
-                            }
-                        />
-                        <br />
-                        <TextField
-                            onChange={this.onChange}
                             className={classes.textField}
                             name="emailFirst"
                             label="email"
@@ -200,6 +184,7 @@ class SignUp extends React.Component<IProps, IState> {
                         />
                         <input type="hidden" name="email" value={emailFirst + "@" + emailSecond} />
                         <br />
+                        <br />
                         <Button
                             disabled={!this.submitValidation()}
                             type="button"
@@ -211,38 +196,39 @@ class SignUp extends React.Component<IProps, IState> {
                             Subscribe
                         </Button>
                     </form>
-              
+                    {/* footer */}
+                    <div className={classes.footer}>
+                        <Typography>
+                            Powered By SCI
+                        </Typography>
+                    </div>
+
                 </div>
             </div>
         );
     }
     private submitValidation(): boolean {
         const {
-            idValid, passwordValid, username
+            idValid, passwordValid
         } = this.state
         // email validation 추가필요
-        if (username.length > 2 && username.length < 15) {
-            return idValid && passwordValid;
-        } else {
-            return false;
-        }
+        return idValid && passwordValid;
+
     }
 
     private submit() {
         const data = new FormData();
-        
-        data.append("id",this.state.user_id);
-        data.append("password",this.state.password);
-        data.append("username",this.state.username);
-        data.append("email",this.state.emailFirst+"@"+this.state.emailSecond);
+        data.append("id", this.state.user_id);
+        data.append("password", this.state.password);
+        data.append("email", this.state.emailFirst + "@" + this.state.emailSecond);
         axios.post("http://localhost:8081/account/signup", data)
             .then((response) => {
                 location.href = "/signin";
             }
-        )
+            )
     }
 
-    
+
 
     private onChange(e: React.ChangeEvent<HTMLInputElement>) {
         const name: string = e.currentTarget.name;
@@ -250,7 +236,6 @@ class SignUp extends React.Component<IProps, IState> {
             user_id: name === "id" ? e.currentTarget.value : this.state.user_id,
             password: name === "password" ? e.currentTarget.value : this.state.password,
             passwordCheck: name === "passwordCheck" ? e.currentTarget.value : this.state.passwordCheck,
-            username: name === "username" ? e.currentTarget.value : this.state.username,
             emailFirst: name === "emailFirst" ? e.currentTarget.value : this.state.emailFirst,
             emailSecond: name === "emailSecond" ? e.currentTarget.value : this.state.emailSecond,
         })

@@ -111,7 +111,7 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                             type="submit"
                             variant="contained"
                         >
-                            Subscribe
+                            LogIn
                         </Button>
                         <Button variant="contained"
                             onClick={this.join}
@@ -121,6 +121,14 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                             </Button>
 
                     </form>
+
+                    <div className={classes.footer}>
+                        <Typography>
+                            Powered By SCI
+                        </Typography>
+                    </div>
+
+
                 </div>
 
 

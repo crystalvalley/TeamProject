@@ -329,7 +329,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		JPQLQuery<Board> query = from(board);
 		JPQLQuery<Tag> subQuery = from(tag);
 		query.select(board);
-		query.where(board.tags.contains(subQuery.where(tag.hashTag.contains(keyword.replaceFirst("#", "")))));
+		query.where(board.tags.contains(subQuery.where(tag.hashTag.eq(keyword.replaceFirst("#", "")))));
 		// 차단 대상은 제외
 		query.where(board.writer.notIn(this.getBlockList(loginId)));
 		query.offset(5 * page);

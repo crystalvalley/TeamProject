@@ -170,7 +170,7 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
         data.append("password", this.state.pw);
         axios.post("http://localhost:8081/account/updateuser", data)
             .then((response) => {
-                alert(response.data + "돌아옴");
+                alert("변경되었습니다.");
             })
     }
     private onDrop(files: File[]) {

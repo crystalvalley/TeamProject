@@ -33,7 +33,7 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
         }
     }
     public componentWillReceiveProps(prevProps: IProps & ISuggestState) {
-        if (this.props.text === prevProps.text || prevProps.text.length > 4|| !prevProps.open) { return }
+        if (this.props.text === prevProps.text || prevProps.text.length > 4 || !prevProps.open) { return }
         // 3글자 이하까지는 db에서 서치
         axios.get("http://localhost:8081/boards/checkTag", {
             params: {
@@ -53,25 +53,30 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
         const { tagList } = this.state;
         const keyword = this.props.text.slice(1);
         const listOpen = tagList !== undefined ? tagList.length : 0;
-        const filteredList = keyword.length > 3 && listOpen !== 0 ?
+        let filteredList = keyword.length > 3 && listOpen !== 0 ?
             this.state.tagList.filter((item) => {
-                return item.indexOf(keyword) === 0
+                return item.toLowerCase().indexOf(keyword.toLowerCase()) === 0
             })
             : this.state.tagList
+        if (filteredList.length > 5) {
+            filteredList = filteredList.splice(0, 5);
+        }
         return (
             <div
                 style={{
                     position: "absolute",
                     display: "float",
-                    top: this.props.positionY,
+                    top: this.props.positionY + 15,
                     left: this.props.positionX
                 }}
-                hidden={(!this.props.open)||filteredList.length===0}
-            >  
-                <ul
+                hidden={(!this.props.open) || filteredList.length === 0}
+            >
+                <div
                     style={{
                         border: "1px solid black",
-                    }}>
+                        padding: "5px"
+                    }}
+                >
                     {
                         filteredList !== undefined ?
                             filteredList.map((tag, index) => {
@@ -81,16 +86,18 @@ class TagSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                                     )
                                 }
                                 return (
-                                    <li
-                                        key={index}
-                                        onClick={handler}
-                                    >
-                                        {tag}
-                                    </li>
+                                    <React.Fragment key={index}>
+                                        <span
+                                            style={{ marginBottom: "3px" }}
+                                            onClick={handler}
+                                        >
+                                            {tag}
+                                        </span><br />
+                                    </React.Fragment>
                                 );
                             }) : ""
                     }
-                </ul>
+                </div>
             </div>
         );
     }

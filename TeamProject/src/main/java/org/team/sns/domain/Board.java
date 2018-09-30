@@ -68,7 +68,8 @@ public class Board {
 	// 업데이트 시 시간으로 자동 설정
 	@UpdateTimestamp
 	private Timestamp updateDay; // 업로드 날짜
-	
+
+	@Column(columnDefinition="text")
 	private String plainText; // content는 draftjs 포맷이기 때문에 검색용으로 순수한 내용 text만 저장
 	
 	// default는 전체공개

@@ -49,25 +49,30 @@ class MentionSuggestBox extends React.Component<IProps & ISuggestState, IState>{
         const { metionList } = this.state;
         const keyword = this.props.text.slice(1);
         const listOpen = metionList !== undefined ? metionList.length : 0;
-        const filteredList = keyword.length > 3 && listOpen !== 0 ?
+        let filteredList = keyword.length > 3 && listOpen !== 0 ?
             this.state.metionList.filter((item) => {
-                return item.indexOf(keyword) === 0
+                return item.toLowerCase().indexOf(keyword.toLowerCase()) === 0
             })
             : this.state.metionList
+        if(filteredList.length>5){
+            filteredList = filteredList.splice(0,5);
+        }
         return (
             <div
                 style={{
                     position: "absolute",
                     display: "float",
-                    top: this.props.positionY,
+                    top: this.props.positionY + 15,
                     left: this.props.positionX
                 }}
-                hidden={(!this.props.open)||filteredList.length===0}
+                hidden={(!this.props.open) || filteredList.length === 0}
             >
-                <ul
+                <div
                     style={{
                         border: "1px solid black",
-                    }}>
+                        padding: "5px"
+                    }}
+                >
                     {
                         filteredList !== undefined ?
                             filteredList.map((mention, index) => {
@@ -77,16 +82,18 @@ class MentionSuggestBox extends React.Component<IProps & ISuggestState, IState>{
                                     )
                                 }
                                 return (
-                                    <li
-                                        key={index}
-                                        onClick={handler}
-                                    >
-                                        {mention}
-                                    </li>
+                                    <React.Fragment key={index}>
+                                        <span
+                                            style={{ marginBottom: "3px" }}
+                                            onClick={handler}
+                                        >
+                                            {mention}
+                                        </span><br />
+                                    </React.Fragment>
                                 );
-                            }) : <div>시발</div>
+                            }) : <div />
                     }
-                </ul>
+                </div>
             </div>
         );
     }
