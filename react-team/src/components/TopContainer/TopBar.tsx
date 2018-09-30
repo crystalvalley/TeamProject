@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import BtnBox from './BtnBox';
 import { IMemberModel } from '../../constance/models';
 import pige from '../../img/end2.png';
-import axios from 'axios';
+// import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import BtnBoxButton from './BtnBoxButton';
 import { ILoginStore, withLoginContext } from '../../contexts/LoginContext';

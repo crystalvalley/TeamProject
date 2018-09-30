@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { ListItem, ListItemText, Menu, MenuItem, Avatar } from "@material-ui/core";
+import { ListItem, ListItemText, Menu, MenuItem, Avatar, ListItemIcon } from "@material-ui/core";
 import { IMemberModel, IMsgModel } from '../../../../constance/models';
 import axios from 'axios';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-
-
+import ChatBubble from '@material-ui/icons/ChatBubble';
+import Home from '@material-ui/icons/Home';
+import Delete from '@material-ui/icons/PersonAddDisabled'
 /**
  * @author:Kim MinJeong
  * @since:2018.08.28
@@ -15,6 +16,11 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
  * @author:ParkHyeokJoon
  * @version:2018.09.19
  */
+/**
+ * @author:Kim MinJeong
+ * @version:2018.09.30
+ * MENUS에 어울리는 아이콘 넣어봄
+ */
 
 interface IProps {
     list: string,
@@ -22,7 +28,7 @@ interface IProps {
     id: IMemberModel
     delFriend(id: string): void,
     sendMsg(sendMessage: IMsgModel): void
-    close():void;
+    close(): void;
 }
 interface IState {
     open: boolean;
@@ -64,9 +70,24 @@ class ShowupFriendListtile extends React.Component<IProps & RouteComponentProps<
                         open={this.state.open}
                         onClose={this.closeMenu}
                     >
-                        <MenuItem onClick={this.visit}>방문하기</MenuItem>
-                        <MenuItem onClick={this.openChatting}>채팅하기</MenuItem>
-                        <MenuItem onClick={this.delFriend}>친구삭제</MenuItem>
+                        <MenuItem onClick={this.visit}>
+                        <ListItemIcon>
+                                <Home />
+                            </ListItemIcon>
+                        방문하기
+                        </MenuItem>
+                        <MenuItem onClick={this.openChatting}>
+                            <ListItemIcon>
+                                <ChatBubble />
+                            </ListItemIcon>
+                            채팅하기
+                        </MenuItem>
+                        <MenuItem onClick={this.delFriend}>
+                        <ListItemIcon>
+                                <Delete />
+                            </ListItemIcon>
+                        친구삭제
+                        </MenuItem>
                     </Menu>
                 </ListItem>
             </div>

@@ -18,7 +18,7 @@ export const signUpStyle: StyleRulesCallback = (theme: Theme) => ({
     formBox: {
         position: "absolute",
         width: "420px",
-        height: "595px",
+        height: "617px",
         margin: "auto",
         top: 0,
         left: 0,
@@ -78,7 +78,7 @@ export const signUpStyle: StyleRulesCallback = (theme: Theme) => ({
     },
     footer: {
         opacity: 0.7,
-        padding: "10px",
+        padding: "30px",
         marginTop: "-16px",
         lineHeight: "25px",
         backgroundColor: "#ff6666"
