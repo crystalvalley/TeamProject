@@ -100,8 +100,8 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                             accept="image/*"
                             style={{
                                 border: "1px solid black",
-                                width: 400,
-                                height: 400,
+                                width: "35vh",
+                                height: "35vh",
                                 textAlign: "center",
                             }}
                             multiple={false}
@@ -112,8 +112,8 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                                     width: "100%",
                                     height: "100%",
                                     objectFit: "contain",
-                                    maxHeight: 400,
-                                    maxWidth: 400
+                                    maxWidth: "35vh",
+                                    maxHeight: "35vh",
                                 }}
                                 src={this.state.profile
                                     ? URL.createObjectURL(this.state.profile)

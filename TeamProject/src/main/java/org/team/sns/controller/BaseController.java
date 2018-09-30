@@ -12,48 +12,60 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @version 2018.08.21
  */
 @Controller
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 public class BaseController {
 
 	@GetMapping("/")
 	public String index(Principal principal) {
-		//System.out.println("testid");
+		// System.out.println(principal.getName());
 		return "index";
 	}
+
 	@GetMapping("/home")
 	public String goHome(Principal principal) {
-		//System.out.println("testid");
+		// System.out.println(principal.getName());
 		return "redirect:/";
 	}
+
 	@GetMapping("/signup")
 	public String signup() {
 		return "index";
 	}
+
 	@GetMapping("/signin")
 	public String signin() {
-		//System.out.println("??");
+		// System.out.println("??");
 		return "index";
 	}
+
 	@GetMapping("userUpdate")
 	public String userUpdate() {
 		System.out.println("수정페이지전환");
 		return "index";
 	}
+
 	@GetMapping("/createGroup")
 	public String createGroup() {
-		//System.out.println("??");
+		// System.out.println("??");
 		return "index";
 	}
+
 	@GetMapping("/test")
 	public String test() {
-		//System.out.println("??");
+		// System.out.println("??");
 		return "index";
 	}
+
 	@GetMapping("/listControl")
-	public String listControl                                                                                                                                                  () {
-		//System.out.println("??");
+	public String listControl() {
+		// System.out.println("??");
 		return "index";
 	}
-	
-	
+
+	@GetMapping("/PersonalPage")
+	public String personalPage() {
+		// System.out.println("??");
+		return "index";
+	}
+
 }
