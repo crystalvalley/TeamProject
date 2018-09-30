@@ -112,5 +112,8 @@ export const signInStyle: StyleRulesCallback = (theme: Theme) => ({
         right:"61%",
         width: 0,
         height: 0
+    },
+    button :{
+       margin : "10px"
     }
 })
