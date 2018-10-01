@@ -29,7 +29,7 @@ public class ChattingController {
 	}
 	
 	@GetMapping("/end")
-	public void endChat(Principal principal,int roomnumber) {
-		System.out.println(roomnumber);
+	public void endChat(Principal principal,int roomnumber) throws IOException {
+		ss.endChatting(principal.getName(), roomnumber);
 	}
 }
