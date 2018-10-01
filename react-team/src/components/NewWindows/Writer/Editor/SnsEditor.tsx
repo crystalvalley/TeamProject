@@ -21,7 +21,6 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     editorForm: {
         flexGrow: 1,
-        fontFamily:"Sunflower,sans-serif"
     }
 })
 interface IProps {

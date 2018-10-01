@@ -56,27 +56,16 @@ public class insertTest {
 	 * System.out.println(br.getBoardsByTitle("5")); }
 	 */
 
-	
-	@Test
-	public void init() {
-		Member member2 = new Member();
-		member2.setId("testid");
-		member2.setPassword("12345678");
-		member2.setEmail("test@gmail.com");
-		sus.createUser(member2);
-		ms.signup(member2);
-		for (int i = 1; i < 5; i++) {
-			Member member = new Member();
-			member.setId("testid" + i);
-			member.setPassword("12345678");
-			member.setEmail("test@gmail.com");
-			sus.createUser(member);
-			ms.signup(member);
-		}
-		ns.friendRequest("testid", "testid1");
-		ns.friendRequest("testid", "testid2");
-		ns.friendRequest("testid", "testid3");
-		ns.acceptFriend("testid1", "testid");
-	}
-	
+	/*
+	 * @Test public void init() { Member member2 = new Member();
+	 * member2.setId("testid"); member2.setPassword("12345678");
+	 * member2.setEmail("test@gmail.com"); sus.createUser(member2);
+	 * ms.signup(member2); for (int i = 1; i < 5; i++) { Member member = new
+	 * Member(); member.setId("testid" + i); member.setPassword("12345678");
+	 * member.setEmail("test@gmail.com"); sus.createUser(member); ms.signup(member);
+	 * } ns.friendRequest("testid", "testid1"); ns.friendRequest("testid",
+	 * "testid2"); ns.friendRequest("testid", "testid3"); ns.acceptFriend("testid1",
+	 * "testid"); }
+	 */
+
 }
