@@ -241,4 +241,10 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 
+	@Override
+	public void delReply(int replyNumber) {
+		// TODO Auto-generated method stub
+		rr.deleteById(replyNumber);
+	}
+
 }

@@ -152,5 +152,8 @@ public class BoardRestController {
 		result.put("target", targetInfo);
 		return result;
 	}
-	
+	@GetMapping("/delReply")
+	public void delReply(int replynumber){
+		bs.delReply(replynumber);
+	}
 }

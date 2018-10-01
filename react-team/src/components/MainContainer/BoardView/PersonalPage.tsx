@@ -112,7 +112,7 @@ class PersonalPage extends React.Component<IProps, IState>{
         }
     }
     public componentDidMount() {
-        axios.get(ROOTURL+"/boards/getPersonalPage", {
+        axios.get(ROOTURL + "/boards/getPersonalPage", {
             params: {
                 target: this.props.id
             }
@@ -133,23 +133,30 @@ class PersonalPage extends React.Component<IProps, IState>{
                 <div
                     className={classes.firstContainer}
                     style={{
-                        height : this.imgSize?this.imgSize.offsetHeight-20:""
+                        height: this.imgSize ? this.imgSize.offsetHeight - 20 : ""
                     }}
                 >
                     <PersonalList cards={this.state.cards} />
                 </div>
                 <div className={classes.secondContainer}>
-                    <Avatar src={ROOTURL+"/resources" + this.state.userInfo.profileImg} className={classes.avatar} />
+                    <Avatar src={ROOTURL + "/resources" + this.state.userInfo.profileImg} className={classes.avatar} />
                     <div className={classes.textfields}>
                         <Typography
-
+                            style={{
+                                fontFamily: "Roboto,sans-serif",
+                            }}
                         >
                             {this.props.id}
                         </Typography>
                         <br />
                         <br />
                     </div>
-                    <div className={classes.texts}>
+                    <div
+                        style={{
+                            fontFamily: "Roboto,sans-serif",
+                        }}
+                        className={classes.texts}
+                    >
                         POKYBOOK에 오신 것을 환영합니다.
                     </div>
                 </div>

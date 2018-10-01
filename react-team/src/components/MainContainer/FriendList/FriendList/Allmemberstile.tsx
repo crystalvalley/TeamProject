@@ -38,6 +38,9 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     rightIcon: {
         marginLeft: theme.spacing.unit,
+    },
+    img: {
+        objectFit: "contain"
     }
 });
 
@@ -46,22 +49,23 @@ interface IProps {
         card: string;
         media: string;
         rightIcon: string;
+        img: string;
     },
     friendInfo: IMemberModel,
-    addFriend(id:string):void;
-  
-  
+    addFriend(id: string): void;
+
+
 }
 
 class Allmembertile extends React.Component<IProps> {
-    constructor(props:IProps){
-        super(props);  
-      this.addFriend=this.addFriend.bind(this);
+    constructor(props: IProps) {
+        super(props);
+        this.addFriend = this.addFriend.bind(this);
     }
-    
+
     public render() {
-        const { classes,friendInfo} = this.props;
-     
+        const { classes, friendInfo } = this.props;
+
         this.state = {
             item: {
                 writer: "",
@@ -69,38 +73,59 @@ class Allmembertile extends React.Component<IProps> {
             },
         }
 
-        return (            
+        return (
             <Card className={classes.card}>
                 <CardMedia
-                     component="img"
-                     className={classes.media}
-                     image={ROOTURL+"/resources" + friendInfo.profileImg}
+                    classes={{
+                        media: classes.img
+                    }}
+                    component="img"
+                    className={classes.media}
+                    image={ROOTURL + "/resources" + friendInfo.profileImg}
                 />
                 <CardContent>
-                    <Typography gutterBottom={true} variant="headline" component="h2">
+                    <Typography
+                        style={{
+                            fontFamily: "Roboto,sans-serif",
+                        }}
+                        gutterBottom={true}
+                        variant="headline"
+                        component="h2"
+                    >
                         {this.props.friendInfo.id}
                     </Typography>
                 </CardContent>
-
                 <CardActions>
-                    <Button size="small" color="primary" onClick={this.addFriend}>
+                    <Button
+                        style={{
+                            fontFamily: "Roboto,sans-serif",
+                        }}
+                        size="small"
+                        color="primary"
+                        onClick={this.addFriend}
+                    >
                         친구추가
                             <TouchApp className={classes.rightIcon} />
                     </Button>
-                  
                     <NavLink
                         style={{
                             textDecoration: "none"
                         }}
                         to={"/personalPage/" + friendInfo.id}
                     >
-                        <Button size="small" color="primary">
+                        <Button
+                            style={{
+                                fontFamily: "Roboto,sans-serif",
+                            }}
+                            size="small"
+                            color="primary"
+                        >
                             들어가보기
                             <HomeIcon className={classes.rightIcon} />
                         </Button>
                     </NavLink>
                 </CardActions>
-            </Card>        
+            </Card>
         )
     }
 

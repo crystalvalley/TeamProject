@@ -19,10 +19,12 @@ class DecoMention extends React.Component<IProps&ISearchState> {
         return (
             <span
                 style={{
-                    color : 'rgba(98, 177, 254, 1.0)'
+                    color : 'rgba(98, 177, 254, 1.0)',
+                    fontFamily:"Hi Melody, cursive"
                 }}
                 onClick={handler}
                 data-offset-key={this.props.offsetKey}
+                
             >
                 {this.props.children}
             </span>

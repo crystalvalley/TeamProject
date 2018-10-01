@@ -17,7 +17,7 @@ export const signUpStyle: StyleRulesCallback = (theme: Theme) => ({
     },
     formBox: {
         position: "absolute",
-        width: "420px",
+        width: "475px",
         height: "520px",
         margin: "auto",
         top: 0,
@@ -29,7 +29,8 @@ export const signUpStyle: StyleRulesCallback = (theme: Theme) => ({
         borderRadius: ".25em .25em .4em .4em",
         textAlign: "center",
         boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)",
-        color: "#fff"
+        color: "#fff",
+        fontFamily: "Roboto,sans-serif",
     },
     rightTop: {
         position: "absolute",

@@ -19,7 +19,8 @@ class DecoTag extends React.Component<IProps&ISearchState> {
         return (
             <span
                 style={{
-                    color : 'rgba(95, 184, 138, 1.0)'
+                    color : 'rgba(95, 184, 138, 1.0)',
+                    fontFamily:"Hi Melody, cursive"
                 }}
                 onClick={handler}
                 data-offset-key={this.props.offsetKey}

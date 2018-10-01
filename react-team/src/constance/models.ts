@@ -79,7 +79,7 @@ export interface IAlarmModel {
     board: ICardModel
 }
 
-export const ROOTURL = "http://52.231.69.249:8081" 
-export const ROOTSOCKETURL = "52.231.69.249:8081" 
+export const ROOTURL = "http://localhost:8081" 
+export const ROOTSOCKETURL = "http://localhost:8081" 
 // "http://52.231.69.249:8081"
 // "http://localhost:8081"

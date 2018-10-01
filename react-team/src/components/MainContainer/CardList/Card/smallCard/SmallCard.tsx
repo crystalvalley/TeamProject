@@ -35,17 +35,20 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     title: {
         textAlign: "center",
-        fontSize: "24px"
+        fontSize: "20px",
+        fontFamily:"Jua, snas-serif"
     },
     cardBody: {
         padding: "12px",
     },
     content: {
         overflow: "hidden",
-        maxHeight: "475px"
+        maxHeight: "475px",
+        fontFamily:"Sunflower,sans-serif"
     },
     username: {
-        color: "black"
+        color: "black",
+        fontFamily: "Roboto,sans-serif",
     },
 });
 
@@ -123,7 +126,6 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         src={ROOTURL+"/resources" + card.writer.profileImg}
                     />
                     <Typography
-                        variant="button"
                         onClick={this.openMenu}
                         className={classes.username}
                     >

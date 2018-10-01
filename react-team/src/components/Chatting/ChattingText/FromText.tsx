@@ -9,6 +9,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         verticalAlign: "middle",
         display: "flex",
         flexDirection: "row",
+        fontFamily: "Roboto,sans-serif"
     },
     avatar: {
         width: "30px",
@@ -25,7 +26,9 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         display: "inline-block",
         padding: "5px",
         borderRadius: "5px",
-        boxShadow: "1px 1px 2px 2px grey"
+        margin:"3px",
+        boxShadow: "1px 1px 2px 2px grey",
+        fontFamily:"Hi Melody, cursive"
     }
 })
 

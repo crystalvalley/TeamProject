@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withStyles, TextField, Button, Typography } from '@material-ui/core';
 import { signInStyle } from './Styles/SignInStyle';
 import { ILoginStore, withLoginContext } from '../../contexts/LoginContext';
-import imgg from '../../img/pockyheand.png';
+import imgg from '../../img/pockyhand.png';
 import title from '../../img/TITEL.png';
 /**
  * @author : ParkHyeokJoon

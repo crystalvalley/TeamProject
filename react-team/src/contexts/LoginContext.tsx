@@ -153,7 +153,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     }
 
     private logError(error: any) {
-        alert(error)
+        // alert(error)
     }
 
     private connect() {
@@ -175,7 +175,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         }
 
         this.sock.onerror = (e: Event) => {
-            alert('error' + e);
+            // alert('error' + e);
         }
 
         this.sock.onmessage = (e: MessageEvent) => {
@@ -311,7 +311,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     }
 
     private disconnect() {
-        alert('disconnect');
+        // alert('disconnect');
         if (this.sock != null) {
             this.sock.close();
         }

@@ -37,7 +37,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
         flexDirection: "column",
         marginLeft: "7.5%",
         marginRight: "7.5%",
-        marginBottom: "100px"
+        marginBottom: "100px",
+        fontFamily: "Roboto,sans-serif",
     },
 })
 
@@ -87,7 +88,7 @@ class MainContainerRouter extends React.Component<IProps> {
     }
     private personalPageHandler() {
         return ({ match }: any) => (
-            <PersonalPage id={match.params.id}/>
+            <PersonalPage id={match.params.id} />
         )
     }
 }

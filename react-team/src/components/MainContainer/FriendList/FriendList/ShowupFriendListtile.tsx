@@ -54,9 +54,12 @@ class ShowupFriendListtile extends React.Component<IProps & RouteComponentProps<
         return (
             <div>
                 <ListItem>
-                    <Avatar src={ROOTURL+"/resources" + this.props.friendInfo.profileImg} />
+                    <Avatar src={ROOTURL + "/resources" + this.props.friendInfo.profileImg} />
                     <ListItemText
                         onClick={this.openMenu}
+                        style={{
+                            fontFamily: "Roboto,sans-serif",
+                        }}
                     >
                         <span ref={(element) => { this.anchor = element }} />
                         {this.props.friendInfo.id}
@@ -71,10 +74,10 @@ class ShowupFriendListtile extends React.Component<IProps & RouteComponentProps<
                         onClose={this.closeMenu}
                     >
                         <MenuItem onClick={this.visit}>
-                        <ListItemIcon>
+                            <ListItemIcon>
                                 <Home />
                             </ListItemIcon>
-                        방문하기
+                            방문하기
                         </MenuItem>
                         <MenuItem onClick={this.openChatting}>
                             <ListItemIcon>
@@ -83,10 +86,10 @@ class ShowupFriendListtile extends React.Component<IProps & RouteComponentProps<
                             채팅하기
                         </MenuItem>
                         <MenuItem onClick={this.delFriend}>
-                        <ListItemIcon>
+                            <ListItemIcon>
                                 <Delete />
                             </ListItemIcon>
-                        친구삭제
+                            친구삭제
                         </MenuItem>
                     </Menu>
                 </ListItem>
@@ -108,7 +111,7 @@ class ShowupFriendListtile extends React.Component<IProps & RouteComponentProps<
         this.closeMenu();
     }
     private openChatting() {
-        axios.get(ROOTURL+"/chattings/make", {
+        axios.get(ROOTURL + "/chattings/make", {
             params: {
                 target: this.props.friendInfo.id
             }

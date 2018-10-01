@@ -21,6 +21,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     editorForm: {
         flexGrow: 1,
+        fontFamily:"Sunflower,sans-serif"
     }
 })
 interface IProps {
@@ -51,7 +52,7 @@ class SNSEditor extends React.Component<IProps>{
                     className={classes.editorForm}
                     autoHide={true}
                 >
-                    <Editor                        
+                    <Editor
                         ref={(element => { this.editor = element })}
                         editorState={this.props.editorState}
                         onChange={this.props.editorChange}
