@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, Typography, Table, TableHead, TableCell, TableRow, Button, IconButton, TextField } from '@material-ui/core';
-import { IConditionModel } from '../../../constance/models';
+import { IConditionModel, ROOTURL } from '../../../constance/models';
 import ConditionRow from './ConditionRow';
 import Done from '@material-ui/icons/Done';
 import axios from "axios";
@@ -240,13 +240,13 @@ class CreateListContainer extends React.Component<IProps, IState>{
     private submitNewList() {
         if (this.props.listNames.indexOf(this.state.listName) === -1) {
             // 존재하지 않는 이름이라면 추가
-            axios.post("http://localhost:8081/lists/addCustomList", {
+            axios.post(ROOTURL+"/lists/addCustomList", {
                 name: this.state.listName,
                 lists: JSON.stringify(this.state.bigConditions)
             }).then(() => { this.props.refresh() })
         } else {
             // 존재하는 이름이면 수정
-            axios.post("http://localhost:8081/lists/updateCustomList", {
+            axios.post(ROOTURL+"/lists/updateCustomList", {
                 name: this.state.listName,
                 lists: JSON.stringify(this.state.bigConditions)
             }).then(() => { this.props.refresh() })

@@ -10,6 +10,7 @@ import { ISuggestState } from './EditorConstance/props';
 import MentionSuggestBox from './Suggestion/Components/MentionSuggestBox';
 import axios from "axios";
 import { withRouter, RouteComponentProps } from 'react-router';
+import { ROOTURL } from '../../../../constance/models';
 
 
 /**
@@ -172,7 +173,7 @@ class SNSEditorContainer extends React.Component<IProps & ILoginStore & RouteCom
         for (const file of this.state.files) {
             data.append("image", file)
         }
-        axios.post("http://localhost:8081/boards/writeBoard", data)
+        axios.post(ROOTURL+"/boards/writeBoard", data)
             .then((response) => {
                 // alert(response.data);
                 this.props.history.push("/refreshPage" + window.location.pathname)

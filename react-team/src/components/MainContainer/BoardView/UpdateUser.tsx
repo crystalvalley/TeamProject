@@ -3,7 +3,7 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, TextField, Button } from '@material-ui/core';
 import axios from 'axios';
 import { withLoginContext, ILoginStore } from '../../../contexts/LoginContext';
-import { IMemberModel } from '../../../constance/models';
+import { IMemberModel, ROOTURL } from '../../../constance/models';
 import Dropzone from 'react-dropzone';
 
 /**
@@ -158,7 +158,7 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
         if (!this.state.profile) { return; }
         const data = new FormData();
         data.append("upload", this.state.profile!);
-        axios.post("http://localhost:8081/account/uploadProfile", data)
+        axios.post(ROOTURL+"/account/uploadProfile", data)
             .then((res) => this.props.loginCheck());
     }
 
@@ -168,7 +168,7 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
         data.append("chepw", this.state.chepw);
         data.append("id", this.props.logined.id);
         data.append("password", this.state.pw);
-        axios.post("http://localhost:8081/account/updateuser", data)
+        axios.post(ROOTURL+"/account/updateuser", data)
             .then((response) => {
                 alert("변경되었습니다.");
             })

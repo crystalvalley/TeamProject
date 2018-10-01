@@ -1,6 +1,6 @@
 import * as  React from 'react';
 import axios from 'axios';
-import { IMemberModel, IRoomModel, IMsgModel, IAlarmModel } from '../constance/models';
+import { IMemberModel, IRoomModel, IMsgModel, IAlarmModel, ROOTURL } from '../constance/models';
 
 /**
  * @author : ParkHyeokjoon
@@ -58,7 +58,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         this.state = {
             logined: {
                 profileImg: "",
-                id: "testid",
+                id: "ParkHyeokJoon",
             },
             alarms: [],
             profileURL: "",
@@ -98,8 +98,10 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     }
 
     private loginCheck() {
-        axios.post("http://localhost:8081/account/loginCheck")
+        axios.post(ROOTURL+"/account/loginCheck")
             .then((response) => {
+                this.alarmRefresh();
+                this.connect();
                 if (response.data.id === "FAILED LOGIN") { return; }
                 this.setState({
                     logined: response.data
@@ -109,7 +111,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                     this.alarmRefresh();
                     if (this.state.profileURL === "") {
                         const xhr = new XMLHttpRequest();
-                        xhr.open("GET", "http://localhost:8081/resources" + this.state.logined.profileImg);
+                        xhr.open("GET", ROOTURL+"/resources" + this.state.logined.profileImg);
                         xhr.responseType = "blob";
                         xhr.addEventListener("load", () => {
                             this.setState({
@@ -229,6 +231,21 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 this.socketRefesh(message.data);
             } else if (message.type === "alarm-Refresh") {
                 this.alarmRefresh();
+            } else if (message.type === "chat-exit") {
+                const nextRooms = this.state.rooms;
+                const sub = nextRooms[message.roomId];
+                if (sub.chat === undefined) { sub.chat = [] }
+                sub.chat = [...nextRooms[message.roomId].chat, {
+                    type: "",
+                    sender: {
+                        id:"system msg",
+                        profileImg:""                        
+                    },
+                    destination: [], roomId: message.roomId, data: message.data
+                }]
+                this.setState({
+                    rooms: nextRooms
+                })
             }
         }
     }
@@ -303,9 +320,9 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         // this.setConnected(false);
     }
     private alarmRefresh() {
-        axios.get("http://localhost:8081/alarms/requestAlarms")
+        axios.get(ROOTURL+"/alarms/requestAlarms")
             .then((response) => {
-                
+
                 this.setState({
                     alarms: response.data
                 })

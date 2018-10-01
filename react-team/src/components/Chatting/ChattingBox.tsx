@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, Typography, Grow, Paper, IconButton, TextField } from '@material-ui/core';
-import { IRoomModel, IMsgModel, IMemberModel } from '../../constance/models';
+import { IRoomModel, IMsgModel, IMemberModel, ROOTURL } from '../../constance/models';
 import ArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import ChatWrapper from './ChattingText/ChatWrapper';
+import Exit from '@material-ui/icons/HighlightOff';
+import axios from 'axios';
 
 const style: StyleRulesCallback = (theme: Theme) => ({
     chatBox: {
@@ -79,15 +81,16 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
         this.onCheck = this.onCheck.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.endChat = this.endChat.bind(this);
     }
     public render() {
         const { open } = this.state;
         const { classes } = this.props;
         const addSubName = this.state.open ? "" : " " + classes.hide
         let title: string = "";
-        for(const m of this.props.roomMembers){
-            if(m.member.id===this.props.loginedId.id){continue;}
-            title +=","+m.member.id
+        for (const m of this.props.roomMembers) {
+            if (m.member.id === this.props.loginedId.id) { continue; }
+            title += "," + m.member.id
         }
         title += "과의 채팅"
         title = title.substring(1);
@@ -98,6 +101,14 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                 <div className={classes.container}>
                     <Grow in={open} >
                         <Paper elevation={4} className={classes.paper + addSubName}>
+                            <div>
+                                <span>{title}</span>
+                                <IconButton
+                                    onClick={this.endChat}
+                                >
+                                    <Exit />
+                                </IconButton>
+                            </div>
                             <ChatWrapper
                                 roomMembers={this.props.roomMembers}
                                 profileURL={this.props.profileURL}
@@ -176,6 +187,15 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                 msg: ""
             })
         }
+    }
+    private endChat(){
+        axios.get(ROOTURL+"/chattings/end",{
+            params : {
+                roomnumber : this.props.roomId
+            }
+        }).then((response)=>{
+            alert("?")
+        })
     }
 }
 

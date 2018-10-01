@@ -1,5 +1,6 @@
 import * as  React from 'react';
 import axios from 'axios';
+import { ROOTURL } from '../constance/models';
 
 /**
  * @author : ParkHyeokjoon
@@ -57,7 +58,7 @@ class FavoriteProvider extends React.Component<{}, IFavoriteStore&{check:boolean
         this.setState({
             favorites : newFav
         })
-        axios.get("http://localhost:8081/boards/setFavorites",{
+        axios.get(ROOTURL+"/boards/setFavorites",{
             params:{
                 id : num
             }
@@ -69,7 +70,7 @@ class FavoriteProvider extends React.Component<{}, IFavoriteStore&{check:boolean
     }
 
     private getFavorites(){
-        axios.get("http://localhost:8081/boards/getFavorites")
+        axios.get(ROOTURL+"/boards/getFavorites")
             .then((result)=>{
                 this.setState({
                     favorites : result.data,

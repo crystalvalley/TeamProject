@@ -39,8 +39,8 @@ public class ListControlController {
 	
 	@GetMapping("/getListNames")
 	public List<String> getListNames(Principal principal){
-		// return ls.getListNames(principal.getName());
-		return ls.getListNames(principal.getName());
+		// return ls.getListNames("ParkHyeokJoon");
+		return ls.getListNames("ParkHyeokJoon");
 	}
 	
 	@PostMapping("/setListOrder")
@@ -48,7 +48,7 @@ public class ListControlController {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,ArrayList<String>> map = new HashMap<>();
 		map = mapper.readValue(names, new TypeReference<Map<String,ArrayList<String>>>(){});
-		ls.setListOrder(map.get("names"), principal.getName());
+		ls.setListOrder(map.get("names"), "ParkHyeokJoon");
 	}
 	
 	@PostMapping("/addCustomList")
@@ -61,7 +61,7 @@ public class ListControlController {
 		// 그다음 조건을 분리
 		List<List<HashMap<String,String>>> bigCondition = 
 				mapper.readValue(map.get("lists"), new TypeReference<List<List<HashMap<String,String>>>>(){});
-		ls.addList(name, principal.getName(), bigCondition);		
+		ls.addList(name, "ParkHyeokJoon", bigCondition);		
 	}
 	@PostMapping("/updateCustomList")
 	public void updateList(Principal principal,@RequestBody String body) throws JsonParseException, JsonMappingException, IOException {
@@ -73,14 +73,14 @@ public class ListControlController {
 		// 그다음 조건을 분리
 		List<List<HashMap<String,String>>> bigCondition = 
 				mapper.readValue(map.get("lists"), new TypeReference<List<List<HashMap<String,String>>>>(){});
-		ls.updateList(name, principal.getName(), bigCondition);		
+		ls.updateList(name, "ParkHyeokJoon", bigCondition);		
 	}
 	@PostMapping("/refreshListOrder")
 	public void refreshListOrder(Principal principal,@RequestBody String listNames) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,ArrayList<String>> map = new HashMap<>();
 		map = mapper.readValue(listNames, new TypeReference<Map<String,ArrayList<String>>>(){});
-		ls.updateOrder(map.get("listNames"), principal.getName());
+		ls.updateOrder(map.get("listNames"), "ParkHyeokJoon");
 	}
 
 

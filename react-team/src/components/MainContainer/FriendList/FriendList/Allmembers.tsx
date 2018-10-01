@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { GridList, GridListTile } from '@material-ui/core';
-import { IMemberModel } from '../../../../constance/models';
+import { IMemberModel, ROOTURL } from '../../../../constance/models';
 import { ILoginStore, withLoginContext } from '../../../../contexts/LoginContext';
 import axios from 'axios';
 import { INetworkStore, withNetworkContext } from '../../../../contexts/NetworkContext';
@@ -43,7 +43,7 @@ class AllFriends extends React.Component<INetworkStore & ILoginStore, IState>{
                 'Cache-Control': 'no-cache'
             }
         })
-        axiosInstance.get("http://localhost:8081/members/members").then((result) => {
+        axiosInstance.get(ROOTURL+"/members/members").then((result) => {
             this.setState({
                 friends: result.data
             })

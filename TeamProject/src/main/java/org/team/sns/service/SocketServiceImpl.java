@@ -11,6 +11,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.team.sns.domain.Room;
 import org.team.sns.domain.RoomMember;
+import org.team.sns.domain.RoomMemberPK;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.persistence.RoomMemberRepository;
 import org.team.sns.persistence.RoomRepository;
@@ -89,5 +90,42 @@ public class SocketServiceImpl implements SocketService {
 		}
 		clients.get(targetid).sendMessage(new TextMessage(sendMsg));
 
+	}
+
+	@Override
+	public void sendExitMsg(List<String> ids, String userid,int roomnumber) throws IOException {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		for (String id : ids) {
+			SignalMessage msg = new SignalMessage();
+			msg.setType("chat-exit");
+			msg.setData(userid);
+			msg.setRoomId(roomnumber);
+			String sendMsg = objectMapper.writeValueAsString(msg);
+			if (clients.get(id) == null) {
+				continue;
+			}
+			clients.get(id).sendMessage(new TextMessage(sendMsg));
+		}
+
+	}
+
+	@Override
+	public void endChatting(String userid, int roomnumber) throws IOException {
+		// TODO Auto-generated method stub
+		RoomMemberPK rmpk = new RoomMemberPK();
+		rmpk.setMember(userid);
+		rmpk.setRoom(roomnumber);
+		rmr.deleteById(rmpk);
+		Room room = rr.findById(roomnumber).get();
+		List<RoomMember> members = room.getRoomMembers();
+		ArrayList<String> targets = new ArrayList<>();
+		for (RoomMember member : members) {
+			targets.add(member.getMember().getId());
+		}
+		sendExitMsg(targets, userid,roomnumber);
+		if (members.size() == 0) {
+			rr.delete(room);
+		}
 	}
 }

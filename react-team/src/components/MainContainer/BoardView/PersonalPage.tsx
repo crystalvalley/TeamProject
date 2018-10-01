@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleRulesCallback, withStyles, Avatar, Typography } from '@material-ui/core';
-import { IPhotoModel, IMemberModel, ICardModel } from '../../../constance/models';
+import { IPhotoModel, IMemberModel, ICardModel, ROOTURL } from '../../../constance/models';
 import { ILoginStore } from '../../../contexts/LoginContext';
 // import { NavLink } from 'react-router-dom';
 import axios from 'axios';
@@ -112,7 +112,7 @@ class PersonalPage extends React.Component<IProps, IState>{
         }
     }
     public componentDidMount() {
-        axios.get("http://localhost:8081/boards/getPersonalPage", {
+        axios.get(ROOTURL+"/boards/getPersonalPage", {
             params: {
                 target: this.props.id
             }
@@ -139,7 +139,7 @@ class PersonalPage extends React.Component<IProps, IState>{
                     <PersonalList cards={this.state.cards} />
                 </div>
                 <div className={classes.secondContainer}>
-                    <Avatar src={"http://localhost:8081/resources" + this.state.userInfo.profileImg} className={classes.avatar} />
+                    <Avatar src={ROOTURL+"/resources" + this.state.userInfo.profileImg} className={classes.avatar} />
                     <div className={classes.textfields}>
                         <Typography
 

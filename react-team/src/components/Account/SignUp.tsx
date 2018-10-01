@@ -2,6 +2,7 @@ import * as React from 'react';
 import { withStyles, TextField, Button, Typography } from '@material-ui/core';
 import axios from 'axios';
 import { signUpStyle } from './Styles/SignUpStyle';
+import { ROOTURL } from '../../constance/models';
 
 /**
  * @author ParkHyeokJoon
@@ -64,7 +65,7 @@ class SignUp extends React.Component<IProps, IState> {
         const { user_id, idValid, password, passwordValid, passwordCheck } = this.state
         if (prevState.user_id !== user_id) {
             if (user_id.length > 5 && user_id.length < 16) {
-                axios.get("http://localhost:8081/account/idCheck", {
+                axios.get(ROOTURL+"/account/idCheck", {
                     params: {
                         _id: this.state.user_id
                     }
@@ -119,7 +120,7 @@ class SignUp extends React.Component<IProps, IState> {
                     <form
                         ref={this.formRef}
                         className={classes.form}
-                        action="http://localhost:8081/account/signup"
+                        action={ROOTURL+"/account/signup"}
                         method="post"
                     >
                         <TextField
@@ -221,7 +222,7 @@ class SignUp extends React.Component<IProps, IState> {
         data.append("id", this.state.user_id);
         data.append("password", this.state.password);
         data.append("email", this.state.emailFirst + "@" + this.state.emailSecond);
-        axios.post("http://localhost:8081/account/signup", data)
+        axios.post(ROOTURL+"/account/signup", data)
             .then((response) => {
                 location.href = "/signin";
             }

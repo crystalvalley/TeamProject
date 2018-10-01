@@ -3,6 +3,7 @@ import { StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
 import BoxContainer from './boxControl/BoxContainer';
 import CreateListContainer from './CreateListContainer';
 import axios from 'axios';
+import { ROOTURL } from '../../../constance/models';
 
 /**
  * @author : ParkHyeokJoon
@@ -72,7 +73,7 @@ class ListController extends React.Component<IProps, IState>{
         );
     }
     private refresh() {
-        axios.get("http://localhost:8081/lists/getListNames")
+        axios.get(ROOTURL+"/lists/getListNames")
             .then((result) => {
                 this.setState({
                     listNames: result.data
@@ -83,7 +84,7 @@ class ListController extends React.Component<IProps, IState>{
         this.setState({
             listNames
         }, () => {
-            axios.post("http://localhost:8081/lists/refreshListOrder", {
+            axios.post(ROOTURL+"/lists/refreshListOrder", {
                 listNames: this.state.listNames
             })
         })

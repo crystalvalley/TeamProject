@@ -25,6 +25,11 @@ public class ChattingController {
 	
 	@GetMapping("/make")
 	public void makeChat(Principal principal,String target) throws IOException {
-		ss.makeChatting(principal.getName(), target);
+		ss.makeChatting("ParkHyeokJoon", target);
+	}
+	
+	@GetMapping("/end")
+	public void endChat(Principal principal,int roomnumber) {
+		System.out.println(roomnumber);
 	}
 }

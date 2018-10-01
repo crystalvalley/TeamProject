@@ -3,7 +3,7 @@ import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import CardList from './CardList';
 import { withStyles, StyleRulesCallback, Theme } from '@material-ui/core';
 import axios from 'axios';
-import { ICardModel } from '../../../constance/models';
+import { ICardModel, ROOTURL } from '../../../constance/models';
 import ArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import ArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import { Motion, spring } from 'react-motion';
@@ -177,7 +177,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
         );
     }
     private refresh() {
-        axios.get("http://localhost:8081/lists/getListNames")
+        axios.get(ROOTURL+"/lists/getListNames")
             .then((result) => {
                 this.setState({
                     order: result.data
@@ -185,7 +185,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
                     this.state.order.map((name, index) => {
                         // 검색만 예외, context에서 가져오므로
                         if (name === "SearchField") { return }
-                        axios.get("http://localhost:8081/boards/getByListName", {
+                        axios.get(ROOTURL+"/boards/getByListName", {
                             params: {
                                 listName: name,
                                 page: 0
@@ -227,7 +227,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
         }
         this.setState(newState);
         const axiosInstance = axios.create();
-        axiosInstance.post("http://localhost:8081/lists/setListOrder", {
+        axiosInstance.post(ROOTURL+"/lists/setListOrder", {
             names: newOrder
         })
         return;
@@ -235,7 +235,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
 
     private favoriteCheck() {
         // 리프레시는 초기화
-        axios.get("http://localhost:8081/boards/getByListName", {
+        axios.get(ROOTURL+"/boards/getByListName", {
             params: {
                 listName: "Favorites",
                 page: 0
@@ -257,7 +257,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
     private scrollEnd(listName: string) {
         if (this.state.lists[listName].end) { return }
         const pageOffset = this.state.lists[listName].getPage;
-        axios.get("http://localhost:8081/boards/getByListName", {
+        axios.get(ROOTURL+"/boards/getByListName", {
             params: {
                 listName,
                 page: pageOffset + 1

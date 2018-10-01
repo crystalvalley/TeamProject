@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ICardModel } from '../constance/models';
+import { ICardModel, ROOTURL } from '../constance/models';
 import axios from 'axios';
 
 /**
@@ -63,7 +63,7 @@ export class SearchProvider extends React.Component<{}, ISearchState>{
         },this.getCards)
     }
     private getCards() {
-        axios.get("http://localhost:8081/boards/search", {
+        axios.get(ROOTURL+"/boards/search", {
             params: {
                 keyword: this.state.keyword,
                 page: this.state.getPage

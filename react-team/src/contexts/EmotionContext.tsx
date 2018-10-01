@@ -1,5 +1,6 @@
 import * as  React from 'react';
 import axios from 'axios';
+import { ROOTURL } from '../constance/models';
 
 /**
  * @author : ParkHyeokjoon
@@ -44,7 +45,7 @@ class EmotionProvider extends React.Component<{}, IEmotionStore> {
     }
     private emotionRequest(boardId: string) {
         if (this.state.emotions[boardId]) { return; }
-        axios.get("http://localhost:8081/boards/getEmotion", {
+        axios.get(ROOTURL+"/boards/getEmotion", {
             params: {
                 boardId: boardId.substr(1)
             }
@@ -77,7 +78,7 @@ class EmotionProvider extends React.Component<{}, IEmotionStore> {
                 }
             }
         })
-        axios.get("http://localhost:8081/boards/addEmotion", {
+        axios.get(ROOTURL+"/boards/addEmotion", {
             params: {
                 boardId: boardId.substr(1),
                 emotionType: click

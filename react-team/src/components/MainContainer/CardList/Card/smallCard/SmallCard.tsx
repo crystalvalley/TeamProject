@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography, IconButton, } from '@material-ui/core';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
-import { ICardModel } from '../../../../../constance/models';
+import { ICardModel, ROOTURL } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 import EmotionBox from './EmotionBox';
 import BigCard from '../bigCard/BigCard';
@@ -120,7 +120,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     <Avatar
                         className={classes.avatar}
                         onClick={this.openMenu}
-                        src={"http://localhost:8081/resources" + card.writer.profileImg}
+                        src={ROOTURL+"/resources" + card.writer.profileImg}
                     />
                     <Typography
                         variant="button"

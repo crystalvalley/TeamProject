@@ -141,6 +141,7 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 		System.out.println("로그인");
 		Member user = signalMessage.getSender();
 		// 웹소켓 생성
+		System.out.println(user.getId());
 		WebSocketSession client = clients.get(user.getId());
 
 		// 유저네임이 이미 있거나 없을 경우를 체크

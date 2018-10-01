@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IMemberModel, IMsgModel } from '../constance/models';
+import { IMemberModel, IMsgModel, ROOTURL } from '../constance/models';
 import { ILoginStore, withLoginContext } from './LoginContext';
 import axios from 'axios';
 
@@ -92,7 +92,7 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
     }
     private addFriend(memberid: string) {
         alert(memberid + "를 친구 추가");
-        axios.get("http://localhost:8081/networks/requestFriend", {
+        axios.get(ROOTURL+"/networks/requestFriend", {
             params: {
                 target: memberid
             }
@@ -103,7 +103,7 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
 
     private delFriend(memberid: string) {
         alert(memberid + "를 친구 삭제");
-        axios.get("http://localhost:8081/networks/delFriend", {
+        axios.get(ROOTURL+"/networks/delFriend", {
             params: {
                 target: memberid
             }
@@ -113,7 +113,7 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
 
     }
     private addFollow(memberid: string) {
-        axios.get("http://localhost:8081/networks/addFollow", {
+        axios.get(ROOTURL+"/networks/addFollow", {
             params: {
                 target: memberid
             }
@@ -123,7 +123,7 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
 
     }
     private delFollow(memberid: string) {
-        axios.get("http://localhost:8081/networks/delFollow", {
+        axios.get(ROOTURL+"/networks/delFollow", {
             params: {
                 target: memberid
             }
@@ -133,7 +133,7 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
 
     }
     private refresh() {
-        axios.get("http://localhost:8081/networks/getNetworks")
+        axios.get(ROOTURL+"/networks/getNetworks")
             .then((result) => {
                 this.setState({
                     friendList: result.data.friendList,
@@ -143,7 +143,7 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
             })
     }
     private addBlock(memberid: string) {
-        axios.get("http://localhost:8081/networks/addBlock", {
+        axios.get(ROOTURL+"/networks/addBlock", {
             params: {
                 target: memberid
             }

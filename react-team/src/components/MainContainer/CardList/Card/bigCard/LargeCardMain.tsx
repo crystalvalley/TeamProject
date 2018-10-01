@@ -16,7 +16,7 @@ import axios from 'axios';
 import { EditorState, convertFromRaw, Editor, convertToRaw } from 'draft-js';
 import { Button, Paper, Table, TableBody, TableRow, TableCell, TableHead } from '@material-ui/core';
 import Axios from 'axios';
-import { ICardModel, IReplyModel } from '../../../../../constance/models';
+import { ICardModel, IReplyModel, ROOTURL } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 import EmotionBox from '../smallCard/EmotionBox';
 import Scrollbars from 'react-custom-scrollbars';
@@ -206,7 +206,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
           avatar={
             <Avatar
               className={classes.avatar}
-              src={"http://localhost:8081/resources" + card.writer.profileImg}
+              src={ROOTURL+"/resources" + card.writer.profileImg}
             />
           }
           action={
@@ -303,7 +303,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     );
   }
   private getReply() {
-    axios.get("http://localhost:8081/account/getByCardReply", {
+    axios.get(ROOTURL+"/account/getByCardReply", {
       params: {
         cardnum: this.props.card.id + ""
       }
@@ -336,7 +336,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       )
     );
     data.append("cardnum", this.props.card.id + "");
-    Axios.post("http://localhost:8081/account/saveReply", data)
+    Axios.post(ROOTURL+"/account/saveReply", data)
       .then((response) => {
         // alert(response.data + "리플돌아옴");
         this.getReply();
