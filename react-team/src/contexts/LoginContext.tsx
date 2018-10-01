@@ -100,6 +100,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     private loginCheck() {
         axios.post(ROOTURL + "/account/loginCheck")
             .then((response) => {
+                this.connect();
                 if (response.data.id === "FAILED LOGIN") { return; }
                 this.setState({
                     logined: response.data

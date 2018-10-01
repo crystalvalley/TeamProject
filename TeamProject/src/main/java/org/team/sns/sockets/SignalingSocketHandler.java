@@ -159,7 +159,9 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 		out.setSender(user);
 		out.setData(rooms);
 		String result = objectMapper.writeValueAsString(out);
+		System.out.println(1);
 		clients.get(user.getId()).sendMessage(new TextMessage(result));
+		System.out.println(2);
 	}
 
 }

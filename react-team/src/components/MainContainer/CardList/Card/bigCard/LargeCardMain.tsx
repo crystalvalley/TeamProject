@@ -340,6 +340,10 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       .then((response) => {
         // alert(response.data + "리플돌아옴");
         this.getReply();
+      },()=>{
+        this.setState({
+          replyContent : EditorState.createEmpty(SNSDecorator)
+        })
       })
   }
   private closeMenu() {
