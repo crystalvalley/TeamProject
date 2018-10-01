@@ -1,6 +1,6 @@
 import * as  React from 'react';
 import axios from 'axios';
-import { IMemberModel, IRoomModel, IMsgModel, IAlarmModel, ROOTURL } from '../constance/models';
+import { IMemberModel, IRoomModel, IMsgModel, IAlarmModel, ROOTURL, ROOTSOCKETURL } from '../constance/models';
 
 /**
  * @author : ParkHyeokjoon
@@ -98,7 +98,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     }
 
     private loginCheck() {
-        axios.post(ROOTURL+"/account/loginCheck")
+        axios.post(ROOTURL + "/account/loginCheck")
             .then((response) => {
                 if (response.data.id === "FAILED LOGIN") { return; }
                 this.setState({
@@ -109,7 +109,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                     this.alarmRefresh();
                     if (this.state.profileURL === "") {
                         const xhr = new XMLHttpRequest();
-                        xhr.open("GET", ROOTURL+"/resources" + this.state.logined.profileImg);
+                        xhr.open("GET", ROOTURL + "/resources" + this.state.logined.profileImg);
                         xhr.responseType = "blob";
                         xhr.addEventListener("load", () => {
                             this.setState({
@@ -157,7 +157,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     }
 
     private connect() {
-        const uri = "ws://localhost:8081/signal"
+        const uri = "ws://" + ROOTSOCKETURL + "/signal"
         this.sock = new WebSocket(uri);
         this.sock.onopen = (e: any) => {
             this.sock.send(
@@ -236,8 +236,8 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 sub.chat = [...nextRooms[message.roomId].chat, {
                     type: "",
                     sender: {
-                        id:"system msg",
-                        profileImg:""                        
+                        id: "system msg",
+                        profileImg: ""
                     },
                     destination: [], roomId: message.roomId, data: message.data
                 }]
@@ -318,7 +318,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         // this.setConnected(false);
     }
     private alarmRefresh() {
-        axios.get(ROOTURL+"/alarms/requestAlarms")
+        axios.get(ROOTURL + "/alarms/requestAlarms")
             .then((response) => {
 
                 this.setState({

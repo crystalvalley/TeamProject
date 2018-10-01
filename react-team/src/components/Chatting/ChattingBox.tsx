@@ -188,13 +188,13 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
             })
         }
     }
-    private endChat(){
-        axios.get(ROOTURL+"/chattings/end",{
-            params : {
-                roomnumber : this.props.roomId
+    private endChat() {
+        axios.get(ROOTURL + "/chattings/end", {
+            params: {
+                roomnumber: this.props.roomId
             }
-        }).then((response)=>{
-          return;  
+        }).then((response) => {
+            return;
         })
     }
 }
