@@ -194,7 +194,7 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                 roomnumber : this.props.roomId
             }
         }).then((response)=>{
-            alert("?")
+          return;  
         })
     }
 }

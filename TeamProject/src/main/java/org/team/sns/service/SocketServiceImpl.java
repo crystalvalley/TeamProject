@@ -120,10 +120,13 @@ public class SocketServiceImpl implements SocketService {
 		Room room = rr.findById(roomnumber).get();
 		List<RoomMember> members = room.getRoomMembers();
 		ArrayList<String> targets = new ArrayList<>();
+		ArrayList<String> refresh = new ArrayList<>();
+		refresh.add(userid);
 		for (RoomMember member : members) {
 			targets.add(member.getMember().getId());
 		}
 		sendExitMsg(targets, userid,roomnumber);
+		sendRefreshMsg(refresh, "Chatting");
 		if (members.size() == 0) {
 			rr.delete(room);
 		}
