@@ -213,13 +213,21 @@ class SignUp extends React.Component<IProps, IState> {
             idValid, passwordValid
         } = this.state
         // email validation 추가필요
+        let i=0;
+        while(i<this.state.user_id.length){
+            const char = this.state.user_id.charAt(i);
+            if(char === char.toUpperCase()){
+                return false;
+            }
+            i++
+        }
         return idValid && passwordValid;
 
     }
 
     private submit() {
         const data = new FormData();
-        data.append("id", this.state.user_id);
+        data.append("id", this.state.user_id.toLocaleLowerCase());
         data.append("password", this.state.password);
         data.append("email", this.state.emailFirst + "@" + this.state.emailSecond);
         axios.post(ROOTURL+"/account/signup", data)
