@@ -217,6 +217,9 @@ class SignUp extends React.Component<IProps, IState> {
         while(i<this.state.user_id.length){
             const char = this.state.user_id.charAt(i);
             if(char === char.toUpperCase()){
+                this.setState({
+                    idValid:false
+                })
                 return false;
             }
             i++

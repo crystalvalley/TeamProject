@@ -41,7 +41,7 @@ public class DropboxService {
 		bis.close();
 		Member member = mr.findById(username).get();
 		DropboxVO.Delete del = new Delete();
-		if (member.getProfileImg() != null) {
+		if (member.getProfileImg() != null&&member.getProfileImg()!="/img/pockyhand.png") {
 			del.setFilePath(member.getProfileImg());
 			this.fileDelete(del);
 		}
