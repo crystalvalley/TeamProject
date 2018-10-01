@@ -213,17 +213,7 @@ class SignUp extends React.Component<IProps, IState> {
             idValid, passwordValid
         } = this.state
         // email validation 추가필요
-        let i=0;
-        while(i<this.state.user_id.length){
-            const char = this.state.user_id.charAt(i);
-            if(char === char.toUpperCase()){
-                this.setState({
-                    idValid:false
-                })
-                return false;
-            }
-            i++
-        }
+        
         return idValid && passwordValid;
 
     }

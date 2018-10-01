@@ -68,7 +68,7 @@ class ReplyList extends React.Component<IProps & ILoginStore, IState>{
                 <div
                     className={classes.table}
                 >
-                    <Avatar src={this.props.reply.writer.profileImg} />
+                    <Avatar src={ROOTURL+this.props.reply.writer.profileImg} />
                     <div
                         style={{
                             marginLeft: "10px",
