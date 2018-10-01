@@ -41,8 +41,8 @@ public class NetworkController {
 	@GetMapping("/requestFriend")
 	public void requestFriend(Principal principal, String target) {
 		System.out.println("친구추가들어옴");
-		ns.friendRequest("ParkHyeokJoon", target);
-		as.saveFriendRequest(target, "ParkHyeokJoon");
+		ns.friendRequest(principal.getName(), target);
+		as.saveFriendRequest(target, principal.getName());
 		
 		try {
 			ss.refreshAlarm(target);
@@ -54,8 +54,8 @@ public class NetworkController {
 	@GetMapping("/acceptFriend")
 	public void acceptFriend(Principal principal, String target, String alarmId) {
 		System.out.println("accept trying");
-		System.out.println("ParkHyeokJoon"+"target:"+target);
-		ns.acceptFriend("ParkHyeokJoon", target);
+		System.out.println(principal.getName()+"target:"+target);
+		ns.acceptFriend(principal.getName(), target);
 		Alarm alarm=ar.findById(Integer.parseInt(alarmId)).get();
 		alarm.setChecked(true);
 		try {
@@ -72,29 +72,29 @@ public class NetworkController {
 	@GetMapping("/getNetworks")
 	public HashMap<String,List<Member>> getNetworks(Principal principal){
 		HashMap<String,List<Member>> result = new HashMap<>();
-		result.put("friendList", ns.getFriends("ParkHyeokJoon"));
-		result.put("friendRequest", ns.getFriendsRequest("ParkHyeokJoon"));
+		result.put("friendList", ns.getFriends(principal.getName()));
+		result.put("friendRequest", ns.getFriendsRequest(principal.getName()));
 		return result;
 	}
 	
 	@GetMapping("/addFollow")
 	public void addFollow(Principal principal, String target) {
-		ns.addFollow("ParkHyeokJoon", target);
+		ns.addFollow(principal.getName(), target);
 	}
 	
 	@GetMapping("/delFollow")
 	public void delFollow(Principal principal, String target) {
-		ns.delFollow("ParkHyeokJoon", target);
+		ns.delFollow(principal.getName(), target);
 	}
 	
 	@GetMapping("/addBlock")
 	public void addBlock(Principal principal, String target) {
-		ns.addBlock("ParkHyeokJoon", target);
+		ns.addBlock(principal.getName(), target);
 	}
 	// 2.axios로 보낸 정보를 받아줄 Controller
 	@GetMapping("/delFriend")
 	public void delFriend(Principal principal, String target) {
-		ns.delFriend("ParkHyeokJoon", target);
+		ns.delFriend(principal.getName(), target);
 	}
 
 }

@@ -59,8 +59,8 @@ public class BoardRestController {
 
 	@GetMapping("/getByListName")
 	public List<Board> getByListName(String listName, Principal principal, int page) {
-		// return bs.getBoardByListName(listName,"ParkHyeokJoon");
-		return bs.getBoardByListName(listName, "ParkHyeokJoon", page);
+		// return bs.getBoardByListName(listName,principal.getName());
+		return bs.getBoardByListName(listName, principal.getName(), page);
 	}
 
 	@GetMapping("/view")
@@ -75,11 +75,11 @@ public class BoardRestController {
 
 	@PostMapping("/writeBoard")
 	public void writeBoard(Board board, Principal principal, MultipartFile[] image) throws Exception {
-		// board.setWriter(mr.findById("ParkHyeokJoon").get());
-		board.setWriter(mr.findById("ParkHyeokJoon").get());
+		// board.setWriter(mr.findById(principal.getName()).get());
+		board.setWriter(mr.findById(principal.getName()).get());
 		bs.saveBoard(board);
 		bs.setBoardImage(board, image);
-		as.savementionAlarms(board, "ParkHyeokJoon");
+		as.savementionAlarms(board, principal.getName());
 	}
 
 	@GetMapping("/checkTag")
@@ -95,12 +95,12 @@ public class BoardRestController {
 
 	@GetMapping("/getEmotion")
 	public List<Integer> getEmotion(int boardId, Principal principal) {
-		return bs.getEmotions(boardId, "ParkHyeokJoon");
+		return bs.getEmotions(boardId, principal.getName());
 	}
 
 	@GetMapping("/addEmotion")
 	public String setEmotion(int emotionType, int boardId, Principal principal) {
-		bs.addEmotion(boardId, emotionType, "ParkHyeokJoon");
+		bs.addEmotion(boardId, emotionType, principal.getName());
 		return "success";
 	}
 
@@ -110,17 +110,17 @@ public class BoardRestController {
 		if (keyword.equals("")) {
 			return null;
 		}
-		return bs.getBoardBySearchKeyword(keyword, page, "ParkHyeokJoon");
+		return bs.getBoardBySearchKeyword(keyword, page, principal.getName());
 	}
 
 	@GetMapping("/getFavorites")
 	public List<Integer> getFavorites(Principal principal) {
-		return bs.getFavorites("ParkHyeokJoon");
+		return bs.getFavorites(principal.getName());
 	}
 
 	@GetMapping("/setFavorites")
 	public void setFavorites(Principal principal, int id) {
-		bs.setFavorites("ParkHyeokJoon", id);
+		bs.setFavorites(principal.getName(), id);
 	}
 
 	@GetMapping("/getByBoardNum")
