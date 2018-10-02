@@ -422,7 +422,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		QNetworking net = QNetworking.networking;
 		JPQLQuery<Member> subQuery = from(net).select(net.target);
 		subQuery.where(net.type.eq("Follow"));
-		subQuery.where(net.member.eq(member));
+		subQuery.where(net.target.eq(member));
 		builder.and(board.writer.in(subQuery));
 		return builder;
 
