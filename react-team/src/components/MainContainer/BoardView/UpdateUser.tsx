@@ -177,7 +177,6 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                 this.setState({
                     profile: undefined
                 })
-                this.props.loginCheck()
             });
     }
 

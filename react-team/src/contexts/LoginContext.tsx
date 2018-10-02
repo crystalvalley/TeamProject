@@ -16,10 +16,12 @@ export interface ILoginStore {
     roomIds: number[];
     profileURL: string,
     alarms: IAlarmModel[];
+    networkReload:boolean,
     loginCheck(): void;
     sendMessage(msg: IMsgModel): void;
     socketRefesh(dataType: string): void;
     alarmRefresh(): void;
+    networkRefreshEnd():void;
 }
 
 
@@ -32,10 +34,12 @@ const loginContext = React.createContext<ILoginStore>({
     rooms: {},
     roomIds: [],
     profileURL: "",
+    networkReload:false,
     loginCheck: () => { return },
     sendMessage: (msg: IMsgModel) => { return },
     socketRefesh: (dataType: string) => { return },
-    alarmRefresh: () => { return; }
+    alarmRefresh: () => { return; },
+    networkRefreshEnd:()=>{return;}
 });
 class LoginProvider extends React.Component<{}, ILoginStore> {
 
@@ -55,6 +59,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         this.sendMessage = this.sendMessage.bind(this);
         this.socketRefesh = this.socketRefesh.bind(this);
         this.alarmRefresh = this.alarmRefresh.bind(this);
+        this.networkRefreshEnd = this.networkRefreshEnd.bind(this);
         this.state = {
             logined: {
                 profileImg: "",
@@ -64,10 +69,12 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             profileURL: "",
             rooms: {},
             roomIds: [],
+            networkReload:false,
             loginCheck: this.loginCheck,
             sendMessage: this.sendMessage,
             socketRefesh: this.socketRefesh,
-            alarmRefresh: this.alarmRefresh
+            alarmRefresh: this.alarmRefresh,
+            networkRefreshEnd:this.networkRefreshEnd
         }
         this.logError = this.logError.bind(this);
         this.connect = this.connect.bind(this);
@@ -77,7 +84,6 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         this.disconnect = this.disconnect.bind(this);
         this.send = this.send.bind(this);
     }
-
     // 새로고침 했을 때 적용하도록
     public componentDidMount() {
         this.loginCheck();
@@ -129,6 +135,13 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 */
             })
     }
+
+    private networkRefreshEnd(){
+        this.setState({
+            networkReload : false
+        })
+    }
+
     private socketRefesh(dataType: string) {
         this.sock.send(
             JSON.stringify({
@@ -244,9 +257,16 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 this.setState({
                     rooms: nextRooms
                 })
+            }else if(message.type==="reload"){
+                this.loginCheck();
+            }else if(message.type==="network-reload"){
+                this.setState({
+                    networkReload:true
+                })
             }
         }
     }
+
 
     private startRTC() {
         this.pc = new webkitRTCPeerConnection(this.configuration);

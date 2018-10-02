@@ -93,7 +93,7 @@ public class SocketServiceImpl implements SocketService {
 	}
 
 	@Override
-	public void sendExitMsg(List<String> ids, String userid,int roomnumber) throws IOException {
+	public void sendExitMsg(List<String> ids, String userid, int roomnumber) throws IOException {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 		for (String id : ids) {
@@ -125,10 +125,36 @@ public class SocketServiceImpl implements SocketService {
 		for (RoomMember member : members) {
 			targets.add(member.getMember().getId());
 		}
-		sendExitMsg(targets, userid,roomnumber);
+		sendExitMsg(targets, userid, roomnumber);
 		sendRefreshMsg(refresh, "Chatting");
 		if (members.size() == 0) {
 			rr.delete(room);
 		}
+	}
+
+	@Override
+	public void sendSystemhMsg(List<String> ids, String msgType, String dataType) throws IOException {
+		// TODO Auto-generated method stub
+		for (String id : ids) {
+			SignalMessage msg = new SignalMessage();
+			msg.setType(msgType);
+			msg.setData(dataType);
+			String sendMsg = objectMapper.writeValueAsString(msg);
+			if (clients.get(id) == null) {
+				continue;
+			}
+			clients.get(id).sendMessage(new TextMessage(sendMsg));
+		}
+
+	}
+
+	@Override
+	public void sendSystemhMsg(String id, String msgType, String dataType) throws IOException {
+		// TODO Auto-generated method stub
+		SignalMessage msg = new SignalMessage();
+		msg.setType(msgType);
+		msg.setData(dataType);
+		String sendMsg = objectMapper.writeValueAsString(msg);
+		clients.get(id).sendMessage(new TextMessage(sendMsg));
 	}
 }

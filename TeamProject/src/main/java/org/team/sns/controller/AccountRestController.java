@@ -99,7 +99,6 @@ public class AccountRestController {
 
 	@PostMapping("/uploadProfile")
 	public String uploadProfile(@RequestParam("upload") MultipartFile upload, Principal principal) throws Exception {
-		System.out.println("test");
 		return ds.fileUpload(upload, principal.getName());
 	}
 

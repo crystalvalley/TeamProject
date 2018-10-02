@@ -82,6 +82,12 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
     public componentDidMount() {
         this.refresh();
     }
+    public componentDidUpdate(){
+        if(this.props.networkReload){
+            this.props.networkRefreshEnd();
+            this.refresh();            
+        }
+    }
     public render() {
         const value = { ...this.state, ...this.props.logined }
         return (
