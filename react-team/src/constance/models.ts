@@ -53,6 +53,7 @@ export interface IConditionModel {
 }
 
 export interface IRoomModel {
+    roomName:string;
     roomId: number;
     roomMembers: IRoomMemberModel[]
     contentUrl: string;

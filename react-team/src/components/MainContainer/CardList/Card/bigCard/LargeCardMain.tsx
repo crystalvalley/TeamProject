@@ -344,7 +344,6 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     })
   }
   private submit() {
-
     {/*비밀번호는 폼으로 가져오면된다.  */ }
     const data = new FormData();
     data.append("replyContent",
@@ -377,8 +376,3 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
 }
 
 export default withStyles(styles)(RecipeReviewCard);
-
-
-
-
-

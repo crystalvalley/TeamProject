@@ -20,4 +20,5 @@ public interface SocketService {
 	public void refreshAlarm(String targetid) throws IOException;
 	public void sendExitMsg(List<String> ids,String userid,int roomnumber) throws IOException;
 	public void endChatting(String userid, int roomnumber) throws IOException;
+	public void joinChatMembers(int roomId,List<String> ids) throws IOException;
 }

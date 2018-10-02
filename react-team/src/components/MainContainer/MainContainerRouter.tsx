@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
 import CardListContainer from './CardList/CardListContainer';
-import UpdateUser from './BoardView/UpdateUser';
 import AllFriends from './FriendList/FriendList/AllFriends';
 import ListController from './ListControl/ListController';
 import PersonalPage from './BoardView/PersonalPage';
@@ -74,7 +73,6 @@ class MainContainerRouter extends React.Component<IProps> {
                     <Route path="/PersonalPage/:id" component={this.personalPageHandler()} />
                     <Route path="/listControl" component={ListController} />
                     <Route path="/AllFriends" component={AllFriends} />
-                    <Route path="/userUpdate" component={UpdateUser} />
                     <Route path="/" component={CardListContainer} />
                 </Switch>
                 <ChattingContainer />

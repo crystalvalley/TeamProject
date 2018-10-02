@@ -157,4 +157,16 @@ public class SocketServiceImpl implements SocketService {
 		String sendMsg = objectMapper.writeValueAsString(msg);
 		clients.get(id).sendMessage(new TextMessage(sendMsg));
 	}
+
+	@Override
+	public void joinChatMembers(int roomId, List<String> ids) throws IOException {
+		// TODO Auto-generated method stub
+		for(String id:ids) {
+			RoomMember rMember = new RoomMember();
+			rMember.setMember(mr.findById(id).get());
+			rMember.setRoom(rr.findById(roomId).get());
+			rmr.save(rMember);
+		}		
+		sendRefreshMsg(ids, "Chatting");
+	}
 }
