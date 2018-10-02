@@ -36,7 +36,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     title: {
         textAlign: "center",
         fontSize: "20px",
-        fontFamily:"Jua, snas-serif"
+        fontFamily: "Jua, snas-serif"
     },
     cardBody: {
         padding: "12px",
@@ -44,7 +44,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     content: {
         overflow: "hidden",
         maxHeight: "475px",
-        fontFamily:"Sunflower,sans-serif"
+        fontFamily: "Sunflower,sans-serif"
     },
     username: {
         color: "black",
@@ -63,7 +63,7 @@ interface IProps {
         username: string;
     }
     card: ICardModel,
-    personal?:boolean
+    personal?: boolean
 }
 
 interface IState {
@@ -74,11 +74,11 @@ interface IState {
 }
 
 
-class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
+class SmallCard extends React.Component<IProps & IFavoriteStore  , IState>{
     private anchor: HTMLSpanElement | null;
     private ref: HTMLDivElement | null;
-    private imgWidth : HTMLDivElement|null;
-    constructor(props: IProps & IFavoriteStore) {
+    private imgWidth: HTMLDivElement | null;
+    constructor(props: IProps & IFavoriteStore ) {
         super(props);
         let sub: EditorState;
         try {
@@ -116,14 +116,14 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
         const writeHandler = () => this.openModal(0);
         const handler = () => this.props.setFavorite(this.props.card.id)
         return (
-            <Card className={classes.card} style={{width:this.props.personal?"100%":"", maxWidth:this.props.personal?"":"500px"}}>
+            <Card className={classes.card} style={{ width: this.props.personal ? "100%" : "", maxWidth: this.props.personal ? "" : "500px" }}>
                 <div
                     className={classes.cardHead}
                 >
                     <Avatar
                         className={classes.avatar}
                         onClick={this.openMenu}
-                        src={ROOTURL+"/resources" + card.writer.profileImg}
+                        src={ROOTURL + "/resources" + card.writer.profileImg}
                     />
                     <Typography
                         onClick={this.openMenu}
@@ -141,7 +141,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     >
                         {this.props.favorites.indexOf(this.props.card.id) === -1 ?
                             <FavoriteIcon /> :
-                            <FilledFavoriteIcon style={{color:"red"}}/>
+                            <FilledFavoriteIcon style={{ color: "red" }} />
 
                         }
                     </IconButton>
@@ -152,7 +152,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     />
                 </div>
                 <div
-                    ref={(element)=>{this.imgWidth = element}}
+                    ref={(element) => { this.imgWidth = element }}
                     className={classes.cardBody}
                 >
                     <Typography
@@ -164,7 +164,8 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     {
                         this.props.card.photos.length > 0 ?
                             <ImageViewer
-                                width={this.imgWidth!==undefined?this.imgWidth!.offsetWidth-24:0}
+                                id={this.props.card.id}
+                                width={this.imgWidth !== undefined ? this.imgWidth!.offsetWidth - 24 : 0}
                                 photos={this.props.card.photos}
                             /> :
                             (

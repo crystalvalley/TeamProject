@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
-import { IPhotoModel, ROOTURL } from '../../../../../constance/models';
+import { IPhotoModel } from '../../../../../constance/models';
+import { IBoardStore, withSaveBoardContext } from '../../../../../contexts/SaveBoardContext';
 
 const style: StyleRulesCallback = (theme: Theme) => ({
 
@@ -10,41 +11,22 @@ interface IProps {
     classes: {
 
     },
+    id: number
     photos: IPhotoModel[]
     width: number
 }
 
-interface IState {
-    show: number,
-    files: string[],
-}
 
-class ImageViewer extends React.Component<IProps, IState>{
-    constructor(props: IProps) {
+class ImageViewer extends React.Component<IProps & IBoardStore>{
+    constructor(props: IProps & IBoardStore) {
         super(props);
-        this.state = {
-            show: 0,
-            files: [],
-        }
-        this.changeShow = this.changeShow.bind(this);
-    }
-    public componentDidMount() {
-        const files: string[] = []
-        for (const photo of this.props.photos) {
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", ROOTURL+"/resources" + photo.url);
-            xhr.responseType = "blob";
-            xhr.addEventListener("load", () => {
-                files.push(URL.createObjectURL(xhr.response));
-                this.setState({
-                    files,
-                })
-            })
-            xhr.send();
+        if (!this.props.savedBoardImg[this.props.id]) {
+            this.props.saveBoard(this.props.photos, this.props.id);
         }
     }
     public render() {
-        const { show } = this.state;
+        const { savedBoardImg, id } = this.props
+        const handler = () => { this.props.setShow(this.props.id) }
         return (
             <div
                 style={{
@@ -53,31 +35,25 @@ class ImageViewer extends React.Component<IProps, IState>{
                     textAlign: "center",
                     lineHeight: this.props.width + "px"
                 }}
-                onClick={this.changeShow}
+                onClick={handler}
             >
                 {
-                    this.state.files.length === 0 ?
-                        "" :
-                        <img
-                            style={{
-                                width: "100%",
-                                height: "auto",
-                                verticalAlign: "middle",
-                                objectFit: "contain",
-                            }}
-                            src={this.state.files[show]}
-                        />
+                    savedBoardImg[id] ?
+                        savedBoardImg[id].img.length === 0 ?
+                            "" :
+                            <img
+                                style={{
+                                    width: "100%",
+                                    height: "auto",
+                                    verticalAlign: "middle",
+                                    objectFit: "contain",
+                                }}
+                                src={savedBoardImg[id].img[savedBoardImg[id].show]}
+                            /> : ""
                 }
             </div>
         );
     }
-    private changeShow() {
-        let show = this.state.show + 1;
-        if (show === this.props.photos.length) { show = 0 }
-        this.setState({
-            show
-        })
-    }
 }
 
-export default withStyles(style)(ImageViewer);
+export default withSaveBoardContext(withStyles(style)(ImageViewer));

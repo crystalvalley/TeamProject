@@ -9,6 +9,6 @@ import org.team.sns.domain.ProductStrategy;
  * @version 2018.08.31
  *
  */
-public interface ProductStrategyRepository extends CrudRepository<ProductStrategy, Integer>{
+public interface ProductStrategyRepository extends CrudRepository<ProductStrategy, Integer>,ProductStrategyRepositoryCustom{
 
 }

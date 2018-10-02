@@ -2,8 +2,7 @@ package org.team.sns.service;
 
 import java.util.HashMap;
 import java.util.List;
-
-import org.springframework.stereotype.Service;
+import java.util.Map;
 
 /**
  * 
@@ -18,4 +17,5 @@ public interface ListService {
 	public void addList(String name,String userid,List<List<HashMap<String,String>>> condition);
 	public void updateList(String name,String userid,List<List<HashMap<String,String>>> condition);
 	public void updateOrder(List<String> listNames,String userid);
+	public List<List<Map<String,Object>>> getStrategies(String listname);
 }

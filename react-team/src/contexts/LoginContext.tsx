@@ -16,12 +16,12 @@ export interface ILoginStore {
     roomIds: number[];
     profileURL: string,
     alarms: IAlarmModel[];
-    networkReload:boolean,
+    networkReload: boolean,
     loginCheck(): void;
     sendMessage(msg: IMsgModel): void;
     socketRefesh(dataType: string): void;
     alarmRefresh(): void;
-    networkRefreshEnd():void;
+    networkRefreshEnd(): void;
 }
 
 
@@ -34,12 +34,12 @@ const loginContext = React.createContext<ILoginStore>({
     rooms: {},
     roomIds: [],
     profileURL: "",
-    networkReload:false,
+    networkReload: false,
     loginCheck: () => { return },
     sendMessage: (msg: IMsgModel) => { return },
     socketRefesh: (dataType: string) => { return },
     alarmRefresh: () => { return; },
-    networkRefreshEnd:()=>{return;}
+    networkRefreshEnd: () => { return; }
 });
 class LoginProvider extends React.Component<{}, ILoginStore> {
 
@@ -69,12 +69,12 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             profileURL: "",
             rooms: {},
             roomIds: [],
-            networkReload:false,
+            networkReload: false,
             loginCheck: this.loginCheck,
             sendMessage: this.sendMessage,
             socketRefesh: this.socketRefesh,
             alarmRefresh: this.alarmRefresh,
-            networkRefreshEnd:this.networkRefreshEnd
+            networkRefreshEnd: this.networkRefreshEnd
         }
         this.logError = this.logError.bind(this);
         this.connect = this.connect.bind(this);
@@ -113,17 +113,15 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                     // 로그인 처리 완료 후에 소켓을 즉시 연결
                     this.connect();
                     this.alarmRefresh();
-                    if (this.state.profileURL === "") {
-                        const xhr = new XMLHttpRequest();
-                        xhr.open("GET", ROOTURL + "/resources" + this.state.logined.profileImg);
-                        xhr.responseType = "blob";
-                        xhr.addEventListener("load", () => {
-                            this.setState({
-                                profileURL: URL.createObjectURL(xhr.response)
-                            })
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("GET", ROOTURL + "/resources" + this.state.logined.profileImg);
+                    xhr.responseType = "blob";
+                    xhr.addEventListener("load", () => {
+                        this.setState({
+                            profileURL: URL.createObjectURL(xhr.response)
                         })
-                        xhr.send();
-                    }
+                    })
+                    xhr.send();
                 })
                 /*
                 else{
@@ -136,9 +134,9 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             })
     }
 
-    private networkRefreshEnd(){
+    private networkRefreshEnd() {
         this.setState({
-            networkReload : false
+            networkReload: false
         })
     }
 
@@ -257,11 +255,11 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 this.setState({
                     rooms: nextRooms
                 })
-            }else if(message.type==="reload"){
+            } else if (message.type === "reload") {
                 this.loginCheck();
-            }else if(message.type==="network-reload"){
+            } else if (message.type === "network-reload") {
                 this.setState({
-                    networkReload:true
+                    networkReload: true
                 })
             }
         }

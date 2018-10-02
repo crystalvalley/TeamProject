@@ -10,6 +10,7 @@ import { EmotionProvider } from './contexts/EmotionContext';
 import { FavoriteProvider } from './contexts/FavoriteContext';
 import NetworkProvider from './contexts/NetworkContext';
 import { BrowserRouter } from 'react-router-dom';
+import SaveBoardContextProvider from './contexts/SaveBoardContext';
 
 /**
  * @author : ParkHyeokjoon
@@ -26,9 +27,11 @@ ReactDOM.render(
           <SearchProvider>
             <EmotionProvider>
               <FavoriteProvider>
-                <CssBaseline>
-                  <App />
-                </CssBaseline>
+                <SaveBoardContextProvider>
+                  <CssBaseline>
+                    <App />
+                  </CssBaseline>
+                </SaveBoardContextProvider>
               </FavoriteProvider>
             </EmotionProvider>
           </SearchProvider>

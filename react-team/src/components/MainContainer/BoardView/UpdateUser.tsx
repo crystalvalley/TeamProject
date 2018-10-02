@@ -173,11 +173,7 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
         const data = new FormData();
         data.append("upload", this.state.profile!);
         axios.post(ROOTURL + "/account/uploadProfile", data)
-            .then((res) => {
-                this.setState({
-                    profile: undefined
-                })
-            });
+            .then((res) => {return;});
     }
 
     private submit() {

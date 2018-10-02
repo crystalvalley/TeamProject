@@ -1,7 +1,9 @@
 package org.team.sns.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -112,4 +114,25 @@ public class ListServiceImpl implements ListService{
 		}		
 	}
 
+	@Override
+	public List<List<Map<String, Object>>> getStrategies(String listname) {
+		// TODO Auto-generated method stub
+		//전략들
+		ArrayList<List<Map<String,Object>>> result = new ArrayList<>();
+		List<ProductStrategy> pstrs = psr.getPStrategies(listname);
+		for(ProductStrategy pstr : pstrs) {
+			List<Strategy> strs = str.getTypeandTargets(pstr.getId());
+			List<Map<String,Object>> subResult = new ArrayList<>();
+			for(Strategy str: strs) {
+				Map<String,Object> strmap = new HashMap<>();
+				strmap.put("type", str.getType());
+				String targets = str.getTargets();
+				String[] targetList = targets.split(",");
+				strmap.put("targets", targetList);
+				subResult.add(strmap);
+			}
+			result.add(subResult);			
+		}
+		return result;
+	}
 }
