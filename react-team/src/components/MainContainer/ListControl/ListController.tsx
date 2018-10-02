@@ -16,7 +16,6 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        marginBottom:"100px"
     },
     boxes: {
         flexBasis: "50%",

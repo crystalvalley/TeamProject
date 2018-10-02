@@ -55,6 +55,7 @@ class ImageViewer extends React.Component<IProps, IState>{
                 }}
                 onClick={this.changeShow}
             >
+                <div>{this.props.photos[0].id}</div>
                 {
                     this.state.files.length === 0 ?
                         "" :
