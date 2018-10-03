@@ -26,8 +26,7 @@ class NewMemberDialog extends React.Component<IProps & INetworkStore, IState>{
         this.onChange = this.onChange.bind(this);
     }
     public render() {
-        const filteredList = this.props.friendList;
-        filteredList.filter((member) => {
+        const filteredList = this.props.friendList.filter((member) => {
             for (const rMember of this.props.members) {
                 if (rMember.member.id === member.id) {
                     return false
