@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.team.sns.domain.Board;
 import org.team.sns.domain.Favorites;
 import org.team.sns.domain.Mention;
+import org.team.sns.domain.Reply;
 import org.team.sns.domain.Tag;
 import org.team.sns.vo.Datas;
 import org.team.sns.vo.BoardSearchCondition;
@@ -33,4 +34,5 @@ public interface BoardService {
 	public void setFavorites(String memberid,int id);
 	public void setBoardImage(Board board,MultipartFile[] files) throws Exception;
 	public void delReply(int replyNumber);
+	public Reply saveReply(String userid, int cardnum, String content);
 }

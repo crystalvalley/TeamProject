@@ -23,6 +23,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     media: {
         height: 140,
+        objectFit:"contain"
     },
     button: {
         margin: theme.spacing.unit

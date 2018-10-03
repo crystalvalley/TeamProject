@@ -124,24 +124,7 @@ public class AccountRestController {
 
 	@PostMapping("/saveReply")
 	public Reply saveReply(int cardnum, String replyContent, Principal principal) {
-		// System.out.println("댓글 들어옴" + replyContent);
-		Reply reply = new Reply();
-		Member member = new Member();
-		System.out.println("리플저장" + cardnum + "," + replyContent + ",");
-		System.out.println("리플저장하기 들어옴" + principal.getName());
-		member = mr.findById(principal.getName()).get();
-		reply.setContent(replyContent);
-		reply.setWriter(member);
-		// System.out.println(cardnum);
-		Board board = br.findById(cardnum).get();
-		System.out.println(board);
-		reply.setBoard(board);
-		reply.setOrderPosition("0");
-		// reply.setDepth(reply);
-		rr.save(reply);
-		System.out.println(reply);
-		// 리플라이 저장하기
-		return reply;
+		return bs.saveReply(principal.getName(), cardnum, replyContent);
 	}
 
 	@GetMapping("/getByCardReply")

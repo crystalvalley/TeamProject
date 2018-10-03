@@ -42,7 +42,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     flexDirection: "column",
     flexBasis: "25%",
     flexGrow: 1,
-    textAlign: "center"
+    textAlign: "center",
+    right:0
   },
   id: {
     marginLeft: "10vw",

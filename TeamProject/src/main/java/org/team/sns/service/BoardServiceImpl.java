@@ -247,4 +247,21 @@ public class BoardServiceImpl implements BoardService {
 		rr.deleteById(replyNumber);
 	}
 
+	@Override
+	public Reply saveReply(String userid, int cardnum, String content) {
+		// TODO Auto-generated method stub
+
+		Reply reply = new Reply();
+		Member member = new Member();
+		member = mr.findById(userid).get();
+		reply.setContent(content);
+		reply.setWriter(member);
+		Board board = br.findById(cardnum).get();
+		System.out.println(board);
+		reply.setBoard(board);
+		reply.setOrderPosition("0");
+		rr.save(reply);
+		return reply;
+	}
+
 }
