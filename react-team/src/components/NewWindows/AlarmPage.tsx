@@ -7,9 +7,6 @@ import { ILoginStore, withLoginContext } from "../../contexts/LoginContext";
 import BigCard from "../MainContainer/CardList/Card/bigCard/BigCard";
 import { ROOTURL, ICardModel } from "../../constance/models";
 
-
-
-
 // 일단 알람 페이지랑 알람 뱃지랑 합쳐서 해야 할 것 같다는 생각이 들었고
 // 내일 와서 이거는 해야겠다. 알람 페이지를 props 값을 바꿔 주는 것이 생각보다 쉽지 않다.
 
@@ -25,10 +22,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   },
   paper: {
     marginRight: theme.spacing.unit * 3,
-
   },
 });
-
 
 interface IProps {
   classes: {
@@ -36,7 +31,6 @@ interface IProps {
     paper: string,
     menu: string
   },
-
 }
 
 interface IState {
@@ -45,23 +39,20 @@ interface IState {
   card?: ICardModel
   bigCardOpen: boolean
   alarmOpen: boolean;
-
 }
+
 class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
   private divAnchor: HTMLSpanElement | null;
   // private dummy=[
   //   {"actor_id":"testid1", checked:false, mentioned:true, "alarmId":"1"},{"actor_id":"testid1", checked:false, mentioned:false, "alarmId":"1"}
   // ]
   constructor(props: IProps & ILoginStore) {
-
     super(props)
-
     this.state = {
       anchorEl: "",
       confirmOpen: false,
       bigCardOpen: false,
       alarmOpen: false
-
     }
     this.handleClose = this.handleClose.bind(this)
     this.confrimOpen = this.confrimOpen.bind(this)
@@ -71,8 +62,13 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
     this.bigCardClose = this.bigCardClose.bind(this)
     this.closeAlarm = this.closeAlarm.bind(this);
     this.openAlarm = this.openAlarm.bind(this);
-
   };
+  
+  public componentDidUpdate() {
+    if (this.props.alarms.length === 0) {
+      this.closeAlarm();
+    }
+  }
 
   public getBoards(aid: number, bid: number) {
     Axios.get(ROOTURL + "/boards/getByBoardNum", {

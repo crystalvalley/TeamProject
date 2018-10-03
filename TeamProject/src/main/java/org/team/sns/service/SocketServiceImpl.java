@@ -107,7 +107,6 @@ public class SocketServiceImpl implements SocketService {
 			}
 			clients.get(id).sendMessage(new TextMessage(sendMsg));
 		}
-
 	}
 
 	@Override
@@ -133,12 +132,13 @@ public class SocketServiceImpl implements SocketService {
 	}
 
 	@Override
-	public void sendSystemhMsg(List<String> ids, String msgType, String dataType) throws IOException {
+	public void sendSystemhMsg(List<String> ids, String msgType, String dataType, int roomId) throws IOException {
 		// TODO Auto-generated method stub
 		for (String id : ids) {
 			SignalMessage msg = new SignalMessage();
 			msg.setType(msgType);
 			msg.setData(dataType);
+			msg.setRoomId(roomId);
 			String sendMsg = objectMapper.writeValueAsString(msg);
 			if (clients.get(id) == null) {
 				continue;
@@ -149,11 +149,12 @@ public class SocketServiceImpl implements SocketService {
 	}
 
 	@Override
-	public void sendSystemhMsg(String id, String msgType, String dataType) throws IOException {
+	public void sendSystemhMsg(String id, String msgType, String dataType, int roomId) throws IOException {
 		// TODO Auto-generated method stub
 		SignalMessage msg = new SignalMessage();
 		msg.setType(msgType);
 		msg.setData(dataType);
+		msg.setRoomId(roomId);
 		String sendMsg = objectMapper.writeValueAsString(msg);
 		clients.get(id).sendMessage(new TextMessage(sendMsg));
 	}
@@ -161,7 +162,9 @@ public class SocketServiceImpl implements SocketService {
 	@Override
 	public void joinChatMembers(int roomId, List<String> ids) throws IOException {
 		// TODO Auto-generated method stub
+		String msg = "";
 		for (String id : ids) {
+			msg += "," + id;
 			RoomMember rMember = new RoomMember();
 			rMember.setMember(mr.findById(id).get());
 			rMember.setRoom(rr.findById(roomId).get());
@@ -173,6 +176,7 @@ public class SocketServiceImpl implements SocketService {
 			ids.add(exRMember.getMember().getId());
 		}
 		sendRefreshMsg(ids, "Chatting");
+		sendSystemhMsg(ids, "chat-join", msg.substring(1), roomId);
 	}
 
 	@Override

@@ -232,7 +232,13 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 const nextRooms = this.state.rooms;
                 const sub = nextRooms[message.roomId];
                 if (sub.chat === undefined) { sub.chat = [] }
-                sub.chat = [...nextRooms[message.roomId].chat, { type: "", sender: message.sender, destination: [], roomId: message.roomId, data: message.data }]
+                sub.chat = [...nextRooms[message.roomId].chat, {
+                    type: "",
+                    sender: message.sender,
+                    destination: [],
+                    roomId: message.roomId,
+                    data: message.data
+                }]
                 this.setState({
                     rooms: nextRooms
                 })
@@ -250,7 +256,9 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                         id: "system msg",
                         profileImg: ""
                     },
-                    destination: [], roomId: message.roomId, data: message.data
+                    destination: [],
+                    roomId: message.roomId,
+                    data: message.data
                 }]
                 this.setState({
                     rooms: nextRooms
@@ -260,6 +268,23 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             } else if (message.type === "network-reload") {
                 this.setState({
                     networkReload: true
+                })
+            }else if(message.type==="chat-join"){
+                const nextRooms = this.state.rooms;
+                const sub = nextRooms[message.roomId];
+                if (sub.chat === undefined) { sub.chat = [] }
+                sub.chat = [...nextRooms[message.roomId].chat, {
+                    type: "",
+                    sender: {
+                        id: "system msg",
+                        profileImg: ""
+                    },
+                    destination: [],
+                    roomId: message.roomId,
+                    data: message.data+"님이 채팅에 참여하였습니다."
+                }]
+                this.setState({
+                    rooms: nextRooms
                 })
             }
         }
