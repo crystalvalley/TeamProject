@@ -159,6 +159,7 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
     );
   }
   private openAlarm() {
+    if (this.props.alarms.length === 0) { return; }
     this.setState({
       alarmOpen: true
     })

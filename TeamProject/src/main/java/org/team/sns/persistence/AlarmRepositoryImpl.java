@@ -41,6 +41,7 @@ public class AlarmRepositoryImpl extends QuerydslRepositorySupport implements Al
 		alarmQuery.select(alarm);
 		alarmQuery.where(alarm.receiver_id.eq(mr.findById(userid).get()));
 		alarmQuery.where(alarm.checked.eq(false));
+		alarmQuery.orderBy(alarm.alarmId.desc());
 		List<Alarm> result  = alarmQuery.fetch();
 		System.out.println("리시버의 id:"+alarm.receiver_id);
 		System.out.println("찾아온 결과:"+result);
