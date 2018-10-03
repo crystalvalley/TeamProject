@@ -57,6 +57,7 @@ class ChattingContainer extends React.Component<IProps & ILoginStore>{
                                         key={index}
                                     >
                                         <ChattingBox
+                                            chattingLog={this.props.chatLog[roomId]}
                                             loginCheck={this.props.loginCheck}
                                             profileURL={this.props.profileURL}
                                             key={index}

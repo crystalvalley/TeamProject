@@ -1,6 +1,6 @@
 import * as  React from 'react';
 import axios from 'axios';
-import { IMemberModel, IRoomModel, IMsgModel, IAlarmModel, ROOTURL, ROOTSOCKETURL } from '../constance/models';
+import { IMemberModel, IRoomModel, IMsgModel, IAlarmModel, ROOTURL, ROOTSOCKETURL, IChatModel } from '../constance/models';
 
 /**
  * @author : ParkHyeokjoon
@@ -12,7 +12,10 @@ export interface ILoginStore {
     logined: IMemberModel;
     rooms: {
         [roomId: number]: IRoomModel
-    }
+    },
+    chatLog: {
+        [roomId: number]: IChatModel[]
+    },
     roomIds: number[];
     profileURL: string,
     alarms: IAlarmModel[];
@@ -30,6 +33,7 @@ const loginContext = React.createContext<ILoginStore>({
         profileImg: "",
         id: "",
     },
+    chatLog: {},
     alarms: [],
     rooms: {},
     roomIds: [],
@@ -65,6 +69,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 profileImg: "",
                 id: "crystalvalley",
             },
+            chatLog: {},
             alarms: [],
             profileURL: "",
             rooms: {},
@@ -220,13 +225,16 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
             if (message.type === "login-response") {
                 let roomIds: number[] = [];
                 let rooms = {};
+                let chatLog = {};
                 for (const data of message.data) {
-                    rooms = { ...rooms, [data.roomId]: data }
-                    roomIds = [...roomIds, data.roomId]
+                    rooms = { ...rooms, [data.room.roomId]: data.room }
+                    roomIds = [...roomIds, data.room.roomId]                                        
+                    chatLog = {...chatLog, [data.room.roomId]:data.chatlog}
                 }
                 this.setState({
                     rooms,
-                    roomIds
+                    roomIds,
+                    chatLog
                 })
             } else if (message.type === "chat-response") {
                 const nextRooms = this.state.rooms;
@@ -269,7 +277,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 this.setState({
                     networkReload: true
                 })
-            }else if(message.type==="chat-join"){
+            } else if (message.type === "chat-join") {
                 const nextRooms = this.state.rooms;
                 const sub = nextRooms[message.roomId];
                 if (sub.chat === undefined) { sub.chat = [] }
@@ -281,7 +289,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                     },
                     destination: [],
                     roomId: message.roomId,
-                    data: message.data+"님이 채팅에 참여하였습니다."
+                    data: message.data + "님이 채팅에 참여하였습니다."
                 }]
                 this.setState({
                     rooms: nextRooms

@@ -1,5 +1,7 @@
 package org.team.sns.sockets;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +12,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import org.team.sns.domain.ChatMsg;
 import org.team.sns.domain.Member;
 import org.team.sns.domain.Room;
+import org.team.sns.persistence.ChatMsgRepository;
 import org.team.sns.persistence.RoomMemberRepository;
 import org.team.sns.persistence.RoomRepository;
 import org.team.sns.vo.ClientSockets;
@@ -32,6 +36,8 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 	RoomRepository rr;
 	@Autowired
 	RoomMemberRepository rmr;
+	@Autowired
+	ChatMsgRepository cmr;
 
 	private static final Logger LOG = LoggerFactory.getLogger(SignalingSocketHandler.class);
 
@@ -110,8 +116,13 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 			out.setData(signalMessage.getData());
 			out.setRoomId(roomId);
 			String result = objectMapper.writeValueAsString(out);
+			// msg 저장
+			ChatMsg cmsg = new ChatMsg();
+			cmsg.setMsg((String)signalMessage.getData());
+			cmsg.setWriter(user);
+			cmsg.setRoom(rr.findById(roomId).get());
+			cmr.save(cmsg);
 			target.sendMessage(new TextMessage(result));
-
 		}
 	}
 
@@ -121,8 +132,7 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 		// 웹소켓 생성
 		System.out.println(user.getId());
 		WebSocketSession client = clients.get(user.getId());
-
-		// 유저네임이 이미 있거나 없을 경우를 체크
+		List<Map<String,Object>> data = new ArrayList<>();		// 유저네임이 이미 있거나 없을 경우를 체크
 		if (client == null || !client.isOpen()) {
 			LOG.debug("Login {} : OK", user);
 			// 유저네임을 키로 세션을 저장
@@ -131,11 +141,20 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 		} else {
 			LOG.debug("Login {} : KO", user.getId());
 		}
+		// 채팅방 검색
 		List<Room> rooms = rmr.getRoomsByloginedUser(user.getId());
+		// 채팅방별 로그 검색
+		for(Room room : rooms) {
+			Map<String,Object> sub = new HashMap<>();
+			List<ChatMsg> log = cmr.getChattingLog(room.getRoomId());
+			sub.put("room", room);
+			sub.put("chatlog", log);
+			data.add(sub);
+		}
 		SignalMessage out = new SignalMessage();
 		out.setType(LOGIN_RESPONSE);
 		out.setSender(user);
-		out.setData(rooms);
+		out.setData(data);
 		String result = objectMapper.writeValueAsString(out);
 		System.out.println(1);
 		clients.get(user.getId()).sendMessage(new TextMessage(result));

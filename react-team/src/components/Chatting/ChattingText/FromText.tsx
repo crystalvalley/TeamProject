@@ -26,9 +26,9 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         display: "inline-block",
         padding: "5px",
         borderRadius: "5px",
-        margin:"3px",
+        margin: "3px",
         boxShadow: "1px 1px 2px 2px grey",
-        fontFamily:"Hi Melody, cursive"
+        fontFamily: "Hi Melody, cursive"
     }
 })
 
@@ -56,15 +56,11 @@ class FromText extends React.Component<IProps>{
                         {
                             this.props.chat.sender.id === "system msg" ?
                                 "" :
-                                <Avatar src={chat.sender.profileImg === undefined ? "" : ROOTURL+"/resources" + chat.sender.profileImg} className={classes.avatar} />
+                                <Avatar src={chat.sender.profileImg === undefined ? "" : ROOTURL + "/resources" + chat.sender.profileImg} className={classes.avatar} />
                         }
                     </div>
                     <div className={classes.msgBox}>
-                        {
-                            this.props.chat.sender.id === "system msg" ?
-                                chat.data + "님이 채팅방을 나갔습니다." :
-                                chat.data
-                        }
+                        {chat.data}
                     </div>
                 </div>
             </React.Fragment>

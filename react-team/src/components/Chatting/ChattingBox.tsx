@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, Typography, Grow, Paper, IconButton, TextField } from '@material-ui/core';
-import { IRoomModel, IMsgModel, IMemberModel, ROOTURL, IRoomMemberModel } from '../../constance/models';
+import { IRoomModel, IMsgModel, IMemberModel, ROOTURL, IRoomMemberModel, IChatModel } from '../../constance/models';
 import ArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import ChatWrapper from './ChattingText/ChatWrapper';
@@ -69,6 +69,7 @@ interface IProps {
     profileURL: string,
     roomId: number,
     roomMembers: IRoomMemberModel[],
+    chattingLog: IChatModel[],
     loginCheck(): void;
     sendMessage(msg: IMsgModel): void;
 }
@@ -102,8 +103,8 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
         const { open } = this.state;
         const { classes } = this.props;
         const addSubName = this.state.open ? "" : " " + classes.hide
-        const title : string = this.props.roomMembers.filter((item)=>{
-            return item.member.id===this.props.loginedId.id
+        const title: string = this.props.roomMembers.filter((item) => {
+            return item.member.id === this.props.loginedId.id
         })[0].roomName;
         return (
             <div
@@ -139,6 +140,8 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                                 />
                             </div>
                             <ChatWrapper
+                                roomId={this.props.roomId}
+                                chattingLog={this.props.chattingLog}
                                 roomMembers={this.props.roomMembers}
                                 profileURL={this.props.profileURL}
                                 chats={this.props.chat === undefined ? [] : this.props.chat}

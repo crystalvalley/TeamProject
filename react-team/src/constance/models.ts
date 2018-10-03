@@ -12,6 +12,13 @@ export interface IMsgModel {
     data: any;
 }
 
+export interface IChatModel {
+    id: number;
+    msg: string;
+    writer: IMemberModel;
+    room: IRoomModel;
+}
+
 // Board도 겸함,
 // title이 없으면 Card, 있으면 Board
 export interface ICardModel {
@@ -57,11 +64,12 @@ export interface IRoomModel {
     roomMembers: IRoomMemberModel[]
     contentUrl: string;
     chat: IMsgModel[];
+    log: IChatModel[];
 }
 
 export interface IRoomMemberModel {
     member: IMemberModel;
-    roomName:string;
+    roomName: string;
 }
 
 
@@ -80,7 +88,7 @@ export interface IAlarmModel {
     board: ICardModel
 }
 
-export const ROOTURL = "http://52.231.69.249:8081" 
-export const ROOTSOCKETURL = "52.231.69.249:8081" 
-// export const ROOTURL = "http://localhost:8081" 
-// export const ROOTSOCKETURL = "localhost:8081" 
+// export const ROOTURL = "http://52.231.69.249:8081" 
+// export const ROOTSOCKETURL = "52.231.69.249:8081" 
+export const ROOTURL = "http://localhost:8081"
+export const ROOTSOCKETURL = "localhost:8081" 

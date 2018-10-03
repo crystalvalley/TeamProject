@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import org.team.sns.domain.ChatMsg;
 import org.team.sns.domain.Room;
 import org.team.sns.domain.RoomMember;
 import org.team.sns.domain.RoomMemberPK;
+import org.team.sns.persistence.ChatMsgRepository;
 import org.team.sns.persistence.MemberRepository;
 import org.team.sns.persistence.RoomMemberRepository;
 import org.team.sns.persistence.RoomRepository;
@@ -37,6 +39,8 @@ public class SocketServiceImpl implements SocketService {
 	RoomRepository rr;
 	@Autowired
 	MemberRepository mr;
+	@Autowired
+	ChatMsgRepository cmr;
 
 	@Override
 	public void makeChatting(String userid, String target) throws IOException {
@@ -93,23 +97,6 @@ public class SocketServiceImpl implements SocketService {
 	}
 
 	@Override
-	public void sendExitMsg(List<String> ids, String userid, int roomnumber) throws IOException {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-		for (String id : ids) {
-			SignalMessage msg = new SignalMessage();
-			msg.setType("chat-exit");
-			msg.setData(userid);
-			msg.setRoomId(roomnumber);
-			String sendMsg = objectMapper.writeValueAsString(msg);
-			if (clients.get(id) == null) {
-				continue;
-			}
-			clients.get(id).sendMessage(new TextMessage(sendMsg));
-		}
-	}
-
-	@Override
 	public void endChatting(String userid, int roomnumber) throws IOException {
 		// TODO Auto-generated method stub
 		RoomMemberPK rmpk = new RoomMemberPK();
@@ -124,6 +111,10 @@ public class SocketServiceImpl implements SocketService {
 		for (RoomMember member : members) {
 			targets.add(member.getMember().getId());
 		}
+		ChatMsg cmsg = new ChatMsg();
+		cmsg.setMsg(userid + "님이 채팅방을 나갔습니다.");
+		cmsg.setRoom(rr.findById(roomnumber).get());
+		cmr.save(cmsg);
 		sendExitMsg(targets, userid, roomnumber);
 		sendRefreshMsg(refresh, "Chatting");
 		if (members.size() == 0) {
@@ -162,6 +153,8 @@ public class SocketServiceImpl implements SocketService {
 	@Override
 	public void joinChatMembers(int roomId, List<String> ids) throws IOException {
 		// TODO Auto-generated method stub
+		System.out.println("새로 참여하는 뉴비");
+		System.out.println(ids);
 		String msg = "";
 		for (String id : ids) {
 			msg += "," + id;
@@ -175,8 +168,45 @@ public class SocketServiceImpl implements SocketService {
 		for (RoomMember exRMember : rMembers) {
 			ids.add(exRMember.getMember().getId());
 		}
+		ChatMsg cmsg = new ChatMsg();
+		cmsg.setMsg(msg.substring(1) + "님이 채팅에 참여하였습니다.");
+		cmsg.setRoom(rr.findById(roomId).get());
+		cmr.save(cmsg);
+		sendJoinMsg(ids, msg.substring(1), roomId);
 		sendRefreshMsg(ids, "Chatting");
-		sendSystemhMsg(ids, "chat-join", msg.substring(1), roomId);
+	}
+
+	@Override
+	public void sendExitMsg(List<String> ids, String userid, int roomnumber) throws IOException {
+		// TODO Auto-generated method stub
+		for (String id : ids) {
+			SignalMessage msg = new SignalMessage();
+			msg.setType("chat-exit");
+			msg.setData(userid + "님이 채팅방을 나갔습니다.");
+			msg.setRoomId(roomnumber);
+			String sendMsg = objectMapper.writeValueAsString(msg);
+			if (clients.get(id) == null) {
+				continue;
+			}
+			clients.get(id).sendMessage(new TextMessage(sendMsg));
+		}
+	}
+
+	@Override
+	public void sendJoinMsg(List<String> ids, String users, int roomnumber) throws IOException {
+		// TODO Auto-generated method stub
+		for (String id : ids) {
+			System.out.println("참여자 : "+id);
+			SignalMessage msg = new SignalMessage();
+			msg.setType("chat-join");
+			msg.setData(users + "님이 채팅에 참여하였습니다.");
+			msg.setRoomId(roomnumber);
+			String sendMsg = objectMapper.writeValueAsString(msg);
+			if (clients.get(id) == null) {
+				continue;
+			}
+			clients.get(id).sendMessage(new TextMessage(sendMsg));
+		}
 	}
 
 	@Override
