@@ -36,6 +36,12 @@ public class ListControlController {
 	@Autowired
 	ListService ls;
 	
+	@GetMapping("/getStrategy")
+	public Map<String,Object> getStrategy(Principal principal,String listname) {
+		HashMap<String,Object> result = new HashMap<>();
+		result.put("listname",listname);
+		return result;		
+	}
 	
 	@GetMapping("/getListNames")
 	public List<String> getListNames(Principal principal){

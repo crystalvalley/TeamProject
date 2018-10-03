@@ -32,4 +32,5 @@ public interface BoardService {
 	public List<Integer> getFavorites(String memberid);
 	public void setFavorites(String memberid,int id);
 	public void setBoardImage(Board board,MultipartFile[] files) throws Exception;
+	public void delReply(int replyNumber);
 }

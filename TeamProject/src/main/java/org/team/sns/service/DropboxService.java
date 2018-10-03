@@ -31,6 +31,8 @@ public class DropboxService {
 	DbxClientV2 dbxClientV2;
 	@Autowired
 	MemberRepository mr;
+	@Autowired
+	SocketService ss;
 
 	// 프로필 이미지 업로드
 	public String fileUpload(MultipartFile file, String username) throws Exception {
@@ -40,13 +42,9 @@ public class DropboxService {
 		System.out.println("uploadMetadata : " + uploadMetadata.toString());
 		bis.close();
 		Member member = mr.findById(username).get();
-		DropboxVO.Delete del = new Delete();
-		if (member.getProfileImg() != null) {
-			del.setFilePath(member.getProfileImg());
-			this.fileDelete(del);
-		}
 		member.setProfileImg(filePath);
 		mr.save(member);
+		ss.sendSystemhMsg(username, "reload", "reload");
 		return uploadMetadata.getPathLower();
 	}
 

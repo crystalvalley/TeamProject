@@ -2,7 +2,6 @@ package org.team.sns.domain;
 
 import java.sql.Timestamp;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,7 +46,7 @@ public class Reply {
 	@UpdateTimestamp
 	private Timestamp updateDate; 
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	// writer_id라는 칼럼으로 참조하는 것은 Member의 user_id (외래키)
 	@JoinColumn(name = "writer_id", referencedColumnName = "user_id",updatable=false,nullable=true)
 	private Member writer;
@@ -69,7 +68,7 @@ public class Reply {
 	@JoinColumn(name="board",referencedColumnName="board_id")
 	private Board board;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name = "replySound", referencedColumnName = "Reply_id")
 	private Reply sound;
 }

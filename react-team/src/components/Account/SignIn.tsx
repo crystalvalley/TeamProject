@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withStyles, TextField, Button, Typography } from '@material-ui/core';
 import { signInStyle } from './Styles/SignInStyle';
 import { ILoginStore, withLoginContext } from '../../contexts/LoginContext';
-import imgg from '../../img/pockyheand.png';
+import imgg from '../../img/pockyhand.png';
 import title from '../../img/TITEL.png';
 /**
  * @author : ParkHyeokJoon
@@ -50,6 +50,7 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
         }
         this.onChangeId = this.onChangeId.bind(this);
         this.onChangePw = this.onChangePw.bind(this);
+        this.onSubmit =this.onSubmit.bind(this);
     }
 
     public componentWillReceiveProps() {
@@ -88,6 +89,7 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
                     <form
                         className={classes.form}
                         method="post"
+                        onSubmit={this.onSubmit}
                     >
                         <TextField
                             onChange={this.onChangeId}
@@ -139,6 +141,13 @@ class SignIn extends React.Component<IProps & ILoginStore, IState> {
 
     private join() {
         location.href = "/signup";
+    }
+    private onSubmit(e: React.FormEvent<HTMLFormElement>) {
+        const str = this.state.userid.toLocaleLowerCase()
+        if (this.state.userid !== str) {
+            e.preventDefault();
+            alert("ID는 소문자로 써주세요");
+        }
     }
 
     // event를 파라미터로 입력받음

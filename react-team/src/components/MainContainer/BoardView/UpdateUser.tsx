@@ -3,7 +3,7 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, TextField, Button } from '@material-ui/core';
 import axios from 'axios';
 import { withLoginContext, ILoginStore } from '../../../contexts/LoginContext';
-import { IMemberModel } from '../../../constance/models';
+import { IMemberModel, ROOTURL } from '../../../constance/models';
 import Dropzone from 'react-dropzone';
 
 /**
@@ -79,7 +79,6 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
         this.onDrop = this.onDrop.bind(this);
     }
 
-
     public render() {
         const handler = () => { this.upload!.open() }
         const { classes } = this.props;
@@ -120,10 +119,20 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                                     : this.props.profileURL}
                             />
                         </Dropzone>
-                        <Button onClick={handler}>
+                        <Button
+                            style={{
+                                fontFamily: "Roboto,sans-serif",
+                            }}
+                            onClick={handler}
+                        >
                             Upload
                         </Button>
-                        <Button onClick={this.resetProfile}>
+                        <Button
+                            style={{
+                                fontFamily: "Roboto,sans-serif",
+                            }}
+                            onClick={this.resetProfile}
+                        >
                             사진 변경
                         </Button>
                     </div>
@@ -136,7 +145,12 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
                         <TextField type="password" label="비밀번호 확인" name="chepw" onChange={this.doChangechepw}>{this.state.chepw}</TextField>
                         <br />
                         <br />
-                        <Button onClick={this.submit}>
+                        <Button
+                            style={{
+                                fontFamily: "Roboto,sans-serif",
+                            }}
+                            onClick={this.submit}
+                        >
                             정보수정
                     </Button>
                     </div>
@@ -158,8 +172,8 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
         if (!this.state.profile) { return; }
         const data = new FormData();
         data.append("upload", this.state.profile!);
-        axios.post("http://localhost:8081/account/uploadProfile", data)
-            .then((res) => this.props.loginCheck());
+        axios.post(ROOTURL + "/account/uploadProfile", data)
+            .then((res) => {return;});
     }
 
     private submit() {
@@ -168,9 +182,9 @@ class UpdateUser extends React.Component<IProps & ILoginStore, IState>{
         data.append("chepw", this.state.chepw);
         data.append("id", this.props.logined.id);
         data.append("password", this.state.pw);
-        axios.post("http://localhost:8081/account/updateuser", data)
+        axios.post(ROOTURL + "/account/updateuser", data)
             .then((response) => {
-                alert("변경되었습니다.");
+                this.props.loginCheck();
             })
     }
     private onDrop(files: File[]) {

@@ -13,10 +13,10 @@ import ShareIcon from "@material-ui/icons/Share";
 import ReplyIcon from "@material-ui/icons/Reply";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from 'axios';
-import { EditorState, convertFromRaw, Editor, convertToRaw } from 'draft-js';
-import { Button, Paper, Table, TableBody, TableRow, TableCell, TableHead } from '@material-ui/core';
+import { EditorState, convertFromRaw, Editor, convertToRaw, ContentState } from 'draft-js';
+import { Button, } from '@material-ui/core';
 import Axios from 'axios';
-import { ICardModel, IReplyModel } from '../../../../../constance/models';
+import { ICardModel, IReplyModel, ROOTURL } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 import EmotionBox from '../smallCard/EmotionBox';
 import Scrollbars from 'react-custom-scrollbars';
@@ -134,8 +134,10 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     height: "430px",
     overflowY: "hidden",
     overflowX: "auto",
+  },
+  font: {
+    fontFamily: "Roboto,sans-serif",
   }
-
 });
 
 interface IProps {
@@ -160,6 +162,7 @@ interface IProps {
     button: string;
     tablebox: string;
     hi: string;
+    font: string;
   }
   // listName: string;
   // id: string;
@@ -172,21 +175,23 @@ interface IState {
   replyContent: EditorState;
   replys: IReplyModel[]
   open: boolean;
+  firstLoad: boolean;
 }
 
 class RecipeReviewCard extends React.Component<IProps, IState> {
   // private div: HTMLDivElement | null;
-  // private scroll: Scrollbars | null;
+  private scroll: Scrollbars | null;
   private imgWidth: HTMLDivElement | null;
   private anchor: HTMLSpanElement | null;
+  private tableWidth: HTMLDivElement | null;
   constructor(props: IProps) {
     super(props)
     this.state = {
       replyContent: EditorState.createEmpty(SNSDecorator),
       editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator),
       replys: [],
-      open: false
-
+      open: false,
+      firstLoad: true
     }
     this.editorChange = this.editorChange.bind;
     this.doChangeReply = this.doChangeReply.bind(this);
@@ -203,16 +208,19 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       /* 모달 눌렀을 때 전체의 오른쪽 모습 */
       <Card className={classes.card}>
         <CardHeader
+          classes={{
+            title: classes.font
+          }}
           avatar={
             <Avatar
               className={classes.avatar}
-              src={"http://localhost:8081/resources" + card.writer.profileImg}
+              src={ROOTURL + "/resources" + card.writer.profileImg}
             />
           }
           action={
             <IconButton onClick={this.writerMenuOpen} >
-              <MoreVertIcon />
               <span ref={(element: any) => { this.anchor = element }} />
+              <MoreVertIcon />
             </IconButton>
           }
           title={card.writer.id}
@@ -228,15 +236,20 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
         />
         <div className={classes.main} ref={(e) => { this.imgWidth = e }}>
           <div className={classes.left}>
-            <ImageViewer
-              width={this.imgWidth ? this.imgWidth.clientWidth * 45 / 100 : 0}
-              height={this.imgWidth ? this.imgWidth.clientHeight * 45 / 100 : 0}
-              photos={this.props.card.photos}
-            />
+            {
+              this.props.card.photos.length !== 0 ?
+                <ImageViewer
+                  width={this.imgWidth ? this.imgWidth.clientWidth * 45 / 100 : 0}
+                  height={this.imgWidth ? this.imgWidth.clientHeight * 45 / 100 : 0}
+                  photos={this.props.card.photos}
+                /> :
+                ""
+            }
             {/*글  아래 */}
             <Scrollbars
               style={{
-                width: this.imgWidth ? this.imgWidth.clientWidth * 45 / 100 : ""
+                width: this.imgWidth ? this.imgWidth.clientWidth * 45 / 100 : "",
+                fontFamily: "Sunflower,sans-serif"
               }}
             >
               <CardContent>
@@ -274,28 +287,24 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
               <Button onClick={this.submit} className={classes.button}>save</Button>
             </div>
             {/*스크롤때문에 댓글창이 제대로 안나온다*/}
-            <Scrollbars className={classes.hi}
+            <Scrollbars
+              className={classes.hi}
               autoHide={true}
+              ref={(e) => { this.scroll = e }}
             >
-              <Paper>
-                <Table>
-                  <TableBody>
-                    <TableHead>
-                      <TableCell style={{ width: "20%" }}>작성자</TableCell>
-                      <TableCell style={{ width: "60%" }}>내용</TableCell>
-                      <TableCell style={{ width: "20%" }}>작성시간</TableCell>
-                    </TableHead>
-                    {
-                      this.state.replys.map((reply, index) => {
-                        return (
-                          <TableRow key={index}>
-                            <ReplyList reply={reply} />
-                          </TableRow>
-                        );
-                      })}
-                  </TableBody>
-                </Table>
-              </Paper>
+              <div ref={(e) => { this.tableWidth = e }}>
+                {
+                  this.state.replys.map((reply, index) => {
+                    return (
+                      <ReplyList
+                        getReply={this.getReply}
+                        key={index}
+                        width={this.tableWidth ? this.tableWidth.offsetWidth : 0}
+                        reply={reply}
+                      />
+                    );
+                  })}
+              </div>
             </Scrollbars>
           </div>
         </div>
@@ -303,7 +312,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     );
   }
   private getReply() {
-    axios.get("http://localhost:8081/account/getByCardReply", {
+    axios.get(ROOTURL + "/account/getByCardReply", {
       params: {
         cardnum: this.props.card.id + ""
       }
@@ -311,6 +320,14 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       .then((response) => {
         this.setState({
           replys: response.data
+        }, () => {
+          if (this.state.firstLoad) {
+            this.setState({
+              firstLoad: false
+            })
+            return;
+          }
+          this.scroll!.scrollToBottom()
         })
       })
   }
@@ -327,7 +344,6 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     })
   }
   private submit() {
-    
     {/*비밀번호는 폼으로 가져오면된다.  */ }
     const data = new FormData();
     data.append("replyContent",
@@ -336,10 +352,14 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       )
     );
     data.append("cardnum", this.props.card.id + "");
-    Axios.post("http://localhost:8081/account/saveReply", data)
+    Axios.post(ROOTURL + "/account/saveReply", data)
       .then((response) => {
         // alert(response.data + "리플돌아옴");
         this.getReply();
+        const eState = EditorState.push(this.state.editorState, ContentState.createFromText(""), "delete-character");
+        this.setState({
+          replyContent: eState
+        })
       })
   }
   private closeMenu() {
@@ -356,8 +376,3 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
 }
 
 export default withStyles(styles)(RecipeReviewCard);
-
-
-
-
-

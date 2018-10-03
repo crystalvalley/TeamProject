@@ -9,52 +9,59 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         verticalAlign: "middle",
         display: "flex",
         flexDirection: "row-reverse",
+        fontFamily: "Roboto,sans-serif"
     },
-    avatar:{
-        width: "30px", 
+    avatar: {
+        width: "30px",
         height: "30px",
-        border:"1px solid black"
+        border: "1px solid black"
     },
-    avatarBlock:{
-        display : "inline-block",
-        textAlign:"center"
+    avatarBlock: {
+        display: "inline-block",
+        textAlign: "center"
     },
-    msgBox:{
+    msgBox: {
         marginRight: "1em",
-         height: "100%", 
-         verticalAlign: "middle", 
-         display: "inline-block" ,
-         padding:"5px",
-         borderRadius:"5px",
-         boxShadow:"1px 1px 2px 2px grey"
+        height: "100%",
+        verticalAlign: "middle",
+        display: "inline-block",
+        padding: "5px",
+        borderRadius: "5px",
+        margin:"3px",
+        boxShadow: "1px 1px 2px 2px grey",
+        fontFamily:"Hi Melody, cursive"
     }
 })
 
 interface IProps {
     classes: {
         block: string;
-        avatar:string;
-        avatarBlock:string;
-        msgBox:string;
+        avatar: string;
+        avatarBlock: string;
+        msgBox: string;
     }
     chat: IMsgModel;
-    profileURL:string;
+    profileURL: string;
 }
 
 class ToText extends React.Component<IProps>{
     public render() {
         const { chat } = this.props;
-        const {classes }=this.props;
+        const { classes } = this.props;
         return (
-            <div className={classes.block}>
-                <div className={classes.avatarBlock} >
-                    <Avatar src={this.props.profileURL} className={classes.avatar} />
+            <React.Fragment>
+                <div style={{textAlign:"right",margin:"3px"}}>
                     {chat.sender.id}
                 </div>
-                <div className={classes.msgBox}>
-                    {chat.data}
+                <div className={classes.block}>
+                    <div className={classes.avatarBlock} >
+                        <Avatar src={this.props.profileURL} className={classes.avatar} />
+                    </div>
+                    <div className={classes.msgBox}>
+                        {chat.data}
+                    </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

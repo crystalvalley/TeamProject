@@ -141,6 +141,7 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 		System.out.println("로그인");
 		Member user = signalMessage.getSender();
 		// 웹소켓 생성
+		System.out.println(user.getId());
 		WebSocketSession client = clients.get(user.getId());
 
 		// 유저네임이 이미 있거나 없을 경우를 체크
@@ -158,7 +159,9 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 		out.setSender(user);
 		out.setData(rooms);
 		String result = objectMapper.writeValueAsString(out);
+		System.out.println(1);
 		clients.get(user.getId()).sendMessage(new TextMessage(result));
+		System.out.println(2);
 	}
 
 }

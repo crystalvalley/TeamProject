@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import { ListItem } from '@material-ui/core';
 import Scrollbars from 'react-custom-scrollbars';
 import { withNetworkContext, INetworkStore } from '../../../../contexts/NetworkContext';
-import { IMemberModel } from '../../../../constance/models';
+import { IMemberModel, ROOTURL } from '../../../../constance/models';
 import Axios from '../../../../../node_modules/axios';
 import ShowupFriendListtile from './ShowupFriendListtile';
 
@@ -75,7 +75,7 @@ class ShowupFriendList extends React.Component<INetworkStore & IProps, IState> {
         'Cache-Control': 'no-cache'
       }
     })
-    axiosInstance.get("http://localhost:8081/networks/getNetworks").then((result) => {
+    axiosInstance.get(ROOTURL+"/networks/getNetworks").then((result) => {
       this.setState({
         friends: result.data.friendlist
       })

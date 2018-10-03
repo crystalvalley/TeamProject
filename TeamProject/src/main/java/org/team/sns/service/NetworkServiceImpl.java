@@ -1,5 +1,7 @@
 package org.team.sns.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class NetworkServiceImpl implements NetworkService{
 	NetworkingRepository nr;
 	@Autowired
 	MemberRepository mr;
+	@Autowired
+	SocketService ss;
 	
 	@Override
 	public void friendRequest(String memberid, String target) {
@@ -50,6 +54,15 @@ public class NetworkServiceImpl implements NetworkService{
 		net.setTarget(mr.findById(target).get());
 		net.setType("Follow");
 		nr.save(net);
+		ArrayList<String> targets = new ArrayList<>();
+		targets.add(memberid);
+		targets.add(target);
+		try {
+			ss.sendSystemhMsg(targets, "network-reload", "network-reload");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -81,7 +94,16 @@ public class NetworkServiceImpl implements NetworkService{
 		npk.setMember(memberid);
 		npk.setTarget(target);
 		Networking net = nr.findById(npk).get();
-		nr.delete(net);				
+		nr.delete(net);		
+		ArrayList<String> targets = new ArrayList<>();
+		targets.add(memberid);
+		targets.add(target);
+		try {
+			ss.sendSystemhMsg(targets, "network-reload", "network-reload");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 
 	@Override

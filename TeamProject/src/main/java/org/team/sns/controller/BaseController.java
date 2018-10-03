@@ -49,6 +49,11 @@ public class BaseController {
 		// System.out.println("??");
 		return "index";
 	}
+	@GetMapping("/Users")
+	public String users() {
+		// System.out.println("??");
+		return "index";
+	}
 
 	@GetMapping("/test")
 	public String test() {
@@ -58,6 +63,12 @@ public class BaseController {
 
 	@GetMapping("/listControl")
 	public String listControl() {
+		// System.out.println("??");
+		return "index";
+	}
+
+	@GetMapping("/AllFriends")
+	public String AllFriends() {
 		// System.out.println("??");
 		return "index";
 	}

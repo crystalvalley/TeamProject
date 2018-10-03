@@ -74,12 +74,13 @@ public class BoardRestController {
 	}
 
 	@PostMapping("/writeBoard")
-	public void writeBoard(Board board, Principal principal, MultipartFile[] image) throws Exception {
+	public String writeBoard(Board board, Principal principal, MultipartFile[] image) throws Exception {
 		// board.setWriter(mr.findById(principal.getName()).get());
 		board.setWriter(mr.findById(principal.getName()).get());
 		bs.saveBoard(board);
 		bs.setBoardImage(board, image);
 		as.savementionAlarms(board, principal.getName());
+		return "";
 	}
 
 	@GetMapping("/checkTag")
@@ -152,5 +153,8 @@ public class BoardRestController {
 		result.put("target", targetInfo);
 		return result;
 	}
-	
+	@GetMapping("/delReply")
+	public void delReply(int replynumber){
+		bs.delReply(replynumber);
+	}
 }

@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.team.sns.domain.Reply;
 
 
-public interface ReplyRepository extends CrudRepository<Reply, String>,ReplyRepositoryCustom{
+public interface ReplyRepository extends CrudRepository<Reply, Integer>,ReplyRepositoryCustom{
 
 }

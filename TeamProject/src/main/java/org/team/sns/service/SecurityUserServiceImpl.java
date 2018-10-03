@@ -43,6 +43,7 @@ public class SecurityUserServiceImpl implements SecurityUserService {
 		// TODO Auto-generated method stub
 		String pw = member.getPassword();
 		member.setPassword(new BCryptPasswordEncoder().encode(pw));
+		member.setProfileImg("/img/pockyhand.png");
 		mr.save(member);
 	}
 

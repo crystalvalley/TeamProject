@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { StyleRulesCallback, withStyles, Avatar, Typography } from '@material-ui/core';
-import { IPhotoModel, IMemberModel, ICardModel } from '../../../constance/models';
-import { ILoginStore } from '../../../contexts/LoginContext';
+import { IPhotoModel, IMemberModel, ICardModel, ROOTURL } from '../../../constance/models';
+import { ILoginStore, withLoginContext } from '../../../contexts/LoginContext';
 // import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import PersonalList from './PersonalList';
+import Dropzone from 'react-dropzone';
 
 
 
@@ -31,36 +32,40 @@ const style: StyleRulesCallback = () => ({
     },
     secondContainer: {
         height: "100%",
-        width: "50%"
+        width: "50%",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
     },
     imageSize: {
         padding: "8px",
         height: "100px",
         width: "100px"
     },
+    id: {
+        fontFamily: "Roboto,sans-serif",
+        fontSize: "2em",
+        fontStyle: "bold",
+        marginBottom: "5vh"
+    },
+    dropzone: {
+        marginTop: "10vh",
+        width: "25vh",
+        height: "25vh",
+        marginBottom: "5vh",
+    },
     avatar: {
-        width: "150px",
-        height: "150px",
-        left: "40%",
-        top: "15%",
-        border: "0.5px solid black"
+        width: "100%",
+        height: "100%",
+        border: "0.5px solid black",
     },
-    buttons: {
-        position: "relative",
-        top: "26%",
-        left: "23%"
+    otherAvatar: {
+        marginTop: "10vh",
+        width: "25vh",
+        height: "25vh",
+        border: "0.5px solid black",
     },
-    texts: {
-        position: "relative",
-        top: "37%",
-        left: "32%",
-        font: "bold"
-    },
-    textfields: {
-        position: "relative",
-        left: "37%",
-        top: "20%"
-    }
 })
 
 interface IProps {
@@ -74,11 +79,11 @@ interface IProps {
         emotion: string;
         writer: string;
         imageSize: string;
-        buttons: string;
         avatar: string;
         texts: string;
-        textField: string;
-        textfields: string;
+        id: string;
+        dropzone: string;
+        otherAvatar: string;
     }
     id: string;
 }
@@ -91,8 +96,10 @@ interface IState {
     click: number,
     firstContainer: string,
     cards: ICardModel[]
+    profile?: File,
+
 }
-class PersonalPage extends React.Component<IProps, IState>{
+class PersonalPage extends React.Component<IProps & ILoginStore, IState>{
     // 크롬계열 height %가 안 먹는 문제 해결
     private imgSize: HTMLDivElement | null;
     constructor(props: IProps & ILoginStore) {
@@ -108,20 +115,13 @@ class PersonalPage extends React.Component<IProps, IState>{
             },
             click: 0,
             firstContainer: "",
-            cards: []
+            cards: [],
         }
+        this.onDrop = this.onDrop.bind(this);
+        this.update = this.update.bind(this);
     }
     public componentDidMount() {
-        axios.get("http://localhost:8081/boards/getPersonalPage", {
-            params: {
-                target: this.props.id
-            }
-        }).then((response) => {
-            this.setState({
-                userInfo: response.data.target,
-                cards: response.data.cards
-            })
-        })
+        this.update();
     }
     public render() {
         const { classes } = this.props;
@@ -133,29 +133,70 @@ class PersonalPage extends React.Component<IProps, IState>{
                 <div
                     className={classes.firstContainer}
                     style={{
-                        height : this.imgSize?this.imgSize.offsetHeight-20:""
+                        height: this.imgSize ? this.imgSize.offsetHeight - 20 : ""
                     }}
                 >
-                    <PersonalList cards={this.state.cards} />
+                    <PersonalList
+                        cards={this.state.cards}
+                    />
                 </div>
                 <div className={classes.secondContainer}>
-                    <Avatar src={"http://localhost:8081/resources" + this.state.userInfo.profileImg} className={classes.avatar} />
-                    <div className={classes.textfields}>
-                        <Typography
+                    {
+                        this.props.id === this.props.logined.id ?
+                            <Dropzone
+                                accept="image/*"
+                                multiple={false}
+                                className={classes.dropzone}
+                                onDrop={this.onDrop}
+                            >
+                                <Avatar
+                                    src={this.props.profileURL}
+                                    className={classes.avatar}
+                                />
 
-                        >
-                            {this.props.id}
-                        </Typography>
-                        <br />
-                        <br />
-                    </div>
-                    <div className={classes.texts}>
+                            </Dropzone> :
+                            <Avatar
+                                src={this.props.profileURL}
+                                className={classes.otherAvatar}
+                            />
+                    }
+                    <Typography
+                        className={classes.id}
+                    >
+                        {this.props.id}
+                    </Typography>
+                    <div
+                        style={{
+                            fontFamily: "Roboto,sans-serif",
+                        }}
+                        className={classes.texts}
+                    >
                         POKYBOOK에 오신 것을 환영합니다.
                     </div>
                 </div>
             </div>
         );
     }
+    private update() {
+        axios.get(ROOTURL + "/boards/getPersonalPage", {
+            params: {
+                target: this.props.id
+            }
+        }).then((response) => {
+            this.setState({
+                userInfo: response.data.target,
+                cards: response.data.cards
+            })
+        })
+    }
+    private onDrop(files: File[]) {
+        const data = new FormData();
+        data.append("upload", files[0]);
+        axios.post(ROOTURL + "/account/uploadProfile", data)
+            .then((res) => {
+                this.update();
+                this.props.loginCheck()
+            });
+    }
 }
-
-export default withStyles(style)(PersonalPage)
+export default withLoginContext(withStyles(style)(PersonalPage));

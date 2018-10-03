@@ -37,6 +37,8 @@ public class Room {
 	@SequenceGenerator(name="seq",sequenceName="Rooms_seq", initialValue=1, allocationSize=1)
 	private int roomId;	
 	
+	private String roomName;
+	
 	@NotNull
 	private String contentUrl;
 	

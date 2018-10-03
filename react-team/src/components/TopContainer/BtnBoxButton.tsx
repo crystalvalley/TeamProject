@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, IconButton } from '@material-ui/core';
 import List from "@material-ui/icons/List";
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import Accessibility from '@material-ui/icons/Accessibility';
 import Person from '@material-ui/icons/Person';
 import { NavLink } from 'react-router-dom';
@@ -59,11 +58,6 @@ class BtnBox extends React.Component<IProps, IState>{
                 <NavLink to={"/PersonalPage/" + this.props.loginedId}>
                     <IconButton>
                         <Person />
-                    </IconButton>
-                </NavLink>
-                <NavLink to="/userUpdate">
-                    <IconButton>
-                        <AccountCircle />
                     </IconButton>
                 </NavLink>
                 <NavLink to="/AllFriends">

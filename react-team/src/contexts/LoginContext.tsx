@@ -1,6 +1,6 @@
 import * as  React from 'react';
 import axios from 'axios';
-import { IMemberModel, IRoomModel, IMsgModel, IAlarmModel } from '../constance/models';
+import { IMemberModel, IRoomModel, IMsgModel, IAlarmModel, ROOTURL, ROOTSOCKETURL } from '../constance/models';
 
 /**
  * @author : ParkHyeokjoon
@@ -16,10 +16,12 @@ export interface ILoginStore {
     roomIds: number[];
     profileURL: string,
     alarms: IAlarmModel[];
+    networkReload: boolean,
     loginCheck(): void;
     sendMessage(msg: IMsgModel): void;
     socketRefesh(dataType: string): void;
     alarmRefresh(): void;
+    networkRefreshEnd(): void;
 }
 
 
@@ -32,10 +34,12 @@ const loginContext = React.createContext<ILoginStore>({
     rooms: {},
     roomIds: [],
     profileURL: "",
+    networkReload: false,
     loginCheck: () => { return },
     sendMessage: (msg: IMsgModel) => { return },
     socketRefesh: (dataType: string) => { return },
-    alarmRefresh: () => { return; }
+    alarmRefresh: () => { return; },
+    networkRefreshEnd: () => { return; }
 });
 class LoginProvider extends React.Component<{}, ILoginStore> {
 
@@ -55,19 +59,22 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         this.sendMessage = this.sendMessage.bind(this);
         this.socketRefesh = this.socketRefesh.bind(this);
         this.alarmRefresh = this.alarmRefresh.bind(this);
+        this.networkRefreshEnd = this.networkRefreshEnd.bind(this);
         this.state = {
             logined: {
                 profileImg: "",
-                id: "testid",
+                id: "crystalvalley",
             },
             alarms: [],
             profileURL: "",
             rooms: {},
             roomIds: [],
+            networkReload: false,
             loginCheck: this.loginCheck,
             sendMessage: this.sendMessage,
             socketRefesh: this.socketRefesh,
-            alarmRefresh: this.alarmRefresh
+            alarmRefresh: this.alarmRefresh,
+            networkRefreshEnd: this.networkRefreshEnd
         }
         this.logError = this.logError.bind(this);
         this.connect = this.connect.bind(this);
@@ -77,7 +84,6 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         this.disconnect = this.disconnect.bind(this);
         this.send = this.send.bind(this);
     }
-
     // 새로고침 했을 때 적용하도록
     public componentDidMount() {
         this.loginCheck();
@@ -98,7 +104,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     }
 
     private loginCheck() {
-        axios.post("http://localhost:8081/account/loginCheck")
+        axios.post(ROOTURL + "/account/loginCheck")
             .then((response) => {
                 if (response.data.id === "FAILED LOGIN") { return; }
                 this.setState({
@@ -107,17 +113,15 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                     // 로그인 처리 완료 후에 소켓을 즉시 연결
                     this.connect();
                     this.alarmRefresh();
-                    if (this.state.profileURL === "") {
-                        const xhr = new XMLHttpRequest();
-                        xhr.open("GET", "http://localhost:8081/resources" + this.state.logined.profileImg);
-                        xhr.responseType = "blob";
-                        xhr.addEventListener("load", () => {
-                            this.setState({
-                                profileURL: URL.createObjectURL(xhr.response)
-                            })
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("GET", ROOTURL + "/resources" + this.state.logined.profileImg);
+                    xhr.responseType = "blob";
+                    xhr.addEventListener("load", () => {
+                        this.setState({
+                            profileURL: URL.createObjectURL(xhr.response)
                         })
-                        xhr.send();
-                    }
+                    })
+                    xhr.send();
                 })
                 /*
                 else{
@@ -129,6 +133,13 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 */
             })
     }
+
+    private networkRefreshEnd() {
+        this.setState({
+            networkReload: false
+        })
+    }
+
     private socketRefesh(dataType: string) {
         this.sock.send(
             JSON.stringify({
@@ -153,11 +164,11 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     }
 
     private logError(error: any) {
-        alert(error)
+        // alert(error)
     }
 
     private connect() {
-        const uri = "ws://localhost:8081/signal"
+        const uri = "ws://" + ROOTSOCKETURL + "/signal"
         this.sock = new WebSocket(uri);
         this.sock.onopen = (e: any) => {
             this.sock.send(
@@ -175,7 +186,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         }
 
         this.sock.onerror = (e: Event) => {
-            alert('error' + e);
+            // alert('error' + e);
         }
 
         this.sock.onmessage = (e: MessageEvent) => {
@@ -229,9 +240,31 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 this.socketRefesh(message.data);
             } else if (message.type === "alarm-Refresh") {
                 this.alarmRefresh();
+            } else if (message.type === "chat-exit") {
+                const nextRooms = this.state.rooms;
+                const sub = nextRooms[message.roomId];
+                if (sub.chat === undefined) { sub.chat = [] }
+                sub.chat = [...nextRooms[message.roomId].chat, {
+                    type: "",
+                    sender: {
+                        id: "system msg",
+                        profileImg: ""
+                    },
+                    destination: [], roomId: message.roomId, data: message.data
+                }]
+                this.setState({
+                    rooms: nextRooms
+                })
+            } else if (message.type === "reload") {
+                this.loginCheck();
+            } else if (message.type === "network-reload") {
+                this.setState({
+                    networkReload: true
+                })
             }
         }
     }
+
 
     private startRTC() {
         this.pc = new webkitRTCPeerConnection(this.configuration);
@@ -296,16 +329,16 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
     }
 
     private disconnect() {
-        alert('disconnect');
+        // alert('disconnect');
         if (this.sock != null) {
             this.sock.close();
         }
         // this.setConnected(false);
     }
     private alarmRefresh() {
-        axios.get("http://localhost:8081/alarms/requestAlarms")
+        axios.get(ROOTURL + "/alarms/requestAlarms")
             .then((response) => {
-                
+
                 this.setState({
                     alarms: response.data
                 })

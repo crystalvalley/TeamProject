@@ -5,6 +5,7 @@ import Axios from "axios";
 import FriConfirm from "../TopContainer/FriConfirm";
 import { ILoginStore, withLoginContext } from "../../contexts/LoginContext";
 import BigCard from "../MainContainer/CardList/Card/bigCard/BigCard";
+import { ROOTURL } from "../../constance/models";
 
 
 
@@ -75,7 +76,7 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
   };
 
   public getBoards() {
-    Axios.get("http://localhost:8081/boards/getByBoardNum", {
+    Axios.get(ROOTURL+"/boards/getByBoardNum", {
       params: {
         boardNum: this.props.alarms[0].board.id,
         alarmId: this.props.alarms[0].alarmId

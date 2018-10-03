@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
 import Scrollbars from 'react-custom-scrollbars';
-import { IMsgModel, IMemberModel, IRoomMemberModel } from '../../../constance/models';
+import { IMsgModel, IMemberModel, IRoomMemberModel, ROOTURL } from '../../../constance/models';
 import ToText from './ToText';
 import FromText from './FromText';
 
@@ -36,7 +36,7 @@ class ChatWrapper extends React.Component<IProps,IState>{
         let profiles: {[id:string]:string} = {}
         for (const roomMember of this.props.roomMembers) {
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", "http://localhost:8081/resources" +  roomMember.member.profileImg);
+            xhr.open("GET", ROOTURL+"/resources" +  roomMember.member.profileImg);
             xhr.responseType = "blob";
             xhr.addEventListener("load", () => {
                 profiles = {...profiles,[roomMember.member.id]:URL.createObjectURL(xhr.response)}                
@@ -56,7 +56,8 @@ class ChatWrapper extends React.Component<IProps,IState>{
             <Scrollbars
                 ref={(e)=>{this.scroll = e}}
                 style={{
-                    height: "300px"
+                    height: "300px",
+                    padding:"5px"
                 }}
                 autoHide={true}
             >

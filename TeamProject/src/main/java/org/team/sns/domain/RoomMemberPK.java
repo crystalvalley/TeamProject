@@ -2,6 +2,7 @@ package org.team.sns.domain;
 
 import java.io.Serializable;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 /**
  * 
@@ -10,8 +11,9 @@ import lombok.EqualsAndHashCode;
  * @version 2018.09.13
  *
  */
+@Data
 @EqualsAndHashCode(of = {"member","room"})
 public class RoomMemberPK implements Serializable{
-	public String member;
-	public int room;
+	private String member;
+	private int room;
 }

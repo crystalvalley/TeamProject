@@ -6,9 +6,9 @@ import org.team.sns.domain.Strategy;
 /**
  * @author ParkHyeokJoon
  * @since 2018.08.31
- * @version 2018.08.31
+ * @version 2018.10.02
  *
  */
-public interface StrategyRepository extends CrudRepository<Strategy, Integer>{
+public interface StrategyRepository extends CrudRepository<Strategy, Integer>, StrategyRepositoryCustom{
 
 }

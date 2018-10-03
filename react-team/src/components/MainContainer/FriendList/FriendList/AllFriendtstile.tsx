@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Card, CardMedia, CardContent, Typography, CardActions, Button, StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
-import { IMemberModel } from '../../../../constance/models';
+import { IMemberModel, ROOTURL } from '../../../../constance/models';
 import { NavLink } from 'react-router-dom';
 
 /**
@@ -61,7 +61,7 @@ class AllFriendtstile extends React.Component<IProps> {
                 <CardMedia
                     component="img"
                     className={classes.media}
-                    image={"http://localhost:8081/resources" + friendInfo.profileImg}
+                    image={ROOTURL+"/resources" + friendInfo.profileImg}
                 />
                 <CardContent>
                     <Typography gutterBottom={true} variant="headline" component="h2">

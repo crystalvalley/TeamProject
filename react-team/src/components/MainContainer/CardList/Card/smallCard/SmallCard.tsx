@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Card, CardContent, withStyles, StyleRulesCallback, Theme, Avatar, Typography, IconButton, } from '@material-ui/core';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
-import { ICardModel } from '../../../../../constance/models';
+import { ICardModel, ROOTURL } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
 import EmotionBox from './EmotionBox';
 import BigCard from '../bigCard/BigCard';
@@ -35,17 +35,20 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     title: {
         textAlign: "center",
-        fontSize: "24px"
+        fontSize: "20px",
+        fontFamily: "Jua, snas-serif"
     },
     cardBody: {
         padding: "12px",
     },
     content: {
         overflow: "hidden",
-        maxHeight: "475px"
+        maxHeight: "475px",
+        fontFamily: "Sunflower,sans-serif"
     },
     username: {
-        color: "black"
+        color: "black",
+        fontFamily: "Roboto,sans-serif",
     },
 });
 
@@ -60,7 +63,7 @@ interface IProps {
         username: string;
     }
     card: ICardModel,
-    personal?:boolean
+    personal?: boolean
 }
 
 interface IState {
@@ -71,11 +74,11 @@ interface IState {
 }
 
 
-class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
+class SmallCard extends React.Component<IProps & IFavoriteStore  , IState>{
     private anchor: HTMLSpanElement | null;
     private ref: HTMLDivElement | null;
-    private imgWidth : HTMLDivElement|null;
-    constructor(props: IProps & IFavoriteStore) {
+    private imgWidth: HTMLDivElement | null;
+    constructor(props: IProps & IFavoriteStore ) {
         super(props);
         let sub: EditorState;
         try {
@@ -113,17 +116,16 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
         const writeHandler = () => this.openModal(0);
         const handler = () => this.props.setFavorite(this.props.card.id)
         return (
-            <Card className={classes.card} style={{width:this.props.personal?"100%":"", maxWidth:this.props.personal?"":"500px"}}>
+            <Card className={classes.card} style={{ width: this.props.personal ? "100%" : "", maxWidth: this.props.personal ? "" : "500px" }}>
                 <div
                     className={classes.cardHead}
                 >
                     <Avatar
                         className={classes.avatar}
                         onClick={this.openMenu}
-                        src={"http://localhost:8081/resources" + card.writer.profileImg}
+                        src={ROOTURL + "/resources" + card.writer.profileImg}
                     />
                     <Typography
-                        variant="button"
                         onClick={this.openMenu}
                         className={classes.username}
                     >
@@ -139,7 +141,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     >
                         {this.props.favorites.indexOf(this.props.card.id) === -1 ?
                             <FavoriteIcon /> :
-                            <FilledFavoriteIcon style={{color:"red"}}/>
+                            <FilledFavoriteIcon style={{ color: "red" }} />
 
                         }
                     </IconButton>
@@ -150,7 +152,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     />
                 </div>
                 <div
-                    ref={(element)=>{this.imgWidth = element}}
+                    ref={(element) => { this.imgWidth = element }}
                     className={classes.cardBody}
                 >
                     <Typography
@@ -162,7 +164,8 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                     {
                         this.props.card.photos.length > 0 ?
                             <ImageViewer
-                                width={this.imgWidth!==undefined?this.imgWidth!.offsetWidth-24:0}
+                                id={this.props.card.id}
+                                width={this.imgWidth !== undefined ? this.imgWidth!.offsetWidth - 24 : 0}
                                 photos={this.props.card.photos}
                             /> :
                             (

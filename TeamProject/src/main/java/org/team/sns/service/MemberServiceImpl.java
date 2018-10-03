@@ -27,6 +27,8 @@ public class MemberServiceImpl implements MemberService{
 	private CustomListRepository clr;
 	@Autowired
 	private ProductStrategyRepository pstr;
+	@Autowired
+	private SocketService ss;
 
 	@Override
 	public void signup(Member member) {

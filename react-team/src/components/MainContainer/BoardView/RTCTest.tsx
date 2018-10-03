@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { TextField } from '@material-ui/core';
+import { ROOTSOCKETURL } from '../../../constance/models';
 
 interface IState{
     msg : string;
@@ -70,7 +71,7 @@ export default class RTCTest extends React.Component<{},IState> {
 
     private connect(userid: string) {
         alert("connected")
-        const uri = "ws://localhost:8081/signal"
+        const uri = "ws://"+ROOTSOCKETURL+"/signal"
         this.sock = new WebSocket(uri);
 
         this.sock.onopen = (e: any) => {

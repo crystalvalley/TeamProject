@@ -47,7 +47,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   id: {
     marginLeft: "10vw",
     fontSize: "3em",
-    color: "black"
+    color: "black",
+    fontFamily:"Roboto"
   }
 })
 
@@ -89,11 +90,9 @@ class TopBar extends React.Component<IProps & ILoginStore, IState> {
         position="absolute"
         className={classNames(classes.appBar)}
       >
-
         <Toolbar
           className={classes.topBar}
         >
-
           <NavLink to="/ ">
             <img src={pige} />
           </NavLink>

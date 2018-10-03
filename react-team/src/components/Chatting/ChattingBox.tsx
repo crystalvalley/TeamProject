@@ -1,9 +1,15 @@
 import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles, Typography, Grow, Paper, IconButton, TextField } from '@material-ui/core';
-import { IRoomModel, IMsgModel, IMemberModel } from '../../constance/models';
+import { IRoomModel, IMsgModel, IMemberModel, ROOTURL, IRoomMemberModel } from '../../constance/models';
 import ArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import ChatWrapper from './ChattingText/ChatWrapper';
+import Exit from '@material-ui/icons/HighlightOff';
+import Add from '@material-ui/icons/Add';
+import Settings from '@material-ui/icons/SettingsOutlined';
+import axios from 'axios';
+import TitleChangeDialog from './TitleChangeDialog';
+import NewMemberDialog from './NewMemberDialog';
 
 const style: StyleRulesCallback = (theme: Theme) => ({
     chatBox: {
@@ -61,11 +67,17 @@ interface IProps {
     key: number;
     loginedId: IMemberModel;
     profileURL: string,
+    roomId: number,
+    roomName: string,
+    roomMembers: IRoomMemberModel[],
+    loginCheck(): void;
     sendMessage(msg: IMsgModel): void;
 }
 
 interface IState {
     open: boolean;
+    openNewMember: boolean;
+    openTitleChange: boolean;
     msg: string;
 }
 
@@ -74,23 +86,23 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
         super(props);
         this.state = {
             open: false,
+            openNewMember: false,
+            openTitleChange: false,
             msg: ""
         }
         this.onCheck = this.onCheck.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.endChat = this.endChat.bind(this);
+        this.titleChange = this.titleChange.bind(this);
+        this.newMember = this.newMember.bind(this);
+        this.closeTitleChange = this.closeTitleChange.bind(this);
+        this.closeNewMember = this.closeNewMember.bind(this);
     }
     public render() {
         const { open } = this.state;
         const { classes } = this.props;
         const addSubName = this.state.open ? "" : " " + classes.hide
-        let title: string = "";
-        for(const m of this.props.roomMembers){
-            if(m.member.id===this.props.loginedId.id){continue;}
-            title +=","+m.member.id
-        }
-        title += "과의 채팅"
-        title = title.substring(1);
         return (
             <div
                 className={classes.chatBox}
@@ -98,6 +110,32 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                 <div className={classes.container}>
                     <Grow in={open} >
                         <Paper elevation={4} className={classes.paper + addSubName}>
+                            <div>
+                                <IconButton
+                                    onClick={this.titleChange}
+                                >
+                                    <Settings />
+                                </IconButton>
+                                <IconButton
+                                    onClick={this.newMember}
+                                >
+                                    <Add />
+                                </IconButton>
+                                <IconButton
+                                    onClick={this.endChat}
+                                >
+                                    <Exit />
+                                </IconButton>
+                                <TitleChangeDialog
+                                    open={this.state.openTitleChange}
+                                    close={this.closeTitleChange}
+                                />
+                                <NewMemberDialog
+                                    open={this.state.openNewMember}
+                                    members={this.props.roomMembers}
+                                    close={this.closeNewMember}
+                                />
+                            </div>
                             <ChatWrapper
                                 roomMembers={this.props.roomMembers}
                                 profileURL={this.props.profileURL}
@@ -113,7 +151,7 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                             className={classes.chatname}
                         >
                             <p className={classes.nameNfieldBox}>
-                                {title}
+                                {this.props.roomName}
                             </p>
                             <IconButton
                                 onClick={this.onCheck}
@@ -176,6 +214,51 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                 msg: ""
             })
         }
+    }
+    private endChat() {
+        axios.get(ROOTURL + "/chattings/end", {
+            params: {
+                roomnumber: this.props.roomId
+            }
+        }).then((response) => {
+            return;
+        })
+    }
+    private newMember() {
+        this.setState({
+            openNewMember: true
+        })
+    }
+    private titleChange() {
+        this.setState({
+            openTitleChange: true
+        })
+    }
+    private closeTitleChange(value: string) {
+        this.setState({
+            openTitleChange: false
+        })
+        if (value === "") { return }
+        axios.get(ROOTURL + "/chattings/changeRoomName", {
+            params: {
+                roomId: this.props.roomId,
+                roomName: value
+            }
+        }).then((res) => {
+            this.props.loginCheck();
+        })
+    }
+    private closeNewMember(ids: string[]) {
+        this.setState({
+            openNewMember: false
+        })
+        if (ids.length === 0) { return }
+        axios.post(ROOTURL + "/chattings/newMembers", {
+            roomId: this.props.roomId,
+            newMembers: ids
+        }).then((res) => {
+            this.props.loginCheck();
+        })
     }
 }
 

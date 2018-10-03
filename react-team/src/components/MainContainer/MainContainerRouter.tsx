@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
 import CardListContainer from './CardList/CardListContainer';
-import UpdateUser from './BoardView/UpdateUser';
 import AllFriends from './FriendList/FriendList/AllFriends';
 import ListController from './ListControl/ListController';
 import PersonalPage from './BoardView/PersonalPage';
@@ -37,7 +36,8 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
         flexDirection: "column",
         marginLeft: "7.5%",
         marginRight: "7.5%",
-        marginBottom: "100px"
+        marginBottom: "100px",
+        fontFamily: "Roboto,sans-serif",
     },
 })
 
@@ -73,7 +73,6 @@ class MainContainerRouter extends React.Component<IProps> {
                     <Route path="/PersonalPage/:id" component={this.personalPageHandler()} />
                     <Route path="/listControl" component={ListController} />
                     <Route path="/AllFriends" component={AllFriends} />
-                    <Route path="/userUpdate" component={UpdateUser} />
                     <Route path="/" component={CardListContainer} />
                 </Switch>
                 <ChattingContainer />
@@ -87,7 +86,7 @@ class MainContainerRouter extends React.Component<IProps> {
     }
     private personalPageHandler() {
         return ({ match }: any) => (
-            <PersonalPage id={match.params.id}/>
+            <PersonalPage id={match.params.id} />
         )
     }
 }

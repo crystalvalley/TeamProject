@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Theme, StyleRulesCallback, withStyles } from '@material-ui/core';
 import { ISuggestState } from '../../EditorConstance/props';
 import axios from 'axios';
+import { ROOTURL } from '../../../../../../constance/models';
 
 /**
  * @author: ParkHyeokJoon
@@ -35,7 +36,7 @@ class MentionSuggestBox extends React.Component<IProps & ISuggestState, IState>{
     public componentWillReceiveProps(prevProps: IProps & ISuggestState) {
         if (this.props.text === prevProps.text || prevProps.text.length > 4 || !prevProps.open) { return }
         // 3글자 이하까지는 db에서 서치
-        axios.get("http://localhost:8081/boards/checkMention", {
+        axios.get(ROOTURL+"/boards/checkMention", {
             params: {
                 mention: prevProps.text.slice(1)
             }
