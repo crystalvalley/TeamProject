@@ -80,9 +80,9 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
     public componentDidMount() {
         this.refresh();
     }
-    
-    public componentDidUpdate(){
-        if(this.props.refreshCondition){
+
+    public componentDidUpdate() {
+        if (this.props.refreshCondition) {
             this.props.conditionCheck();
             this.refresh();
         }
@@ -177,7 +177,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
         );
     }
     private refresh() {
-        axios.get(ROOTURL+"/lists/getListNames")
+        axios.get(ROOTURL + "/lists/getListNames")
             .then((result) => {
                 this.setState({
                     order: result.data
@@ -185,7 +185,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
                     this.state.order.map((name, index) => {
                         // 검색만 예외, context에서 가져오므로
                         if (name === "SearchField") { return }
-                        axios.get(ROOTURL+"/boards/getByListName", {
+                        axios.get(ROOTURL + "/boards/getByListName", {
                             params: {
                                 listName: name,
                                 page: 0
@@ -227,7 +227,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
         }
         this.setState(newState);
         const axiosInstance = axios.create();
-        axiosInstance.post(ROOTURL+"/lists/setListOrder", {
+        axiosInstance.post(ROOTURL + "/lists/setListOrder", {
             names: newOrder
         })
         return;
@@ -235,7 +235,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
 
     private favoriteCheck() {
         // 리프레시는 초기화
-        axios.get(ROOTURL+"/boards/getByListName", {
+        axios.get(ROOTURL + "/boards/getByListName", {
             params: {
                 listName: "Favorites",
                 page: 0
@@ -257,7 +257,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
     private scrollEnd(listName: string) {
         if (this.state.lists[listName].end) { return }
         const pageOffset = this.state.lists[listName].getPage;
-        axios.get(ROOTURL+"/boards/getByListName", {
+        axios.get(ROOTURL + "/boards/getByListName", {
             params: {
                 listName,
                 page: pageOffset + 1
@@ -302,7 +302,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
         const left = slide === 0 ? false : true;
         const right = slide === maxSlide - 1 ? false : true;
         // 오른쪽 마지막 페이지라면, 부족한 칸은 더 땡겨와야됨
-        const starting = !right ? (slide - 1) * 5 + remain : slide * 5
+        const starting = !right ? this.state.order.length - 5 : slide * 5
         this.setState({
             left,
             right,

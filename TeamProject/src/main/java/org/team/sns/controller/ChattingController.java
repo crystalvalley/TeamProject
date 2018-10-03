@@ -40,17 +40,17 @@ public class ChattingController {
 
 	@GetMapping("/make")
 	public void makeChat(Principal principal, String target) throws IOException {
-		ss.makeChatting("crystalvalley", target);
+		ss.makeChatting(principal.getName(), target);
 	}
 
 	@GetMapping("/end")
 	public void endChat(Principal principal, int roomnumber) throws IOException {
-		ss.endChatting("crystalvalley", roomnumber);
+		ss.endChatting(principal.getName(), roomnumber);
 	}
 
 	@GetMapping("/changeRoomName")
 	public void changeRoomName(int roomId, String roomName,Principal principal) {
-		ss.changeRoomName(roomId, roomName, "crystalvalley");
+		ss.changeRoomName(roomId, roomName, principal.getName());
 	}
 
 	@PostMapping("/newMembers")
