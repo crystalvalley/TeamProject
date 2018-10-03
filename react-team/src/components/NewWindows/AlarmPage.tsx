@@ -84,6 +84,8 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
     ).then((response) => {
       this.setState({
         card: response.data,
+      }, () => {
+        this.bigCardOpen()
       })
     })
 
@@ -103,7 +105,7 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
     this.setState({ bigCardOpen: false })
   }
 
-  public bigCardOpen(num: number) {
+  public bigCardOpen() {
     this.setState({ bigCardOpen: true })
 
   }
