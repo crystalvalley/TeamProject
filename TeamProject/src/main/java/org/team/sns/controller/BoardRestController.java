@@ -125,13 +125,13 @@ public class BoardRestController {
 	}
 
 	@GetMapping("/getByBoardNum")
-	public Board getByBoardNum(Principal principal,int boardNum, String alarmId) {
+	public Board getByBoardNum(Principal principal, int alaramId, int boardId) {
 		System.out.println("보드 가지러 들어왔나?");
-		System.out.println("integer:"+boardNum);
-		Board board = br.findById(boardNum).get();
+		System.out.println("integer:" + boardId);
+		Board board = br.findById(boardId).get();
 		System.out.println(board);
-		System.out.println("alarmId:"+alarmId);
-		Alarm arm = ar.findById(Integer.parseInt(alarmId)).get();
+		System.out.println("alarmId:" + alaramId);
+		Alarm arm = ar.findById(alaramId).get();
 		arm.setChecked(true);
 		ar.save(arm);
 		try {
@@ -142,19 +142,20 @@ public class BoardRestController {
 		}
 		return board;
 	}
-	
+
 	@GetMapping("/getPersonalPage")
-	public Map<String,Object> getPersonalPage(String target){
+	public Map<String, Object> getPersonalPage(String target) {
 		System.out.println(target);
-		HashMap<String, Object> result = new HashMap<>();	
+		HashMap<String, Object> result = new HashMap<>();
 		Member targetInfo = mr.findById(target).get();
 		List<Board> list = br.getBoardsByUserId(target);
 		result.put("cards", list);
 		result.put("target", targetInfo);
 		return result;
 	}
+
 	@GetMapping("/delReply")
-	public void delReply(int replynumber){
+	public void delReply(int replynumber) {
 		bs.delReply(replynumber);
 	}
 }

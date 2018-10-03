@@ -6,7 +6,7 @@ import { ROOTURL } from '../../constance/models';
 
 interface IProp {
     target: string,
-    alarmId: string
+    alarmId: number
 }
 
 interface IState {
@@ -35,7 +35,7 @@ export default class FriConfirm extends React.Component<IProp, IState>{
         this.setState({ open: false })
     }
     public saveFriend() {
-        Axios.get(ROOTURL+"/networks/acceptFriend", {
+        Axios.get(ROOTURL + "/networks/acceptFriend", {
             params: {
                 alarmId: this.props.alarmId,
                 target: this.props.target

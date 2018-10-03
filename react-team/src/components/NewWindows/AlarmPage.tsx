@@ -5,7 +5,7 @@ import Axios from "axios";
 import FriConfirm from "../TopContainer/FriConfirm";
 import { ILoginStore, withLoginContext } from "../../contexts/LoginContext";
 import BigCard from "../MainContainer/CardList/Card/bigCard/BigCard";
-import { ROOTURL } from "../../constance/models";
+import { ROOTURL, ICardModel } from "../../constance/models";
 
 
 
@@ -42,7 +42,7 @@ interface IProps {
 interface IState {
   anchorEl: any
   confirmOpen: boolean
-  card: any
+  card?: ICardModel
   bigCardOpen: boolean
   alarmOpen: boolean;
 
@@ -59,7 +59,6 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
     this.state = {
       anchorEl: "",
       confirmOpen: false,
-      card: "",
       bigCardOpen: false,
       alarmOpen: false
 
@@ -75,17 +74,16 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
 
   };
 
-  public getBoards() {
-    Axios.get(ROOTURL+"/boards/getByBoardNum", {
+  public getBoards(aid: number, bid: number) {
+    Axios.get(ROOTURL + "/boards/getByBoardNum", {
       params: {
-        boardNum: this.props.alarms[0].board.id,
-        alarmId: this.props.alarms[0].alarmId
+        alaramId: aid,
+        boardId: bid
       }
     }
     ).then((response) => {
       this.setState({
         card: response.data,
-        bigCardOpen: true
       })
     })
 
@@ -105,7 +103,7 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
     this.setState({ bigCardOpen: false })
   }
 
-  public bigCardOpen() {
+  public bigCardOpen(num: number) {
     this.setState({ bigCardOpen: true })
 
   }
@@ -131,17 +129,30 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
           <MenuList>
             {
               this.props.alarms.map((alarm, index) => {
+                const handler = () => { this.getBoards(alarm.alarmId, alarm.board.id) }
                 return (
                   alarm.mentioned === true ?
-                    <MenuItem onClick={this.getBoards} key={index}>{alarm.actor_id.id + "님으로 부터 멘션"} </MenuItem> :
-                    <MenuItem key={index}>{alarm.actor_id.id + "님으로 부터 친구요청"}<FriConfirm alarmId={alarm.alarmId} target={alarm.actor_id.id} /></MenuItem>
+                    <MenuItem onClick={handler} key={index}>{alarm.actor_id.id + "님으로 부터 멘션"} </MenuItem> :
+                    <MenuItem key={index}>{alarm.actor_id.id + "님으로 부터 친구요청"}
+                      <FriConfirm
+                        alarmId={alarm.alarmId}
+                        target={alarm.actor_id.id}
+                      />
+                    </MenuItem>
                 );
               })
             }
             <br />
           </MenuList>
         </Menu>
-        <BigCard card={this.state.card} open={this.state.bigCardOpen} onClose={this.bigCardClose} />
+        {
+          this.state.card ?
+            <BigCard
+              card={this.state.card}
+              open={this.state.bigCardOpen}
+              onClose={this.bigCardClose}
+            /> : ""
+        }
       </React.Fragment>
     );
   }

@@ -70,7 +70,7 @@ export interface IConditionModel {
     target: string;
 }
 export interface IAlarmModel {
-    alarmId: string
+    alarmId: number
     usdate: string
     mentioned: boolean
     reqFriendship: boolean
