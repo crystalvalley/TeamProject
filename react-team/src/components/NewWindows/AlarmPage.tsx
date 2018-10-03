@@ -63,9 +63,9 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
     this.closeAlarm = this.closeAlarm.bind(this);
     this.openAlarm = this.openAlarm.bind(this);
   };
-  
+
   public componentDidUpdate() {
-    if (this.props.alarms.length === 0) {
+    if (this.state.alarmOpen && this.props.alarms.length === 0) {
       this.closeAlarm();
     }
   }
