@@ -44,7 +44,7 @@ public class DropboxService {
 		Member member = mr.findById(username).get();
 		member.setProfileImg(filePath);
 		mr.save(member);
-		ss.sendSystemhMsg(username, "reload", "reload");
+		ss.sendSystemhMsg(username, "reload", "reload",-1);
 		return uploadMetadata.getPathLower();
 	}
 

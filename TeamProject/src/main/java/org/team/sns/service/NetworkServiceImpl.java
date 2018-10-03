@@ -58,7 +58,7 @@ public class NetworkServiceImpl implements NetworkService{
 		targets.add(memberid);
 		targets.add(target);
 		try {
-			ss.sendSystemhMsg(targets, "network-reload", "network-reload");
+			ss.sendSystemhMsg(targets, "network-reload", "network-reload",-1);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -99,7 +99,7 @@ public class NetworkServiceImpl implements NetworkService{
 		targets.add(memberid);
 		targets.add(target);
 		try {
-			ss.sendSystemhMsg(targets, "network-reload", "network-reload");
+			ss.sendSystemhMsg(targets, "network-reload", "network-reload",-1);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
