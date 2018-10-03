@@ -161,12 +161,17 @@ public class SocketServiceImpl implements SocketService {
 	@Override
 	public void joinChatMembers(int roomId, List<String> ids) throws IOException {
 		// TODO Auto-generated method stub
-		for(String id:ids) {
+		for (String id : ids) {
 			RoomMember rMember = new RoomMember();
 			rMember.setMember(mr.findById(id).get());
 			rMember.setRoom(rr.findById(roomId).get());
 			rmr.save(rMember);
-		}		
+		}
+		Room room = rr.findById(roomId).get();
+		List<RoomMember> rMembers = room.getRoomMembers();
+		for (RoomMember exRMember : rMembers) {
+			ids.add(exRMember.getMember().getId());
+		}
 		sendRefreshMsg(ids, "Chatting");
 	}
 

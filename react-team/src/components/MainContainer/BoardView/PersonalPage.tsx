@@ -156,7 +156,7 @@ class PersonalPage extends React.Component<IProps & ILoginStore, IState>{
 
                             </Dropzone> :
                             <Avatar
-                                src={this.props.profileURL}
+                                src={this.state.userInfo.id}
                                 className={classes.otherAvatar}
                             />
                     }
