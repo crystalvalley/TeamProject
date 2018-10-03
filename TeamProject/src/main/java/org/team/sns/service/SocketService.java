@@ -21,4 +21,5 @@ public interface SocketService {
 	public void sendExitMsg(List<String> ids,String userid,int roomnumber) throws IOException;
 	public void endChatting(String userid, int roomnumber) throws IOException;
 	public void joinChatMembers(int roomId,List<String> ids) throws IOException;
+	public void changeRoomName(int roomId,String roomName,String userid);
 }

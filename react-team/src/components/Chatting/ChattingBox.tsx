@@ -68,7 +68,6 @@ interface IProps {
     loginedId: IMemberModel;
     profileURL: string,
     roomId: number,
-    roomName: string,
     roomMembers: IRoomMemberModel[],
     loginCheck(): void;
     sendMessage(msg: IMsgModel): void;
@@ -103,6 +102,9 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
         const { open } = this.state;
         const { classes } = this.props;
         const addSubName = this.state.open ? "" : " " + classes.hide
+        const title : string = this.props.roomMembers.filter((item)=>{
+            return item.member.id===this.props.loginedId.id
+        })[0].roomName;
         return (
             <div
                 className={classes.chatBox}
@@ -151,7 +153,7 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                             className={classes.chatname}
                         >
                             <p className={classes.nameNfieldBox}>
-                                {this.props.roomName}
+                                {title}
                             </p>
                             <IconButton
                                 onClick={this.onCheck}

@@ -169,4 +169,15 @@ public class SocketServiceImpl implements SocketService {
 		}		
 		sendRefreshMsg(ids, "Chatting");
 	}
+
+	@Override
+	public void changeRoomName(int roomId, String roomName, String userid) {
+		// TODO Auto-generated method stub
+		RoomMemberPK rmpk = new RoomMemberPK();
+		rmpk.setMember(userid);
+		rmpk.setRoom(roomId);
+		RoomMember roomMember = rmr.findById(rmpk).get();
+		roomMember.setRoomName(roomName);
+		rmr.save(roomMember);
+	}
 }

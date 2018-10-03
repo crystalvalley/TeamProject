@@ -39,4 +39,6 @@ public class RoomMember {
 	@JoinColumn(name="onRoom", referencedColumnName="Room_id",updatable=false,nullable=false)
 	private Room room;
 	
+	private String roomName;
+	
 }

@@ -49,10 +49,8 @@ public class ChattingController {
 	}
 
 	@GetMapping("/changeRoomName")
-	public void changeRoomName(int roomId, String roomName) {
-		Room room = rr.findById(roomId).get();
-		room.setRoomName(roomName);
-		rr.save(room);
+	public void changeRoomName(int roomId, String roomName,Principal principal) {
+		ss.changeRoomName(roomId, roomName, principal.getName());
 	}
 
 	@PostMapping("/newMembers")
