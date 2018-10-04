@@ -39,6 +39,10 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     },
     img: {
         objectFit: "contain",
+        height: 200
+    },
+    contentRoot:{
+        height:185
     }
 });
 
@@ -48,6 +52,7 @@ interface IProps {
         media: string;
         rightIcon: string;
         img: string;
+        contentRoot:string;
     },
     friendInfo: IMemberModel,
     tags: {
@@ -84,7 +89,7 @@ class Allmembertile extends React.Component<IProps> {
                     component="img"
                     image={ROOTURL + "/resources" + friendInfo.profileImg}
                 />
-                <CardContent>
+                <CardContent classes={{root:classes.contentRoot}}>
                     <Typography
                         style={{
                             fontFamily: "Roboto,sans-serif",
@@ -95,7 +100,7 @@ class Allmembertile extends React.Component<IProps> {
                     >
                         {this.props.friendInfo.id}
                     </Typography>
-                    <div>
+                    <div >
                         {
                             tags && tags.taginfo ?
                                 tags.taginfo.map((tagdetail, index) => {
@@ -104,7 +109,7 @@ class Allmembertile extends React.Component<IProps> {
                                         <TagPercent
                                             key={index}
                                             name={tagdetail.tag}
-                                            percentage={tagdetail.count * 100 / tags.allCount}
+                                            percentage={Math.round(tagdetail.count * 100 / tags.allCount)}
                                         />
                                     );
                                 }) : ""

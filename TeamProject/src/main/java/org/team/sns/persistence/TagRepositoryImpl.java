@@ -30,6 +30,8 @@ public class TagRepositoryImpl extends QuerydslRepositorySupport implements TagR
 		query.where(tag.taggedBoards.contains(board));
 		query.where(board.writer.id.eq(username));
 		query.groupBy(tag.hashTag);
+		query.orderBy(tag.hashTag.count().desc());
+		System.out.println(query.fetch());
 		Map<String,Object> result= new HashMap<>();
 		int allCount=0;
 		List<Map<String,Object>> subResult = new ArrayList<>();
