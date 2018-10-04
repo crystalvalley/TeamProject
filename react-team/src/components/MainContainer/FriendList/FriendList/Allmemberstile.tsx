@@ -2,8 +2,9 @@ import * as React from 'react';
 import { Card, CardMedia, CardContent, Typography, CardActions, Button, StyleRulesCallback, Theme, withStyles } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import TouchApp from '@material-ui/icons/TouchApp';
-import { IMemberModel, ROOTURL } from '../../../../constance/models';
+import { IMemberModel, ROOTURL, ITagPercentModel } from '../../../../constance/models';
 import { NavLink } from 'react-router-dom';
+import TagPercent from './TagPercent';
 // import { INetworkStore } from '../../../../contexts/NetworkContext';
 // import SearchedList from '../../CardList/Card/SearchedList';
 
@@ -30,9 +31,6 @@ const style: StyleRulesCallback = (theme: Theme) => ({
     card: {
         maxWidth: 345,
     },
-    media: {
-        height: 140,
-    },
     button: {
         margin: theme.spacing.unit
     },
@@ -40,7 +38,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         marginLeft: theme.spacing.unit,
     },
     img: {
-        objectFit: "contain"
+        objectFit: "contain",
     }
 });
 
@@ -52,6 +50,10 @@ interface IProps {
         img: string;
     },
     friendInfo: IMemberModel,
+    tags: {
+        taginfo: ITagPercentModel[],
+        allCount: number;
+    }
     addFriend(id: string): void;
 
 
@@ -64,7 +66,7 @@ class Allmembertile extends React.Component<IProps> {
     }
 
     public render() {
-        const { classes, friendInfo } = this.props;
+        const { classes, friendInfo, tags } = this.props;
 
         this.state = {
             item: {
@@ -80,7 +82,6 @@ class Allmembertile extends React.Component<IProps> {
                         media: classes.img
                     }}
                     component="img"
-                    className={classes.media}
                     image={ROOTURL + "/resources" + friendInfo.profileImg}
                 />
                 <CardContent>
@@ -94,14 +95,29 @@ class Allmembertile extends React.Component<IProps> {
                     >
                         {this.props.friendInfo.id}
                     </Typography>
+                    <div>
+                        {
+                            tags && tags.taginfo ?
+                                tags.taginfo.map((tagdetail, index) => {
+                                    if (index > 2) { return "" }
+                                    return (
+                                        <TagPercent
+                                            key={index}
+                                            name={tagdetail.tag}
+                                            percentage={tagdetail.count * 100 / tags.allCount}
+                                        />
+                                    );
+                                }) : ""
+                        }
+                    </div>
                 </CardContent>
                 <CardActions>
                     <Button
                         style={{
                             fontFamily: "Roboto,sans-serif",
+                            color: "#606060"
                         }}
                         size="small"
-                        color="primary"
                         onClick={this.addFriend}
                     >
                         친구추가
@@ -116,9 +132,9 @@ class Allmembertile extends React.Component<IProps> {
                         <Button
                             style={{
                                 fontFamily: "Roboto,sans-serif",
+                                color: "#606060"
                             }}
                             size="small"
-                            color="primary"
                         >
                             들어가보기
                             <HomeIcon className={classes.rightIcon} />

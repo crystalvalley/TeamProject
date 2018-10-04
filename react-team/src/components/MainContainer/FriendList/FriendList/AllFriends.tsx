@@ -42,7 +42,7 @@ class AllFriends extends React.Component<IProps&INetworkStore, IState>{
     public render() {
        
         return (
-            <GridList cols={3} cellHeight={300}>
+            <GridList cols={4} cellHeight={300}  spacing={0}>
                 {
                     this.props.friendList.map((friend, index) => {
                         return (

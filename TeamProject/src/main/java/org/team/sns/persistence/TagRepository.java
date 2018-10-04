@@ -11,7 +11,7 @@ import org.team.sns.domain.Tag;
  * @version 2018.08.30
  *
  */
-public interface TagRepository extends CrudRepository<Tag, String>{
+public interface TagRepository extends CrudRepository<Tag, String>,TagRepositoryCustom{
 	public List<Tag> findByHashTagStartingWith(String keyword);
 
 }

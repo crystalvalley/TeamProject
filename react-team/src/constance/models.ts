@@ -87,8 +87,12 @@ export interface IAlarmModel {
     receiver: IMemberModel
     board: ICardModel
 }
+export interface ITagPercentModel {
+    tag: string;
+    count: number;
+}
 
-// export const ROOTURL = "http://52.231.69.249:8081" 
-// export const ROOTSOCKETURL = "52.231.69.249:8081" 
-export const ROOTURL = "http://localhost:8081"
-export const ROOTSOCKETURL = "localhost:8081" 
+export const ROOTURL = "http://52.231.69.249:8081" 
+export const ROOTSOCKETURL = "52.231.69.249:8081" 
+// export const ROOTURL = "http://localhost:8081"
+// export const ROOTSOCKETURL = "localhost:8081" 

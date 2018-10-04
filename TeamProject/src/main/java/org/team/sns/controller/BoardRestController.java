@@ -158,4 +158,8 @@ public class BoardRestController {
 	public void delReply(int replynumber) {
 		bs.delReply(replynumber);
 	}
+	@GetMapping("/delBoard")
+	public void delBoard(int boardnum,Principal principal) {
+		bs.delBoard(boardnum, principal.getName());
+	}
 }

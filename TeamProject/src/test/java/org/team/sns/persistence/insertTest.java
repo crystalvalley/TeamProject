@@ -43,6 +43,8 @@ public class insertTest {
 	SocketService ss;
 	@Autowired
 	ReplyRepository rpr;
+	@Autowired
+	TagRepository tr;
 	/*
 	 * board에 적당히 값 넣어두는 test
 	 * 
@@ -56,6 +58,7 @@ public class insertTest {
 	 * System.out.println(br.getBoardsByTitle("5")); }
 	 */
 
+	/*
 	@Test
 	public void init() {
 		Member member2 = new Member();
@@ -64,7 +67,7 @@ public class insertTest {
 		member2.setEmail("test@gmail.com");
 		sus.createUser(member2);
 		ms.signup(member2);
-		for (int i = 1; i < 5; i++) {
+		for (int i = 1; i < 20; i++) {
 			Member member = new Member();
 			member.setId("testid" + i);
 			member.setPassword("12345678");
@@ -78,6 +81,13 @@ public class insertTest {
 		ns.acceptFriend("testid1", "testid");
 		ns.acceptFriend("testid2", "testid");
 		ns.acceptFriend("testid3", "testid");
+	}*/
+	
+	/*
+	@Test
+	public void test() {
+		tr.getTagPercent("crystalvalley");
 	}
+	*/
 
 }

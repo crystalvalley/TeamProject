@@ -264,4 +264,13 @@ public class BoardServiceImpl implements BoardService {
 		return reply;
 	}
 
+	@Override
+	public void delBoard(int boardnum, String userid) {
+		// TODO Auto-generated method stub
+		Board target = br.findById(boardnum).get();
+		if(target.getWriter().getId().equals(userid)) {
+			br.save(target);
+		}		
+	}
+
 }

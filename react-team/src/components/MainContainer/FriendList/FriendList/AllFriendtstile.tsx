@@ -22,8 +22,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         maxWidth: 345,
     },
     media: {
-        height: 140,
-        objectFit:"contain"
+        objectFit: "contain"
     },
     button: {
         margin: theme.spacing.unit
@@ -62,7 +61,7 @@ class AllFriendtstile extends React.Component<IProps> {
                 <CardMedia
                     component="img"
                     className={classes.media}
-                    image={ROOTURL+"/resources" + friendInfo.profileImg}
+                    image={ROOTURL + "/resources" + friendInfo.profileImg}
                 />
                 <CardContent>
                     <Typography gutterBottom={true} variant="headline" component="h2">
@@ -76,7 +75,7 @@ class AllFriendtstile extends React.Component<IProps> {
                         }}
                         to={"/personalPage/" + friendInfo.id}
                     >
-                        <Button size="small" color="primary">
+                        <Button size="small" style={{ color: "black" }}>
                             들어가보기
                             <HomeIcon className={classes.rightIcon} />
                         </Button>

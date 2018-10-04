@@ -6,6 +6,7 @@ import FriConfirm from "../TopContainer/FriConfirm";
 import { ILoginStore, withLoginContext } from "../../contexts/LoginContext";
 import BigCard from "../MainContainer/CardList/Card/bigCard/BigCard";
 import { ROOTURL, ICardModel } from "../../constance/models";
+import { IFavoriteStore, withFavoriteContext } from "../../contexts/FavoriteContext";
 
 // 일단 알람 페이지랑 알람 뱃지랑 합쳐서 해야 할 것 같다는 생각이 들었고
 // 내일 와서 이거는 해야겠다. 알람 페이지를 props 값을 바꿔 주는 것이 생각보다 쉽지 않다.
@@ -41,12 +42,12 @@ interface IState {
   alarmOpen: boolean;
 }
 
-class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
+class AlarmPage extends React.Component<IProps & ILoginStore & IFavoriteStore, IState>{
   private divAnchor: HTMLSpanElement | null;
   // private dummy=[
   //   {"actor_id":"testid1", checked:false, mentioned:true, "alarmId":"1"},{"actor_id":"testid1", checked:false, mentioned:false, "alarmId":"1"}
   // ]
-  constructor(props: IProps & ILoginStore) {
+  constructor(props: IProps & ILoginStore&IFavoriteStore) {
     super(props)
     this.state = {
       anchorEl: "",
@@ -107,6 +108,10 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
   }
 
   public render() {
+    let addhandler=()=>{return}
+    if(this.state.card){
+      addhandler = () => {this.props.setFavorite(this.state.card!.id)}
+    }
     return (
       <React.Fragment>
         <IconButton
@@ -146,6 +151,8 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
         {
           this.state.card ?
             <BigCard
+              favorited={this.props.favorites.indexOf(this.state.card.id) === -1}
+              addFavorite={addhandler}
               card={this.state.card}
               open={this.state.bigCardOpen}
               onClose={this.bigCardClose}
@@ -167,4 +174,4 @@ class AlarmPage extends React.Component<IProps & ILoginStore, IState>{
   }
 }
 
-export default withLoginContext(withStyles(styles)(AlarmPage));
+export default withFavoriteContext(withLoginContext(withStyles(styles)(AlarmPage)));

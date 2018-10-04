@@ -31,9 +31,11 @@ interface IProps {
         writerContainer: string;
         modal: string;
     },
-    card:ICardModel
+    card: ICardModel
     open: boolean;
+    favorited: boolean;
     onClose(): void;
+    addFavorite(): void;
 }
 
 class BigCard extends React.Component<IProps>{
@@ -48,8 +50,11 @@ class BigCard extends React.Component<IProps>{
                 <div
                     className={classes.writerContainer}
                 >
-                <LargeCardMain 
-                card={this.props.card}/>
+                    <LargeCardMain
+                        addFavorite={this.props.addFavorite}
+                        favorited={this.props.favorited}
+                        card={this.props.card}
+                    />
                 </div>
             </Modal>
         );

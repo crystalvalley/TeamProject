@@ -8,13 +8,12 @@ import CardActions from "@material-ui/core/CardActions";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import red from "@material-ui/core/colors/red";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
-import ReplyIcon from "@material-ui/icons/Reply";
+import FavoriteIcon from "@material-ui/icons/FavoriteBorderOutlined";
+import FilledFavoriteIcon from "@material-ui/icons/Favorite";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from 'axios';
 import { EditorState, convertFromRaw, Editor, convertToRaw, ContentState } from 'draft-js';
-import { Button, } from '@material-ui/core';
+import { Button, Dialog, DialogTitle, DialogActions, } from '@material-ui/core';
 import Axios from 'axios';
 import { ICardModel, IReplyModel, ROOTURL } from '../../../../../constance/models';
 import { SNSDecorator } from '../../../../NewWindows/Writer/Editor/Decorator';
@@ -24,6 +23,7 @@ import WriterClickMenu from '../smallCard/WriterClickMenu';
 import ReplyEditor from './ReplyEditor';
 import ImageViewer from './ImageViewerForBig';
 import ReplyList from './ReplyList';
+import Delete from "@material-ui/icons/Delete";
 
 
 
@@ -164,10 +164,12 @@ interface IProps {
     hi: string;
     font: string;
   }
+  favorited: boolean;
   // listName: string;
   // id: string;
   // scrollEnd(listName:string):void;
   card: ICardModel;
+  addFavorite(): void;
 }
 
 interface IState {
@@ -176,6 +178,7 @@ interface IState {
   replys: IReplyModel[]
   open: boolean;
   firstLoad: boolean;
+  dialogOpen: boolean;
 }
 
 class RecipeReviewCard extends React.Component<IProps, IState> {
@@ -191,7 +194,8 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.card.content)), SNSDecorator),
       replys: [],
       open: false,
-      firstLoad: true
+      firstLoad: true,
+      dialogOpen: false
     }
     this.editorChange = this.editorChange.bind;
     this.doChangeReply = this.doChangeReply.bind(this);
@@ -199,6 +203,9 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
     this.writerMenuOpen = this.writerMenuOpen.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
     this.getReply = this.getReply.bind(this);
+    this.openDialog = this.openDialog.bind(this);
+    this.agree = this.agree.bind(this);
+    this.disAgree = this.disAgree.bind(this);
     this.getReply();
   }
 
@@ -218,10 +225,31 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
             />
           }
           action={
-            <IconButton onClick={this.writerMenuOpen} >
-              <span ref={(element: any) => { this.anchor = element }} />
-              <MoreVertIcon />
-            </IconButton>
+            <React.Fragment>
+              <IconButton onClick={this.openDialog}>
+                <Delete />
+              </IconButton>
+              <Dialog open={this.state.dialogOpen}>
+                <DialogTitle>삭제하시겠습니까?</DialogTitle>
+                <DialogActions>
+                  <Button onClick={this.disAgree}>Disagree</Button>
+                  <Button onClick={this.agree}>Agree</Button>
+                </DialogActions>
+              </Dialog>
+              <IconButton
+                onClick={this.props.addFavorite}
+              >
+                {
+                  this.props.favorited ?
+                    <FilledFavoriteIcon /> :
+                    <FavoriteIcon />
+                }
+              </IconButton>
+              <IconButton onClick={this.writerMenuOpen} >
+                <span ref={(element: any) => { this.anchor = element }} />
+                <MoreVertIcon />
+              </IconButton>
+            </React.Fragment>
           }
           title={card.writer.id}
           subheader={card.writeDay}
@@ -261,18 +289,8 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
               </CardContent>
             </Scrollbars>
           </div>
-
           <div className={classes.right}>
             <CardActions className={classes.actions} disableActionSpacing={true}>
-              <IconButton aria-label="Add to favorites">
-                <FavoriteIcon />
-              </IconButton>
-              <IconButton aria-label="Share">
-                <ShareIcon />
-              </IconButton>
-              <IconButton aria-label="reply">
-                <ReplyIcon />
-              </IconButton>
               {/* 이부분 유저가 누른걸 가져오게 수정해야한다*/}
               {/* 마음&즐겨찾기 추후 추가*/}
               <EmotionBox
@@ -370,6 +388,27 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
   private writerMenuOpen() {
     this.setState({
       open: true
+    })
+  }
+
+  private openDialog() {
+    this.setState({
+      dialogOpen: true
+    })
+  }
+  private disAgree() {
+    this.setState({
+      dialogOpen: false
+    })
+  }
+  private agree() {
+    axios.get(ROOTURL + "/boards/delBoard", {
+      params: {
+        boardnum: this.props.card.id
+      }
+    })
+    this.setState({
+      dialogOpen: false
     })
   }
 

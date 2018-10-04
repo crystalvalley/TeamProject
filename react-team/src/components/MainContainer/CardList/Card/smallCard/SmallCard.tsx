@@ -74,11 +74,11 @@ interface IState {
 }
 
 
-class SmallCard extends React.Component<IProps & IFavoriteStore  , IState>{
+class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
     private anchor: HTMLSpanElement | null;
     private ref: HTMLDivElement | null;
     private imgWidth: HTMLDivElement | null;
-    constructor(props: IProps & IFavoriteStore ) {
+    constructor(props: IProps & IFavoriteStore) {
         super(props);
         let sub: EditorState;
         try {
@@ -146,6 +146,8 @@ class SmallCard extends React.Component<IProps & IFavoriteStore  , IState>{
                         }
                     </IconButton>
                     <BigCard
+                        addFavorite={handler}
+                        favorited={this.props.favorites.indexOf(this.props.card.id) === -1}
                         card={this.props.card}
                         open={this.state.bigger}
                         onClose={this.closeModal}

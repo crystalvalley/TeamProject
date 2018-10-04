@@ -35,4 +35,5 @@ public interface BoardService {
 	public void setBoardImage(Board board,MultipartFile[] files) throws Exception;
 	public void delReply(int replyNumber);
 	public Reply saveReply(String userid, int cardnum, String content);
+	public void delBoard(int boardnum,String userid);
 }
