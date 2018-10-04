@@ -6,10 +6,12 @@ import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import ChatWrapper from './ChattingText/ChatWrapper';
 import Exit from '@material-ui/icons/HighlightOff';
 import Add from '@material-ui/icons/Add';
+import List from '@material-ui/icons/List';
 import Settings from '@material-ui/icons/SettingsOutlined';
 import axios from 'axios';
 import TitleChangeDialog from './TitleChangeDialog';
 import NewMemberDialog from './NewMemberDialog';
+import ListDialog from './ListDialog';
 
 const style: StyleRulesCallback = (theme: Theme) => ({
     chatBox: {
@@ -79,6 +81,7 @@ interface IState {
     openNewMember: boolean;
     openTitleChange: boolean;
     msg: string;
+    showList:boolean;
 }
 
 class ChattingName extends React.Component<IProps & IRoomModel, IState>{
@@ -88,7 +91,8 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
             open: false,
             openNewMember: false,
             openTitleChange: false,
-            msg: ""
+            msg: "",
+            showList:false
         }
         this.onCheck = this.onCheck.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
@@ -98,6 +102,8 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
         this.newMember = this.newMember.bind(this);
         this.closeTitleChange = this.closeTitleChange.bind(this);
         this.closeNewMember = this.closeNewMember.bind(this);
+        this.openList = this.openList.bind(this);
+        this.closeList = this.closeList.bind(this);
     }
     public render() {
         const { open } = this.state;
@@ -114,6 +120,11 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                     <Grow in={open} >
                         <Paper elevation={4} className={classes.paper + addSubName}>
                             <div>
+                                <IconButton
+                                    onClick={this.openList}
+                                >
+                                    <List />
+                                </IconButton>
                                 <IconButton
                                     onClick={this.titleChange}
                                 >
@@ -137,6 +148,11 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
                                     open={this.state.openNewMember}
                                     members={this.props.roomMembers}
                                     close={this.closeNewMember}
+                                />
+                                <ListDialog
+                                    open={this.state.showList}
+                                    members={this.props.roomMembers}
+                                    close={this.closeList}
                                 />
                             </div>
                             <ChatWrapper
@@ -263,6 +279,16 @@ class ChattingName extends React.Component<IProps & IRoomModel, IState>{
             newMembers: ids
         }).then((res) => {
             this.props.loginCheck();
+        })
+    }
+    private openList(){
+        this.setState({
+            showList:true
+        })
+    }
+    private closeList(){
+        this.setState({
+            showList:false
         })
     }
 }
