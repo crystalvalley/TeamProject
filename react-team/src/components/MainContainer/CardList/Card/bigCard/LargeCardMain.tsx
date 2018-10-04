@@ -169,6 +169,7 @@ interface IProps {
   // id: string;
   // scrollEnd(listName:string):void;
   card: ICardModel;
+  boardRefresh():void;
   addFavorite(): void;
 }
 
@@ -240,7 +241,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
                 onClick={this.props.addFavorite}
               >
                 {
-                  this.props.favorited ?
+                  !this.props.favorited ?
                     <FilledFavoriteIcon /> :
                     <FavoriteIcon />
                 }
@@ -406,6 +407,8 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       params: {
         boardnum: this.props.card.id
       }
+    }).then((response)=>{
+      this.props.boardRefresh();
     })
     this.setState({
       dialogOpen: false

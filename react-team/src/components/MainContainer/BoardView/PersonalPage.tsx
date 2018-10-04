@@ -137,6 +137,7 @@ class PersonalPage extends React.Component<IProps & ILoginStore, IState>{
                     }}
                 >
                     <PersonalList
+                        boardRefresh={this.update}
                         cards={this.state.cards}
                     />
                 </div>
@@ -156,7 +157,7 @@ class PersonalPage extends React.Component<IProps & ILoginStore, IState>{
 
                             </Dropzone> :
                             <Avatar
-                                src={ROOTURL+"/resources"+this.state.userInfo.id}
+                                src={ROOTURL + "/resources" + this.state.userInfo.id}
                                 className={classes.otherAvatar}
                             />
                     }

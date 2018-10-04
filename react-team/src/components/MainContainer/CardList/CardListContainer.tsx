@@ -153,6 +153,7 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
                                                 if (this.state.lists[name]) {
                                                     return (
                                                         <CardList
+                                                            boardRefresh={this.refresh}
                                                             scrollEnd={this.scrollEnd}
                                                             favoriteCheck={this.favoriteCheck}
                                                             cards={this.state.lists[name].cards}
@@ -310,8 +311,6 @@ class CardListContainer extends React.Component<IProps & INetworkStore, IState> 
             starting
         })
     }
-
-
 }
 
 export default withNetworkContext(withStyles(style)(CardListContainer));

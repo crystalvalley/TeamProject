@@ -37,7 +37,7 @@ public class EmotionExpression {
     @GeneratedValue(strategy=GenerationType.AUTO)	
 	private int id;
 	
-	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="expresser",referencedColumnName="user_id")
 	private Member expresser;
 	
@@ -45,7 +45,7 @@ public class EmotionExpression {
 	@NotNull
 	private int emotiontype;
 
-	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="target_board", referencedColumnName="board_id")
 	private Board targetBoard;
 	

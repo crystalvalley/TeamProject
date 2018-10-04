@@ -151,6 +151,7 @@ class AlarmPage extends React.Component<IProps & ILoginStore & IFavoriteStore, I
         {
           this.state.card ?
             <BigCard
+              boardRefresh={this.refresh}
               favorited={this.props.favorites.indexOf(this.state.card.id) === -1}
               addFavorite={addhandler}
               card={this.state.card}
@@ -171,6 +172,9 @@ class AlarmPage extends React.Component<IProps & ILoginStore & IFavoriteStore, I
     this.setState({
       alarmOpen: false
     })
+  }
+  private refresh(){
+    return;
   }
 }
 

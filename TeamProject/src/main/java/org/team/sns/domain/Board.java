@@ -3,6 +3,7 @@ package org.team.sns.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,8 +43,8 @@ import lombok.ToString;
 @Table(name = "Boards")
 // _id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = {"replys", "share", "writer", "sounds","mentions","tags","favorite" })
-@JsonIgnoreProperties({ "replys", "share", "sounds","mentions","tags","favorite" })
+@ToString(exclude = {"replys", "share", "writer", "sounds","mentions","tags","favorite","emtions" })
+@JsonIgnoreProperties({ "replys", "share", "sounds","mentions","tags","favorite","emotions" })
 public class Board {
 	// primary key
 	@Id
@@ -90,25 +91,28 @@ public class Board {
 	@JoinColumn(name = "writer_id", referencedColumnName = "user_id", updatable = false, nullable = false)
 	private Member writer; // 작성자
 
-	@OneToMany(mappedBy = "ownerBoard")
+	@OneToMany(mappedBy = "ownerBoard",cascade=CascadeType.ALL)
 	private List<Photo> photos;
 
-	@OneToOne(mappedBy = "soundBoard")
+	@OneToOne(mappedBy = "soundBoard",cascade=CascadeType.ALL)
 	private Sound sounds;
 
-	@OneToMany(mappedBy = "board")
+	@OneToMany(mappedBy = "board",cascade=CascadeType.ALL)
 	private List<Reply> replys;
 
-	@OneToMany(mappedBy = "shared")
+	@OneToMany(mappedBy = "shared",cascade=CascadeType.ALL)
 	private List<Share> share;
 
-	@ManyToMany(mappedBy="taggedBoards")
+	@ManyToMany(mappedBy="taggedBoards",cascade=CascadeType.ALL)
 	private List<Tag> tags;
 
-	@OneToMany(mappedBy="mentionBoard")
+	@OneToMany(mappedBy="mentionBoard",cascade=CascadeType.ALL)
 	private List<Mention> mentions;
 	
-	@OneToMany(mappedBy="board")
+	@OneToMany(mappedBy="board",cascade=CascadeType.ALL)
 	private List<Favorites> favorite;
+	
+	@OneToMany(mappedBy="targetBoard",cascade=CascadeType.ALL)
+	private List<EmotionExpression> emotions;
 
 }

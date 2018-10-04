@@ -36,6 +36,7 @@ interface IProps {
     favorited: boolean;
     onClose(): void;
     addFavorite(): void;
+    boardRefresh():void;
 }
 
 class BigCard extends React.Component<IProps>{
@@ -51,6 +52,7 @@ class BigCard extends React.Component<IProps>{
                     className={classes.writerContainer}
                 >
                     <LargeCardMain
+                        boardRefresh={this.props.boardRefresh}
                         addFavorite={this.props.addFavorite}
                         favorited={this.props.favorited}
                         card={this.props.card}

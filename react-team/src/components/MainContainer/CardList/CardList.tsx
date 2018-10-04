@@ -52,6 +52,7 @@ interface IProps extends ISearchState, IFavoriteStore {
     cards : ICardModel[]
     scrollEnd(listName:string):void;
     favoriteCheck():void;
+    boardRefresh():void;
 }
 
 
@@ -108,6 +109,7 @@ class CardList extends React.Component<IProps> {
                                     {
                                         this.props.listName === "SearchField" ?
                                             <SearchedList
+                                                boardRefresh={this.props.boardRefresh}
                                                 searchedCard={this.props.searchedCard}
                                                 keyword={this.props.keyword}
                                                 keywordChange={this.props.keywordChange}
@@ -115,6 +117,7 @@ class CardList extends React.Component<IProps> {
                                             this.props.cards.map((card, index) => {
                                                 return (
                                                     <SmallCard
+                                                        boardRefresh={this.props.boardRefresh}
                                                         card={card}
                                                         key={index}
                                                     />

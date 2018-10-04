@@ -63,7 +63,8 @@ interface IProps {
         username: string;
     }
     card: ICardModel,
-    personal?: boolean
+    personal?: boolean,
+    boardRefresh(): void
 }
 
 interface IState {
@@ -146,6 +147,7 @@ class SmallCard extends React.Component<IProps & IFavoriteStore, IState>{
                         }
                     </IconButton>
                     <BigCard
+                        boardRefresh={this.props.boardRefresh}
                         addFavorite={handler}
                         favorited={this.props.favorites.indexOf(this.props.card.id) === -1}
                         card={this.props.card}

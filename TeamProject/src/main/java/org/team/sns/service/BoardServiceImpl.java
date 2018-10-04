@@ -269,7 +269,7 @@ public class BoardServiceImpl implements BoardService {
 		// TODO Auto-generated method stub
 		Board target = br.findById(boardnum).get();
 		if(target.getWriter().getId().equals(userid)) {
-			br.save(target);
+			br.delete(target);
 		}		
 	}
 

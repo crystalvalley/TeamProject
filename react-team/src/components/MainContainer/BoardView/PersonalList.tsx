@@ -40,6 +40,7 @@ interface IProps {
         listBody: string;
     },
     cards: ICardModel[];
+    boardRefresh():void;
 }
 class PersonalList extends React.Component<IProps>{
     constructor(props: IProps) {
@@ -56,6 +57,7 @@ class PersonalList extends React.Component<IProps>{
                         {this.props.cards.map((card, index) => {
                             return (
                                 <SmallCard
+                                    boardRefresh={this.props.boardRefresh}
                                     card={card}
                                     key={index}
                                     personal={true}

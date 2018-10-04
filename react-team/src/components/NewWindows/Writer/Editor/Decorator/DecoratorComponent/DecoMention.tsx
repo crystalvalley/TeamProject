@@ -15,7 +15,7 @@ interface IProps {
 
 class DecoMention extends React.Component<IProps&ISearchState> {
     public render() {
-        const handler = ()=>this.props.setKeyword(this.props.decoratedText)
+        const handler = ()=>this.props.setKeyword(this.props.decoratedText+" ")
         return (
             <span
                 style={{

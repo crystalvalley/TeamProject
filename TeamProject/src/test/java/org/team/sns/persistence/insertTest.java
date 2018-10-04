@@ -58,11 +58,11 @@ public class insertTest {
 	 * System.out.println(br.getBoardsByTitle("5")); }
 	 */
 
-	/*
+	
 	@Test
 	public void init() {
 		Member member2 = new Member();
-		member2.setId("testid");
+		member2.setId("crystalvalley");
 		member2.setPassword("12345678");
 		member2.setEmail("test@gmail.com");
 		sus.createUser(member2);
@@ -81,7 +81,7 @@ public class insertTest {
 		ns.acceptFriend("testid1", "testid");
 		ns.acceptFriend("testid2", "testid");
 		ns.acceptFriend("testid3", "testid");
-	}*/
+	}
 	
 	/*
 	@Test

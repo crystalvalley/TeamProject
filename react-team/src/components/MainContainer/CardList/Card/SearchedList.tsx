@@ -14,6 +14,7 @@ interface IProps {
     searchedCard: ICardModel[];
     keyword: string;
     keywordChange(e: React.ChangeEvent<HTMLInputElement>): void;
+    boardRefresh(): void;
 }
 
 class SearchedList extends React.Component<IProps>{
@@ -40,6 +41,7 @@ class SearchedList extends React.Component<IProps>{
                     this.props.searchedCard.map((card, index) => {
                         return (
                             <SmallCard
+                                boardRefresh={this.props.boardRefresh}
                                 card={card}
                                 key={index}
                             />
