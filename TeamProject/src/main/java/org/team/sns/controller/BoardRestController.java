@@ -59,8 +59,8 @@ public class BoardRestController {
 
 	@GetMapping("/getByListName")
 	public List<Board> getByListName(String listName, Principal principal, int page) {
-		// return bs.getBoardByListName(listName,principal.getName());
-		return bs.getBoardByListName(listName, principal.getName(), page);
+		// return bs.getBoardByListName(listName,"crystalvalley");
+		return bs.getBoardByListName(listName, "crystalvalley", page);
 	}
 
 	@GetMapping("/view")
@@ -75,11 +75,11 @@ public class BoardRestController {
 
 	@PostMapping("/writeBoard")
 	public String writeBoard(Board board, Principal principal, MultipartFile[] image) throws Exception {
-		// board.setWriter(mr.findById(principal.getName()).get());
-		board.setWriter(mr.findById(principal.getName()).get());
+		// board.setWriter(mr.findById("crystalvalley").get());
+		board.setWriter(mr.findById("crystalvalley").get());
 		bs.saveBoard(board);
 		bs.setBoardImage(board, image);
-		as.savementionAlarms(board, principal.getName());
+		as.savementionAlarms(board, "crystalvalley");
 		return "";
 	}
 
@@ -96,12 +96,12 @@ public class BoardRestController {
 
 	@GetMapping("/getEmotion")
 	public List<Integer> getEmotion(int boardId, Principal principal) {
-		return bs.getEmotions(boardId, principal.getName());
+		return bs.getEmotions(boardId, "crystalvalley");
 	}
 
 	@GetMapping("/addEmotion")
 	public String setEmotion(int emotionType, int boardId, Principal principal) {
-		bs.addEmotion(boardId, emotionType, principal.getName());
+		bs.addEmotion(boardId, emotionType, "crystalvalley");
 		return "success";
 	}
 
@@ -111,17 +111,17 @@ public class BoardRestController {
 		if (keyword.equals("")) {
 			return null;
 		}
-		return bs.getBoardBySearchKeyword(keyword, page, principal.getName());
+		return bs.getBoardBySearchKeyword(keyword, page, "crystalvalley");
 	}
 
 	@GetMapping("/getFavorites")
 	public List<Integer> getFavorites(Principal principal) {
-		return bs.getFavorites(principal.getName());
+		return bs.getFavorites("crystalvalley");
 	}
 
 	@GetMapping("/setFavorites")
 	public void setFavorites(Principal principal, int id) {
-		bs.setFavorites(principal.getName(), id);
+		bs.setFavorites("crystalvalley", id);
 	}
 
 	@GetMapping("/getByBoardNum")
@@ -160,6 +160,6 @@ public class BoardRestController {
 	}
 	@GetMapping("/delBoard")
 	public void delBoard(int boardnum,Principal principal) {
-		bs.delBoard(boardnum, principal.getName());
+		bs.delBoard(boardnum, "crystalvalley");
 	}
 }

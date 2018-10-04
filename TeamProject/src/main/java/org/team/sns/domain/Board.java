@@ -43,7 +43,7 @@ import lombok.ToString;
 @Table(name = "Boards")
 // _id 부분이 동일하다면 같은 객체로 취급하겠다는 의미
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = {"replys", "share", "writer", "sounds","mentions","tags","favorite","emtions" })
+@ToString(exclude = {"replys", "share", "writer", "sounds","mentions","tags","favorite","emotions" })
 @JsonIgnoreProperties({ "replys", "share", "sounds","mentions","tags","favorite","emotions" })
 public class Board {
 	// primary key
