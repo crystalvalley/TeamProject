@@ -58,7 +58,7 @@ public class insertTest {
 	 * System.out.println(br.getBoardsByTitle("5")); }
 	 */
 
-	
+	/*
 	@Test
 	public void init() {
 		Member member2 = new Member();
@@ -82,7 +82,7 @@ public class insertTest {
 		ns.acceptFriend("testid2", "testid");
 		ns.acceptFriend("testid3", "testid");
 	}
-	
+	*/
 	/*
 	@Test
 	public void test() {

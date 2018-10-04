@@ -87,7 +87,7 @@ public class AccountRestController {
 	public Member loginCheck(Principal principal) {
 		Member member;
 		if (principal != null) {
-			member = mr.findById("crystalvalley").get();
+			member = mr.findById(principal.getName()).get();
 		} else {
 			member = new Member();
 			member.setId("FAILED LOGIN");
@@ -99,7 +99,7 @@ public class AccountRestController {
 
 	@PostMapping("/uploadProfile")
 	public String uploadProfile(@RequestParam("upload") MultipartFile upload, Principal principal) throws Exception {
-		return ds.fileUpload(upload, "crystalvalley");
+		return ds.fileUpload(upload, principal.getName());
 	}
 
 	@PostMapping("/updateuser")
@@ -124,7 +124,7 @@ public class AccountRestController {
 
 	@PostMapping("/saveReply")
 	public Reply saveReply(int cardnum, String replyContent, Principal principal) {
-		return bs.saveReply("crystalvalley", cardnum, replyContent);
+		return bs.saveReply(principal.getName(), cardnum, replyContent);
 	}
 
 	@GetMapping("/getByCardReply")
