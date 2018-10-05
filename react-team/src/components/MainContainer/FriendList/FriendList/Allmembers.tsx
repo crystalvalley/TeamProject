@@ -79,10 +79,10 @@ class AllFriends extends React.Component<INetworkStore & ILoginStore, IState>{
 
     public render() {
         const filteredList = this.state.members.filter((item) => {
-            if (!this.state.tags[item.id]) { return true }
+            if (!this.state.tags[item.id]) { return true }            
             if (this.state.keyword === "") { return true }
             for (let i = 0; i < this.state.tags[item.id].taginfo.length; i++) {
-                const tag = this.state.tags[item.id][i];
+                const tag = this.state.tags[item.id].taginfo[i].tag;
                 if (i > 2) { return false }
                 if (tag.indexOf(this.state.keyword) !== -1) { return true };
             }

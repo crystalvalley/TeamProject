@@ -67,6 +67,7 @@ class SmallBox extends React.Component<IProps>{
         )
     }
     private delList(name: string) {
+        if(name==="Base"||name==="SearchField"||name==="Follow"||name==="Friend"||name==="Favorite"){return;}
         Axios.get(ROOTURL + "/lists/delList", {
             params: {
                 listName: name
