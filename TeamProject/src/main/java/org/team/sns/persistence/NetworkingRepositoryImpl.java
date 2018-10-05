@@ -7,6 +7,7 @@ import org.team.sns.domain.Member;
 import org.team.sns.domain.Networking;
 import org.team.sns.domain.QNetworking;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 /**
  * 
@@ -55,8 +56,10 @@ public class NetworkingRepositoryImpl extends QuerydslRepositorySupport implemen
 		query.where(net.member.id.eq(memberid));
 		query.where(net.type.eq("Follow"));
 		query.where(net.target.eq(net2.member));
-		query.where(net2.target.eq(net.member));
-		query.where(net2.type.ne("Follow"));
+		BooleanBuilder builder = new BooleanBuilder();
+		builder.and(net2.target.eq(net.member));
+		builder.and(net2.type.eq("Follow"));
+		query.where(builder.not());
 		return query.fetch();
 	}
 

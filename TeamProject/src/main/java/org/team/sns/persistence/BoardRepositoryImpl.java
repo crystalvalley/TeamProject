@@ -425,8 +425,10 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 		subQuery.where(net.type.eq("Follow"));
 		subQuery.where(net.member.eq(member));
 		subQuery.where(net.target.eq(owners.member));
-		subQuery.where(owners.type.ne("Follow"));
-		subQuery.where(owners.target.eq(net.member));
+		BooleanBuilder builder2 = new BooleanBuilder();
+		builder2.and(owners.target.eq(net.member));
+		builder2.and(owners.type.eq("Follow"));
+		subQuery.where(builder2.not());
 		builder.and(board.writer.in(subQuery));
 		return builder;
 
