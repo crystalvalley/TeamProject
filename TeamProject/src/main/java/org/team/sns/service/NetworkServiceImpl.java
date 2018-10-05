@@ -132,6 +132,7 @@ public class NetworkServiceImpl implements NetworkService{
 	public List<Member> getFollowList(String memberid) {
 		// TODO Auto-generated method stub
 		List<Member>result = new ArrayList<>();
+		result = nr.getFollow(memberid);
 		return result;
 	}
 }
