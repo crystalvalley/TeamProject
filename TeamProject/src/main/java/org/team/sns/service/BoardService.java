@@ -36,4 +36,5 @@ public interface BoardService {
 	public void delReply(int replyNumber);
 	public Reply saveReply(String userid, int cardnum, String content);
 	public void delBoard(int boardnum,String userid);
+	public void saveTags(List<Tag> tags);
 }

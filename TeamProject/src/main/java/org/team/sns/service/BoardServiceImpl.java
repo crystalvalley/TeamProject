@@ -268,9 +268,18 @@ public class BoardServiceImpl implements BoardService {
 	public void delBoard(int boardnum, String userid) {
 		// TODO Auto-generated method stub
 		Board target = br.findById(boardnum).get();
+		List<Tag> tags= target.getTags(); 
 		if(target.getWriter().getId().equals(userid)) {
 			br.delete(target);
-		}		
+		}
+	}
+
+	@Override
+	public void saveTags(List<Tag> tags) {
+		// TODO Auto-generated method stub
+		for(Tag tag:tags) {
+			tr.save(tag);
+		}
 	}
 
 }
