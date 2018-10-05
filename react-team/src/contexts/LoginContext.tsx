@@ -67,7 +67,7 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
         this.state = {
             logined: {
                 profileImg: "",
-                id: "crystalvalley",
+                id: "",
             },
             chatLog: {},
             alarms: [],
