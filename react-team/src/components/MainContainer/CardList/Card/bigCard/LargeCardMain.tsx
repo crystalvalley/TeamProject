@@ -24,6 +24,7 @@ import ReplyEditor from './ReplyEditor';
 import ImageViewer from './ImageViewerForBig';
 import ReplyList from './ReplyList';
 import Delete from "@material-ui/icons/Delete";
+import { ILoginStore, withLoginContext } from '../../../../../contexts/LoginContext';
 
 
 
@@ -169,8 +170,8 @@ interface IProps {
   // id: string;
   // scrollEnd(listName:string):void;
   card: ICardModel;
-  onClose():void;
-  boardRefresh():void;
+  onClose(): void;
+  boardRefresh(): void;
   addFavorite(): void;
 }
 
@@ -183,13 +184,13 @@ interface IState {
   dialogOpen: boolean;
 }
 
-class RecipeReviewCard extends React.Component<IProps, IState> {
+class RecipeReviewCard extends React.Component<IProps & ILoginStore, IState> {
   // private div: HTMLDivElement | null;
   private scroll: Scrollbars | null;
   private imgWidth: HTMLDivElement | null;
   private anchor: HTMLSpanElement | null;
   private tableWidth: HTMLDivElement | null;
-  constructor(props: IProps) {
+  constructor(props: IProps & ILoginStore) {
     super(props)
     this.state = {
       replyContent: EditorState.createEmpty(SNSDecorator),
@@ -228,16 +229,21 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
           }
           action={
             <React.Fragment>
-              <IconButton onClick={this.openDialog}>
-                <Delete />
-              </IconButton>
-              <Dialog open={this.state.dialogOpen}>
-                <DialogTitle>삭제하시겠습니까?</DialogTitle>
-                <DialogActions>
-                  <Button onClick={this.disAgree}>Disagree</Button>
-                  <Button onClick={this.agree}>Agree</Button>
-                </DialogActions>
-              </Dialog>
+              {
+                this.props.logined.id === this.props.card.writer.id ?
+                  <React.Fragment>
+                    <IconButton onClick={this.openDialog}>
+                      <Delete />
+                    </IconButton>
+                    <Dialog open={this.state.dialogOpen}>
+                      <DialogTitle>삭제하시겠습니까?</DialogTitle>
+                      <DialogActions>
+                        <Button onClick={this.disAgree}>Disagree</Button>
+                        <Button onClick={this.agree}>Agree</Button>
+                      </DialogActions>
+                    </Dialog>
+                  </React.Fragment> : ""
+              }
               <IconButton
                 onClick={this.props.addFavorite}
               >
@@ -408,7 +414,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       params: {
         boardnum: this.props.card.id
       }
-    }).then((response)=>{
+    }).then((response) => {
       this.props.boardRefresh();
       this.props.onClose();
     })
@@ -419,4 +425,4 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
 
 }
 
-export default withStyles(styles)(RecipeReviewCard);
+export default withLoginContext(withStyles(styles)(RecipeReviewCard));

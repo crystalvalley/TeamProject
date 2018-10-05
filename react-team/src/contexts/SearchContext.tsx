@@ -85,12 +85,6 @@ export class SearchProvider extends React.Component<{}, ISearchState>{
     }
 
     private keywordChange(e: React.ChangeEvent<HTMLInputElement>) {
-        if(e.currentTarget.value===""){
-            this.setState({
-                keyword :""
-            })
-            return;
-        }
         this.setState({
             searchedCard:[],
             end: false,
