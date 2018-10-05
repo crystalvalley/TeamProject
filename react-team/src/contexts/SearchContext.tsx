@@ -56,14 +56,14 @@ export class SearchProvider extends React.Component<{}, ISearchState>{
     }
     private setKeyword(str: string) {
         this.setState({
-            searchedCard: [],
+            searchedCard:[],
             end: false,
             keyword: str,
             getPage: 0
-        }, this.getCards)
+        },this.getCards)
     }
     private getCards() {
-        axios.get(ROOTURL + "/boards/search", {
+        axios.get(ROOTURL+"/boards/search", {
             params: {
                 keyword: this.state.keyword,
                 page: this.state.getPage
@@ -85,13 +85,15 @@ export class SearchProvider extends React.Component<{}, ISearchState>{
     }
 
     private keywordChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const t = e.currentTarget.value;
+        alert(t);
         this.setState({
-            searchedCard: [],
+            searchedCard:[],
             end: false,
-            keyword: e.currentTarget.value,
+            keyword: t,
             getPage: 0
-        }, () => {
-            if (e.currentTarget.value === "") { return; }
+        }, ()=>{
+            if(t===""){return;}
             this.getCards();
         })
     }
