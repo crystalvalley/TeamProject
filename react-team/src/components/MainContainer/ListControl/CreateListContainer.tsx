@@ -238,6 +238,7 @@ class CreateListContainer extends React.Component<IProps, IState>{
         })
     }
     private submitNewList() {
+        if(this.state.listName===""){return;}
         if (this.props.listNames.indexOf(this.state.listName) === -1) {
             // 존재하지 않는 이름이라면 추가
             axios.post(ROOTURL+"/lists/addCustomList", {

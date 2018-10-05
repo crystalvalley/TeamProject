@@ -52,6 +52,7 @@ class BigCard extends React.Component<IProps>{
                     className={classes.writerContainer}
                 >
                     <LargeCardMain
+                        onClose={this.props.onClose}
                         boardRefresh={this.props.boardRefresh}
                         addFavorite={this.props.addFavorite}
                         favorited={this.props.favorited}

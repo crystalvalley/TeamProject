@@ -270,6 +270,8 @@ class LoginProvider extends React.Component<{}, ILoginStore> {
                 }]
                 this.setState({
                     rooms: nextRooms
+                },()=>{
+                    this.loginCheck();
                 })
             } else if (message.type === "reload") {
                 this.loginCheck();

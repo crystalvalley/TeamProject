@@ -18,6 +18,7 @@ const style: StyleRulesCallback = (theme: Theme) => ({
         bottom: 0,
         height: "100px",
         backgroundColor: "lightgrey",
+        opacity:0.5,
         left: 0,
         right: 0,
 

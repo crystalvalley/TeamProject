@@ -28,7 +28,7 @@ export default class ConditionRow extends React.Component<IProps> {
                         <MenuItem value="All">All</MenuItem>
                         <MenuItem value="Favorite">Favorite</MenuItem>
                         <MenuItem value="Follow">Follow</MenuItem>
-                        <MenuItem value="Friend">Follow</MenuItem>
+                        <MenuItem value="Friend">Friend</MenuItem>
                         <MenuItem value="Mention">Mention</MenuItem>
                         <MenuItem value="Tag">Tag</MenuItem>
                         <MenuItem value="Writer">Writer</MenuItem>

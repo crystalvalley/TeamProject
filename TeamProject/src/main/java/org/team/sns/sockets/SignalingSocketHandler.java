@@ -116,14 +116,14 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 			out.setData(signalMessage.getData());
 			out.setRoomId(roomId);
 			String result = objectMapper.writeValueAsString(out);
-			// msg 저장
-			ChatMsg cmsg = new ChatMsg();
-			cmsg.setMsg((String)signalMessage.getData());
-			cmsg.setWriter(user);
-			cmsg.setRoom(rr.findById(roomId).get());
-			cmr.save(cmsg);
 			target.sendMessage(new TextMessage(result));
 		}
+		// msg 저장
+		ChatMsg cmsg = new ChatMsg();
+		cmsg.setMsg((String)signalMessage.getData());
+		cmsg.setWriter(user);
+		cmsg.setRoom(rr.findById(roomId).get());
+		cmr.save(cmsg);
 	}
 
 	private void loginProcess(WebSocketSession session, SignalMessage signalMessage) throws Exception {

@@ -169,6 +169,7 @@ interface IProps {
   // id: string;
   // scrollEnd(listName:string):void;
   card: ICardModel;
+  onClose():void;
   boardRefresh():void;
   addFavorite(): void;
 }
@@ -409,6 +410,7 @@ class RecipeReviewCard extends React.Component<IProps, IState> {
       }
     }).then((response)=>{
       this.props.boardRefresh();
+      this.props.onClose();
     })
     this.setState({
       dialogOpen: false

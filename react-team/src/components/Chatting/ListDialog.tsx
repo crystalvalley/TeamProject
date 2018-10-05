@@ -28,7 +28,7 @@ class ListDialog extends React.Component<IProps, IState>{
     public render() {
         return (
             <Dialog open={this.props.open}>
-                <DialogTitle>Set Your New Title</DialogTitle>
+                <DialogTitle>Chatting Member</DialogTitle>
                 <DialogContent>
                     <List>
                         {

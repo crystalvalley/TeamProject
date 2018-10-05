@@ -116,7 +116,6 @@ public class SocketServiceImpl implements SocketService {
 		cmsg.setRoom(rr.findById(roomnumber).get());
 		cmr.save(cmsg);
 		sendExitMsg(targets, userid, roomnumber);
-		sendRefreshMsg(refresh, "Chatting");
 		if (members.size() == 0) {
 			rr.delete(room);
 		}
