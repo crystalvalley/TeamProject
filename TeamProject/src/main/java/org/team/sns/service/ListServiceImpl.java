@@ -135,4 +135,13 @@ public class ListServiceImpl implements ListService{
 		}
 		return result;
 	}
+
+	@Override
+	public void delList(String listName, String username) {
+		// TODO Auto-generated method stub
+		CustomListPK clpk = new CustomListPK();
+		clpk.setListName(listName);
+		clpk.setOwner(username);
+		clr.deleteById(clpk);
+	}
 }

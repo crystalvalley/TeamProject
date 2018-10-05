@@ -61,6 +61,7 @@ class ListController extends React.Component<IProps, IState>{
                 className={classes.contollerBody}
             >
                 <BoxContainer
+                    refresh={this.refresh}
                     listOrderChange={this.listOrderChange}
                     listNames={this.state.listNames}
                 />
@@ -72,7 +73,7 @@ class ListController extends React.Component<IProps, IState>{
         );
     }
     private refresh() {
-        axios.get(ROOTURL+"/lists/getListNames")
+        axios.get(ROOTURL + "/lists/getListNames")
             .then((result) => {
                 this.setState({
                     listNames: result.data
@@ -83,7 +84,7 @@ class ListController extends React.Component<IProps, IState>{
         this.setState({
             listNames
         }, () => {
-            axios.post(ROOTURL+"/lists/refreshListOrder", {
+            axios.post(ROOTURL + "/lists/refreshListOrder", {
                 listNames: this.state.listNames
             })
         })

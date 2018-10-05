@@ -33,6 +33,7 @@ interface IProps {
     },
     listNames: string[]
     listOrderChange(listNames: string[]): void;
+    refresh():void;
 }
 
 
@@ -94,6 +95,7 @@ class BoxContainer extends React.Component<IProps, IBoxData>{
                                                 {...provided.droppableProps}
                                             >
                                                 <SmallBox
+                                                    refresh={this.props.refresh}
                                                     list={this.state.boxes[box]}
                                                     id={box}
                                                     key={index}

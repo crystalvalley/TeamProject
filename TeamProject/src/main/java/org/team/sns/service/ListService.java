@@ -18,4 +18,5 @@ public interface ListService {
 	public void updateList(String name,String userid,List<List<HashMap<String,String>>> condition);
 	public void updateOrder(List<String> listNames,String userid);
 	public List<List<Map<String,Object>>> getStrategies(String listname);
+	public void delList(String listname,String username);
 }

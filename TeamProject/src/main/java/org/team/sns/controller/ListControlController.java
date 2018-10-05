@@ -88,6 +88,10 @@ public class ListControlController {
 		map = mapper.readValue(listNames, new TypeReference<Map<String,ArrayList<String>>>(){});
 		ls.updateOrder(map.get("listNames"), principal.getName());
 	}
+	@GetMapping("/delList")
+	public void delList(Principal principal,String listName) {
+		ls.delList(listName, principal.getName());
+	}
 
 
 }
