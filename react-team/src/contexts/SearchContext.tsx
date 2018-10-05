@@ -86,7 +86,6 @@ export class SearchProvider extends React.Component<{}, ISearchState>{
 
     private keywordChange(e: React.ChangeEvent<HTMLInputElement>) {
         const t = e.currentTarget.value;
-        alert(t);
         this.setState({
             searchedCard:[],
             end: false,
