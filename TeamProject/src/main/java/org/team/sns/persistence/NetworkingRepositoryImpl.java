@@ -57,8 +57,7 @@ public class NetworkingRepositoryImpl extends QuerydslRepositorySupport implemen
 		query.where(net.type.eq("Follow"));
 		query.where(net.target.eq(net2.member));
 		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(net2.target.eq(net.member));
-		builder.and(net2.type.eq("Follow"));
+		builder.and(net2.target.eq(net.member).and(net2.type.eq("Follow")));
 		query.where(builder.not());
 		return query.fetch();
 	}
