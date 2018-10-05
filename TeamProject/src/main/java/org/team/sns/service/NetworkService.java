@@ -20,5 +20,6 @@ public interface NetworkService {
 	public void addBlock(String memberid,String target);
 	public List<Member> getFriends(String memberid);
 	public List<Member> getFriendsRequest(String memberid);
+	public List<Member> getFollowList(String memberid);
 
 }

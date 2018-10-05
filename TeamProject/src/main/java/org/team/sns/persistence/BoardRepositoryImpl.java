@@ -420,9 +420,13 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 
 	private BooleanBuilder followCheck(QBoard board, BooleanBuilder builder, Member member) {
 		QNetworking net = QNetworking.networking;
-		JPQLQuery<Member> subQuery = from(net).select(net.target);
+		QNetworking owners = new QNetworking("owners");
+		JPQLQuery<Member> subQuery = from(net, owners).select(net.target);
 		subQuery.where(net.type.eq("Follow"));
 		subQuery.where(net.member.eq(member));
+		subQuery.where(net.target.eq(owners.member));
+		subQuery.where(owners.type.eq("Follow"));
+		subQuery.where(owners.target.ne(net.member));
 		builder.and(board.writer.in(subQuery));
 		return builder;
 

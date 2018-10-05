@@ -144,6 +144,7 @@ class NetworkProvider extends React.Component<ILoginStore, INetworkStore>{
                 this.setState({
                     friendList: result.data.friendList,
                     friendRequest: result.data.friendRequest,
+                    followList:result.data.followList,
                     refreshCondition:true
                 })
             })

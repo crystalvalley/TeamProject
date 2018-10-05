@@ -127,4 +127,11 @@ public class NetworkServiceImpl implements NetworkService{
 		net.setType("Block");
 		nr.save(net);		
 	}
+
+	@Override
+	public List<Member> getFollowList(String memberid) {
+		// TODO Auto-generated method stub
+		List<Member>result = new ArrayList<>();
+		return result;
+	}
 }

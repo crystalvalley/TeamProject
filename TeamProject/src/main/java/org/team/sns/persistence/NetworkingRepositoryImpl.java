@@ -46,4 +46,18 @@ public class NetworkingRepositoryImpl extends QuerydslRepositorySupport implemen
 		return query.fetch();
 	}
 
+	@Override
+	public List<Member> getFollow(String memberid) {
+		// TODO Auto-generated method stub
+		QNetworking net = QNetworking.networking;
+		QNetworking net2 = new QNetworking("net2");
+		JPQLQuery<Member> query = from(net,net2).select(net.target);
+		query.where(net.member.id.eq(memberid));
+		query.where(net.type.eq("Follow"));
+		query.where(net.target.eq(net2.member));
+		query.where(net2.target.eq(net.member));
+		query.where(net2.type.ne("Follow"));
+		return query.fetch();
+	}
+
 }
