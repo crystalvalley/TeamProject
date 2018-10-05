@@ -272,6 +272,7 @@ public class BoardServiceImpl implements BoardService {
 		if(target.getWriter().getId().equals(userid)) {
 			br.delete(target);
 		}
+		saveTags(tags);
 	}
 
 	@Override
